@@ -59,7 +59,7 @@ export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
 export { CssSpriteRenderer } from "./engine/script/render/CssSpriteRenderer";
 export { TextAlign, FontWeight, CssTextRenderer } from "./engine/script/render/CssTextRenderer";
-export { CssTilemapRenderer } from "./engine/script/render/CssTilemapRenderer";
+export { TileAtlasItem, CssTilemapRenderer } from "./engine/script/render/CssTilemapRenderer";
 export { ZaxisInitializer } from "./engine/script/render/ZaxisInitializer";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
