@@ -1,0 +1,35 @@
+import { Component } from "../../hierarchy_object/Component";
+import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+export declare class EditorCameraController extends Component {
+    protected readonly _disallowMultipleComponent: boolean;
+    protected readonly _requiredComponents: ComponentConstructor[];
+    private _camera;
+    private _mouseMiddleDown;
+    private readonly _lastOffset;
+    private _minViewSize;
+    private _maxViewSize;
+    private _defaultViewSize;
+    private _currentViewSize;
+    private readonly _defaultPosition;
+    private _onKeyDownBind;
+    private _onWheelBind;
+    private _onPointerDownBind;
+    private _onPointerUpBind;
+    private _onPointerMoveBind;
+    private _onPointerLeaveBind;
+    private _onResizeBind;
+    protected awake(): void;
+    onEnable(): void;
+    onDisable(): void;
+    private onKeyDown;
+    private onWheel;
+    private onPointerDown;
+    private onPointerUp;
+    private onPointerLeave;
+    private onPointerMove;
+    private onResize;
+    get minViewSize(): number;
+    set minViewSize(value: number);
+    get maxViewSize(): number;
+    set maxViewSize(value: number);
+}

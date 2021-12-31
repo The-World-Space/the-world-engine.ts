@@ -1,0 +1,32 @@
+import { IReadonlyTime } from "./time/IReadonlyTime";
+import { InputHandler } from "./input/InputHandler";
+import { Instantiater } from "./Instantiater";
+import { IReadonlyGameState } from "./GameState";
+import { Scene } from "./hierarchy_object/Scene";
+import { CameraContainer } from "./render/CameraContainer";
+import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
+import { SceneProcessor } from "./SceneProcessor";
+import { IEngine } from "./IEngine";
+import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
+export declare class EngineGlobalObject implements IEngine {
+    private readonly _rootScene;
+    private readonly _cameraContainer;
+    private readonly _time;
+    private readonly _inputHandler;
+    private readonly _instantlater;
+    private readonly _gameState;
+    private readonly _screen;
+    private readonly _sceneProcessor;
+    private readonly _coroutineProcessor;
+    constructor(rootScene: Scene, cameraContainer: CameraContainer, time: IReadonlyTime, gameState: IReadonlyGameState, gameScreen: IReadonlyGameScreen, sceneProcessor: SceneProcessor, coroutineProcessor: CoroutineProcessor, renderTargetDom: HTMLElement);
+    dispose(): void;
+    get rootScene(): Scene;
+    get cameraContainer(): CameraContainer;
+    get screen(): IReadonlyGameScreen;
+    get input(): InputHandler;
+    get time(): IReadonlyTime;
+    get gameState(): IReadonlyGameState;
+    get instantlater(): Instantiater;
+    get sceneProcessor(): SceneProcessor;
+    get coroutineProcessor(): CoroutineProcessor;
+}

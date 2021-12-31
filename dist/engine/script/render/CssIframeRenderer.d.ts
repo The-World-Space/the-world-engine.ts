@@ -1,0 +1,34 @@
+import { Vector2 } from "three";
+import { Component } from "../../hierarchy_object/Component";
+export declare class CssIframeRenderer extends Component {
+    protected readonly _disallowMultipleComponent: boolean;
+    private _width;
+    private _height;
+    private _viewScale;
+    private _css3DObject;
+    private _htmlIframeElement;
+    private readonly _iframeCenterOffset;
+    private _iframeSource;
+    private _pointerEvents;
+    private _zindex;
+    protected start(): void;
+    onDestroy(): void;
+    onEnable(): void;
+    onDisable(): void;
+    onSortByZaxis(zaxis: number): void;
+    private drawIframe;
+    private updateCenterOffset;
+    get width(): number;
+    set width(value: number);
+    get height(): number;
+    set height(value: number);
+    get viewScale(): number;
+    set viewScale(value: number);
+    get iframeSource(): string;
+    set iframeSource(value: string);
+    get pointerEvents(): boolean;
+    set pointerEvents(value: boolean);
+    get iframeCenterOffset(): Vector2;
+    set iframeCenterOffset(value: Vector2);
+    get htmlIframeElement(): HTMLIFrameElement;
+}
