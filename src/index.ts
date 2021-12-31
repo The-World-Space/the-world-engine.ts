@@ -37,7 +37,8 @@ export { Time } from "./engine/time/Time";
 
 //engine
 export { Game } from "./engine/Game";
-export { GameState } from "./engine/GameState";
+export type { IReadonlyGameState } from "./engine/GameState";
+export { GameState, GameStateKind } from "./engine/GameState";
 export type { IEngine } from "./engine/IEngine";
 export { Instantiater } from "./engine/Instantiater";
 
@@ -58,7 +59,7 @@ export { GridEventMap } from "./engine/script/event/GridEventMap";
 export { PlayerGridEventInvoker } from "./engine/script/event/PlayerGridEventInvoker";
 
 //helper
-export { Directionable } from "./engine/script/helper/Directionable";
+export { Direction, Directionable } from "./engine/script/helper/Directionable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
 
@@ -80,17 +81,17 @@ export { EditorGridRenderer } from "./engine/script/post_render/EditorGridRender
 export { ParallaxTranslater } from "./engine/script/post_render/ParallaxTranslater";
 export { SpriteAnimator } from "./engine/script/post_render/SpriteAnimator";
 export { SpriteAtlasAnimator } from "./engine/script/post_render/SpriteAtlasAnimator";
-export { SpriteAtlasStaticInstancer } from "./engine/script/post_render/SpriteAtlasStaticInstancer";
-export { SpriteStaticInstancer } from "./engine/script/post_render/SpriteStaticInstancer";
+export { SpriteAtlasInstance, SpriteAtlasStaticInstancer } from "./engine/script/post_render/SpriteAtlasStaticInstancer";
+export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_render/SpriteStaticInstancer";
 
 //render
-export { Camera } from "./engine/script/render/Camera";
+export { CameraType, Camera } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
 export { CssHtmlElementRenderer } from "./engine/script/render/CssHtmlElementRenderer";
 export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
 export { CssSpriteRenderer } from "./engine/script/render/CssSpriteRenderer";
-export { CssTextRenderer } from "./engine/script/render/CssTextRenderer";
+export { TextAlign, FontWeight, CssTextRenderer } from "./engine/script/render/CssTextRenderer";
 export { CssTilemapRenderer } from "./engine/script/render/CssTilemapRenderer";
 export { ZaxisInitializer } from "./engine/script/render/ZaxisInitializer";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
