@@ -39,7 +39,7 @@ export { Direction, Directionable } from "./engine/script/helper/Directionable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
 export { GridPointer } from "./engine/script/input/GridPointer";
-export { PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
+export { PointerGridEvent, PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
 export { CssCollideTilemapChunkRenderer } from "./engine/script/physics/CssCollideTilemapChunkRenderer";
 export { CssCollideTilemapRenderer } from "./engine/script/physics/CssCollideTilemapRenderer";
 export { GridCollideMap } from "./engine/script/physics/GridCollideMap";

@@ -36,7 +36,7 @@ export { PlayerGridEventInvoker } from "./engine/script/event/PlayerGridEventInv
 export { Direction, Directionable } from "./engine/script/helper/Directionable";
 //input
 export { GridPointer } from "./engine/script/input/GridPointer";
-export { PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
+export { PointerGridEvent, PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
 //physics
 export { CssCollideTilemapChunkRenderer } from "./engine/script/physics/CssCollideTilemapChunkRenderer";
 export { CssCollideTilemapRenderer } from "./engine/script/physics/CssCollideTilemapRenderer";
