@@ -1,6 +1,6 @@
 {
     "name": "the-world-engine",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "description": "three.js based, unity like game engine for browser",
     "main": "dist/index.js",
     "scripts": {
@@ -18,7 +18,7 @@
         "url": "https://github.com/noname0310/the-world-engine.ts/issues"
     },
     "homepage": "https://github.com/noname0310/the-world-engine.ts#readme",
-    "dependencies": {
+    "peerDependencies": {
         "@types/three": "^0.135.0",
         "three": "^0.136.0"
     },
