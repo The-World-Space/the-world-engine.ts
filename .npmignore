@@ -8,5 +8,6 @@ src
 .gitignore
 package-lock.json
 package.json
+testbundle
 tsconfig.json
 webpack.config.js
