@@ -1,4 +1,5 @@
 cache
+doc
 node_modules
 src
 .babelrc
