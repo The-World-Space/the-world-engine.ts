@@ -1,5 +1,4 @@
-cache
-doc
+.cache
 node_modules
 src
 .babelrc
