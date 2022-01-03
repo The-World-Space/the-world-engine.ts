@@ -9,7 +9,7 @@ const config = {
   title: 'the-world-engine.ts',
   tagline: 'three.js based, unity like game engine for browser',
   url: 'https://the-world-space.github.io/',
-  baseUrl: '/',
+  baseUrl: '/the-world-engine.ts/docusaurus-build/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
