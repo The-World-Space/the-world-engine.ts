@@ -47,7 +47,7 @@ export class Color {
      * @returns 
      */
     public toString(): string {
-        return `rgba(${this._r}, ${this._g}, ${this._b}, ${this._a})`;
+        return "rgba(" + this._r + ", " + this._g + ", " + this._b + ", " + this._a + ")";
     }
 
     /**
@@ -55,7 +55,7 @@ export class Color {
      * @returns 
      */
     public toHex(): string {
-        return `#${this._r.toString(16)}${this._g.toString(16)}${this._b.toString(16)}`;
+        return "#" + this._r.toString(16) + this._g.toString(16) + this._b.toString(16);
     }
 
     /**

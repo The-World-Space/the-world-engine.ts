@@ -47,7 +47,7 @@ export class Game {
         this._renderer.domElement.style.width = "100%";
         this._renderer.domElement.style.height = "100%";
         this._cameraContainer = new CameraContainer((color: Color) => {
-            this._renderer.domElement.style.backgroundColor = `rgba(${color.r * 255}, ${color.g * 255}, ${color.b * 255}, ${color.a})`;
+            this._renderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
         });
         this._clock = new THREE.Clock();
         this._time = new Time();
@@ -67,7 +67,7 @@ export class Game {
         this._animationFrameId = null;
         this._isDisposed = false;
         container.appendChild(this._renderer.domElement);
-        this._renderer.domElement.onscroll = () => {
+        this._renderer.domElement.onscroll = () => { //block scroll to prevent camera bug
             this._renderer.domElement.scrollLeft = 0;
             this._renderer.domElement.scrollTop = 0;
         };
