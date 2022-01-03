@@ -34,15 +34,15 @@ export class TileAtlasItem {
 export class CssTilemapRenderer extends Component{
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _columnCount: number = 10;
-    private _rowCount: number = 10;
-    private _tileWidth: number = 16;
-    private _tileHeight: number = 16;
+    private _columnCount = 10;
+    private _rowCount = 10;
+    private _tileWidth = 16;
+    private _tileHeight = 16;
     private _css3DObject: CSS3DObject|null = null;
     private _htmlCanvasElement: HTMLCanvasElement|null = null;
     private _imageSources: TileAtlasItem[]|null = null;
-    private _pointerEvents: boolean = true;
-    private _zindex: number = 0;
+    private _pointerEvents = true;
+    private _zindex = 0;
     
     private _initializeFunctions: ((() => void))[] = [];
 
