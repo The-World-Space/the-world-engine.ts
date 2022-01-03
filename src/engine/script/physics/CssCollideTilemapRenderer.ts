@@ -6,7 +6,7 @@ import { CssTilemapRenderer } from "../render/CssTilemapRenderer";
 
 export class CssCollideTilemapRenderer extends CssTilemapRenderer {
     private readonly _collideMap: Map<`${number}_${number}`, boolean> = new Map();
-    private _collideEnabled: boolean = false;
+    private _collideEnabled = false;
 
     public onEnable(): void {
         super.onEnable();

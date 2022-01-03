@@ -4,7 +4,7 @@ import { ZaxisSortable } from "./ZaxisSortable";
 export class CameraRelativeZaxisSorter extends ZaxisSortable {
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _offset: number = -1000;
+    private _offset = -1000;
     private readonly _tempVector3: Vector3 = new Vector3();
 
     public update(): void { 

@@ -10,9 +10,9 @@ export class PlayerGridMovementController extends Directionable
     implements IGridPositionable {
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _speed: number = 80;
-    private _gridCellHeight: number = 16;
-    private _gridCellWidth: number = 16;
+    private _speed = 80;
+    private _gridCellHeight = 16;
+    private _gridCellWidth = 16;
     private _collideMaps: IGridCollidable[] = [];
     private readonly _collideSize: number = 8;
     private readonly _gridCenter: Vector2 = new Vector2();
@@ -25,9 +25,9 @@ export class PlayerGridMovementController extends Directionable
     private _onPointerDownBind = this.onPointerDown.bind(this);
     private _gridPointer: GridPointer|null = null;
     private _pathfinder: Pathfinder|null = null;
-    private _movingByPathfinder: boolean = false;
+    private _movingByPathfinder = false;
     private _findedPath: Vector2[]|null = null;
-    private _currentPathIndex: number = 0;
+    private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
 
     private readonly _tempVector3: Vector3 = new Vector3();
@@ -223,9 +223,9 @@ export class PlayerGridMovementController extends Directionable
         return false;
     }
 
-    private _lastPointerDownTime: number = -1;
+    private _lastPointerDownTime = -1;
     private readonly _lastPointerDownPosition: Vector2 = new Vector2();
-    private _doubleClickTime: number = 0.3;
+    private _doubleClickTime = 0.3;
 
     private onPointerDown(event: PointerGridEvent): void {
         if (event.button !== 0) return;

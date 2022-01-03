@@ -9,7 +9,7 @@ export enum Direction {
 
 export class Directionable extends Component {
     private _direction: Direction = Direction.Down;
-    private _isMoving: boolean = false;
+    private _isMoving = false;
 
     public get direction(): Direction {
         return this._direction;

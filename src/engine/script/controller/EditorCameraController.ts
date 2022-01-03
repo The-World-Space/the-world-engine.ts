@@ -8,12 +8,12 @@ export class EditorCameraController extends Component {
     protected readonly _requiredComponents: ComponentConstructor[] = [Camera];
 
     private _camera: Camera|null = null;
-    private _mouseMiddleDown: boolean = false;
+    private _mouseMiddleDown = false;
     private readonly _lastOffset: Vector2 = new Vector2();
-    private _minViewSize: number = 30;
-    private _maxViewSize: number = 100;
-    private _defaultViewSize: number = 200;
-    private _currentViewSize: number = 200;
+    private _minViewSize = 30;
+    private _maxViewSize = 100;
+    private _defaultViewSize = 200;
+    private _currentViewSize = 200;
     private readonly _defaultPosition = new Vector3();
     private _onKeyDownBind = this.onKeyDown.bind(this);
     private _onWheelBind = this.onWheel.bind(this);

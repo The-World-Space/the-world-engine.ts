@@ -56,9 +56,9 @@ export class SpriteInstance {
 
 export class SpriteStaticInstancer extends Component {
     private _imageSource: string = GlobalConfig.defaultSpriteSrc;
-    private _useZaxisSorter: boolean = false;
-    private _zaxisSortOffset: number = 0;
-    private _pointerEvents: boolean = true;
+    private _useZaxisSorter = false;
+    private _zaxisSortOffset = 0;
+    private _pointerEvents = true;
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -77,7 +77,7 @@ export class SpriteStaticInstancer extends Component {
             const instance = instances[i];
 
             const spriteBuilder = instantlater.buildGameObject(
-                `${this.gameObject.name}_instance_${i}`,
+                this.gameObject.name + "_instance_" + i,
                 instance.position,
                 instance.rotation,
                 instance.scale)

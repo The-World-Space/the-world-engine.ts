@@ -4,8 +4,8 @@ import { ZaxisSortable } from "./ZaxisSortable";
 export class ZaxisSorter extends ZaxisSortable {
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _offset: number = 0;
-    private _runOnce: boolean = true;
+    private _offset = 0;
+    private _runOnce = true;
 
     protected start(): void { 
         this.update();

@@ -12,11 +12,11 @@ export class EditorGridRenderer extends Component {
     
     private _cssHtmlRenderer: CssHtmlElementRenderer|null = null;
     private _cssHtmlRendererObject: GameObject|null = null;
-    private _gridCellWidth: number = 16;
-    private _gridCellHeight: number = 16;
-    private _renderWidth: number = 180;
-    private _renderHeight: number = 100;
-    private _lineWidth: number = 0.2;
+    private _gridCellWidth = 16;
+    private _gridCellHeight = 16;
+    private _renderWidth = 180;
+    private _renderHeight = 100;
+    private _lineWidth = 0.2;
 
     protected awake(): void {
         const cssHtmlRendererRef = new PrefabRef<CssHtmlElementRenderer>();
@@ -27,11 +27,10 @@ export class EditorGridRenderer extends Component {
                 .active(false)
                 .withComponent(CssHtmlElementRenderer, c => {
                     const element = document.createElement("div");
-                    element.style.backgroundImage = `
-                        repeating-linear-gradient(#999 0 1px, transparent 1px 100%),
-                        repeating-linear-gradient(90deg, #999 0 1px, transparent 1px 100%)
-                    `;
-                    element.style.backgroundSize = `${this.gridCellWidth / this._lineWidth}px ${this.gridCellHeight / this._lineWidth}px`;
+                    element.style.backgroundImage = "\
+                        repeating-linear-gradient(#999 0 1px, transparent 1px 100%),\
+                        repeating-linear-gradient(90deg, #999 0 1px, transparent 1px 100%)";
+                    element.style.backgroundSize = (this.gridCellWidth / this._lineWidth) + "px " + (this.gridCellHeight / this._lineWidth) + "px";
                     c.elementWidth = this._renderWidth / this._lineWidth;
                     c.elementHeight = this._renderHeight / this._lineWidth;
                     c.pointerEvents = false;
@@ -65,10 +64,9 @@ export class EditorGridRenderer extends Component {
         const yRemainder = centerY % scaledGridCellHeight;
 
         if (!position.equals(this._lastPosition)) {
-            this._cssHtmlRenderer!.getElementContainer()!.style.backgroundPosition = `
-                ${-position.x / this._lineWidth + xRemainder + scaledGridCellWidth / 2 - 0.5}px 
-                ${position.y / this._lineWidth + yRemainder + scaledGridCellHeight / 2 - 0.5}px
-            `;
+            this._cssHtmlRenderer!.getElementContainer()!.style.backgroundPosition = 
+                (-position.x / this._lineWidth + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
+                (position.y / this._lineWidth + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
         }
     }
 

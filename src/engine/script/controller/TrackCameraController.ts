@@ -10,11 +10,11 @@ export class TrackCameraController extends Component {
 
     private _trackTarget: GameObject|null = null;
     private readonly _targetOffset: Vector2 = new Vector2();
-    private _cameraDistanceOffset: number = 200;
-    private _pixelPerfectUnit: number = 1;
-    private _pixelPerfect: boolean = false;
-    private _lerpTrack: boolean = false;
-    private _lerpAlpha: number = 0.1;
+    private _cameraDistanceOffset = 200;
+    private _pixelPerfectUnit = 1;
+    private _pixelPerfect = false;
+    private _lerpTrack = false;
+    private _lerpAlpha = 0.1;
 
     protected start(): void {
         if (this._trackTarget) {

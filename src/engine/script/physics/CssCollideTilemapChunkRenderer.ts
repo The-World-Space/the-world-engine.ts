@@ -7,12 +7,12 @@ import { IGridCollidable } from "./IGridCollidable";
 export class CssCollideTilemapChunkRenderer extends Component implements IGridCollidable {
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssCollideTilemapRenderer> = new Map();
     //key is chunk position in string format "x_y"
-    private _chunkSize: number = 16;
-    private _tileWidth: number = 16;
-    private _tileHeight: number = 16;
+    private _chunkSize = 16;
+    private _tileWidth = 16;
+    private _tileHeight = 16;
     private _imageSources: TileAtlasItem[]|null = null;
-    private _pointerEvents: boolean = true;
-    private _collideEnabled: boolean = false;
+    private _pointerEvents = true;
+    private _collideEnabled = false;
     
     private _initializeFunctions: (() => void)[] = [];
 
@@ -177,7 +177,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     public set chunkSize(value: number) {
         this._chunkSize = value;
         this.updateTilemapPosition();
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.rowCount = this._chunkSize;
             renderer.columnCount = this._chunkSize;
         });
@@ -200,7 +200,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.pointerEvents = value;
         });
     }
@@ -213,7 +213,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         if (this._tileWidth === value) return;
         this._tileWidth = value;
         this.updateTilemapPosition();
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.gridCellWidth = this._tileWidth;
         });
     }
@@ -226,7 +226,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         if (this._tileHeight === value) return;
         this._tileHeight = value;
         this.updateTilemapPosition();
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.gridCellHeight = this._tileHeight;
         });
     }

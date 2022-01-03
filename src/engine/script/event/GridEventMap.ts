@@ -7,9 +7,9 @@ import { ZaxisInitializer } from "../render/ZaxisInitializer";
 
 export class GridEventMap extends Component implements IGridCoordinatable {
     private readonly _eventMap: Map<`${number}_${number}`, (gridX: number, gridY: number, target: GameObject) => void> = new Map();
-    private _gridCellWidth: number = 16;
-    private _gridCellHeight: number = 16;
-    private _showCollider: boolean = false;
+    private _gridCellWidth = 16;
+    private _gridCellHeight = 16;
+    private _showCollider = false;
     private _eventVisualizeImages: GameObject[] = [];
     
     private _initializeFunctions: ((() => void))[] = [];

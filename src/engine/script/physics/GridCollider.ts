@@ -7,11 +7,11 @@ import { GridObjectCollideMap } from "./GridObjectCollideMap";
 
 export class GridCollider extends Component {
     private readonly _collideMap: Map<`${number}_${number}`, boolean> = new Map();
-    private _showCollideSpot: boolean = false;
-    private _collideSpotIsShowing: boolean = false;
+    private _showCollideSpot = false;
+    private _collideSpotIsShowing = false;
     private readonly _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
     private _gridObjectCollideMap: GridObjectCollideMap|null = null;
-    private _collideInfoAddedToMap: boolean = false;
+    private _collideInfoAddedToMap = false;
     private _initializeFunctions: ((() => void))[] = [];
 
     protected start(): void {

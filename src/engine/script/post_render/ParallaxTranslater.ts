@@ -4,9 +4,9 @@ import { Component } from "../../hierarchy_object/Component";
 export class ParallaxTranslater extends Component {
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _offsetX: number = 1.5;
-    private _offsetY: number = 1.5;
-    private _initializeCenterFromPosition: boolean = true;
+    private _offsetX = 1.5;
+    private _offsetY = 1.5;
+    private _initializeCenterFromPosition = true;
     private readonly _center: Vector2 = new Vector2();
 
     protected start(): void {

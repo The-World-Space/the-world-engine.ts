@@ -6,11 +6,11 @@ import { IGridCoordinatable } from "../helper/IGridCoordinatable";
 export class CssTilemapChunkRenderer extends Component implements IGridCoordinatable {
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssTilemapRenderer> = new Map();
     //key is chunk position in string format "x_y"
-    private _chunkSize: number = 16;
-    private _tileWidth: number = 16;
-    private _tileHeight: number = 16;
+    private _chunkSize = 16;
+    private _tileWidth = 16;
+    private _tileHeight = 16;
     private _imageSources: TileAtlasItem[]|null = null;
-    private _pointerEvents: boolean = true;
+    private _pointerEvents = true;
     
     private _initializeFunctions: ((() => void))[] = [];
 
@@ -54,7 +54,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         if (cssTilemapRenderer === undefined) {
             this.gameObject.addChildFromBuilder(
                 this.engine.instantlater.buildGameObject(
-                    `css_tilemap_renderer_${chunkIndexX}_${chunkIndexY}`, 
+                    "css_tilemap_renderer_" + chunkIndexX + "_" + chunkIndexY, 
                     new Vector3(chunkIndexX * this._chunkSize * this._tileWidth, chunkIndexY * this._chunkSize * this._tileHeight, 0))
                     .withComponent(CssTilemapRenderer, c => {
                         cssTilemapRenderer = c;
@@ -138,7 +138,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     public set chunkSize(value: number) {
         this._chunkSize = value;
         this.updateTilemapPosition();
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.rowCount = this._chunkSize;
             renderer.columnCount = this._chunkSize;
         });
@@ -153,7 +153,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         }
 
         this._imageSources = value;
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.imageSources = value;
         });
     }
@@ -164,7 +164,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.pointerEvents = value;
         });
     }
@@ -177,7 +177,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         if (this._tileWidth === value) return;
         this._tileWidth = value;
         this.updateTilemapPosition();
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.gridCellWidth = this._tileWidth;
         });
     }
@@ -190,7 +190,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         if (this._tileHeight === value) return;
         this._tileHeight = value;
         this.updateTilemapPosition();
-        this._cssTilemapRendererMap.forEach((renderer, _) => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.gridCellHeight = this._tileHeight;
         });
     }

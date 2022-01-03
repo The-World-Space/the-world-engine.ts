@@ -32,19 +32,19 @@ export class PointerGridInputListener extends Component {
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
-    private _gridCellWidth: number = 16;
-    private _gridCellHeight: number = 16;
+    private _gridCellWidth = 16;
+    private _gridCellHeight = 16;
     private readonly _gridCenter: Vector2 = new Vector2();
-    private _inputWidth: number = 64;
-    private _inputHeight: number = 64;
-    private _zindex: number = 0;
+    private _inputWidth = 64;
+    private _inputHeight = 64;
+    private _zindex = 0;
     private _onPointerDownDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerUpDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerEnterDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerLeaveDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerMoveDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onTouchStartFunc: (() => void)|null = null;
-    private _touchMoveOccured: boolean = false;
+    private _touchMoveOccured = false;
 
     private readonly _onMouseDownBind = this.onMouseDown.bind(this);
     private readonly _onMouseUpBind = this.onMouseUp.bind(this);
@@ -59,8 +59,8 @@ export class PointerGridInputListener extends Component {
     protected start(): void {
         this._htmlDivElement = document.createElement("div");
         this._css3DObject = new CSS3DObject(this._htmlDivElement);
-        this._htmlDivElement.style.width = `${this._inputWidth}px`;
-        this._htmlDivElement.style.height = `${this._inputHeight}px`;
+        this._htmlDivElement.style.width = this._inputWidth + "px";
+        this._htmlDivElement.style.height = this._inputHeight + "px";
         this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
         this._htmlDivElement.addEventListener("mousedown", this._onMouseDownBind);
         this._htmlDivElement.addEventListener("mouseup", this._onMouseUpBind);
@@ -280,7 +280,7 @@ export class PointerGridInputListener extends Component {
     public set inputWidth(value: number) {
         this._inputWidth = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.width = `${this._inputWidth}px`;
+            this._htmlDivElement.style.width = this._inputWidth + "px";
         }
     }
 
@@ -291,7 +291,7 @@ export class PointerGridInputListener extends Component {
     public set inputHeight(value: number) {
         this._inputHeight = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.height = `${this._inputHeight}px`;
+            this._htmlDivElement.style.height = this._inputHeight + "px";
         }
     }
 }

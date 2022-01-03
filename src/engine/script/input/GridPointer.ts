@@ -11,13 +11,13 @@ export class GridPointer extends Component {
     protected readonly _requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
 
     private _pointerGridInputListener: PointerGridInputListener|null = null;
-    private _pointerZoffset: number = 0;
+    private _pointerZoffset = 0;
     private _pointerObject: GameObject|null = null;
     private _pointerRenderer: CssHtmlElementRenderer|null = null;
     private _onPointerDownDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerUpDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerMoveDelegates: ((event: PointerGridEvent) => void)[] = [];
-    private _isMouseDown: boolean = false;
+    private _isMouseDown = false;
 
     private readonly _onPointerEnterBind = this.onPointerEnter.bind(this);
     private readonly _onPointerLeaveBind = this.onPointerLeave.bind(this);

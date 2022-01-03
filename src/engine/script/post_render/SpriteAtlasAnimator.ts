@@ -10,10 +10,10 @@ export class SpriteAtlasAnimator extends Component {
     private _animations: { [key: string]: number[] } = {};
     private _playingAnimationName: string|null = null;
     private _playingAnimation: number[]|null = null;
-    private _playingAnimationFrame: number = 0;
-    private _playing: boolean = false;
-    private _frameDuration: number = 2;
-    private _currentFrameDuration: number = 0;
+    private _playingAnimationFrame = 0;
+    private _playing = false;
+    private _frameDuration = 2;
+    private _currentFrameDuration = 0;
     
     protected awake(): void {
         this._spriteAtlasRenderer = this.gameObject.getComponent(CssSpriteAtlasRenderer);
