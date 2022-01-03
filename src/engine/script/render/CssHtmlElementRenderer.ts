@@ -1,5 +1,6 @@
 import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { CoroutineIterator, WaitForEndOfFrame } from "../../..";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
@@ -88,12 +89,17 @@ export class CssHtmlElementRenderer extends Component {
             this._htmlDivElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
             
             this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
-            this.updateCenterOffset();
+            this.startCorutine(this.updateCenterAfterRender());
             this.gameObject.unsafeGetTransform().add(this._css3DObject); //it"s safe because _css3DObject is not GameObject and remove is from onDestroy
     
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
         }
+    }
+
+    private *updateCenterAfterRender(): CoroutineIterator {
+        yield new WaitForEndOfFrame();
+        this.updateCenterOffset();
     }
 
     private updateCenterOffset(): void {
