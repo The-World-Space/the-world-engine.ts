@@ -3,6 +3,11 @@ import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { Camera } from "../render/Camera";
 
+/**
+ * controller for 2D editor free camera
+ * it requires a camera component to control
+ * camera type is must be set to CameraType.Orthographic
+ */
 export class EditorCameraController extends Component {
     protected readonly _disallowMultipleComponent: boolean = true;
     protected readonly _requiredComponents: ComponentConstructor[] = [Camera];
@@ -114,10 +119,16 @@ export class EditorCameraController extends Component {
         this._camera!.viewSize = this._currentViewSize / aspect;
     }
 
+    /**
+     * min view size
+     */
     public get minViewSize(): number {
         return this._minViewSize;
     }
 
+    /**
+     * min view size
+     */
     public set minViewSize(value: number) {
         this._minViewSize = value;
 
@@ -127,10 +138,16 @@ export class EditorCameraController extends Component {
         }
     }
 
+    /**
+     * max view size
+     */
     public get maxViewSize(): number {
         return this._maxViewSize;
     }
 
+    /**
+     * max view size
+     */
     public set maxViewSize(value: number) {
         this._maxViewSize = value;
 

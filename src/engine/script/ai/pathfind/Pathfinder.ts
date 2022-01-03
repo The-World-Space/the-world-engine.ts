@@ -4,20 +4,39 @@ import { Vector2 } from "three";
 import { IGridCollidable } from "../../physics/IGridCollidable";
 import { PathNode } from "./PathNode";
 
+/**
+ * Pathfinder that uses the A* algorithm to find the shortest path between two points.
+ * it works in grid coordinates.
+ * it has iteration limits to prevent infinite loops.
+ */
 export class Pathfinder {
     private static readonly _checkCollisionScale: number = 8;
     private static readonly _iterationLimit: number = 1000;
 
     private collideMaps: IGridCollidable[];
 
+    /**
+     * 
+     * @param collideMaps collide maps to use for collision detection
+     */
     public constructor(collideMaps?: IGridCollidable[]) {
         this.collideMaps = collideMaps?.slice() ?? [];
     }
 
+    /**
+     * adds a new collide map to the list of collide maps
+     * @param collideMap 
+     */
     public addCollideMap(collideMap: IGridCollidable): void {
         this.collideMaps.push(collideMap);
     }
 
+    /**
+     * finds the shortest path between two points
+     * @param startGridPosition start position in grid coordinates (integers value)
+     * @param endGridPosition end position in grid coordinates (integers value)
+     * @returns the shortest path between the two points
+     */
     public findPath(startGridPosition: Vector2, endGridPosition: Vector2): Vector2[]|null {
         const startNode = new PathNode(startGridPosition.x, startGridPosition.y);
         const endNode = new PathNode(endGridPosition.x, endGridPosition.y);

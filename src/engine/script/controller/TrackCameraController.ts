@@ -4,6 +4,11 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { Camera } from "../render/Camera";
 
+/**
+ * controller for 2D track camera
+ * it requires a camera component to control
+ * it supports pixel perfect and lerp movement
+ */
 export class TrackCameraController extends Component {
     protected readonly _disallowMultipleComponent: boolean = true;
     protected readonly _requiredComponents: ComponentConstructor[] = [Camera];
@@ -50,54 +55,94 @@ export class TrackCameraController extends Component {
         }
     }
 
+    /**
+     * set the target to track
+     * @param target 
+     */
     public setTrackTarget(target: GameObject): void {
         this._trackTarget = target;
     }
 
+    /**
+     * target position offset
+     */
     public get targetOffset(): Vector2 {
         return this._targetOffset;
     }
 
+    /**
+     * target position offset
+     */
     public set targetOffset(value: Vector2) {
         this._targetOffset.copy(value);
     }
 
+    /**
+     * z distance from camera to target
+     */
     public get cameraDistanceOffset(): number {
         return this._cameraDistanceOffset;
     }
 
+    /**
+     * z distance from camera to target
+     */
     public set cameraDistanceOffset(value: number) {
         this._cameraDistanceOffset = value;
     }
 
+    /**
+     * pixel perfect unit
+     */
     public get pixelPerfectUnit(): number {
         return this._pixelPerfectUnit;
     }
 
+    /**
+     * pixel perfect unit
+     */
     public set pixelPerfectUnit(value: number) {
         this._pixelPerfectUnit = value;
     }
 
+    /**
+     * use pixel perfect
+     */
     public get pixelPerfect(): boolean {
         return this._pixelPerfect;
     }
 
+    /**
+     * use pixel perfect
+     */
     public set pixelPerfect(value: boolean) {
         this._pixelPerfect = value;
     }
 
+    /**
+     * use lerp to track
+     */
     public get lerpTrack(): boolean {
         return this._lerpTrack;
     }
 
+    /**
+     * use lerp to track
+     */
     public set lerpTrack(value: boolean) {
         this._lerpTrack = value;
     }
 
+    /**
+     * lerp alpha
+     */
     public get lerpAlpha(): number {
         return this._lerpAlpha;
     }
 
+    /**
+     * lerp alpha
+     */
     public set lerpAlpha(value: number) {
         this._lerpAlpha = value;
     }

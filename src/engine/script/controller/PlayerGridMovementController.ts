@@ -6,6 +6,11 @@ import { IGridCollidable } from "../physics/IGridCollidable";
 import { Direction, Directionable } from "../helper/Directionable";
 import { IGridPositionable } from "../helper/IGridPositionable";
 
+/**
+ * make gameobject moves on grid coordinates
+ * supports keyboard wasd and arrow keys input
+ * supports pathfinding as optional feature
+ */
 export class PlayerGridMovementController extends Directionable
     implements IGridPositionable {
     protected readonly _disallowMultipleComponent: boolean = true;
@@ -266,10 +271,18 @@ export class PlayerGridMovementController extends Directionable
         this._movingByPathfinder = true;
     }
 
+    /**
+     * add onMoveToTarget event listener
+     * @param delegate this delegate function will be called when onMoveToTarget event is fired
+     */
     public addOnMoveToTargetEventListener(delegate: (x: number, y: number) => void): void {
         this._onMoveToTargetDelegates.push(delegate);
     }
 
+    /**
+     * remove onMoveToTarget event listener
+     * @param delegate delegate function to remove from onMoveToTarget event listeners
+     */
     public removeOnMoveToTargetEventListener(delegate: (x: number, y: number) => void): void {
         const index = this._onMoveToTargetDelegates.indexOf(delegate);
         if (index >= 0) {
@@ -277,10 +290,18 @@ export class PlayerGridMovementController extends Directionable
         }
     }
 
+    /**
+     * add onMovedToTarget event listener
+     * @param delegate this delegate function will be called when onMovedToTarget event is fired
+     */
     public addOnMovedToTargetEventListener(delegate: (x: number, y: number) => void): void {
         this._onMovedToTargetDelegates.push(delegate);
     }
 
+    /**
+     * remove onMovedToTarget event listener
+     * @param delegate delegate function to remove from onMovedToTarget event listeners
+     */
     public removeOnMovedToTargetEventListener(delegate: (x: number, y: number) => void): void {
         const index = this._onMovedToTargetDelegates.indexOf(delegate);
         if (index >= 0) {
@@ -288,42 +309,73 @@ export class PlayerGridMovementController extends Directionable
         }
     }
 
+    /**
+     * move speed
+     */
     public get speed(): number {
         return this._speed;
     }
 
+    /**
+     * move speed
+     */
     public set speed(value: number) {
         this._speed = value;
     }
 
+    /**
+     * grid center position
+     */
     public get gridCenter(): Vector2 {
         return this._gridCenter.clone();
     }
 
+    /**
+     * grid center position
+     */
     public set gridCenter(value: Vector2) {
         this._gridCenter.copy(value);
     }
 
+    /**
+     * grid cell height
+     */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
+    /**
+     * grid cell height
+     */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
 
+    /**
+     * grid cell width
+     */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
+    /**
+     * grid cell width
+     */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
+    /**
+     * initial grid position
+     * this option is valid only when evaluated before PlayerGridMovementController.start()
+     */
     public set initPosition(value: Vector2) {
         this._initPosition.copy(value);
     }
 
+    /**
+     * grid pointer for pathfinding
+     */
     public set gridPointer(value: GridPointer|null) {
         if (this._gridPointer) {
             this._gridPointer.removeOnPointerDownEventListener(this._onPointerDownBind);
@@ -334,21 +386,35 @@ export class PlayerGridMovementController extends Directionable
         }
     }
 
+    /**
+     * grid pointer for pathfinding
+     */
     public get gridPointer(): GridPointer|null {
         return this._gridPointer;
     }
 
+    /**
+     * add collide map for collision detection
+     * @param collideMap 
+     */
     public addCollideMap(collideMap: IGridCollidable): void {
         this._collideMaps.push(collideMap);
         this._pathfinder?.addCollideMap(collideMap);
     }
 
+    /**
+     * set grid cell size and grid center position from grid collide map
+     * @param collideMap
+     */
     public setGridInfoFromCollideMap(collideMap: IGridCollidable): void {
         this._gridCellWidth = collideMap.gridCellWidth;
         this._gridCellHeight = collideMap.gridCellHeight;
         this._gridCenter.set(collideMap.gridCenterX, collideMap.gridCenterY);
     }
 
+    /**
+     * position in grid coordinate(integer value)
+     */
     public get positionInGrid(): Vector2 {
         return new Vector2(
             Math.floor(this.gameObject.transform.position.x / this._gridCellWidth),

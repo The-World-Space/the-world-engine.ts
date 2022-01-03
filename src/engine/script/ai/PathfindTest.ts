@@ -9,6 +9,9 @@ import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { Pathfinder } from "./pathfind/Pathfinder";
 
+/**
+ * Pathfind visualizer component for testing purposes
+ */
 export class PathfindTest extends Component {
     private _player: IGridPositionable|null = null;
     private _collideMaps: IGridCollidable[]|null = null;
@@ -64,26 +67,44 @@ export class PathfindTest extends Component {
         this._debugImages = [];
     }
 
+    /**
+     * player to use pathfinding on
+     */
     public get player(): IGridPositionable|null {
         return this._player;
     }
 
+    /**
+     * player to use pathfinding on
+     */
     public set player(value: IGridPositionable|null) {
         this._player = value;
     }
 
+    /**
+     * collide maps to use for pathfinding
+     */
     public get collideMaps(): IGridCollidable[]|null {
         return this._collideMaps;
     }
 
+    /**
+     * collide maps to use for pathfinding
+     */
     public set collideMaps(value: IGridCollidable[]|null) {
         this._collideMaps = value;
     }
 
+    /**
+     * grid pointer to use for selecting the end point
+     */
     public get gridPointer(): GridPointer|null {
         return this._gridPointer;
     }
 
+    /**
+     * grid pointer to use for selecting the end point
+     */
     public set gridPointer(value: GridPointer|null) {
         this._gridPointer = value;
     }
