@@ -3,14 +3,14 @@
 
 #### [Demo](https://the-world-space.github.io/the-world-engine-examples/build/sans-fight-room/index.html)
 
-![sans-fight-room](doc/image/sans-fight-room.png)
+![sans-fight-room](docs/image/sans-fight-room.png)
 
 ### Build your scene on Object hierarchy system
 
-![build scene](doc/image/build_scene.gif)
+![build scene](docs/image/build_scene.gif)
 
 ### Scripting your component to attach GameObject
-![write component](doc/image/write_component.gif)
+![write component](docs/image/write_component.gif)
 
 ## Component Features
 #### Messages
