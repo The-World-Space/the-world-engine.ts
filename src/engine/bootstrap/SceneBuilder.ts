@@ -34,7 +34,7 @@ export class SceneBuilder {
      */
     public build(): { awakeComponents: Component[], enableComponents: Component[] } {
         for (const child of this._children) {
-            this._scene.add(child.build().unsafeGetTransform()); //it"s safe because component initialize will be called by SceneProsessor
+            this._scene.add(child.build().unsafeGetTransform()); //it's safe because component initialize will be called by SceneProsessor
         }
 
         for (const child of this._children) child.initialize();

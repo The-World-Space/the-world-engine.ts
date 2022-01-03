@@ -69,7 +69,7 @@ export interface ITransform {
 	matrix: Matrix4;
 
 	/**
-	 * The global transform of the object. If the Object3d has no parent, then it"s identical to the local transform.
+	 * The global transform of the object. If the Object3d has no parent, then it's identical to the local transform.
 	 * @default new THREE.Matrix4()
 	 */
 	matrixWorld: Matrix4;

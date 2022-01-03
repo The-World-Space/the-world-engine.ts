@@ -33,7 +33,7 @@ export class CssSpriteRenderer extends Component {
 
     public onDestroy(): void {
         if (!this.started) return;
-        if (this._sprite) this.gameObject.unsafeGetTransform().remove(this._sprite); //it"s safe because _sprite is not GameObject and remove is from onDestroy
+        if (this._sprite) this.gameObject.unsafeGetTransform().remove(this._sprite); //it's safe because _sprite is not GameObject and remove is from onDestroy
     }
 
     public onEnable(): void {
@@ -89,7 +89,7 @@ export class CssSpriteRenderer extends Component {
                 this.updateCenterOffset();
                 this._sprite.scale.x = this._imageFlipX ? -1 : 1;
                 this._sprite.scale.y = this._imageFlipY ? -1 : 1;
-                this.gameObject.unsafeGetTransform().add(this._sprite); //it"s safe because _sprite is not GameObject and remove is from onDestroy
+                this.gameObject.unsafeGetTransform().add(this._sprite); //it's safe because _sprite is not GameObject and remove is from onDestroy
                 
                 if (this.enabled && this.gameObject.activeInHierarchy) this._sprite.visible = true;
                 else this._sprite.visible = false;

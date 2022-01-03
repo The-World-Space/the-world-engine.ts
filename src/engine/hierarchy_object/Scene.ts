@@ -33,7 +33,7 @@ export class Scene extends THREE.Scene {
         const gameObject = gameObjectBuilder.build();
         gameObjectBuilder.initialize();
         if (gameObject.unsafeGetTransform() instanceof Transform) {
-            this.registerTransform(gameObject.unsafeGetTransform() as Transform); //it"s safe because it use same logic as GameObject.registerTransform()
+            this.registerTransform(gameObject.unsafeGetTransform() as Transform); //it's safe because it use same logic as GameObject.registerTransform()
         } else {
             throw new Error("unreachable");
         }
