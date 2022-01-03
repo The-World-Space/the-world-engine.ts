@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import { CssSpriteAtlasRenderer } from "..";
+import { CssHtmlElementRenderer, CssSpriteRenderer } from "..";
 import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { Camera } from "../engine/script/render/Camera";
@@ -16,11 +16,18 @@ export class TestBootstrapper extends Bootstrapper {
                 }))
 
             .withChild(instantlater.buildGameObject("test_object")
-                .withComponent(CssSpriteAtlasRenderer, c => {
-                    c.imageCenterOffset = new Vector2(0.5, 0.5);
-                    c.imageFlipX = false;
-                })
-                .withComponent(Rotator)
-            );
+                .withComponent(CssSpriteRenderer)
+                .withComponent(Rotator))
+
+            .withChild(instantlater.buildGameObject("test_object2")
+                .withComponent(CssHtmlElementRenderer, c => {
+                    c.autoSize = true;
+                    const element = document.createElement("div");
+                    element.innerText = "test";
+                    element.style.backgroundColor = "#F0DB4F";
+                    element.style.color = "#323330";
+                    c.setElement(element);
+                    c.centerOffset = new Vector2(0.5, 0.5);
+                }));
     }
 }
