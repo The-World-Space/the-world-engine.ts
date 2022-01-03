@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { CSS3DSprite } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { CSS3DObject } from  "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 import { GlobalConfig } from "../../../GlobalConfig";
@@ -7,7 +7,7 @@ import { GlobalConfig } from "../../../GlobalConfig";
 export class CssSpriteRenderer extends Component {
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _sprite: CSS3DSprite|null = null;
+    private _sprite: CSS3DObject|null = null;
     private _htmlImageElement: HTMLImageElement|null = null;
     private readonly _imageCenterOffset: Vector2 = new Vector2(0, 0);
     private _zindex = 0;
@@ -75,14 +75,14 @@ export class CssSpriteRenderer extends Component {
             const image = e.target as HTMLImageElement;
             image.removeEventListener("load", onLoad);
             if (!this._sprite) {
-                this._sprite = new CSS3DSprite(image);
-                image.alt = `${this.gameObject.name}_sprite_atlas`;
+                this._sprite = new CSS3DObject(image);
+                image.alt = this.gameObject.name + "_sprite_atlas";
                 image.style.imageRendering = "pixelated";
 
                 if (this._imageWidth === 0) this._imageWidth = image.width;
                 if (this._imageHeight === 0) this._imageHeight = image.height;
-                image.style.width = `${this._imageWidth}px`;
-                image.style.height = `${this._imageHeight}px`;
+                image.style.width = this._imageWidth + "px";
+                image.style.height = this._imageHeight + "px";
                 image.style.opacity = this._opacity.toString();
                 image.style.pointerEvents = this._pointerEvents ? "auto" : "none";
                 image.style.zIndex = Math.floor(this._zindex).toString();
@@ -125,7 +125,7 @@ export class CssSpriteRenderer extends Component {
     public set imageWidth(value: number) {
         this._imageWidth = value;
         if (this._htmlImageElement) {
-            this._htmlImageElement.style.width = `${value}px`;
+            this._htmlImageElement.style.width = value + "px";
         }
         this.updateCenterOffset();
     }
@@ -137,7 +137,7 @@ export class CssSpriteRenderer extends Component {
     public set imageHeight(value: number) {
         this._imageHeight = value;
         if (this._htmlImageElement) {
-            this._htmlImageElement.style.height = `${value}px`;
+            this._htmlImageElement.style.height = value + "px";
         }
         this.updateCenterOffset();
     }

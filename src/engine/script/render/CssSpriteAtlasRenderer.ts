@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { CSS3DSprite } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { CSS3DObject } from  "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 import { GlobalConfig } from "../../../GlobalConfig";
@@ -7,21 +7,21 @@ import { GlobalConfig } from "../../../GlobalConfig";
 export class CssSpriteAtlasRenderer extends Component {
     protected readonly _disallowMultipleComponent: boolean = true;
 
-    private _sprite: CSS3DSprite|null = null;
+    private _sprite: CSS3DObject|null = null;
     private _htmlImageElement: HTMLImageElement|null = null;
-    private _rowCount: number = 1;
-    private _columnCount: number = 1;
-    private _imageWidth: number = 0;
-    private _imageHeight: number = 0;
-    private _imageFlipX: boolean = false;
-    private _imageFlipY: boolean = false;
-    private _opacity: number = 1;
-    private _pointerEvents: boolean = true;
-    private _croppedImageWidth: number = 0;
-    private _croppedImageHeight: number = 0;
-    private _currentImageIndex: number = 0;
+    private _rowCount = 1;
+    private _columnCount = 1;
+    private _imageWidth = 0;
+    private _imageHeight = 0;
+    private _imageFlipX = false;
+    private _imageFlipY = false;
+    private _opacity = 1;
+    private _pointerEvents = true;
+    private _croppedImageWidth = 0;
+    private _croppedImageHeight = 0;
+    private _currentImageIndex = 0;
     private readonly _imageCenterOffset: Vector2 = new Vector2(0, 0);
-    private _zindex: number = 0;
+    private _zindex = 0;
     
     private _initializeFunction: (() => void)|null = null;
 
@@ -83,9 +83,9 @@ export class CssSpriteAtlasRenderer extends Component {
             this._croppedImageHeight = image.naturalHeight / this._rowCount;
             if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth;
             if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight;
-            image.alt = `${this.gameObject.name}_sprite_atlas`;
+            image.alt = this.gameObject.name + "_sprite_atlas";
             if (!this._sprite) {
-                this._sprite = new CSS3DSprite(this._htmlImageElement as HTMLImageElement);
+                this._sprite = new CSS3DObject(this._htmlImageElement as HTMLImageElement);
                 this.updateCenterOffset();
                 this._sprite.scale.set(
                     this._imageWidth / this._croppedImageWidth,
@@ -96,8 +96,8 @@ export class CssSpriteAtlasRenderer extends Component {
                 this._sprite.scale.y *= this._imageFlipY ? -1 : 1;
                 this.gameObject.unsafeGetTransform().add(this._sprite); //it"s safe because _css3DObject is not GameObject and remove is from onDestroy
             }
-            image.style.width = `${this._croppedImageWidth}px`;
-            image.style.height = `${this._croppedImageHeight}px`;
+            image.style.width = this._croppedImageWidth +"px";
+            image.style.height = this._croppedImageHeight + "px";
             image.style.objectFit = "none";
             image.style.imageRendering = "pixelated";
             image.style.opacity = this._opacity.toString();
@@ -117,7 +117,7 @@ export class CssSpriteAtlasRenderer extends Component {
         if (this._sprite) {
             const width = -(this._currentImageIndex % this._columnCount * this._croppedImageWidth);
             const height = -Math.floor(this._currentImageIndex / this._columnCount) * this._croppedImageHeight;
-            this._sprite.element.style.objectPosition = `${width}px ${height}px`;
+            this._sprite.element.style.objectPosition = width + "px " + height + "px";
         }
     }
 
