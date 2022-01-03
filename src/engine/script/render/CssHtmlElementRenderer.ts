@@ -9,11 +9,11 @@ export class CssHtmlElementRenderer extends Component {
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
     private readonly _centerOffset: Vector2 = new Vector2(0, 0);
-    private _zindex: number = 0;
-    private _elementWidth: number = 16;
-    private _elementHeight: number = 16;
-    private _autoSize: boolean = false;
-    private _pointerEvents: boolean = true;
+    private _zindex = 0;
+    private _elementWidth = 16;
+    private _elementHeight = 16;
+    private _autoSize = false;
+    private _pointerEvents = true;
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -82,8 +82,8 @@ export class CssHtmlElementRenderer extends Component {
                 this._htmlDivElement.style.width = "auto";
                 this._htmlDivElement.style.height = "auto";
             } else {
-                this._htmlDivElement.style.width = `${this._elementWidth}px`;
-                this._htmlDivElement.style.height = `${this._elementHeight}px`;
+                this._htmlDivElement.style.width = this._elementWidth + "px";
+                this._htmlDivElement.style.height = this._elementHeight + "px";
             }
             this._htmlDivElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
             
@@ -121,7 +121,7 @@ export class CssHtmlElementRenderer extends Component {
     public set elementWidth(value: number) {
         this._elementWidth = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.width = `${value}px`;
+            this._htmlDivElement.style.width = value + "px";
         }
         this.updateCenterOffset();
     }
@@ -133,7 +133,7 @@ export class CssHtmlElementRenderer extends Component {
     public set elementHeight(value: number) {
         this._elementHeight = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.height = `${value}px`;
+            this._htmlDivElement.style.height = value + "px";
         }
         this.updateCenterOffset();
     }
@@ -149,8 +149,8 @@ export class CssHtmlElementRenderer extends Component {
                 this._htmlDivElement.style.width = "auto";
                 this._htmlDivElement.style.height = "auto";
             } else {
-                this._htmlDivElement.style.width = `${this._elementWidth}px`;
-                this._htmlDivElement.style.height = `${this._elementHeight}px`;
+                this._htmlDivElement.style.width = this._elementWidth + "px";
+                this._htmlDivElement.style.height = this._elementHeight + "px";
             }
         }
     }

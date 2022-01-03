@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { CSS3DObject } from  "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
@@ -20,15 +20,15 @@ export class CssTextRenderer extends Component {
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
     private readonly _textCenterOffset: Vector2 = new Vector2(0, 0);
-    private _zindex: number = 0;
-    private _textWidth: number = 32;
-    private _textHeight: number = 16;
-    private _fontSize: number = 8;
+    private _zindex = 0;
+    private _textWidth = 32;
+    private _textHeight = 16;
+    private _fontSize = 8;
     private _fontWeight: FontWeight = FontWeight.Normal;
-    private _fontFamily: string = "Arial";
+    private _fontFamily = "Arial";
     private _textalign: TextAlign = TextAlign.Left;
-    private _opacity: number = 1;
-    private _pointerEvents: boolean = true;
+    private _opacity = 1;
+    private _pointerEvents = true;
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -93,9 +93,9 @@ export class CssTextRenderer extends Component {
             this._css3DObject = new CSS3DObject(this._htmlDivElement);
             if (this._textWidth === 0) this._textWidth = this._htmlDivElement.offsetWidth;
             if (this._textHeight === 0) this._textHeight = this._htmlDivElement.offsetHeight;
-            this._htmlDivElement.style.width = `${this._textWidth}px`;
-            this._htmlDivElement.style.height = `${this._textHeight}px`;
-            this._htmlDivElement.style.fontSize = `${this._fontSize}px`;
+            this._htmlDivElement.style.width = this._textWidth + "px";
+            this._htmlDivElement.style.height = this._textHeight + "px";
+            this._htmlDivElement.style.fontSize = this._fontSize + "px";
             this._htmlDivElement.style.fontWeight = this._fontWeight;
             this._htmlDivElement.style.fontFamily = this._fontFamily;
             this._htmlDivElement.style.textAlign = this._textalign;
@@ -136,7 +136,7 @@ export class CssTextRenderer extends Component {
     public set textWidth(value: number) {
         this._textWidth = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.width = `${value}px`;
+            this._htmlDivElement.style.width = value + "px";
         }
         this.updateCenterOffset();
     }
@@ -148,7 +148,7 @@ export class CssTextRenderer extends Component {
     public set textHeight(value: number) {
         this._textHeight = value;
         if (this._css3DObject) {
-            this._css3DObject.element.style.height = `${value}px`;
+            this._css3DObject.element.style.height = value + "px";
         }
         this.updateCenterOffset();
     }
@@ -160,7 +160,7 @@ export class CssTextRenderer extends Component {
     public set fontSize(value: number) {
         this._fontSize = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.fontSize = `${value}px`;
+            this._htmlDivElement.style.fontSize = value + "px";
         }
     }
 

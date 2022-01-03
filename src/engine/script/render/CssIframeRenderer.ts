@@ -6,15 +6,15 @@ import { ZaxisInitializer } from "./ZaxisInitializer";
 export class CssIframeRenderer extends Component {
     protected readonly _disallowMultipleComponent: boolean = true;
     
-    private _width: number = 128;
-    private _height: number = 128;
-    private _viewScale: number = 1;
+    private _width = 128;
+    private _height = 128;
+    private _viewScale = 1;
     private _css3DObject: CSS3DObject|null = null;
     private _htmlIframeElement: HTMLIFrameElement|null = null;
     private readonly _iframeCenterOffset: Vector2 = new Vector2(0, 0);
-    private _iframeSource: string = "";
-    private _pointerEvents: boolean = true;
-    private _zindex: number = 0;
+    private _iframeSource = "";
+    private _pointerEvents = true;
+    private _zindex = 0;
 
     protected start(): void { 
         this.drawIframe();
@@ -45,7 +45,7 @@ export class CssIframeRenderer extends Component {
         const iframeWidth: number = this._width;
         const iframeHeight: number = this._height;
         this._htmlIframeElement = document.createElement("iframe") as HTMLIFrameElement;
-        this._htmlIframeElement.title = `${this.gameObject.name}_iframe`;
+        this._htmlIframeElement.title = this.gameObject.name + "_iframe";
         this._htmlIframeElement.width = (iframeWidth / this.viewScale).toString();
         this._htmlIframeElement.height = (iframeHeight / this.viewScale).toString();
         this._htmlIframeElement.src = this._iframeSource;
