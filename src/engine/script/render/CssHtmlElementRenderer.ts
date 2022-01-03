@@ -102,10 +102,13 @@ export class CssHtmlElementRenderer extends Component {
 
     private updateCenterOffset(): void {
         if (this._css3DObject) {
+            const lastDisplayState = this._css3DObject.element.style.display;
+            this._css3DObject.element.style.display = "";
             this._css3DObject.position.set(
                 this._htmlDivElement!.offsetWidth * this._centerOffset.x,
                 this._htmlDivElement!.offsetHeight * this._centerOffset.y, 0
             );
+            this._css3DObject.element.style.display = lastDisplayState;
         }
     }
     
