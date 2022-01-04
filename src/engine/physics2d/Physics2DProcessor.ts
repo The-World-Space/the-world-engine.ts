@@ -29,6 +29,21 @@ export class Physics2DProcessor {
 
     public update(deltaTime: number): void {
         this._world.Step(deltaTime, this._velocityIterations, this._positionIterations);
+        this._world.ClearForces();
+
+        let body = this._world.GetBodyList();
+
+        while (body) {
+            const entity = body.GetUserData();
+
+            if (entity) {
+                entity.transform.position.x = body.GetPosition().x;
+                entity.transform.position.y = body.GetPosition().y;
+                entity.transform.rotation = body.GetAngle();
+            }
+
+            body = body.GetNext();
+        }
     }
 
     public get gravity(): Vector2 {
