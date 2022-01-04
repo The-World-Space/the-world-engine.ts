@@ -14,7 +14,7 @@ export class GridCollider extends Component {
     private _collideInfoAddedToMap = false;
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
 
@@ -23,7 +23,7 @@ export class GridCollider extends Component {
         }
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._showCollideSpot && !this._collideSpotIsShowing) {
             this.addColliderImages();
             this._collideSpotIsShowing = true;
@@ -31,7 +31,7 @@ export class GridCollider extends Component {
         this.addAllCollideInfoToMap();
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._showCollideSpot) {
             this.removeColliderImages();
             this._collideSpotIsShowing = false;
@@ -41,7 +41,7 @@ export class GridCollider extends Component {
         }
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         this.removeColliderImages();
         this.removeAllCollideInfoFromMap();
     }

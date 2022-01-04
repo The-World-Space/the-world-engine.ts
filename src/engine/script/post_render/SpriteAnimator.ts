@@ -3,8 +3,8 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
 export class SpriteAnimator extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
     
     private _spriteRenderer: CssSpriteRenderer|null = null;
     private _animations: { [key: string]: string[] } = {};
@@ -15,7 +15,7 @@ export class SpriteAnimator extends Component {
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
     
-    protected awake(): void {
+    protected override awake(): void {
         this._spriteRenderer = this.gameObject.getComponent(CssSpriteRenderer);
     }
     

@@ -4,7 +4,7 @@ import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export class CssHtmlElementRenderer extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
@@ -19,14 +19,14 @@ export class CssHtmlElementRenderer extends Component {
 
     private static readonly _defaultElement: HTMLDivElement = document.createElement("div");
 
-    protected awake(): void {
+    protected override awake(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlDivElement) {
             this.setElement(CssHtmlElementRenderer._defaultElement);
         }
     }
 
-    protected start(): void {
+    protected override start(): void {
         if (this._css3DObject) {
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
@@ -34,16 +34,16 @@ export class CssHtmlElementRenderer extends Component {
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._css3DObject) this.gameObject.unsafeGetTransform().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 

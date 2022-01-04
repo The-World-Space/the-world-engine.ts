@@ -4,7 +4,7 @@ import { GridPointer } from "./GridPointer";
 import { PointerGridEvent } from "./PointerGridInputListener";
 
 export class TestTileBrush extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
     
     private _gridPointer: GridPointer|null = null;
     private _colideTilemapChunk: CssCollideTilemapChunkRenderer|null = null;
@@ -14,13 +14,13 @@ export class TestTileBrush extends Component {
     private readonly _onPointerUpBind = this.onPointerUp.bind(this);
     private readonly _onPointerMoveBind = this.onPointerMove.bind(this);
 
-    protected start(): void {
+    protected override start(): void {
         if (!this._colideTilemapChunk) {
             throw new Error("TestTileBrush: colideTilemapChunk is not set");
         }
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (!this._gridPointer) {
             throw new Error("TestTileBrush: gridPointer is not set");
         }
@@ -29,7 +29,7 @@ export class TestTileBrush extends Component {
         this._gridPointer.addOnPointerMoveEventListener(this._onPointerMoveBind);
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._gridPointer) {
             this._gridPointer.removeOnPointerDownEventListener(this._onPointerDownBind);
             this._gridPointer.removeOnPointerUpEventListener(this._onPointerUpBind);

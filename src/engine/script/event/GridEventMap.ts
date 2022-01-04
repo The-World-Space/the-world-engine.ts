@@ -14,7 +14,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }

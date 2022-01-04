@@ -4,7 +4,7 @@ import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export class CssIframeRenderer extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
     
     private _width = 128;
     private _height = 128;
@@ -16,21 +16,21 @@ export class CssIframeRenderer extends Component {
     private _pointerEvents = true;
     private _zindex = 0;
 
-    protected start(): void { 
+    protected override start(): void { 
         this.drawIframe();
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._css3DObject) this.gameObject.unsafeGetTransform().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 

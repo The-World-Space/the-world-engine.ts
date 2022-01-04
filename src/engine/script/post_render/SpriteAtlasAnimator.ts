@@ -3,8 +3,8 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 
 export class SpriteAtlasAnimator extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [CssSpriteAtlasRenderer];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [CssSpriteAtlasRenderer];
     
     private _spriteAtlasRenderer: CssSpriteAtlasRenderer|null = null;
     private _animations: { [key: string]: number[] } = {};
@@ -15,7 +15,7 @@ export class SpriteAtlasAnimator extends Component {
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
     
-    protected awake(): void {
+    protected override awake(): void {
         this._spriteAtlasRenderer = this.gameObject.getComponent(CssSpriteAtlasRenderer);
     }
     

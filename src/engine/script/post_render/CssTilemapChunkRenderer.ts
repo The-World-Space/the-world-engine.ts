@@ -14,7 +14,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }

@@ -10,8 +10,8 @@ import { Camera } from "../render/Camera";
  * it supports pixel perfect and lerp movement
  */
 export class TrackCameraController extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [Camera];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [Camera];
 
     private _trackTarget: GameObject|null = null;
     private readonly _targetOffset: Vector2 = new Vector2();
@@ -21,7 +21,7 @@ export class TrackCameraController extends Component {
     private _lerpTrack = false;
     private _lerpAlpha = 0.1;
 
-    protected start(): void {
+    protected override start(): void {
         if (this._trackTarget) {
             const targetPosition = this._trackTarget.transform.getWorldPosition(this._tempVector);
             targetPosition.z += this._cameraDistanceOffset;

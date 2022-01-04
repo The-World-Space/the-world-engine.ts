@@ -17,12 +17,12 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._showCollider && !this._colliderIsShowing) {
             this.addColliderImages();
             this._colliderIsShowing = true;
@@ -30,7 +30,7 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
         this._collideEnabled = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         this.removeColliderImages();
         this._colliderIsShowing = false;
         this._collideEnabled = false;

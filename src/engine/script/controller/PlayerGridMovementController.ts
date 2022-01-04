@@ -13,7 +13,7 @@ import { IGridPositionable } from "../helper/IGridPositionable";
  */
 export class PlayerGridMovementController extends Directionable
     implements IGridPositionable {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _speed = 80;
     private _gridCellHeight = 16;
@@ -38,7 +38,7 @@ export class PlayerGridMovementController extends Directionable
     private readonly _tempVector3: Vector3 = new Vector3();
     private readonly _tempVector2: Vector2 = new Vector2();
 
-    protected start(): void {
+    protected override start(): void {
         this._pathfinder = new Pathfinder(this._collideMaps);
 
         const transform = this.gameObject.transform;

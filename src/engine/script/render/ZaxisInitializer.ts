@@ -3,11 +3,11 @@ import { GameObject } from "../../hierarchy_object/GameObject";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class ZaxisInitializer extends ZaxisSortable {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _runOnce = true;
 
-    protected start(): void { 
+    protected override start(): void { 
         this.process();
         if (this.runOnce) this.enabled = false;
     }

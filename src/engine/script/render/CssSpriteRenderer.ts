@@ -5,7 +5,7 @@ import { ZaxisInitializer } from "./ZaxisInitializer";
 import { GlobalConfig } from "../../../GlobalConfig";
 
 export class CssSpriteRenderer extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _sprite: CSS3DObject|null = null;
     private _htmlImageElement: HTMLImageElement|null = null;
@@ -22,7 +22,7 @@ export class CssSpriteRenderer extends Component {
     
     private static readonly _defaultImagePath: string = GlobalConfig.defaultSpriteSrc;
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlImageElement) {
             this.asyncSetImagePath(CssSpriteRenderer._defaultImagePath);
@@ -31,16 +31,16 @@ export class CssSpriteRenderer extends Component {
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._sprite) this.gameObject.unsafeGetTransform().remove(this._sprite); //it's safe because _sprite is not GameObject and remove is from onDestroy
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._sprite) this._sprite.visible = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._sprite) this._sprite.visible = false;
     }
 

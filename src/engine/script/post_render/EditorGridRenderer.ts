@@ -7,8 +7,8 @@ import { Camera } from "../render/Camera";
 import { CssHtmlElementRenderer } from "../render/CssHtmlElementRenderer";
 
 export class EditorGridRenderer extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [Camera];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [Camera];
     
     private _cssHtmlRenderer: CssHtmlElementRenderer|null = null;
     private _cssHtmlRendererObject: GameObject|null = null;
@@ -18,7 +18,7 @@ export class EditorGridRenderer extends Component {
     private _renderHeight = 100;
     private _lineWidth = 0.2;
 
-    protected awake(): void {
+    protected override awake(): void {
         const cssHtmlRendererRef = new PrefabRef<CssHtmlElementRenderer>();
         const cssHemlRendererObjectRef = new PrefabRef<GameObject>();
 
@@ -43,11 +43,11 @@ export class EditorGridRenderer extends Component {
         this._cssHtmlRendererObject = cssHemlRendererObjectRef.ref;
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         this._cssHtmlRendererObject!.activeSelf = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         this._cssHtmlRendererObject!.activeSelf = false;
     }
 
@@ -70,7 +70,7 @@ export class EditorGridRenderer extends Component {
         }
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         this._cssHtmlRendererObject!.destroy();
     }
 

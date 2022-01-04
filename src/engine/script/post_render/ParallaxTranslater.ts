@@ -2,14 +2,14 @@ import { Vector2, Vector3 } from "three";
 import { Component } from "../../hierarchy_object/Component";
 
 export class ParallaxTranslater extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _offsetX = 1.5;
     private _offsetY = 1.5;
     private _initializeCenterFromPosition = true;
     private readonly _center: Vector2 = new Vector2();
 
-    protected start(): void {
+    protected override start(): void {
         if (this._initializeCenterFromPosition) {
             this._center.set(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
         }

@@ -15,7 +15,7 @@ export enum FontWeight {
 }
 
 export class CssTextRenderer extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
@@ -34,14 +34,14 @@ export class CssTextRenderer extends Component {
 
     private static readonly _defaultText: string = "Text";
 
-    protected awake(): void {
+    protected override awake(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlDivElement) {
             this.text = CssTextRenderer._defaultText;
         }
     }
 
-    protected start(): void {
+    protected override start(): void {
         if (this._css3DObject) {
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
@@ -49,15 +49,15 @@ export class CssTextRenderer extends Component {
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._css3DObject) this.gameObject.unsafeGetTransform().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }

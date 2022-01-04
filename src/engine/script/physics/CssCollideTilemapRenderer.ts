@@ -8,17 +8,17 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
     private readonly _collideMap: Map<`${number}_${number}`, boolean> = new Map();
     private _collideEnabled = false;
 
-    public onEnable(): void {
+    public override onEnable(): void {
         super.onEnable();
         this._collideEnabled = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         super.onDisable();
         this._collideEnabled = false;
     }
 
-    public drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
+    public override drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
         super.drawTile(column, row, imageIndex, atlasIndex);
         const colideX = Math.ceil(column - this.columnCount / 2);
         const colideY = Math.ceil((this.rowCount - row) - this.rowCount / 2) - 1;
@@ -26,7 +26,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
         this._collideMap.set(`${colideX}_${colideY}`, true);
     }
 
-    public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
+    public override drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
         super.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset);
         for (let row = 0; row < array.length; row++) {
             for (let column = 0; column < array[row].length; column++) {
@@ -45,7 +45,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
         }
     }
 
-    public clearTile(column: number, row: number): void {
+    public override clearTile(column: number, row: number): void {
         super.clearTile(column, row);
         const colideX = Math.ceil(column - this.columnCount / 2);
         const colideY = Math.ceil((this.rowCount - row) - this.rowCount / 2) - 1;

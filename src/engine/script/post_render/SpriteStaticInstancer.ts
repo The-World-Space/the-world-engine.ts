@@ -62,7 +62,7 @@ export class SpriteStaticInstancer extends Component {
 
     private _initializeFunction: (() => void)|null = null;
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunction?.call(this);
     }
 

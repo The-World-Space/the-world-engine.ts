@@ -19,7 +19,7 @@ export class Camera extends Component {
     private _backgroudColor: Color = new Color(1, 1, 1, 0);
     private readonly _onScreenResizeBind = this.onScreenResize.bind(this);
 
-    public onEnable(): void {
+    public override onEnable(): void {
         this.engine.screen.addOnResizeEventListener(this._onScreenResizeBind);
         this.createOrUpdateCamera();
     }
@@ -95,12 +95,12 @@ export class Camera extends Component {
         return camera;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         this.engine.screen.removeOnResizeEventListener(this._onScreenResizeBind);
         if (this._camera) this.engine.cameraContainer.removeCamera(this._camera);
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         this._camera?.removeFromParent();
     }
 

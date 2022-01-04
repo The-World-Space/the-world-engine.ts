@@ -28,7 +28,7 @@ export class PointerGridEvent {
 }
 
 export class PointerGridInputListener extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
@@ -56,7 +56,7 @@ export class PointerGridInputListener extends Component {
     private readonly _onTouchMoveBind = this.onTouchMove.bind(this);
     private readonly _onTouchCancelBind = this.onTouchCancel.bind(this);
 
-    protected start(): void {
+    protected override start(): void {
         this._htmlDivElement = document.createElement("div");
         this._css3DObject = new CSS3DObject(this._htmlDivElement);
         this._htmlDivElement.style.width = this._inputWidth + "px";
@@ -90,7 +90,7 @@ export class PointerGridInputListener extends Component {
         this._css3DObject!.position.y = cameraLocalPosition.y;
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._htmlDivElement) { //it's the intended useless branch
             this._htmlDivElement.removeEventListener("mousedown", this._onMouseDownBind);

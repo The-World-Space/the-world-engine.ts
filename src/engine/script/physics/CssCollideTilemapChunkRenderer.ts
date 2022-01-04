@@ -16,16 +16,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     
     private _initializeFunctions: (() => void)[] = [];
 
-    protected start(): void {
+    protected override start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         this._collideEnabled = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         this._collideEnabled = false;
     }
 

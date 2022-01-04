@@ -24,7 +24,7 @@ export class CSS3DObject extends THREE.Object3D {
         });
     }
 
-    public copy(source: this, recursive: boolean): this {
+    public override copy(source: this, recursive: boolean): this {
         super.copy(source, recursive);
         this.element = source.element.cloneNode(true) as HTMLElement;
         return this;
@@ -40,7 +40,7 @@ export class CSS3DSprite extends CSS3DObject {
         this.rotation2D = 0;
     }
 
-    public copy(source: this, recursive: boolean): this {
+    public override copy(source: this, recursive: boolean): this {
         super.copy( source, recursive );
         this.rotation2D = source.rotation2D;
         return this;

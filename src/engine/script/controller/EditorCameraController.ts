@@ -9,8 +9,8 @@ import { Camera } from "../render/Camera";
  * camera type is must be set to CameraType.Orthographic
  */
 export class EditorCameraController extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [Camera];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [Camera];
 
     private _camera: Camera|null = null;
     private _mouseMiddleDown = false;
@@ -28,7 +28,7 @@ export class EditorCameraController extends Component {
     private _onPointerLeaveBind = this.onPointerLeave.bind(this);
     private _onResizeBind = this.onResize.bind(this);
 
-    protected awake(): void {
+    protected override awake(): void {
         this._camera = this.gameObject.getComponent(Camera);
         const aspect = this.engine.screen.width / this.engine.screen.height;
         this._defaultViewSize = this._camera!.viewSize;
@@ -37,7 +37,7 @@ export class EditorCameraController extends Component {
         this._camera!.viewSize = this._currentViewSize / aspect;
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         const input = this.engine.input;
         input.addOnKeyDownEventListener(this._onKeyDownBind);
         input.addOnWheelEventListener(this._onWheelBind);
@@ -48,7 +48,7 @@ export class EditorCameraController extends Component {
         this.engine.screen.addOnResizeEventListener(this._onResizeBind);
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         const input = this.engine.input;
         input.removeOnKeyDownEventListener(this._onKeyDownBind);
         input.removeOnWheelEventListener(this._onWheelBind);

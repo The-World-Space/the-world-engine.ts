@@ -32,7 +32,7 @@ export class TileAtlasItem {
 }
 
 export class CssTilemapRenderer extends Component{
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _columnCount = 10;
     private _rowCount = 10;
@@ -46,7 +46,7 @@ export class CssTilemapRenderer extends Component{
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected start(): void { 
+    protected override start(): void { 
         this.drawTileMap();
 
         this._initializeFunctions.forEach(func => func());
@@ -54,16 +54,16 @@ export class CssTilemapRenderer extends Component{
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._css3DObject) this.gameObject.unsafeGetTransform().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public onEnable(): void {
+    public override onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public onDisable(): void {
+    public override onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 

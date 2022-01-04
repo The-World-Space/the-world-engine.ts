@@ -2,7 +2,7 @@ import { Vector3 } from "three";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class CameraRelativeZaxisSorter extends ZaxisSortable {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _offset = -1000;
     private readonly _tempVector3: Vector3 = new Vector3();

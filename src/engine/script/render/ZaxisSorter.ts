@@ -2,12 +2,12 @@ import { Vector3 } from "three";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class ZaxisSorter extends ZaxisSortable {
-    protected readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _disallowMultipleComponent: boolean = true;
 
     private _offset = 0;
     private _runOnce = true;
 
-    protected start(): void { 
+    protected override start(): void { 
         this.update();
         if (!this._runOnce) return;
         this.gameObject.removeComponent(this);

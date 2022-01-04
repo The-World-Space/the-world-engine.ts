@@ -7,8 +7,8 @@ import { PointerGridEvent, PointerGridInputListener } from "./PointerGridInputLi
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 
 export class GridPointer extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
 
     private _pointerGridInputListener: PointerGridInputListener|null = null;
     private _pointerZoffset = 0;
@@ -25,7 +25,7 @@ export class GridPointer extends Component {
     private readonly _onPointerUpBind = this.onPointerUp.bind(this);
     private readonly _onPointerMoveBind = this.onPointerMove.bind(this);
 
-    protected start(): void {
+    protected override start(): void {
         this._pointerGridInputListener = this.gameObject.getComponent(PointerGridInputListener);
         this._pointerGridInputListener!.addOnPointerEnterEventListener(this._onPointerEnterBind);
         this._pointerGridInputListener!.addOnPointerLeaveEventListener(this._onPointerLeaveBind);
@@ -51,7 +51,7 @@ export class GridPointer extends Component {
         this._pointerRenderer = pointerRenderer.ref;
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         if (!this.started) return;
         if (this._pointerGridInputListener) {
             this._pointerGridInputListener.removeOnPointerEnterEventListener(this._onPointerEnterBind);

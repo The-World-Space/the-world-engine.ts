@@ -4,20 +4,20 @@ import { GridEventMap } from "./GridEventMap";
 import { PlayerGridMovementController } from "../controller/PlayerGridMovementController";
 
 export class PlayerGridEventInvoker extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
+    protected override readonly _disallowMultipleComponent: boolean = true;
+    protected override readonly _requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
 
     private readonly _collideSize: number = 8;
     private _playerGridMovementController: PlayerGridMovementController|null = null;
     private _gridEventMaps: GridEventMap[] = [];
     private _onMoveToTargetBind: (x: number, y: number) => void = this.onMoveToTarget.bind(this);
 
-    protected awake(): void {
+    protected override awake(): void {
         this._playerGridMovementController = this.gameObject.getComponent(PlayerGridMovementController);
         this._playerGridMovementController!.addOnMoveToTargetEventListener(this._onMoveToTargetBind);
     }
 
-    public onDestroy(): void {
+    public override onDestroy(): void {
         this._playerGridMovementController!.removeOnMoveToTargetEventListener(this._onMoveToTargetBind);
     }
 
