@@ -87,7 +87,17 @@ export interface ITransform {
 	 */
 	matrixWorldNeedsUpdate: boolean;
 
+	/**
+     * foreach children transform
+     * @param callback 
+     */
 	foreachChild(callback: (transform: ITransform) => void): void;
+
+	/**
+     * iterate children transfrom
+     * @param callback if return false, stop iteration
+     */
+	iterateChild(callback: (transform: ITransform) => boolean): void;
 
 	/**
 	 * This updates the position, rotation and scale with the matrix.

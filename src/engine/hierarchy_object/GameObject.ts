@@ -168,13 +168,16 @@ export class GameObject {
     public getComponentInChildren<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
         const components = this.getComponent(componentCtor);
         if (components) return components;
-        this._transform.foreachChild(child => {
-            if (child instanceof Transform) {
-                const component = child.gameObject.getComponentInChildren(componentCtor);
-                if (component) return component;
+        let findComponent: T | null = null;
+        this._transform.iterateChild(child => {
+            const component = child.gameObject.getComponentInChildren(componentCtor);
+            if (component) {
+                findComponent = component;
+                return false;
             }
+            return true;
         });
-        return null;
+        return findComponent;
     }
 
     /**
@@ -350,13 +353,11 @@ export class GameObject {
         }
 
         this._transform.foreachChild(child => {
-            if (child instanceof Transform) {
-                const gameObject = child.gameObject;
-                if (this._activeInHierarchy) {
-                    gameObject.activeInHierarchy = gameObject._activeSelf;
-                } else {
-                    gameObject.activeInHierarchy = false;
-                }
+            const gameObject = child.gameObject;
+            if (this._activeInHierarchy) {
+                gameObject.activeInHierarchy = gameObject._activeSelf;
+            } else {
+                gameObject.activeInHierarchy = false;
             }
         });
     }

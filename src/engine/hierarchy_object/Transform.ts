@@ -27,6 +27,20 @@ export class Transform extends Object3D implements ITransform {
     }
 
     /**
+     * iterate children transfrom
+     * @param callback if return false, stop iteration
+     */
+    public iterateChild(callback: (transform: ITransform) => boolean): void {
+        for (const child of this.children) {
+            if (child instanceof Transform) {
+                if (!callback(child)) {
+                    break;
+                }
+            }
+        }
+    }
+
+    /**
      * get parent. if parent is scene, returns null
      */
     public get parentTransform(): ITransform | null {
