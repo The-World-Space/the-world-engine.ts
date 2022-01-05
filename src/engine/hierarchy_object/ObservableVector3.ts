@@ -2,24 +2,33 @@ import { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute
 
 //duck typed class of THREE.Vector3
 export class ObservableVector3 {
+    public readonly isVector3 = true;
     private _x: number;
     private _y: number;
     private _z: number;
     private _onChangeCallback: () => void;
+    private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0) {
         this._x = x;
         this._y = y;
         this._z = z;
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onChangeCallback = () => {};
+        this._onChangeCallback = () => { };
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this._onBeforeGetComponentCallback = () => { };
     }
 
     public onChange(callback: () => void) {
         this._onChangeCallback = callback;
     }
 
+    public onBeforeGetComponent(callback: () => void) {
+        this._onBeforeGetComponentCallback = callback;
+    }
+
     public get x(): number {
+        this._onBeforeGetComponentCallback();
         return this._x;
     }
 
@@ -29,6 +38,7 @@ export class ObservableVector3 {
     }
     
     public get y(): number {
+        this._onBeforeGetComponentCallback();
         return this._y;
     }
 
@@ -38,12 +48,20 @@ export class ObservableVector3 {
     }
 
     public get z(): number {
+        this._onBeforeGetComponentCallback();
         return this._z;
     }
 
     public set z(value: number) {
         this._z = value;
         this._onChangeCallback();
+    }
+
+    public setWithoutChangeCallback(x: number, y: number, z: number): ObservableVector3 {
+        this._x = x;
+        this._y = y;
+        this._z = z;
+        return this;
     }
 
     public set(x: number, y: number, z: number): ObservableVector3 {
@@ -560,9 +578,20 @@ export class ObservableVector3 {
         yield this.y;
         yield this.z;
     }
-}
 
-(ObservableVector3.prototype as any).isVector3 = true;
+    /**
+     * Computes Manhattan length of this vector.
+     * http://en.wikipedia.org/wiki/Taxicab_geometry
+     *
+     * @deprecated Use {@link Vector3#manhattanLength .manhattanLength()} instead.
+     */
+    public lengthManhattan(): number { throw new Error('deprecated'); }
+
+    /**
+     * @deprecated Use {@link Vector3#manhattanDistanceTo .manhattanDistanceTo()} instead.
+     */
+    public distanceToManhattan(_v: ObservableVector3): number { throw new Error('deprecated'); }
+}
 
 const _vector = /*@__PURE__*/ new ObservableVector3();
 const _quaternion = /*@__PURE__*/ new Quaternion();
