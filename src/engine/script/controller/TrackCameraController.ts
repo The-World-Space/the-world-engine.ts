@@ -25,8 +25,8 @@ export class TrackCameraController extends Component {
         if (this._trackTarget) {
             const targetPosition = this._trackTarget.transform.getWorldPosition(this._tempVector);
             targetPosition.z += this._cameraDistanceOffset;
-            if (this.gameObject.transform.parentTransform) {
-                this.gameObject.transform.parentTransform.worldToLocal(targetPosition);
+            if (this.gameObject.transform.parent) {
+                this.gameObject.transform.parent.worldToLocal(targetPosition);
             }
             this.gameObject.transform.position.copy(targetPosition);
         }
@@ -40,8 +40,8 @@ export class TrackCameraController extends Component {
         targetPosition.x += this._targetOffset.x;
         targetPosition.y += this._targetOffset.y;
         const transform = this.gameObject.transform;
-        if (transform.parentTransform) {
-            transform.parentTransform.worldToLocal(targetPosition);
+        if (transform.parent) {
+            transform.parent.worldToLocal(targetPosition);
         }
         if (this._lerpTrack) {
             transform.position.lerp(targetPosition, 0.1);

@@ -4,7 +4,6 @@ import { ComponentConstructor } from "./ComponentConstructor";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { PrefabRef } from "./PrefabRef";
 import { Transform } from "./Transform";
-import { ITransform } from "./ITransform";
 import { IEngine } from "../IEngine";
 
 /**
@@ -20,15 +19,15 @@ export class GameObject {
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
         this._activeInHierarchy = true;
         this._transform = new Transform(this);
-        this._transform.visible = true;
-        this._transform.name = name;
+        this._transform.unsafeGetObject3D().visible = true;
+        this._transform.unsafeGetObject3D().name = name;
         this._activeSelf = true;
         this._components = [];
         this._engineGlobalObject = engineGlobalObject;
     }
 
     private registerTransform(transform: Transform): void {
-        this._transform.add(transform);
+        this._transform.unsafeGetObject3D().add(transform.unsafeGetObject3D());
         const gameObject = transform.gameObject;
 
         if (gameObject._activeSelf) {
@@ -67,7 +66,7 @@ export class GameObject {
             throw new Error("can't change parent to another engine instance");
         }
         const prevActiveInHierarchy = this._activeInHierarchy;
-        this._transform.removeFromParent();
+        this._transform.unsafeGetObject3D().removeFromParent();
         this.registerTransform(newParent._transform);
         if (!prevActiveInHierarchy) {
             if (this.activeInHierarchy) {
@@ -303,11 +302,11 @@ export class GameObject {
             component.stopAllCoroutines();
             component.onDestroy();
         }
-        this._transform.childrenTransform.forEach(child => { // modified values in foreach but array is not modified
+        this._transform.children.forEach(child => { // modified values in foreach but array is not modified
             if (child instanceof Transform) child.gameObject.destroy();
         });
-        this._transform.removeFromParent();
-        this._transform.parent = null;
+        this._transform.unsafeGetObject3D().removeFromParent();
+        this._transform.unsafeGetObject3D().parent = null;
     }
 
     /**
@@ -328,7 +327,7 @@ export class GameObject {
         if (this._activeInHierarchy === value) return;
 
         this._activeInHierarchy = value;
-        this._transform.visible = this._activeInHierarchy;
+        this._transform.unsafeGetObject3D().visible = this._activeInHierarchy;
 
         if (this._activeInHierarchy) {
             //enable components
@@ -391,7 +390,7 @@ export class GameObject {
      * get transform of the GameObject
      * DO NOT cast this to Transform, instead use unsafeGetTransform
      */
-    public get transform(): ITransform {
+    public get transform(): Transform {
         return this._transform;
     }
 
@@ -399,41 +398,28 @@ export class GameObject {
      * get name of the GameObject
      */
     public get name(): string {
-        return this._transform.name;
+        return this._transform.unsafeGetObject3D().name;
     }
 
     /**
      * set name of the GameObject
      */
     public set name(value: string) {
-        this._transform.name = value;
+        this._transform.unsafeGetObject3D().name = value;
     }
 
     /**
      * get uuid of the GameObject
      */
     public get uuid(): string {
-        return this._transform.uuid;
+        return this._transform.unsafeGetObject3D().uuid;
     }
 
     /**
      * get id of the GameObject
      */
     public get id(): number {
-        return this._transform.id;
-    }
-
-    /**
-     * get Transform of the GameObject that drives the three.js Object3D. you can use this to add three.js Object3D to the scene
-     * if you want to add a custom Object3D to the scene, you must manage the lifecycle of the Object3D yourself
-     * 
-     * see also:
-     * "Object3D.visible" property has same value as "GameObject.activeInHierarchy"
-     * you must not change "Object3D.visible" directly, use "GameObject.activeInHierarchy" instead
-     * "Object3D.add" method is not available for GameObject Transform it for other Object3D classes
-     */
-    public unsafeGetTransform(): Transform {
-        return this._transform;
+        return this._transform.unsafeGetObject3D().id;
     }
 }
 

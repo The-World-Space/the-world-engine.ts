@@ -34,7 +34,7 @@ export class SceneBuilder {
      */
     public build(): { awakeComponents: Component[], enableComponents: Component[] } {
         for (const child of this._children) {
-            this._scene.add(child.build().unsafeGetTransform()); //it's safe because component initialize will be called by SceneProsessor
+            this._scene.add(child.build().transform.unsafeGetObject3D()); //it's safe because component initialize will be called by SceneProsessor
         }
 
         for (const child of this._children) child.initialize();
@@ -58,15 +58,17 @@ export class SceneBuilder {
 
     private getAllComponentsInScene(): Component[] {
         const components: Component[] = [];
-        for (const child of this._scene.children as Transform[]) {
-            this.getAllComponentsInGameObject(child.gameObject, components);
+        for (const child of this._scene.children) {
+            if (child.userData instanceof Transform) {
+                this.getAllComponentsInGameObject(child.userData.gameObject, components);
+            }
         }
         return components;
     }
 
     private getAllComponentsInGameObject(gameObject: GameObject, outArray: Component[]) {
         outArray.push(...gameObject.getComponents());
-        for (const child of gameObject.transform.childrenTransform) {
+        for (const child of gameObject.transform.children) {
             this.getAllComponentsInGameObject(child.gameObject, outArray);
         }
     }

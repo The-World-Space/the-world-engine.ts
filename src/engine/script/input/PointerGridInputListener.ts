@@ -72,7 +72,7 @@ export class PointerGridInputListener extends Component {
         this._htmlDivElement.addEventListener("touchmove", this._onTouchMoveBind);
         this._htmlDivElement.addEventListener("touchcancel", this._onTouchCancelBind);
 
-        this.gameObject.unsafeGetTransform().add(this._css3DObject);
+        this.gameObject.transform.unsafeGetObject3D().add(this._css3DObject);
         //it's safe because _css3DObject is not a GameObject and i"m removing it from the scene in onDestroy
     }
 
@@ -81,8 +81,8 @@ export class PointerGridInputListener extends Component {
     public update(): void {
         let cameraLocalPosition: Vector3;
         this.engine.cameraContainer.camera!.getWorldPosition(this._tempVector3);
-        if (this.gameObject.transform.parentTransform) {
-            cameraLocalPosition = this.gameObject.transform.parentTransform!.worldToLocal(this._tempVector3);
+        if (this.gameObject.transform.parent) {
+            cameraLocalPosition = this.gameObject.transform.parent!.worldToLocal(this._tempVector3);
         } else { // if no parent transform, world position is same as local position
             cameraLocalPosition = this._tempVector3;
         }
@@ -104,7 +104,7 @@ export class PointerGridInputListener extends Component {
             this._htmlDivElement.removeEventListener("touchcancel", this._onTouchCancelBind);
         }
         if (this._css3DObject) {
-            this.gameObject.unsafeGetTransform().remove(this._css3DObject);
+            this.gameObject.transform.unsafeGetObject3D().remove(this._css3DObject);
             //it's safe because _css3DObject is not a GameObject and i"m removing it from the scene in onDestroy
         }
     }

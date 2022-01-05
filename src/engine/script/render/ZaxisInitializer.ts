@@ -31,8 +31,8 @@ export class ZaxisInitializer extends ZaxisSortable {
     }
 
     public static checkAncestorZaxisInitializer(gameObject: GameObject, onSortByZaxis: (z: number) => void): void {
-        if (!gameObject.transform.parentTransform) return;
-        let currentAncestor = gameObject.transform.parentTransform;
+        if (!gameObject.transform.parent) return;
+        let currentAncestor = gameObject.transform.parent;
         while (currentAncestor) {
             const zaxisInitializer = currentAncestor.gameObject.getComponent(ZaxisInitializer);
             if (zaxisInitializer) {
@@ -40,8 +40,8 @@ export class ZaxisInitializer extends ZaxisSortable {
                 onSortByZaxis(worldPosition.z);
                 return;
             }
-            if (currentAncestor.parentTransform === null) break;
-            currentAncestor = currentAncestor.parentTransform;
+            if (currentAncestor.parent === null) break;
+            currentAncestor = currentAncestor.parent;
         }
     }   
 

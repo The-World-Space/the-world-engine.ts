@@ -23,7 +23,7 @@ export class CssIframeRenderer extends Component {
 
     public override onDestroy(): void {
         if (!this.started) return;
-        if (this._css3DObject) this.gameObject.unsafeGetTransform().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        if (this._css3DObject) this.gameObject.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
     public override onEnable(): void {
@@ -52,7 +52,7 @@ export class CssIframeRenderer extends Component {
         this._css3DObject = new CSS3DObject(this._htmlIframeElement);
         this.updateCenterOffset();
         this._css3DObject.scale.set(this.viewScale, this.viewScale, this.viewScale);
-        this.gameObject.unsafeGetTransform().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        this.gameObject.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
         this._htmlIframeElement.style.border = "none";
         this._htmlIframeElement.style.zIndex = Math.floor(this._zindex).toString();
         this._htmlIframeElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";

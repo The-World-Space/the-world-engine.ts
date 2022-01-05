@@ -56,7 +56,7 @@ export class CssTilemapRenderer extends Component{
 
     public override onDestroy(): void {
         if (!this.started) return;
-        if (this._css3DObject) this.gameObject.unsafeGetTransform().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        if (this._css3DObject) this.gameObject.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
     public override onEnable(): void {
@@ -79,7 +79,7 @@ export class CssTilemapRenderer extends Component{
         const tileMapHeight: number = this._rowCount * this._tileHeight;
         this._htmlCanvasElement = document.createElement("canvas") as HTMLCanvasElement;
         this._css3DObject = new CSS3DObject(this._htmlCanvasElement);
-        this.gameObject.unsafeGetTransform().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        this.gameObject.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
         this._htmlCanvasElement.style.imageRendering = "pixelated";
         this._htmlCanvasElement.style.zIndex = Math.floor(this._zindex).toString();
         this._htmlCanvasElement.width = tileMapWidth;
