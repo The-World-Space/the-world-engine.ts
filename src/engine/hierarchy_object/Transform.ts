@@ -120,10 +120,26 @@ export class Transform {
     }
 
     /**
+	 * Up direction.
+	 * @default THREE.Object3D.DefaultUp.clone()
+	 */
+    public get up(): Vector3 {
+        return this._object3D.up;
+    }
+
+    /**
+	 * Up direction.
+	 * @default THREE.Object3D.DefaultUp.clone()
+	 */
+    public set up(value: Vector3) {
+        this._object3D.up = value;
+    }
+
+    /**
      * Object"s local position.
      * @default new THREE.Vector3()
      */
-    public get position(): Vector3 {
+    public get localPosition(): Vector3 {
         return this._object3D.position;
     }
 
@@ -131,7 +147,7 @@ export class Transform {
      * Object"s local rotation (Euler angles), in radians.
      * @default new THREE.Euler()
      */
-    public get rotation(): Euler {
+    public get localEulerAngles(): Euler {
         return this._object3D.rotation;
     }
 
@@ -139,7 +155,7 @@ export class Transform {
      * Object"s local rotation as a Quaternion.
      * @default new THREE.Quaternion()
      */
-    public get quaternion(): Quaternion {
+    public get localRotation(): Quaternion {
         return this._object3D.quaternion;
     }
 
@@ -147,7 +163,7 @@ export class Transform {
      * Object"s local scale.
      * @default new THREE.Vector3()
      */
-    public get scale(): Vector3 {
+    public get localScale(): Vector3 {
         return this._object3D.scale;
     }
 
@@ -346,24 +362,6 @@ export class Transform {
 
     public getWorldDirection(target: Vector3): Vector3 {
         return this._object3D.getWorldDirection(target);
-    }
-
-    /**
-     * Updates local transform.
-     */
-    public updateMatrix(): void {
-        this._object3D.updateMatrix();
-    }
-
-    /**
-     * Updates global transform of the object and its children.
-     */
-    public updateMatrixWorld(force?: boolean): void {
-        this._object3D.updateMatrixWorld(force);
-    }
-
-    public updateWorldMatrix(updateParents: boolean, updateChildren: boolean): void {
-        this._object3D.updateWorldMatrix(updateParents, updateChildren);
     }
 
     /**

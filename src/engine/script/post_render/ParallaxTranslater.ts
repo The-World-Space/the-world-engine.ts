@@ -11,7 +11,7 @@ export class ParallaxTranslater extends Component {
 
     protected override start(): void {
         if (this._initializeCenterFromPosition) {
-            this._center.set(this.gameObject.transform.position.x, this.gameObject.transform.position.y);
+            this._center.set(this.gameObject.transform.localPosition.x, this.gameObject.transform.localPosition.y);
         }
     }
 
@@ -29,8 +29,8 @@ export class ParallaxTranslater extends Component {
         const offsetX = this._offsetX * cameraDistanceX;
         const offsetY = this._offsetY * cameraDistanceY;
 
-        this.gameObject.transform.position.x = this._center.x + offsetX;
-        this.gameObject.transform.position.y = this._center.y + offsetY;
+        this.gameObject.transform.localPosition.x = this._center.x + offsetX;
+        this.gameObject.transform.localPosition.y = this._center.y + offsetY;
     }
 
     public get offsetX(): number {

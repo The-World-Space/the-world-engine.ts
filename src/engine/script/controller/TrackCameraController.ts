@@ -28,7 +28,7 @@ export class TrackCameraController extends Component {
             if (this.gameObject.transform.parent) {
                 this.gameObject.transform.parent.worldToLocal(targetPosition);
             }
-            this.gameObject.transform.position.copy(targetPosition);
+            this.gameObject.transform.localPosition.copy(targetPosition);
         }
     }
 
@@ -44,14 +44,14 @@ export class TrackCameraController extends Component {
             transform.parent.worldToLocal(targetPosition);
         }
         if (this._lerpTrack) {
-            transform.position.lerp(targetPosition, 0.1);
+            transform.localPosition.lerp(targetPosition, 0.1);
         } else {
-            transform.position.copy(targetPosition);
+            transform.localPosition.copy(targetPosition);
         }
 
         if (this._pixelPerfect) {
-            transform.position.x = Math.round(transform.position.x / this._pixelPerfectUnit) * this._pixelPerfectUnit;
-            transform.position.y = Math.round(transform.position.y / this._pixelPerfectUnit) * this._pixelPerfectUnit;
+            transform.localPosition.x = Math.round(transform.localPosition.x / this._pixelPerfectUnit) * this._pixelPerfectUnit;
+            transform.localPosition.y = Math.round(transform.localPosition.y / this._pixelPerfectUnit) * this._pixelPerfectUnit;
         }
     }
 

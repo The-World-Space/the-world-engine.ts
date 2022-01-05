@@ -32,8 +32,8 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
             for (let column = 0; column < array[row].length; column++) {
                 if (array[row][column] !== null) {
                     //console.log(`${(column + columnOffset) - this.columnCount / 2}_${(this.rowCount - (row + rowOffset)) - this.rowCount / 2}`);
-                    const colideX = Math.ceil(this.gameObject.transform.position.x / this.gridCellWidth + (column + columnOffset) - this.columnCount / 2);
-                    const colideY = Math.ceil(this.gameObject.transform.position.y / this.gridCellHeight + (this.rowCount - (row + rowOffset)) - this.rowCount / 2) - 1;
+                    const colideX = Math.ceil(this.gameObject.transform.localPosition.x / this.gridCellWidth + (column + columnOffset) - this.columnCount / 2);
+                    const colideY = Math.ceil(this.gameObject.transform.localPosition.y / this.gridCellHeight + (this.rowCount - (row + rowOffset)) - this.rowCount / 2) - 1;
                     this._collideMap.set(
                         `${colideX}_${colideY}`, true);
                     // this.addDebugImage(

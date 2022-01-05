@@ -434,9 +434,9 @@ export class GameObjectBuilder {
     public constructor(engineGlobalObject: EngineGlobalObject, name: string, localPosition?: Vector3, localRotation?: Quaternion, localScale?: Vector3) {
         this._gameObject = new GameObject(engineGlobalObject, name);
         const transform = this._gameObject.transform;
-        if (localPosition) transform.position.copy(localPosition);
-        if (localRotation) transform.quaternion.copy(localRotation);
-        if (localScale) transform.scale.copy(localScale);
+        if (localPosition) transform.localPosition.copy(localPosition);
+        if (localRotation) transform.localRotation.copy(localRotation);
+        if (localScale) transform.localScale.copy(localScale);
         this._children = [];
         this._componentInitializeFuncList = [];
     }

@@ -19,9 +19,9 @@ export class ZaxisSorter extends ZaxisSortable {
         const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector);
         worldPosition.z = -worldPosition.y + this._offset;
         if (this.gameObject.transform.parent) {
-            this.gameObject.transform.position.copy(this.gameObject.transform.parent!.worldToLocal(worldPosition));
+            this.gameObject.transform.localPosition.copy(this.gameObject.transform.parent!.worldToLocal(worldPosition));
         } else { // if no parent transform, world position is same as local position
-            this.gameObject.transform.position.copy(worldPosition);
+            this.gameObject.transform.localPosition.copy(worldPosition);
         }
 
         this.gameObject.getComponentsInChildren().forEach(component => {

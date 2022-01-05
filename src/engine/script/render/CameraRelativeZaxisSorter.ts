@@ -8,12 +8,12 @@ export class CameraRelativeZaxisSorter extends ZaxisSortable {
     private readonly _tempVector3: Vector3 = new Vector3();
 
     public update(): void { 
-        this.gameObject.transform.position.z = this.engine.cameraContainer.camera!.getWorldPosition(this._tempVector3).z + this._offset;
+        this.gameObject.transform.localPosition.z = this.engine.cameraContainer.camera!.getWorldPosition(this._tempVector3).z + this._offset;
         this.gameObject.getComponentsInChildren().forEach(component => {
             const cAny = component as any;
             if (cAny.onSortByZaxis) {
                 if (typeof cAny.onSortByZaxis === "function") {
-                    cAny.onSortByZaxis(this.gameObject.transform.position.z);
+                    cAny.onSortByZaxis(this.gameObject.transform.localPosition.z);
                 }
             }
         });

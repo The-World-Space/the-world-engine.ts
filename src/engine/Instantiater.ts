@@ -30,9 +30,9 @@ export class Instantiater {
     ): GameObject {
         const gameObject = new GameObject(this._engineGlobalObject, name);
         const transform = gameObject.transform;
-        if (localPosition) transform.position.copy(localPosition);
-        if (localRotation) transform.quaternion.copy(localRotation);
-        if (localScale) transform.scale.copy(localScale);
+        if (localPosition) transform.localPosition.copy(localPosition);
+        if (localRotation) transform.localRotation.copy(localRotation);
+        if (localScale) transform.localScale.copy(localScale);
         return gameObject;
     }
 

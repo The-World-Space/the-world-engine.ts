@@ -99,7 +99,7 @@ export class GridPointer extends Component {
         const gridCenter = this._pointerGridInputListener!.gridCenter;
         const positionX = event.gridPosition.x * gridCellWidth + gridCenter.x;
         const positionY = event.gridPosition.y * gridCellHeight + gridCenter.y;
-        this._pointerObject!.transform.position.set(positionX, positionY, this._pointerZoffset);
+        this._pointerObject!.transform.localPosition.set(positionX, positionY, this._pointerZoffset);
     }
 
     public addOnPointerDownEventListener(delegate: (event: PointerGridEvent) => void): void {

@@ -23,7 +23,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         this._cssTilemapRendererMap.forEach((renderer, key) => {
             const chunkIndexX = this.getIndexXFromKey(key) * this._chunkSize * this._tileWidth;
             const chunkIndexY = this.getIndexYFromKey(key) * this._chunkSize * this._tileHeight;
-            renderer.gameObject.transform.position.set(chunkIndexX, chunkIndexY, 0);
+            renderer.gameObject.transform.localPosition.set(chunkIndexX, chunkIndexY, 0);
         });
     }
 
@@ -198,16 +198,16 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     public get gridCenter(): Vector2 {
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
-        return new Vector2(this.gameObject.transform.position.x + offsetX, this.gameObject.transform.position.y + offsetY);
+        return new Vector2(this.gameObject.transform.localPosition.x + offsetX, this.gameObject.transform.localPosition.y + offsetY);
     }
     
     public get gridCenterX(): number {
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
-        return this.gameObject.transform.position.x + offsetX;
+        return this.gameObject.transform.localPosition.x + offsetX;
     }
 
     public get gridCenterY(): number {
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
-        return this.gameObject.transform.position.y + offsetY;
+        return this.gameObject.transform.localPosition.y + offsetY;
     }
 }
