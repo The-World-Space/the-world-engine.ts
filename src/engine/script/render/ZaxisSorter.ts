@@ -34,19 +34,19 @@ export class ZaxisSorter extends ZaxisSortable {
         });
     }
 
-    get offset(): number {
+    public get offset(): number {
         return this._offset;
     }
 
-    set offset(value: number) {
+    public set offset(value: number) {
         this._offset = value;
     }
 
-    get runOnce(): boolean {
+    public get runOnce(): boolean {
         return this._runOnce;
     }
 
-    set runOnce(value: boolean) {
+    public set runOnce(value: boolean) {
         this._runOnce = value;
     }
 }

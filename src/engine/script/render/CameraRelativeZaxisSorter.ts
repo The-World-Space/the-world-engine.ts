@@ -19,11 +19,11 @@ export class CameraRelativeZaxisSorter extends ZaxisSortable {
         });
     }
 
-    get offset(): number {
+    public get offset(): number {
         return this._offset;
     }
 
-    set offset(value: number) {
+    public set offset(value: number) {
         this._offset = value;
     }
 }

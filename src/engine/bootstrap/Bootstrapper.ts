@@ -19,7 +19,7 @@ export abstract class Bootstrapper<T = any> {
     /**
      * make scene builder
      */
-    abstract run(): SceneBuilder;
+    public abstract run(): SceneBuilder;
 
     /**
      * get engine global object
