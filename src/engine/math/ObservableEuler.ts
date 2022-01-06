@@ -4,8 +4,8 @@ import { clamp } from "three/src/math/MathUtils";
 export class ObservableEuler {
     public readonly isEuler = true;
     
-    public static DefaultOrder = 'XYZ';
-    public static RotationOrders = [ 'XYZ', 'YZX', 'ZXY', 'XZY', 'YXZ', 'ZYX' ];
+    public static DefaultOrder = "XYZ";
+    public static RotationOrders = [ "XYZ", "YZX", "ZXY", "XZY", "YXZ", "ZYX" ];
 	
     private _x: number;
     private _y: number;
@@ -110,7 +110,7 @@ export class ObservableEuler {
         if (!order) order = this._order;
 
 		switch (order) {
-        case 'XYZ':
+        case "XYZ":
             this._y = Math.asin(clamp(m13, -1, 1));
             if (Math.abs(m13) < 0.9999999) {
                 this._x = Math.atan2(-m23, m33);
@@ -121,7 +121,7 @@ export class ObservableEuler {
             }
             break;
 
-        case 'YXZ':
+        case "YXZ":
             this._x = Math.asin(-clamp(m23, -1, 1));
             if ( Math.abs(m23) < 0.9999999) {
                 this._y = Math.atan2(m13, m33);
@@ -132,7 +132,7 @@ export class ObservableEuler {
             }
             break;
 
-        case 'ZXY':
+        case "ZXY":
             this._x = Math.asin(clamp(m32, -1, 1));
             if (Math.abs(m32) < 0.9999999) {
                 this._y = Math.atan2(-m31, m33);
@@ -143,7 +143,7 @@ export class ObservableEuler {
             }
             break;
 
-        case 'ZYX':
+        case "ZYX":
             this._y = Math.asin(-clamp(m31, -1, 1));
             if ( Math.abs(m31) < 0.9999999) {
                 this._x = Math.atan2(m32, m33);
@@ -154,7 +154,7 @@ export class ObservableEuler {
             }
             break;
 
-        case 'YZX':
+        case "YZX":
             this._z = Math.asin(clamp(m21, -1, 1));
             if (Math.abs(m21) < 0.9999999) {
                 this._x = Math.atan2(-m23, m22);
@@ -165,7 +165,7 @@ export class ObservableEuler {
             }
             break;
 
-        case 'XZY':
+        case "XZY":
             this._z = Math.asin(-clamp(m12, -1, 1));
             if (Math.abs(m12) < 0.9999999) {
                 this._x = Math.atan2(m32, m22);
@@ -177,7 +177,7 @@ export class ObservableEuler {
             break;
 
         default:
-            console.warn('THREE.Euler: .setFromRotationMatrix() encountered an unknown order: ' + order);
+            console.warn("THREE.Euler: .setFromRotationMatrix() encountered an unknown order: " + order);
 		}
 		this._order = order;
 
