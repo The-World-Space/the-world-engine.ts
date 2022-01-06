@@ -215,12 +215,12 @@ export class ObservableEuler {
 		return this;
 	}
 
-	public toArray(array: any[] = [], offset = 0 ): number[] {
+	public toArray(array: any[] = [], offset = 0): number[] {
         this._onBeforeGetComponentCallback();
-		array[ offset ] = this._x;
-		array[ offset + 1 ] = this._y;
-		array[ offset + 2 ] = this._z;
-		array[ offset + 3 ] = this._order;
+		array[offset] = this._x;
+		array[offset + 1] = this._y;
+		array[offset + 2] = this._z;
+		array[offset + 3] = this._order;
 		return array;
 	}
 
