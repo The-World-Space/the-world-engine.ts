@@ -4,6 +4,7 @@
 import * as THREE from "three";
 
 export class CSS3DObject extends THREE.Object3D {
+    public isCSS3DObject = true;
     public element: HTMLElement;
 
     public constructor(element: HTMLElement = document.createElement( "div" )) {
@@ -30,9 +31,9 @@ export class CSS3DObject extends THREE.Object3D {
         return this;
     }
 }
-(CSS3DObject.prototype as any).isTheWorldCSS3DObject = true;
 
 export class CSS3DSprite extends CSS3DObject {
+    public isCSS3DSprite = true;
     private rotation2D: number;
 
     public constructor( element: HTMLElement ) {
@@ -46,7 +47,6 @@ export class CSS3DSprite extends CSS3DObject {
         return this;
     }
 }
-(CSS3DSprite.prototype as any).isTheWorldCSS3DSprite = true;
 
 const _position = new THREE.Vector3();
 const _quaternion = new THREE.Quaternion();
