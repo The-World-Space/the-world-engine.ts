@@ -19,6 +19,19 @@ module.exports = {
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
+        "@typescript-eslint/explicit-member-accessibility": [
+            "error",
+            {
+                "accessibility": "explicit",
+                "overrides": {
+                    "accessors": "explicit",
+                    "constructors": "explicit",
+                    "methods": "explicit",
+                    "properties": "explicit",
+                    "parameterProperties": "explicit"
+                }
+            }
+        ],
         "no-debugger": "warn",
         "indent": [
             "error",
