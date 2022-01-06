@@ -1,7 +1,9 @@
 import { Euler, Matrix3, Matrix4, Object3D, Quaternion, Vector3 } from "three";
 import { GameObject } from "./GameObject";
 import { Scene } from "./Scene";
-import { ObservableVector3 } from "./ObservableVector3";
+import { ObservableVector3 } from "../math/ObservableVector3";
+import { ReadOnlyVector3 } from "../math/ReadOnlyVector3";
+import { WritableVector3 } from "../math/WritableVector3";
 
 /**
  * transform that delegates Object3D
@@ -11,13 +13,26 @@ export class Transform {
     private _gameObject: GameObject;
     private _matrixNeedUpdate = true;
 
+    private _worldRotationEuler: Euler;
+    private _worldRotation: Quaternion;
+    private _worldPosition: Vector3;
+    private _worldScale: Vector3;
+
+    private _localPositionUpdated = true;
+    private _localRotationUpdated = true;
+    private _localScaleUpdated = true;
+
+    private _worldPositionUpdated = true; //it can be false by default because builder get local position
+    private _worldRotationUpdated = true; //it can be false by default because builder get local rotation
+    private _worldScaleUpdated = true; //it can be false by default because builder get local scale
+
     public constructor(gameObject: GameObject) {
         this._object3D = new Object3D();
         this._object3D.matrixAutoUpdate = false;
         this._object3D.userData = this;
 
-        this._object3D.rotation._onChange(this.onRotationChange.bind(this));
-        this._object3D.quaternion._onChange(this.onQuaternionChange.bind(this));
+        this._object3D.rotation._onChange(this.onLocalEulerRotationChange.bind(this));
+        this._object3D.quaternion._onChange(this.onLocalRotationChange.bind(this));
         
         Object.defineProperties(this._object3D, {
             position: {
@@ -29,34 +44,73 @@ export class Transform {
         });
 
         const observablePosition = new ObservableVector3();
-        observablePosition.onChange(this.onPositionChange.bind(this));
+        observablePosition.onChange(this.onLocalPositionChange.bind(this));
         (this._object3D.position as any) = observablePosition; //inject observable
 
         const observableScale = new ObservableVector3();
-        observableScale.onChange(this.onScaleChange.bind(this));
+        observableScale.onChange(this.onLocalScaleChange.bind(this));
         (this._object3D.scale as any) = observableScale; //inject observable
 
         this._gameObject = gameObject;
+
+        this._worldRotationEuler = new Euler()._onChange(this.onWorldEulerRotationChange.bind(this));
+        this._worldRotation = new Quaternion()._onChange(this.onWorldRotationChange.bind(this));
+        const observableWorldPosition = new ObservableVector3();
+        observableWorldPosition.onChange(this.onWorldPositionChange.bind(this));
+        this._worldPosition = observableWorldPosition as unknown as Vector3; //inject observable
+        const observableWorldScale = new ObservableVector3();
+        observableWorldScale.onChange(this.onWorldScaleChange.bind(this));
+        this._worldScale = observableWorldScale as unknown as Vector3; //inject observable
     }
 
-    private onRotationChange() {
+    private onLocalEulerRotationChange() {
         //for override Object3D.onRotationChange()
         this._object3D.quaternion.setFromEuler(this._object3D.rotation, false);
         this.setMatrixNeedUpdateRecursively();
+        this._localRotationUpdated = true;
     }
 
-    private onQuaternionChange() {
+    private onLocalRotationChange() {
         //for override Object3D.onQuaternionChange()
         this._object3D.rotation.setFromQuaternion(this._object3D.quaternion, undefined, false);
         this.setMatrixNeedUpdateRecursively();
+        this._localRotationUpdated = true;
     }
 
-    private onPositionChange(): void {
+    private onLocalPositionChange(): void {
         this.setMatrixNeedUpdateRecursively();
+        this._localPositionUpdated = true;
     }
 
-    private onScaleChange(): void {
+    private onLocalScaleChange(): void {
         this.setMatrixNeedUpdateRecursively();
+        this._localScaleUpdated = true;
+    }
+
+    private onWorldEulerRotationChange(): void {
+        this._worldRotation.setFromEuler(this._worldRotationEuler, false);
+        this.setMatrixNeedUpdateRecursively();
+        this._worldRotationUpdated = true;
+        throw new Error("Method not implemented.");
+    }
+
+    private onWorldRotationChange(): void {
+        this._object3D.quaternion.setFromEuler(this._worldRotationEuler, false);
+        this.setMatrixNeedUpdateRecursively();
+        this._worldRotationUpdated = true;
+        throw new Error("Method not implemented.");
+    }
+
+    private onWorldPositionChange(): void {
+        this.setMatrixNeedUpdateRecursively();
+        this._worldPositionUpdated = true;
+        throw new Error("Method not implemented.");
+    }
+
+    private onWorldScaleChange(): void {
+        this.setMatrixNeedUpdateRecursively();
+        this._worldScaleUpdated = true;
+        throw new Error("Method not implemented.");
     }
 
     /**
@@ -120,11 +174,24 @@ export class Transform {
     }
 
     /**
-	 * Up direction.
-	 * @default THREE.Object3D.DefaultUp.clone()
-	 */
+     * Returns a normalized vector representing the blue axis of the transform in world space.
+     */
+    public get forward(): Vector3 {
+        return this._object3D.getWorldDirection(new Vector3());
+    }
+
+    /**
+     * The red axis of the transform in world space.
+     */
+    public get right(): Vector3 {
+        return this._object3D.getWorldDirection(new Vector3()).cross(new Vector3(0, 1, 0)).normalize();
+    }
+
+    /**
+     * The green axis of the transform in world space.
+     */
     public get up(): Vector3 {
-        return this._object3D.up;
+        return this._object3D.getWorldDirection(new Vector3()).cross(new Vector3(1, 0, 0)).normalize();
     }
 
     /**
@@ -167,51 +234,22 @@ export class Transform {
         return this._object3D.scale;
     }
 
-    /**
-     * @default new THREE.Matrix4()
-     */
-    public get modelViewMatrix(): Matrix4 {
-        return this._object3D.modelViewMatrix;
-    }
-
-    /**
-     * @default new THREE.Matrix3()
-     */
-    public get normalMatrix(): Matrix3 {
-        return this._object3D.normalMatrix;
-    }
-
-    /**
-     * Local transform.
-     * @default new THREE.Matrix4()
-     */
-    public get matrix(): Matrix4 {
-        return this._object3D.matrix;
-    }
-
-    /**
-     * Local transform.
-     * @default new THREE.Matrix4()
-     */
-    public set matrix(value: Matrix4) {
-        this._object3D.matrix = value;
-    }
-
-    /**
-     * The global transform of the object. If the Object3d has no parent, then it's identical to the local transform.
-     * @default new THREE.Matrix4()
-     */
-    public get matrixWorld(): Matrix4 {
-        return this._object3D.matrixWorld;
-    }
-
-    /**
-     * The global transform of the object. If the Object3d has no parent, then it's identical to the local transform.
-     * @default new THREE.Matrix4()
-     */
-    public set matrixWorld(value: Matrix4) {
-        this._object3D.matrixWorld = value;
-    }
+    // InverseTransformDirection	Transforms a direction from world space to local space. The opposite of Transform.TransformDirection.
+    // InverseTransformPoint	Transforms position from world space to local space.
+    // InverseTransformVector	Transforms a vector from world space to local space. The opposite of Transform.TransformVector.
+    // IsChildOf	Is this transform a child of parent?
+    // LookAt	Rotates the transform so the forward vector points at /target/'s current position.
+    // Rotate	Use Transform.Rotate to rotate GameObjects in a variety of ways. The rotation is often provided as an Euler angle and not a Quaternion.
+    // RotateAround	Rotates the transform about axis passing through point in world coordinates by angle degrees.
+    // SetAsFirstSibling	Move the transform to the start of the local transform list.
+    // SetAsLastSibling	Move the transform to the end of the local transform list.
+    // SetParent	Set the parent of the transform.
+    // SetPositionAndRotation	Sets the world space position and rotation of the Transform component.
+    // SetSiblingIndex	Sets the sibling index.
+    // TransformDirection	Transforms direction from local space to world space.
+    // TransformPoint	Transforms position from local space to world space.
+    // TransformVector	Transforms vector from local space to world space.
+    // Translate	Moves the transform in the direction and distance of translation.
 
     /**
      * This updates the position, rotation and scale with the matrix.
