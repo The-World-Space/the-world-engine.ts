@@ -1,6 +1,6 @@
-import { IReadonlyTime } from "./IReadonlyTime";
+import { IReadOnlyTime } from "./IReadOnlyTime";
 
-export class Time implements IReadonlyTime {
+export class Time implements IReadOnlyTime {
     private _deltaTime: number;
     private _startTime: number;
     private _elapsedTime: number;

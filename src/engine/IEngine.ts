@@ -1,4 +1,4 @@
-import { IReadonlyTime } from "./time/IReadonlyTime";
+import { IReadOnlyTime } from "./time/IReadOnlyTime";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
 import { IReadonlyGameState } from "./GameState";
@@ -33,7 +33,7 @@ export interface IEngine {
     /**
      * get time
      */
-    get time(): IReadonlyTime;
+    get time(): IReadOnlyTime;
 
     /**
      * get game state

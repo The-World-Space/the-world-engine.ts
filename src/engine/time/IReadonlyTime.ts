@@ -1,7 +1,7 @@
 /**
  * readonly time interface
  */
-export interface IReadonlyTime {
+export interface IReadOnlyTime {
     /**
      * the interval in seconds from the last frame to the current one
      */

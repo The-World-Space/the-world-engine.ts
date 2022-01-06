@@ -1,4 +1,4 @@
-import { IReadonlyTime } from "./time/IReadonlyTime";
+import { IReadOnlyTime } from "./time/IReadOnlyTime";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
 import { IReadonlyGameState } from "./GameState";
@@ -12,7 +12,7 @@ import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 export class EngineGlobalObject implements IEngine {
     private readonly _rootScene: Scene;
     private readonly _cameraContainer: CameraContainer;
-    private readonly _time: IReadonlyTime;
+    private readonly _time: IReadOnlyTime;
     private readonly _inputHandler: InputHandler;
     private readonly _instantlater: Instantiater;
     private readonly _gameState: IReadonlyGameState;
@@ -25,7 +25,7 @@ export class EngineGlobalObject implements IEngine {
     public constructor(
         rootScene: Scene,
         cameraContainer: CameraContainer,
-        time: IReadonlyTime,
+        time: IReadOnlyTime,
         gameState: IReadonlyGameState,
         gameScreen: IReadonlyGameScreen,
         sceneProcessor: SceneProcessor,
@@ -63,7 +63,7 @@ export class EngineGlobalObject implements IEngine {
         return this._inputHandler;
     }
 
-    public get time(): IReadonlyTime {
+    public get time(): IReadOnlyTime {
         return this._time;
     }
 

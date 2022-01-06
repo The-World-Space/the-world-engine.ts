@@ -32,7 +32,7 @@ export { GameScreen } from "./engine/render/GameScreen";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 
 //time
-export type { IReadonlyTime } from "./engine/time/IReadonlyTime";
+export type { IReadOnlyTime as IReadonlyTime } from "./engine/time/IReadOnlyTime";
 export { Time } from "./engine/time/Time";
 
 //engine
