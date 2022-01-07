@@ -16,6 +16,7 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "stripInternal": true,
     "isolatedModules": true,
     //"noEmit": true,
     "noEmitOnError": true,
