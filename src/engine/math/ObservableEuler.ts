@@ -6,7 +6,7 @@ export class ObservableEuler {
     
     public static DefaultOrder = "XYZ";
     public static RotationOrders = [ "XYZ", "YZX", "ZXY", "XZY", "YXZ", "ZYX" ];
-	
+    
     private _x: number;
     private _y: number;
     private _z: number;
@@ -15,62 +15,62 @@ export class ObservableEuler {
     private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0, order = ObservableEuler.DefaultOrder) {
-		this._x = x;
-		this._y = y;
-		this._z = z;
-		this._order = order;
+        this._x = x;
+        this._y = y;
+        this._z = z;
+        this._order = order;
         
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onChangeCallback = () => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onBeforeGetComponentCallback = () => { };
-	}
+    }
 
     public onBeforeGetComponent(callback: () => void) {
         this._onBeforeGetComponentCallback = callback;
     }
 
-	public get x() {
+    public get x() {
         this._onBeforeGetComponentCallback();
-		return this._x;
-	}
+        return this._x;
+    }
 
-	public set x(value: number) {
-		this._x = value;
-		this._onChangeCallback();
-	}
+    public set x(value: number) {
+        this._x = value;
+        this._onChangeCallback();
+    }
 
-	public get y() {
+    public get y() {
         this._onBeforeGetComponentCallback();
-		return this._y;
-	}
+        return this._y;
+    }
 
-	public set y(value: number) {
-		this._y = value;
-		this._onChangeCallback();
-	}
+    public set y(value: number) {
+        this._y = value;
+        this._onChangeCallback();
+    }
 
-	public get z() {
+    public get z() {
         this._onBeforeGetComponentCallback();
-		return this._z;
-	}
+        return this._z;
+    }
 
-	public set z(value: number) {
-		this._z = value;
-		this._onChangeCallback();
-	}
+    public set z(value: number) {
+        this._z = value;
+        this._onChangeCallback();
+    }
 
-	public get order() {
+    public get order() {
         this._onBeforeGetComponentCallback();
-		return this._order;
-	}
+        return this._order;
+    }
 
-	public set order(value: string) {
-		this._order = value;
-		this._onChangeCallback();
-	}
+    public set order(value: string) {
+        this._order = value;
+        this._onChangeCallback();
+    }
 
-	public set(x: number, y: number, z: number, order?: string): ObservableEuler {
+    public set(x: number, y: number, z: number, order?: string): ObservableEuler {
         this._x = x;
         this._y = y;
         this._z = z;
@@ -84,32 +84,32 @@ export class ObservableEuler {
         return this;
     }
 
-	public clone(): Euler {
+    public clone(): Euler {
         this._onBeforeGetComponentCallback();
-		return new Euler(this._x, this._y, this._z, this._order);
-	}
+        return new Euler(this._x, this._y, this._z, this._order);
+    }
 
-	public copy(euler: ObservableEuler): ObservableEuler {
-		this._x = euler._x;
-		this._y = euler._y;
-		this._z = euler._z;
-		this._order = euler._order;
-		this._onChangeCallback();
-		return this;
-	}
+    public copy(euler: ObservableEuler): ObservableEuler {
+        this._x = euler._x;
+        this._y = euler._y;
+        this._z = euler._z;
+        this._order = euler._order;
+        this._onChangeCallback();
+        return this;
+    }
 
-	public setFromRotationMatrix(m: Matrix4, order?: string, update = true): ObservableEuler {
+    public setFromRotationMatrix(m: Matrix4, order?: string, update = true): ObservableEuler {
         this._onBeforeGetComponentCallback();
 
-		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
-		const te = m.elements;
-		const m11 = te[0], m12 = te[4], m13 = te[8];
-		const m21 = te[1], m22 = te[5], m23 = te[9];
-		const m31 = te[2], m32 = te[6], m33 = te[10];
+        // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
+        const te = m.elements;
+        const m11 = te[0], m12 = te[4], m13 = te[8];
+        const m21 = te[1], m22 = te[5], m23 = te[9];
+        const m31 = te[2], m32 = te[6], m33 = te[10];
 
         if (!order) order = this._order;
 
-		switch (order) {
+        switch (order) {
         case "XYZ":
             this._y = Math.asin(clamp(m13, -1, 1));
             if (Math.abs(m13) < 0.9999999) {
@@ -178,65 +178,65 @@ export class ObservableEuler {
 
         default:
             console.warn("THREE.Euler: .setFromRotationMatrix() encountered an unknown order: " + order);
-		}
-		this._order = order;
+        }
+        this._order = order;
 
-		if (update === true) this._onChangeCallback();
-		return this;
-	}
+        if (update === true) this._onChangeCallback();
+        return this;
+    }
 
-	public setFromQuaternion(q: Quaternion, order?: string, update?: boolean): ObservableEuler {
-		_matrix.makeRotationFromQuaternion(q);
-		return this.setFromRotationMatrix(_matrix, order, update);
-	}
+    public setFromQuaternion(q: Quaternion, order?: string, update?: boolean): ObservableEuler {
+        _matrix.makeRotationFromQuaternion(q);
+        return this.setFromRotationMatrix(_matrix, order, update);
+    }
 
-	public setFromVector3(v: Vector3, order?: string): ObservableEuler {
-		return this.set(v.x, v.y, v.z, order);
-	}
+    public setFromVector3(v: Vector3, order?: string): ObservableEuler {
+        return this.set(v.x, v.y, v.z, order);
+    }
 
-	public reorder(newOrder: string): ObservableEuler {
-		// WARNING: this discards revolution information -bhouston
-		_quaternion.setFromEuler(this);
-		return this.setFromQuaternion(_quaternion, newOrder);
-	}
+    public reorder(newOrder: string): ObservableEuler {
+        // WARNING: this discards revolution information -bhouston
+        _quaternion.setFromEuler(this);
+        return this.setFromQuaternion(_quaternion, newOrder);
+    }
 
-	public equals(euler: ObservableEuler): boolean {
+    public equals(euler: ObservableEuler): boolean {
         this._onBeforeGetComponentCallback();
-		return (euler._x === this._x) && (euler._y === this._y) && (euler._z === this._z) && (euler._order === this._order);
-	}
+        return (euler._x === this._x) && (euler._y === this._y) && (euler._z === this._z) && (euler._order === this._order);
+    }
 
-	public fromArray(array: any[]): ObservableEuler {
-		this._x = array[0];
-		this._y = array[1];
-		this._z = array[2];
-		if (array[3] !== undefined) this._order = array[3];
+    public fromArray(array: any[]): ObservableEuler {
+        this._x = array[0];
+        this._y = array[1];
+        this._z = array[2];
+        if (array[3] !== undefined) this._order = array[3];
 
-		this._onChangeCallback();
-		return this;
-	}
+        this._onChangeCallback();
+        return this;
+    }
 
-	public toArray(array: any[] = [], offset = 0): number[] {
+    public toArray(array: any[] = [], offset = 0): any[] {
         this._onBeforeGetComponentCallback();
-		array[offset] = this._x;
-		array[offset + 1] = this._y;
-		array[offset + 2] = this._z;
-		array[offset + 3] = this._order;
-		return array;
-	}
+        array[offset] = this._x;
+        array[offset + 1] = this._y;
+        array[offset + 2] = this._z;
+        array[offset + 3] = this._order;
+        return array;
+    }
 
-	public toVector3(optionalResult?: Vector3): Vector3 {
+    public toVector3(optionalResult?: Vector3): Vector3 {
         this._onBeforeGetComponentCallback();
-		if (optionalResult) {
-			return optionalResult.set(this._x, this._y, this._z);
-		} else {
-			return new Vector3(this._x, this._y, this._z);
-		}
-	}
+        if (optionalResult) {
+            return optionalResult.set(this._x, this._y, this._z);
+        } else {
+            return new Vector3(this._x, this._y, this._z);
+        }
+    }
 
-	public _onChange(callback: () => void): ObservableEuler {
-		this._onChangeCallback = callback;
-		return this;
-	}
+    public _onChange(callback: () => void): ObservableEuler {
+        this._onChangeCallback = callback;
+        return this;
+    }
 }
 
 const _matrix = /*@__PURE__*/ new Matrix4();

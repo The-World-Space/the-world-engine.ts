@@ -37,7 +37,7 @@ export type WritableEuler = {
     reorder(newOrder: string): WritableEuler;
     equals(euler: ReadOnlyEuler): boolean;
     fromArray(xyzo: any[]): WritableEuler;
-    toArray(array?: number[], offset?: number): number[];
+    toArray(array?: any[], offset?: number): any[];
     toVector3(optionalResult?: Vector3): Vector3;
     _onChange(callback: () => void): WritableEuler;
 }

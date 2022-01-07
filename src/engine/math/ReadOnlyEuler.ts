@@ -24,6 +24,6 @@ export type ReadOnlyEuler = {
 
     clone(): Euler;
     equals(euler: ReadOnlyEuler): boolean;
-    toArray(array?: number[], offset?: number): number[];
+    toArray(array?: any[], offset?: number): any[];
     toVector3(optionalResult?: Vector3): Vector3;
 };
