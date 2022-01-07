@@ -593,7 +593,7 @@ export class ObservableVector3 {
         return ((v.x === this._x) && (v.y === this._y) && (v.z === this._z));
     }
 
-    public fromArray(array: number[] | ArrayLike<number>, offset = 0): ObservableVector3 {
+    public fromArray(array: number[]|ArrayLike<number>, offset = 0): ObservableVector3 {
         this._x = array[offset];
         this._y = array[offset + 1];
         this._z = array[offset + 2];
@@ -610,7 +610,7 @@ export class ObservableVector3 {
     }
 
     public fromBufferAttribute(
-        attribute: BufferAttribute | InterleavedBufferAttribute,
+        attribute: BufferAttribute|InterleavedBufferAttribute,
         index: number,
         offset: undefined
     ): ObservableVector3 {
