@@ -24,6 +24,22 @@ export { Transform } from "./engine/hierarchy_object/Transform";
 export type { IInputEventHandleable } from "./engine/input/IInputEventHandleable";
 export { InputHandler } from "./engine/input/InputHandler";
 
+//math
+export type { ReadOnlyEuler } from "./engine/math/ReadOnlyEuler";
+export type { ReadOnlyMatrix3 } from "./engine/math/ReadOnlyMatrix3";
+export type { ReadOnlyMatrix4 } from "./engine/math/ReadOnlyMatrix4";
+export type { ReadOnlyQuaternion } from "./engine/math/ReadOnlyQuaternion";
+export type { ReadOnlyVector2 } from "./engine/math/ReadOnlyVector2";
+export type { ReadOnlyVector3 } from "./engine/math/ReadOnlyVector3";
+export type { ReadOnlyVector4 } from "./engine/math/ReadOnlyVector4";
+export type { WritableEuler } from "./engine/math/WritableEuler";
+export type { WritableMatrix3 } from "./engine/math/WritableMatrix3";
+export type { WritableMatrix4 } from "./engine/math/WritableMatrix4";
+export type { WritableQuaternion } from "./engine/math/WritableQuaternion";
+export type { WritableVector2 } from "./engine/math/WritableVector2";
+export type { WritableVector3 } from "./engine/math/WritableVector3";
+export type { WritableVector4 } from "./engine/math/WritableVector4";
+
 //render
 export { CameraContainer } from "./engine/render/CameraContainer";
 export { CameraInfo } from "./engine/render/CameraInfo";
