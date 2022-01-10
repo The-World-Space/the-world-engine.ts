@@ -57,13 +57,6 @@ export class ObservableVector3 {
         this._onChangeCallback();
     }
 
-    public setWithoutChangeCallback(x: number, y: number, z: number): ObservableVector3 {
-        this._x = x;
-        this._y = y;
-        this._z = z;
-        return this;
-    }
-
     public set(x: number, y: number, z: number): ObservableVector3 {
         if (z === undefined) {
             this._onBeforeGetComponentCallback();
@@ -661,12 +654,12 @@ export class ObservableVector3 {
      *
      * @deprecated Use {@link Vector3#manhattanLength .manhattanLength()} instead.
      */
-    public lengthManhattan(): number { throw new Error('deprecated'); }
+    public lengthManhattan(): number { throw new Error("deprecated"); }
 
     /**
      * @deprecated Use {@link Vector3#manhattanDistanceTo .manhattanDistanceTo()} instead.
      */
-    public distanceToManhattan(_v: ObservableVector3): number { throw new Error('deprecated'); }
+    public distanceToManhattan(_v: ObservableVector3): number { throw new Error("deprecated"); }
 }
 
 const _vector = /*@__PURE__*/ new ObservableVector3();

@@ -27,7 +27,7 @@ export class ObservableQuaternion {
     }
 
     public static slerp(qa: ObservableQuaternion, qb: ObservableQuaternion, qm: ObservableQuaternion, t: number): void { //TODO: pr to three-types
-        console.warn('THREE.Quaternion: Static .slerp() has been deprecated. Use qm.slerpQuaternions( qa, qb, t ) instead.');
+        console.warn("THREE.Quaternion: Static .slerp() has been deprecated. Use qm.slerpQuaternions( qa, qb, t ) instead.");
         return qm.slerpQuaternions(qa, qb, t);
     }
 
@@ -231,7 +231,7 @@ export class ObservableQuaternion {
 
     public setFromEuler(euler: Euler, update?: boolean): ObservableQuaternion {
         if (!(euler && euler.isEuler)) {
-            throw new Error('THREE.Quaternion: .setFromEuler() now expects an Euler rotation rather than a Vector3 and order.');
+            throw new Error("THREE.Quaternion: .setFromEuler() now expects an Euler rotation rather than a Vector3 and order.");
         }
 
         const x = (euler as any)._x, y = (euler as any)._y, z = (euler as any)._z, order = (euler as any)._order;
@@ -252,42 +252,42 @@ export class ObservableQuaternion {
         const s3 = sin(z / 2);
 
         switch (order) {
-        case 'XYZ':
+        case "XYZ":
             this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
             this._internal_y = c1 * s2 * c3 - s1 * c2 * s3;
             this._internal_z = c1 * c2 * s3 + s1 * s2 * c3;
             this._internal_w = c1 * c2 * c3 - s1 * s2 * s3;
             break;
 
-        case 'YXZ':
+        case "YXZ":
             this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
             this._internal_y = c1 * s2 * c3 - s1 * c2 * s3;
             this._internal_z = c1 * c2 * s3 - s1 * s2 * c3;
             this._internal_w = c1 * c2 * c3 + s1 * s2 * s3;
             break;
 
-        case 'ZXY':
+        case "ZXY":
             this._internal_x = s1 * c2 * c3 - c1 * s2 * s3;
             this._internal_y = c1 * s2 * c3 + s1 * c2 * s3;
             this._internal_z = c1 * c2 * s3 + s1 * s2 * c3;
             this._internal_w = c1 * c2 * c3 - s1 * s2 * s3;
             break;
 
-        case 'ZYX':
+        case "ZYX":
             this._internal_x = s1 * c2 * c3 - c1 * s2 * s3;
             this._internal_y = c1 * s2 * c3 + s1 * c2 * s3;
             this._internal_z = c1 * c2 * s3 - s1 * s2 * c3;
             this._internal_w = c1 * c2 * c3 + s1 * s2 * s3;
             break;
 
-        case 'YZX':
+        case "YZX":
             this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
             this._internal_y = c1 * s2 * c3 + s1 * c2 * s3;
             this._internal_z = c1 * c2 * s3 - s1 * s2 * c3;
             this._internal_w = c1 * c2 * c3 - s1 * s2 * s3;
             break;
 
-        case 'XZY':
+        case "XZY":
             this._internal_x = s1 * c2 * c3 - c1 * s2 * s3;
             this._internal_y = c1 * s2 * c3 - s1 * c2 * s3;
             this._internal_z = c1 * c2 * s3 + s1 * s2 * c3;
@@ -295,7 +295,7 @@ export class ObservableQuaternion {
             break;
 
         default:
-            console.warn('THREE.Quaternion: .setFromEuler() encountered an unknown order: ' + order);
+            console.warn("THREE.Quaternion: .setFromEuler() encountered an unknown order: " + order);
         }
 
         if (update !== false) this._onChangeCallback();
@@ -596,8 +596,18 @@ export class ObservableQuaternion {
         return this;
     }
 
-    _onChange(callback: () => void): ObservableQuaternion {
+    public _onChange(callback: () => void): ObservableQuaternion {
         this._onChangeCallback = callback;
         return this;
     }
+
+    /**
+     * @deprecated Use {@link Vector#applyQuaternion vector.applyQuaternion( quaternion )} instead.
+     */
+    public multiplyVector3(_v: any): any { throw new Error("deprecated"); }
+
+    /**
+     * @deprecated Use {@link Quaternion#invert .invert()} instead.
+     */
+    public inverse(): Quaternion { throw new Error("deprecated"); }
 }
