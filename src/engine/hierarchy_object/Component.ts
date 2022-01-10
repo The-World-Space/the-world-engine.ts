@@ -7,6 +7,7 @@ import { isUpdateableComponent } from "../SceneProcessor";
 import { Coroutine } from "../coroutine/Coroutine";
 import { CoroutineIterator } from "../coroutine/CoroutineIterator";
 import { ICoroutine } from "../coroutine/ICoroutine";
+import { Transform } from "./Transform";
 
 /**
  * component is the base class from which every engine script derives
@@ -255,6 +256,13 @@ export abstract class Component {
      */
     public get gameObject(): GameObject {
         return this._gameObject;
+    }
+
+    /**
+     * transform attached to this component game object
+     */
+    public get transform(): Transform {
+        return this._gameObject.transform;
     }
 
     /**
