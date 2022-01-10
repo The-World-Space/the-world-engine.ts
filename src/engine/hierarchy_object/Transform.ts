@@ -5,6 +5,7 @@ import { ObservableVector3 } from "../math/ObservableVector3";
 import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
 import { ReadOnlyVector3 } from "../math/ReadOnlyVector3";
+import { WritableVector3 } from "../math/WritableVector3";
 
 /**
  * transform that delegates Object3D
@@ -17,6 +18,7 @@ export class Transform {
     private _worldRotationEuler: ObservableEuler;
     private _worldRotation: ObservableQuaternion;
     private _worldScale: ObservableVector3;
+    private _hasChanged = false;
 
     // if this value is true, matrix computed from ancesstor to this local recursively, otherwise, matrix computed from world values
     private _coordinateAsOfLocal = true;
@@ -73,7 +75,7 @@ export class Transform {
         observableQuaternion._onChange(this._onLocalRotationChangeBind);
         (this._object3D.quaternion as any) = observableQuaternion; //inject observable
 
-        const observableScale = new ObservableVector3();
+        const observableScale = new ObservableVector3(1, 1, 1);
         observableScale.onBeforeGetComponent(onBeforeGetLocalBind);
         observableScale.onChange(onLocalChangeBind);
         (this._object3D.scale as any) = observableScale; //inject observable
@@ -98,7 +100,7 @@ export class Transform {
         observableWorldRotationQuaternion._onChange(this._onWorldRotationChangeBind);
         this._worldRotation = observableWorldRotationQuaternion;
 
-        const observableWorldScale = new ObservableVector3();
+        const observableWorldScale = new ObservableVector3(1, 1, 1);
         observableWorldScale.onBeforeGetComponent(onBeforeGetWorldBind);
         observableWorldScale.onChange(onWorldChangeBind);
         this._worldScale = observableWorldScale;
@@ -108,7 +110,7 @@ export class Transform {
 
     // #region local
     
-    public onBeforeGetLocal(): void {
+    private onBeforeGetLocal(): void {
         if (!this._coordinateAsOfLocal) {
             this.updateMatrixRecursivelyFromAncestorToThis();
             this.updateLocalPositionRotationScale();
@@ -118,6 +120,7 @@ export class Transform {
     private onLocalChange(): void {
         this._coordinateAsOfLocal = true;
         this.setMatrixNeedUpdateRecursively();
+        this._hasChanged = true;
     }
 
     private onLocalEulerRotationChange() {
@@ -126,6 +129,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = true;
         this.setMatrixNeedUpdateRecursively();
+        this._hasChanged = true;
     }
 
     private onLocalRotationChange() {
@@ -134,6 +138,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = true;
         this.setMatrixNeedUpdateRecursively();
+        this._hasChanged = true;
     }
 
     // #endregion
@@ -150,6 +155,7 @@ export class Transform {
     private onWorldChange(): void {
         this._coordinateAsOfLocal = false;
         this.setMatrixNeedUpdateRecursively();
+        this._hasChanged = true;
     }
     
     private onWorldEulerRotationChange(): void {
@@ -157,6 +163,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = false;
         this.setMatrixNeedUpdateRecursively();
+        this._hasChanged = true;
     }
 
     private onWorldRotationChange(): void {
@@ -164,6 +171,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = false;
         this.setMatrixNeedUpdateRecursively();
+        this._hasChanged = true;
     }
 
     // #endregion
@@ -263,19 +271,24 @@ export class Transform {
 
     private static readonly _matrix4Buffer = new Matrix4();
 
+    private updateLocalMatrixFromWorldMatrix(): void {
+        if (!this._localMatrixNeedUpdate) return;
+        this._localMatrixNeedUpdate = false;
+
+        const parent = this.parent;
+        if (parent) {
+            const worldToLocalMatrix = Transform._matrix4Buffer.copy(parent._object3D.matrixWorld).invert();
+            this._object3D.matrix.multiplyMatrices(this._object3D.matrixWorld, worldToLocalMatrix);
+        } else {
+            this._object3D.matrix.copy(this._object3D.matrixWorld);
+        }
+    }
+        
     private updateLocalPositionRotationScale(): void {
         if (!this._localPositionRotationScaleNeedToUpdate) return;
         this._localPositionRotationScaleNeedToUpdate = false;
 
-        if (this._localMatrixNeedUpdate) {
-            if (this.parent) {
-                const worldToLocalMatrix = Transform._matrix4Buffer.copy(this.parent._object3D.matrixWorld).invert();
-                this._object3D.matrix.multiplyMatrices(this._object3D.matrixWorld, worldToLocalMatrix);
-            } else {
-                this._object3D.matrix.copy(this._object3D.matrixWorld);
-            }
-            this._localMatrixNeedUpdate = false;
-        }
+        this.updateLocalMatrixFromWorldMatrix();
 
         const emptyFunction = Transform._emptyFunction;
         (this.localPosition as unknown as ObservableVector3).onChange(emptyFunction);
@@ -327,7 +340,7 @@ export class Transform {
     }
 
     /**
-     * get children. it returns new instance of Array, so you can't change it
+     * get children. it returns new instance of Array, so you can change it
      */
     public get children(): Transform[] {
         return this._object3D.children
@@ -342,33 +355,81 @@ export class Transform {
         return this._gameObject;
     }
 
+    private static readonly _vector3Buffer = new Vector3();
+
     /**
      * Returns a normalized vector representing the blue axis of the transform in world space.
+     * @param target optional, target vector
      */
-    public get forward(): Vector3 {
-        return this._object3D.getWorldDirection(new Vector3());
+    public getForward(target?: Vector3): Vector3 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        const e = this._object3D.matrixWorld.elements;
+        return target ? target.set(e[8], e[9], e[10]) : new Vector3(e[8], e[9], e[10]);
+    }
+
+    /**
+     * set vector representing the blue axis of the transform in world space.
+     */
+    public setForward(value: ReadOnlyVector3): void {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        const e = this._object3D.matrixWorld.elements;
+        const v = (Transform._vector3Buffer as WritableVector3).copy(value).normalize();
+        e[8] = v.x;
+        e[9] = v.y;
+        e[10] = v.z;
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedToUpdate = true;
+        this._worldPositionRotationScaleNeedToUpdate = true;
     }
 
     /**
      * The red axis of the transform in world space.
+     * @param target optional, target vector
      */
-    public get right(): Vector3 {
-        return this._object3D.getWorldDirection(new Vector3()).cross(new Vector3(0, 1, 0)).normalize();
+    public getRight(target?: Vector3): Vector3 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        const e = this._object3D.matrixWorld.elements;
+        return target ? target.set(e[0], e[1], e[2]) : new Vector3(e[0], e[1], e[2]);
+    }
+
+    /**
+     * set vector representing the red axis of the transform in world space.
+     */
+    public setRight(value: ReadOnlyVector3): void {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        const e = this._object3D.matrixWorld.elements;
+        const v = (Transform._vector3Buffer as WritableVector3).copy(value).normalize();
+        e[0] = v.x;
+        e[1] = v.y;
+        e[2] = v.z;
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedToUpdate = true;
+        this._worldPositionRotationScaleNeedToUpdate = true;
     }
 
     /**
      * The green axis of the transform in world space.
+     * @param target optional, target vector
      */
-    public get up(): Vector3 {
-        return this._object3D.getWorldDirection(new Vector3()).cross(new Vector3(1, 0, 0)).normalize();
+    public getUp(target?: Vector3): Vector3 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        const e = this._object3D.matrixWorld.elements;
+        return target ? target.set(e[4], e[5], e[6]) : new Vector3(e[4], e[5], e[6]);
     }
 
     /**
-	 * Up direction.
-	 * @default THREE.Object3D.DefaultUp.clone()
-	 */
-    public set up(value: Vector3) {
-        this._object3D.up = value;
+     * set vector representing the green axis of the transform in world space.
+     */
+    public setUp(value: ReadOnlyVector3): void {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        const e = this._object3D.matrixWorld.elements;
+        const v = (Transform._vector3Buffer as WritableVector3).copy(value).normalize();
+        e[4] = v.x;
+        e[5] = v.y;
+        e[6] = v.z;
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedToUpdate = true;
+        this._worldPositionRotationScaleNeedToUpdate = true;
     }
 
     /**
@@ -431,33 +492,115 @@ export class Transform {
         return this._worldScale as unknown as Vector3;
     }
 
-    // InverseTransformDirection	Transforms a direction from world space to local space. The opposite of Transform.TransformDirection.
-    // InverseTransformPoint	Transforms position from world space to local space.
-    // InverseTransformVector	Transforms a vector from world space to local space. The opposite of Transform.TransformVector.
-    // IsChildOf	Is this transform a child of parent?
-    // LookAt	Rotates the transform so the forward vector points at /target/'s current position.
-    // Rotate	Use Transform.Rotate to rotate GameObjects in a variety of ways. The rotation is often provided as an Euler angle and not a Quaternion.
-    // RotateAround	Rotates the transform about axis passing through point in world coordinates by angle degrees.
-    // SetAsFirstSibling	Move the transform to the start of the local transform list.
-    // SetAsLastSibling	Move the transform to the end of the local transform list.
-    // SetParent	Set the parent of the transform.
-    // SetPositionAndRotation	Sets the world space position and rotation of the Transform component.
-    // SetSiblingIndex	Sets the sibling index.
-    // TransformDirection	Transforms direction from local space to world space.
-    // TransformPoint	Transforms position from local space to world space.
-    // TransformVector	Transforms vector from local space to world space.
-    // Translate	Moves the transform in the direction and distance of translation.
-
     /**
-     * This updates the position, rotation and scale with the matrix.
+     * Has the transform changed since the last time the flag was set to 'false'?
      */
-    public applyMatrix4(matrix: Matrix4): void {
-        this._object3D.applyMatrix4(matrix);
+    public get hasChanged(): boolean {
+        return this._hasChanged;
     }
 
-    public applyQuaternion(quaternion: Quaternion): this {
-        this._object3D.applyQuaternion(quaternion);
-        return this;
+    /**
+     * Has the transform changed since the last time the flag was set to 'false'?
+     * @param value
+     */
+    public set hasChanged(value: boolean) {
+        this._hasChanged = value;
+    }
+
+    /**
+     * world to local matrix
+     * @param target optional, target matrix
+     */
+    public getWorldToLocalMatrix(target?: Matrix4): Matrix4 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        return target ? target.copy(this._object3D.matrixWorld).invert() : this._object3D.matrixWorld.clone().invert();
+    }
+
+    /**
+     * local to world matrix
+     * @param target optional, target matrix
+     */
+    public getLocalToWorldMatrix(target?: Matrix4): Matrix4 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        return target ? target.copy(this._object3D.matrixWorld) : this._object3D.matrixWorld.clone();
+    }
+    
+    /**
+     * Transforms position from local space to world space.
+     * @param position A local position.
+     */
+     public transformPoint(position: Vector3): Vector3 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        return this._object3D.localToWorld(position);
+    }
+
+    /**
+     * Transforms position from world space to local space.
+     * @param position A world position.
+     */
+    public inverseTransformPoint(position: Vector3): Vector3 {
+        this.updateMatrixRecursivelyFromAncestorToThis();
+        return this._object3D.worldToLocal(position);
+    }
+
+    /**
+     * Transforms direction from local space to world space.
+     * This operation is not affected by scale or position of the transform. The returned vector has the same length as direction.
+     * @param direction A local direction.
+     */
+    public transformDirection(direction: Vector3): Vector3 {
+        const m = Transform._matrix4Buffer
+            .copy(this._object3D.matrixWorld)
+            .makeScale(1, 1, 1);
+        return direction.transformDirection(m);
+    }
+
+    /**
+     * Transforms direction from world space to local space.
+     * This operation is unaffected by scale.
+     * @param direction A world direction.
+     */
+    public inverseTransformDirection(direction: Vector3): Vector3 {
+        const m = Transform._matrix4Buffer
+            .copy(this._object3D.matrixWorld)
+            .makeScale(1, 1, 1)
+            .invert();
+        return direction.transformDirection(m);
+    }
+
+    /**
+     * Transforms vector from local space to world space.
+     * This operation is not affected by position of the transform, but it is affected by scale. The returned vector may have a different length than vector.
+     * @param vector A local vector.
+     */
+    public transformVector(vector: Vector3): Vector3 {
+        return vector.transformDirection(this._object3D.matrixWorld);
+    }
+
+    /**
+     * Transforms a vector from world space to local space. The opposite of Transform.TransformVector.
+     * This operation is affected by scale.
+     */
+    public inverseTransformVector(vector: Vector3): Vector3 {
+        return vector.transformDirection(Transform._matrix4Buffer.copy(this._object3D.matrixWorld).invert());
+    }
+
+    /**
+     * Is this transform a child of parent?
+     * @returns a boolean value that indicates whether the transform is a child of a given transform. true if this transform is a child, deep child (child of a child) or identical to this transform, otherwise false.
+     */
+    public isChildOf(parent: Transform): boolean {
+        if (this === parent) return true;
+        const this_parent = this.parent;
+        if (this_parent) return this_parent.isChildOf(parent);
+        return false;
+    }
+    /**
+     * Rotates object to face point in space.
+     * @param vector A world vector to look at.
+     */
+    public lookAt(vector: Vector3 | number, y?: number, z?: number): void {
+        this._object3D.lookAt(vector, y, z);
     }
 
     public setRotationFromAxisAngle(axis: Vector3, angle: number): void {
@@ -557,46 +700,6 @@ export class Transform {
     public translateZ(distance: number): this {
         this._object3D.translateZ(distance);
         return this;
-    }
-
-    /**
-     * Updates the vector from local space to world space.
-     * @param vector A local vector.
-     */
-    public localToWorld(vector: Vector3): Vector3 {
-        return this._object3D.localToWorld(vector);
-    }
-
-    /**
-     * Updates the vector from world space to local space.
-     * @param vector A world vector.
-     */
-    public worldToLocal(vector: Vector3): Vector3 {
-        return this._object3D.worldToLocal(vector);
-    }
-
-    /**
-     * Rotates object to face point in space.
-     * @param vector A world vector to look at.
-     */
-    public lookAt(vector: Vector3 | number, y?: number, z?: number): void {
-        this._object3D.lookAt(vector, y, z);
-    }
-
-    public getWorldPosition(target: Vector3): Vector3 {
-        return this._object3D.getWorldPosition(target);
-    }
-
-    public getWorldQuaternion(target: Quaternion): Quaternion {
-        return this._object3D.getWorldQuaternion(target);
-    }
-
-    public getWorldScale(target: Vector3): Vector3 {
-        return this._object3D.getWorldScale(target);
-    }
-
-    public getWorldDirection(target: Vector3): Vector3 {
-        return this._object3D.getWorldDirection(target);
     }
 
     /**

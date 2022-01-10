@@ -19,7 +19,7 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(CssSpriteRenderer)
                 .withComponent(Rotator))
 
-            .withChild(instantlater.buildGameObject("test_object2")
+            .withChild(instantlater.buildGameObject("test_object2", new Vector3(0, 10, 0))
                 .withComponent(CssHtmlElementRenderer, c => {
                     c.autoSize = true;
                     const element = document.createElement("div");
