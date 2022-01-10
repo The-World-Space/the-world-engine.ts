@@ -198,16 +198,16 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     public get gridCenter(): Vector2 {
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
-        return new Vector2(this.gameObject.transform.localPosition.x + offsetX, this.gameObject.transform.localPosition.y + offsetY);
+        return new Vector2(this.transform.localPosition.x + offsetX, this.transform.localPosition.y + offsetY);
     }
     
     public get gridCenterX(): number {
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
-        return this.gameObject.transform.localPosition.x + offsetX;
+        return this.transform.localPosition.x + offsetX;
     }
 
     public get gridCenterY(): number {
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
-        return this.gameObject.transform.localPosition.y + offsetY;
+        return this.transform.localPosition.y + offsetY;
     }
 }

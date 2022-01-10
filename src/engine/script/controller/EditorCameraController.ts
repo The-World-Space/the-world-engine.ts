@@ -32,7 +32,7 @@ export class EditorCameraController extends Component {
         this._camera = this.gameObject.getComponent(Camera);
         const aspect = this.engine.screen.width / this.engine.screen.height;
         this._defaultViewSize = this._camera!.viewSize;
-        this._defaultPosition.copy(this.gameObject.transform.localPosition);
+        this._defaultPosition.copy(this.transform.localPosition);
         this._currentViewSize = this._defaultViewSize;
         this._camera!.viewSize = this._currentViewSize / aspect;
     }
@@ -63,7 +63,7 @@ export class EditorCameraController extends Component {
         if (event.key === " ") {
             this._currentViewSize = this._defaultViewSize;
             this.onResize();
-            this.gameObject.transform.localPosition.copy(this._defaultPosition);
+            this.transform.localPosition.copy(this._defaultPosition);
         }
     }
 
@@ -108,8 +108,8 @@ export class EditorCameraController extends Component {
 
         const aspect = this.engine.screen.width / this.engine.screen.height;
 
-        this.gameObject.transform.localPosition.x -= clientXdiff * this._camera!.viewSize * aspect;
-        this.gameObject.transform.localPosition.y += clientYdiff * this._camera!.viewSize;
+        this.transform.localPosition.x -= clientXdiff * this._camera!.viewSize * aspect;
+        this.transform.localPosition.y += clientYdiff * this._camera!.viewSize;
 
         this._lastOffset.set(clientOffsetX, clientOffsetY);
     }

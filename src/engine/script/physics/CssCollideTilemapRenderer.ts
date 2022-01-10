@@ -32,8 +32,8 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
             for (let column = 0; column < array[row].length; column++) {
                 if (array[row][column] !== null) {
                     //console.log(`${(column + columnOffset) - this.columnCount / 2}_${(this.rowCount - (row + rowOffset)) - this.rowCount / 2}`);
-                    const colideX = Math.ceil(this.gameObject.transform.localPosition.x / this.gridCellWidth + (column + columnOffset) - this.columnCount / 2);
-                    const colideY = Math.ceil(this.gameObject.transform.localPosition.y / this.gridCellHeight + (this.rowCount - (row + rowOffset)) - this.rowCount / 2) - 1;
+                    const colideX = Math.ceil(this.transform.localPosition.x / this.gridCellWidth + (column + columnOffset) - this.columnCount / 2);
+                    const colideY = Math.ceil(this.transform.localPosition.y / this.gridCellHeight + (this.rowCount - (row + rowOffset)) - this.rowCount / 2) - 1;
                     this._collideMap.set(
                         `${colideX}_${colideY}`, true);
                     // this.addDebugImage(
@@ -59,8 +59,8 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
     }
 
     // private addDebugImage(x: number, y: number) {
-    //     if (this.gameObject.transform.parentTransform instanceof GameObject) {
-    //         this.gameObject.transform.parentTransform.addChildFromBuilder(
+    //     if (this.transform.parentTransform instanceof GameObject) {
+    //         this.transform.parentTransform.addChildFromBuilder(
     //             this.engine.instantlater.buildGameObject("debugImage", new Vector3(x, y, 10000), new Quaternion(), new Vector3(0.5, 0.5, 0.5))
     //                 .withComponent(ZaxisInitializer)
     //                 .withComponent(CssSpriteRenderer));
@@ -69,7 +69,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
 
     public checkCollision(x: number, y: number, width: number, height: number): boolean {
         if (!this._collideEnabled) return false;
-        const worldPosition = this.gameObject.transform.position;
+        const worldPosition = this.transform.position;
         x -= worldPosition.x;
         y -= worldPosition.y;
 

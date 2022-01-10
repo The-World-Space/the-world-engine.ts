@@ -30,7 +30,7 @@ export class Camera extends Component {
         if (this._cameraType === CameraType.Perspective) {
             if (!this._camera) {
                 this._camera = this.createNewPerspectiveCamera();
-                this.gameObject.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
+                this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
             } else {
                 if (this._camera instanceof THREE.PerspectiveCamera) {
                     this._camera.aspect = aspectRatio;
@@ -41,13 +41,13 @@ export class Camera extends Component {
                 } else {
                     this._camera.removeFromParent();
                     this._camera = this.createNewPerspectiveCamera();
-                    this.gameObject.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
+                    this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
                 }
             }
         } else if (this._cameraType === CameraType.Orthographic) {
             if (!this._camera) {
                 this._camera = this.createNewOrthographicCamera();
-                this.gameObject.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
+                this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
             } else {
                 if (this._camera instanceof THREE.OrthographicCamera) {
                     const viewSizeScalar = this._viewSize * 0.5;
@@ -61,7 +61,7 @@ export class Camera extends Component {
                 } else {
                     this._camera.removeFromParent();
                     this._camera = this.createNewOrthographicCamera();
-                    this.gameObject.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
+                    this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
                 }
             }
         } else {

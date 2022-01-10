@@ -38,7 +38,7 @@ export class CssSpriteAtlasRenderer extends Component {
 
     public override onDestroy(): void {
         if (!this.started) return;
-        if (this._sprite) this.gameObject.transform.unsafeGetObject3D().remove(this._sprite); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        if (this._sprite) this.transform.unsafeGetObject3D().remove(this._sprite); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
     public override onEnable(): void {
@@ -94,7 +94,7 @@ export class CssSpriteAtlasRenderer extends Component {
                 );
                 this._sprite.scale.x *= this._imageFlipX ? -1 : 1;
                 this._sprite.scale.y *= this._imageFlipY ? -1 : 1;
-                this.gameObject.transform.unsafeGetObject3D().add(this._sprite); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+                this.transform.unsafeGetObject3D().add(this._sprite); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
             }
             image.style.width = this._croppedImageWidth +"px";
             image.style.height = this._croppedImageHeight + "px";

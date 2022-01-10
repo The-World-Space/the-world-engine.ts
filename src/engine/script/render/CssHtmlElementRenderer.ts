@@ -36,7 +36,7 @@ export class CssHtmlElementRenderer extends Component {
 
     public override onDestroy(): void {
         if (!this.started) return;
-        if (this._css3DObject) this.gameObject.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
     public override onEnable(): void {
@@ -93,7 +93,7 @@ export class CssHtmlElementRenderer extends Component {
                 // eslint-disable-next-line @typescript-eslint/no-empty-function
                 if (this._css3DObject) this._css3DObject.onAfterRender = () => {};
             };
-            this.gameObject.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+            this.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;

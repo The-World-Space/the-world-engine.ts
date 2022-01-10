@@ -8,8 +8,8 @@ export class Rotator extends Component {
     public update() {
         this._accumulator += this.engine.time.deltaTime;
         this._quternion.setFromAxisAngle(new Vector3(0, 0, 1), this.engine.time.deltaTime * 0.5);
-        this.gameObject.transform.localRotation.multiply(this._quternion);
-        this.gameObject.transform.localPosition.x = Math.sin(this._accumulator) * 50;
-        this.gameObject.transform.localPosition.y = Math.cos(this._accumulator) * 50;
+        this.transform.localRotation.multiply(this._quternion);
+        this.transform.localPosition.x = Math.sin(this._accumulator) * 50;
+        this.transform.localPosition.y = Math.cos(this._accumulator) * 50;
     }
 }

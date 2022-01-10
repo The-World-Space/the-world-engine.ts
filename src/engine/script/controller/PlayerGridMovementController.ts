@@ -152,7 +152,7 @@ export class PlayerGridMovementController extends Directionable
     private processPathfinderInput(): void {
         if (!this._movingByPathfinder) return;
 
-        const transform = this.gameObject.transform;
+        const transform = this.transform;
         const currentPositionVector2 = this._tempVector2.set(transform.localPosition.x, transform.localPosition.y);
         const currentPath = this._findedPath![this._currentPathIndex];
         const distance = currentPath.distanceTo(currentPositionVector2);
@@ -190,7 +190,7 @@ export class PlayerGridMovementController extends Directionable
 
     private processMovement(): void {
         if (!this.isMoving) return;
-        const transform = this.gameObject.transform;
+        const transform = this.transform;
         const vector2Pos = new Vector2(transform.localPosition.x, transform.localPosition.y);
         let distance = vector2Pos.distanceTo(this._targetGridPosition);
 
@@ -411,8 +411,8 @@ export class PlayerGridMovementController extends Directionable
      */
     public get positionInGrid(): Vector2 {
         return new Vector2(
-            Math.floor(this.gameObject.transform.localPosition.x / this._gridCellWidth),
-            Math.floor(this.gameObject.transform.localPosition.y / this._gridCellHeight)
+            Math.floor(this.transform.localPosition.x / this._gridCellWidth),
+            Math.floor(this.transform.localPosition.y / this._gridCellHeight)
         );
     }
 }

@@ -25,7 +25,7 @@ export class TrackCameraController extends Component {
         if (this._trackTarget) {
             const targetPosition = this._tempVector.copy(this._trackTarget.transform.position);
             targetPosition.z += this._cameraDistanceOffset;
-            this.gameObject.transform.position.copy(targetPosition);
+            this.transform.position.copy(targetPosition);
         }
     }
 
