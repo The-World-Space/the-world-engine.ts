@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "three";
+import { Vector2 } from "three";
 import { Pathfinder } from "../ai/pathfind/Pathfinder";
 import { GridPointer } from "../input/GridPointer";
 import { PointerGridEvent } from "../input/PointerGridInputListener";
@@ -35,21 +35,15 @@ export class PlayerGridMovementController extends Directionable
     private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
 
-    private readonly _tempVector3: Vector3 = new Vector3();
     private readonly _tempVector2: Vector2 = new Vector2();
 
     protected override start(): void {
         this._pathfinder = new Pathfinder(this._collideMaps);
 
-        const transform = this.gameObject.transform;
-        const worldPosition = transform.getWorldPosition(this._tempVector3);
-        worldPosition.x = this._gridCenter.x + this._initPosition.x * this._gridCellWidth;
-        worldPosition.y = this._gridCenter.y + this._initPosition.y * this._gridCellHeight;
-        if (transform.parent) {
-            transform.localPosition.copy(transform.parent.worldToLocal(worldPosition));
-        } else {
-            transform.localPosition.copy(worldPosition);
-        }
+        const transform = this.transform;
+        const position = transform.position;
+        position.x = this._gridCenter.x + this._initPosition.x * this._gridCellWidth;
+        position.y = this._gridCenter.y + this._initPosition.y * this._gridCellHeight;
         this._currentGridPosition.set(transform.localPosition.x, transform.localPosition.y);
     }
 

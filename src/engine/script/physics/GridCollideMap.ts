@@ -121,12 +121,10 @@ export class GridCollideMap extends Component implements IGridCollidable {
             this._colliderImages.delete(`${x}_${y}`);
         }
     }
-    
-    private readonly _tempVector3 = new Vector3();
 
     public checkCollision(x: number, y: number, width: number, height: number): boolean {
         if (!this._collideEnabled) return false;
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         x -= worldPosition.x;
         y -= worldPosition.y;
         
@@ -187,17 +185,15 @@ export class GridCollideMap extends Component implements IGridCollidable {
     }
 
     public get gridCenter(): Vector2 {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         return new Vector2(worldPosition.x, worldPosition.y);
     }
 
     public get gridCenterX(): number {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
-        return worldPosition.x;
+        return this.gameObject.transform.position.x;
     }
 
     public get gridCenterY(): number {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
-        return worldPosition.y;
+        return this.gameObject.transform.position.y;
     }
 }

@@ -23,30 +23,24 @@ export class TrackCameraController extends Component {
 
     protected override start(): void {
         if (this._trackTarget) {
-            const targetPosition = this._trackTarget.transform.getWorldPosition(this._tempVector);
+            const targetPosition = this._tempVector.copy(this._trackTarget.transform.position);
             targetPosition.z += this._cameraDistanceOffset;
-            if (this.gameObject.transform.parent) {
-                this.gameObject.transform.parent.worldToLocal(targetPosition);
-            }
-            this.gameObject.transform.localPosition.copy(targetPosition);
+            this.gameObject.transform.position.copy(targetPosition);
         }
     }
 
     private readonly _tempVector: Vector3 = new Vector3();
 
     public update(): void {
-        const targetPosition = this._trackTarget!.transform.getWorldPosition(this._tempVector);
+        const targetPosition = this._tempVector.copy(this._trackTarget!.transform.position);
         targetPosition.z += this._cameraDistanceOffset;
         targetPosition.x += this._targetOffset.x;
         targetPosition.y += this._targetOffset.y;
-        const transform = this.gameObject.transform;
-        if (transform.parent) {
-            transform.parent.worldToLocal(targetPosition);
-        }
+        const transform = this.transform;
         if (this._lerpTrack) {
-            transform.localPosition.lerp(targetPosition, 0.1);
+            transform.position.lerp(targetPosition, 0.1);
         } else {
-            transform.localPosition.copy(targetPosition);
+            transform.position.copy(targetPosition);
         }
 
         if (this._pixelPerfect) {

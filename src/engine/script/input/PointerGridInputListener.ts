@@ -82,7 +82,7 @@ export class PointerGridInputListener extends Component {
         let cameraLocalPosition: Vector3;
         this.engine.cameraContainer.camera!.getWorldPosition(this._tempVector3);
         if (this.gameObject.transform.parent) {
-            cameraLocalPosition = this.gameObject.transform.parent!.worldToLocal(this._tempVector3);
+            cameraLocalPosition = this.gameObject.transform.parent!.inverseTransformPoint(this._tempVector3);
         } else { // if no parent transform, world position is same as local position
             cameraLocalPosition = this._tempVector3;
         }
@@ -117,7 +117,7 @@ export class PointerGridInputListener extends Component {
     }
 
     private createPointerGridEventFromOffset(offsetX: number, offsetY: number, button: number): PointerGridEvent {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         
         const positionX = this._css3DObject!.position.x + worldPosition.x - this._inputWidth / 2 + 
             offsetX - this._gridCenter.x;

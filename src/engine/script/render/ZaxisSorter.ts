@@ -1,4 +1,3 @@
-import { Vector3 } from "three";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class ZaxisSorter extends ZaxisSortable {
@@ -13,16 +12,9 @@ export class ZaxisSorter extends ZaxisSortable {
         this.gameObject.removeComponent(this);
     }
 
-    private readonly _tempVector: Vector3 = new Vector3();
-
     public update(): void {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector);
+        const worldPosition = this.transform.position;
         worldPosition.z = -worldPosition.y + this._offset;
-        if (this.gameObject.transform.parent) {
-            this.gameObject.transform.localPosition.copy(this.gameObject.transform.parent!.worldToLocal(worldPosition));
-        } else { // if no parent transform, world position is same as local position
-            this.gameObject.transform.localPosition.copy(worldPosition);
-        }
 
         this.gameObject.getComponentsInChildren().forEach(component => {
             const cAny = component as any;

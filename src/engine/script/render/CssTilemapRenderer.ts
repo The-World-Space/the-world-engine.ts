@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "three";
+import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
@@ -243,23 +243,21 @@ export class CssTilemapRenderer extends Component{
             this._htmlCanvasElement.height = this._rowCount * this._tileHeight;
         }
     }
-
-    protected readonly _tempVector3: Vector3 = new Vector3();
     
     public get gridCenter(): Vector2 {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         const offsetX = this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2;
         const offsetY = this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2;
         return new Vector2(worldPosition.x + offsetX, worldPosition.y + offsetY);
     }
 
     public get gridCenterX(): number {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         return worldPosition.x + (this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2);
     }
 
     public get gridCenterY(): number {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         return worldPosition.y + (this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2);
     }
 }

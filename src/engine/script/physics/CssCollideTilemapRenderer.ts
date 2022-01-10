@@ -69,7 +69,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
 
     public checkCollision(x: number, y: number, width: number, height: number): boolean {
         if (!this._collideEnabled) return false;
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.gameObject.transform.position;
         x -= worldPosition.x;
         y -= worldPosition.y;
 

@@ -529,7 +529,7 @@ export class Transform {
      * Transforms position from local space to world space.
      * @param position A local position.
      */
-     public transformPoint(position: Vector3): Vector3 {
+    public transformPoint(position: Vector3): Vector3 {
         this.updateMatrixRecursivelyFromAncestorToThis();
         return this._object3D.localToWorld(position);
     }

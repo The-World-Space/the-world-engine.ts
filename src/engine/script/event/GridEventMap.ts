@@ -76,11 +76,9 @@ export class GridEventMap extends Component implements IGridCoordinatable {
                 .getGameObject(gameObjectRef));
         this._eventVisualizeImages.push(gameObjectRef.ref!);
     }
-    
-    private readonly _tempVector3 = new Vector3();
 
     public tryInvokeEvent(x: number, y: number, width: number, height: number, target: GameObject): boolean {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.transform.position;
         x -= worldPosition.x;
         y -= worldPosition.y;
         
@@ -129,17 +127,17 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     }
 
     public get gridCenter(): Vector2 {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.transform.position;
         return new Vector2(worldPosition.x, worldPosition.y);
     }
 
     public get gridCenterX(): number {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.transform.position;
         return worldPosition.x;
     }
 
     public get gridCenterY(): number {
-        const worldPosition = this.gameObject.transform.getWorldPosition(this._tempVector3);
+        const worldPosition = this.transform.position;
         return worldPosition.y;
     }
 }

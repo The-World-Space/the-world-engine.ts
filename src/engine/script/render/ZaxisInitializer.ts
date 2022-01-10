@@ -1,4 +1,3 @@
-import { Vector3 } from "three";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { ZaxisSortable } from "./ZaxisSortable";
 
@@ -16,15 +15,12 @@ export class ZaxisInitializer extends ZaxisSortable {
         this.process();
     }
 
-    private readonly _tempVector3 = new Vector3();
-
     private process(): void {
         this.gameObject.getComponentsInChildren().forEach(component => {
             const cAny = component as any;
             if (cAny.onSortByZaxis) {
                 if (typeof cAny.onSortByZaxis === "function") {
-                    const worldPosition = component.gameObject.transform.getWorldPosition(this._tempVector3);
-                    cAny.onSortByZaxis(worldPosition.z);
+                    cAny.onSortByZaxis(component.transform.position.z);
                 }
             }
         });
@@ -36,8 +32,7 @@ export class ZaxisInitializer extends ZaxisSortable {
         while (currentAncestor) {
             const zaxisInitializer = currentAncestor.gameObject.getComponent(ZaxisInitializer);
             if (zaxisInitializer) {
-                const worldPosition = currentAncestor.gameObject.transform.getWorldPosition(new Vector3());
-                onSortByZaxis(worldPosition.z);
+                onSortByZaxis(currentAncestor.position.z);
                 return;
             }
             if (currentAncestor.parent === null) break;
