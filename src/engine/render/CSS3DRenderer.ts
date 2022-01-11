@@ -70,14 +70,14 @@ export class CSS3DRenderer {
     private _cameraElement: HTMLElement;
 
     public constructor() {
-        const domElement = document.createElement( "div" );
+        const domElement = document.createElement("div");
         domElement.style.overflow = "hidden";
         this.domElement = domElement;
 
-        this.domElement.onscroll = () => { //block scroll to prevent camera bug
-            this.domElement.scrollLeft = 0;
-            this.domElement.scrollTop = 0;
-        };
+        // this.domElement.onscroll = () => { //block scroll to prevent camera bug
+        //     this.domElement.scrollLeft = 0;
+        //     this.domElement.scrollTop = 0;
+        // };
         
         this._cameraElement = document.createElement("div");
         this._cameraElement.style.transformStyle = "preserve-3d";
@@ -92,15 +92,15 @@ export class CSS3DRenderer {
         };
     }
 
-    public render(scene: THREE.Scene, camera: THREE.Camera) {
-        const fov = camera.projectionMatrix.elements[ 5 ] * this._heightHalf;
-        if (this._cache.camera.fov !== fov ) {
+    public render(scene: THREE.Scene, camera: THREE.Camera): void {
+        const fov = camera.projectionMatrix.elements[5] * this._heightHalf;
+        if (this._cache.camera.fov !== fov) {
             this.domElement.style.perspective = (camera as any).isPerspectiveCamera ? fov + "px" : "";
             this._cache.camera.fov = fov;
         }
 
-        if ( scene.autoUpdate === true ) scene.updateMatrixWorld();
-        if ( camera.parent === null ) camera.updateMatrixWorld();
+        if (scene.autoUpdate === true) scene.updateMatrixWorld();
+        if (camera.parent === null) camera.updateMatrixWorld();
         
         let tx: number, ty: number;
         if ((camera as any).isOrthographicCamera) {
@@ -117,7 +117,7 @@ export class CSS3DRenderer {
         
         const style = cameraCSSMatrix + "translate(" + this._widthHalf + "px," + this._heightHalf + "px)";
 
-        if (this._cache.camera.style !== style ) {
+        if (this._cache.camera.style !== style) {
             this._cameraElement.style.transform = style;
             this._cache.camera.style = style;
         }
@@ -136,11 +136,11 @@ export class CSS3DRenderer {
         this._cameraElement.style.height = height + "px";
     }
 
-    private epsilon(value: number) {
+    private epsilon(value: number): number {
         return Math.abs(value) < 1e-10 ? 0 : value;
     }
 
-    private getCameraCSSMatrix(matrix: THREE.Matrix4) {
+    private getCameraCSSMatrix(matrix: THREE.Matrix4): string {
         const m = matrix.elements;
         const ep = this.epsilon;
         return "matrix3d(" + ep(m[0 ]) + "," + ep(-m[1 ]) + "," + ep(m[2 ]) + "," + ep(m[3 ]) + ","
@@ -149,22 +149,22 @@ export class CSS3DRenderer {
                            + ep(m[12]) + "," + ep(-m[13]) + "," + ep(m[14]) + "," + ep(m[15]) + ")";
     }
 
-    private getObjectCSSMatrix(matrix: THREE.Matrix4) {
+    private getObjectCSSMatrix(matrix: THREE.Matrix4): string {
         const m = matrix.elements;
         const ep = this.epsilon;
         const matrix3d = "matrix3d(" + ep(m[0 ]) + "," + ep(m[1 ]) + "," + ep(m[2 ]) + "," + ep(m[3 ])
                                + "," + ep(-m[4]) + "," + ep(-m[5]) + "," + ep(-m[6]) + "," + ep(-m[7])
                                + "," + ep(m[8 ]) + "," + ep(m[9 ]) + "," + ep(m[10]) + "," + ep(m[11])
                                + "," + ep(m[12]) + "," + ep(m[13]) + "," + ep(m[14]) + "," + ep(m[15]) + ")";
-        return "translate(50%,50%)" + matrix3d;
+        return "translate(-50%,-50%)" + matrix3d;
     }
 
-    private renderObject(object: any, scene: THREE.Scene, camera: THREE.Camera, cameraCSSMatrix: string) {
-        if (object.isTheWorldCSS3DObject) {
+    private renderObject(object: any, scene: THREE.Scene, camera: THREE.Camera, cameraCSSMatrix: string): void {
+        if (object.isCSS3DObject) {
             object.onBeforeRender(this, scene, camera);
             let style;
 
-            if (object.isTheWorldCSS3DSprite) {
+            if (object.isCSS3DSprite) {
                 // http://swiftcoder.wordpress.com/2008/11/25/constructing-a-billboard-matrix/
                 _matrix.copy(camera.matrixWorldInverse);
                 _matrix.transpose();
