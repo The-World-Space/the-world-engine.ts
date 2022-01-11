@@ -6,24 +6,32 @@ import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
 import { ReadOnlyVector3 } from "../math/ReadOnlyVector3";
 import { WritableVector3 } from "../math/WritableVector3";
+import { EngineGlobalObject } from "../EngineGlobalObject";
 
 /**
  * transform that delegates Object3D
  */
 export class Transform {
-    private _object3D: Object3D;
-    private _gameObject: GameObject;
+    private readonly _object3D: Object3D;
+    private readonly _gameObject: GameObject;
 
-    private _worldPosition: ObservableVector3;
-    private _worldRotationEuler: ObservableEuler;
-    private _worldRotation: ObservableQuaternion;
-    private _worldScale: ObservableVector3;
+    private readonly _worldPosition: ObservableVector3;
+    private readonly _worldRotationEuler: ObservableEuler;
+    private readonly _worldRotation: ObservableQuaternion;
+    private readonly _worldScale: ObservableVector3;
     private _hasChanged = false;
 
     // if this value is true, matrix computed from ancesstor to this local recursively, otherwise, matrix computed from world values
     private _coordinateAsOfLocal = true;
     private _localMatrixNeedUpdate = false;
-    private _worldMatrixNeedUpdate = false;
+    
+    private get _worldMatrixNeedUpdate(): boolean {
+        return this._object3D.matrixWorldNeedsUpdate;
+    }
+    private set _worldMatrixNeedUpdate(value: boolean) {
+        this._object3D.matrixWorldNeedsUpdate = value;
+    }
+
     private _worldPositionRotationScaleNeedToUpdate = false;
     private _localPositionRotationScaleNeedToUpdate = false;
 
@@ -104,6 +112,8 @@ export class Transform {
         observableWorldScale.onBeforeGetComponent(onBeforeGetWorldBind);
         observableWorldScale.onChange(onWorldChangeBind);
         this._worldScale = observableWorldScale;
+
+        this.setMatrixNeedUpdateRecursively();// for initialize render objects
     }
 
     // #region observable event
@@ -120,7 +130,7 @@ export class Transform {
     private onLocalChange(): void {
         this._coordinateAsOfLocal = true;
         this.setMatrixNeedUpdateRecursively();
-        this._hasChanged = true;
+        this.setHasChangedRecursively();
     }
 
     private onLocalEulerRotationChange() {
@@ -129,7 +139,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = true;
         this.setMatrixNeedUpdateRecursively();
-        this._hasChanged = true;
+        this.setHasChangedRecursively();
     }
 
     private onLocalRotationChange() {
@@ -138,7 +148,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = true;
         this.setMatrixNeedUpdateRecursively();
-        this._hasChanged = true;
+        this.setHasChangedRecursively();
     }
 
     // #endregion
@@ -155,7 +165,7 @@ export class Transform {
     private onWorldChange(): void {
         this._coordinateAsOfLocal = false;
         this.setMatrixNeedUpdateRecursively();
-        this._hasChanged = true;
+        this.setHasChangedRecursively();
     }
     
     private onWorldEulerRotationChange(): void {
@@ -163,7 +173,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = false;
         this.setMatrixNeedUpdateRecursively();
-        this._hasChanged = true;
+        this.setHasChangedRecursively();
     }
 
     private onWorldRotationChange(): void {
@@ -171,7 +181,7 @@ export class Transform {
 
         this._coordinateAsOfLocal = false;
         this.setMatrixNeedUpdateRecursively();
-        this._hasChanged = true;
+        this.setHasChangedRecursively();
     }
 
     // #endregion
@@ -179,6 +189,11 @@ export class Transform {
     // #endregion
 
     private setMatrixNeedUpdateRecursively(): void {
+        (this.gameObject.engine as EngineGlobalObject).transformMatrixProcessor.enqueueTransformToUpdate(this);
+        this.setMatrixNeedUpdateRecursivelyInternal();
+    }
+
+    private setMatrixNeedUpdateRecursivelyInternal(): void {
         if (this._localMatrixNeedUpdate /*|| this.worldMatrixNeedUpdate*/) {
             return;
         }
@@ -186,7 +201,16 @@ export class Transform {
         this._worldMatrixNeedUpdate = true;
         for (const child of this._object3D.children) {
             if (child.userData instanceof Transform) {
-                (child.userData as Transform).setMatrixNeedUpdateRecursively();
+                child.userData.setMatrixNeedUpdateRecursivelyInternal();
+            }
+        }
+    }
+
+    private setHasChangedRecursively(): void {
+        this._hasChanged = true;
+        for (const child of this._object3D.children) {
+            if (child.userData instanceof Transform) {
+                child.userData.setHasChangedRecursively();
             }
         }
     }
@@ -301,6 +325,81 @@ export class Transform {
         (this.localPosition as unknown as ObservableVector3).onChange(this._onLocalChangeBind);
         (this.localRotation as unknown as ObservableQuaternion)._onChange(this._onLocalRotationChangeBind);
         (this.localScale as unknown as ObservableVector3).onChange(this._onLocalChangeBind);
+    }
+
+    /** @internal */
+    public isRegisteredToProcessor = false;
+
+    /** @internal */
+    public tryUpdateWorldMatrixRecursivelyFromThisToChildren(rerenderObjects: Object3D[]): boolean {
+        const parent = this.parent;
+        if (parent) if (parent._worldMatrixNeedUpdate) return false;
+        return this.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(rerenderObjects);
+    }
+
+    private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(rerenderObjects: Object3D[]): boolean {
+        if (this._coordinateAsOfLocal) {
+            if (!this._localMatrixNeedUpdate /*&& !this.worldMatrixNeedUpdate*/) return true;
+            for (const child of this._object3D.children) {
+                if (!(child.userData instanceof Transform)) rerenderObjects.push(child);
+            }
+            
+            const localMatrix = this._object3D.matrix;
+
+            const emptyFunction = Transform._emptyFunction;
+            (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
+            (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
+            (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
+            
+            localMatrix.compose(this.localPosition, this.localRotation, this.localScale);
+            
+            this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
+            (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
+            (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
+            (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
+            
+            const parent = this.parent;
+            if (parent) {
+                this._object3D.matrixWorld.multiplyMatrices(parent._object3D.matrixWorld, localMatrix);
+            } else {
+                this._object3D.matrixWorld.copy(localMatrix);
+            }
+            
+            this._localMatrixNeedUpdate = false;
+            this._worldMatrixNeedUpdate = false;
+            this._worldPositionRotationScaleNeedToUpdate = true;
+        } else {
+            if (!this._worldMatrixNeedUpdate) return true;
+            for (const child of this._object3D.children) {
+                if (!(child.userData instanceof Transform)) rerenderObjects.push(child);
+            }
+            
+            const emptyFunction = Transform._emptyFunction;
+            this._worldPosition.onBeforeGetComponent(emptyFunction);
+            this._worldRotation.onBeforeGetComponent(emptyFunction);
+            this._worldScale.onBeforeGetComponent(emptyFunction);
+
+            this._object3D.matrixWorld.compose(
+                (this._worldPosition as unknown as Vector3),
+                (this._worldRotation as unknown as Quaternion),
+                (this._worldScale as unknown as Vector3)
+            );
+
+            this._worldPosition.onBeforeGetComponent(this._onBeforeGetWorldBind);
+            this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
+            this._worldScale.onBeforeGetComponent(this._onBeforeGetWorldBind);
+
+            this._localMatrixNeedUpdate = true;
+            this._worldMatrixNeedUpdate = false;
+            this._localPositionRotationScaleNeedToUpdate = true;
+        }
+
+        for (const child of this._object3D.children) {
+            if (child.userData instanceof Transform) {
+                child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(rerenderObjects);
+            }
+        }
+        return true;
     }
 
     // #endregion
@@ -713,5 +812,10 @@ export class Transform {
      */
     public unsafeGetObject3D(): Object3D {
         return this._object3D;
+    }
+
+    /** @internal */
+    public toJSON(): any {
+        return { }; //for pervent infinite recursion
     }
 }

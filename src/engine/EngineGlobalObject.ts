@@ -8,6 +8,7 @@ import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
 import { SceneProcessor } from "./SceneProcessor";
 import { IEngine } from "./IEngine";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
+import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 
 export class EngineGlobalObject implements IEngine {
     private readonly _rootScene: Scene;
@@ -21,6 +22,7 @@ export class EngineGlobalObject implements IEngine {
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
     private readonly _coroutineProcessor: CoroutineProcessor;
+    private readonly _transformMatrixProcessor: TransformMatrixProcessor;
     
     public constructor(
         rootScene: Scene,
@@ -30,6 +32,7 @@ export class EngineGlobalObject implements IEngine {
         gameScreen: IReadonlyGameScreen,
         sceneProcessor: SceneProcessor,
         coroutineProcessor: CoroutineProcessor,
+        transformMatrixProcessor: TransformMatrixProcessor,
         renderTargetDom: HTMLElement
     ) {
         this._rootScene = rootScene;
@@ -39,6 +42,7 @@ export class EngineGlobalObject implements IEngine {
         this._screen = gameScreen;
         this._sceneProcessor = sceneProcessor;
         this._coroutineProcessor = coroutineProcessor;
+        this._transformMatrixProcessor = transformMatrixProcessor;
         this._inputHandler = new InputHandler(renderTargetDom);
         this._instantlater = new Instantiater(this);
     }
@@ -81,5 +85,9 @@ export class EngineGlobalObject implements IEngine {
 
     public get coroutineProcessor(): CoroutineProcessor {
         return this._coroutineProcessor;
+    }
+
+    public get transformMatrixProcessor(): TransformMatrixProcessor {
+        return this._transformMatrixProcessor;
     }
 }

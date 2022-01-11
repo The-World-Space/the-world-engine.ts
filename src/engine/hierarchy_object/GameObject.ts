@@ -10,20 +10,20 @@ import { IEngine } from "../IEngine";
  * base class for all entities in scenes
  */
 export class GameObject {
+    private _engineGlobalObject: EngineGlobalObject;
     private _transform: Transform;
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
     private _components: Component[];
-    private _engineGlobalObject: EngineGlobalObject;
 
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
+        this._engineGlobalObject = engineGlobalObject;
         this._activeInHierarchy = true;
         this._transform = new Transform(this);
         this._transform.unsafeGetObject3D().visible = true;
         this._transform.unsafeGetObject3D().name = name;
         this._activeSelf = true;
         this._components = [];
-        this._engineGlobalObject = engineGlobalObject;
     }
 
     private registerTransform(transform: Transform): void {

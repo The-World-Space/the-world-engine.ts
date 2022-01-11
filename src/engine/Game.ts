@@ -1,5 +1,4 @@
 import * as THREE from "three";
-import { CSS3DRenderer } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Bootstrapper } from "./bootstrap/Bootstrapper";
 import { CameraContainer } from "./render/CameraContainer";
 import { EngineGlobalObject } from "./EngineGlobalObject";
@@ -13,6 +12,8 @@ import { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
 import { Transform } from "./hierarchy_object/Transform";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { Color } from "./render/Color";
+import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
+import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
 
 /**
  * game engine class
@@ -20,13 +21,14 @@ import { Color } from "./render/Color";
 export class Game {
     private readonly _rootScene: Scene;
     private readonly _gameScreen: GameScreen;
-    private readonly _renderer: CSS3DRenderer;
+    private readonly _renderer: OptimizedCSS3DRenderer;
     private readonly _cameraContainer: CameraContainer;
     private readonly _clock: THREE.Clock;
     private readonly _time: Time;
     private readonly _gameState: GameState;
     private readonly _sceneProcessor: SceneProcessor;
     private readonly _coroutineProcessor: CoroutineProcessor;
+    private readonly _transformMatrixProcessor: TransformMatrixProcessor;
     private readonly _engineGlobalObject: EngineGlobalObject;
     private readonly _container: HTMLElement;
     private _animationFrameId: number|null;
@@ -42,7 +44,7 @@ export class Game {
         this._rootScene = new Scene();
         this._gameScreen = new GameScreen(container.clientWidth, container.clientHeight);
         this._container = container;
-        this._renderer = new CSS3DRenderer();
+        this._renderer = new OptimizedCSS3DRenderer();
         this._renderer.setSize(container.clientWidth, container.clientHeight);
         this._renderer.domElement.style.width = "100%";
         this._renderer.domElement.style.height = "100%";
@@ -54,6 +56,7 @@ export class Game {
         this._gameState = new GameState(GameStateKind.WaitingForStart);
         this._sceneProcessor = new SceneProcessor();
         this._coroutineProcessor = new CoroutineProcessor(this._time);
+        this._transformMatrixProcessor = new TransformMatrixProcessor();
         this._engineGlobalObject = new EngineGlobalObject(
             this._rootScene,
             this._cameraContainer,
@@ -62,6 +65,7 @@ export class Game {
             this._gameScreen,
             this._sceneProcessor,
             this._coroutineProcessor,
+            this._transformMatrixProcessor,
             this._renderer.domElement
         );
         this._animationFrameId = null;
@@ -108,7 +112,8 @@ export class Game {
         this._sceneProcessor.update();
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist in the scene.");
-        this._renderer.render(this._rootScene, this._cameraContainer.camera);
+        this._transformMatrixProcessor.update();
+        this._renderer.render(this._transformMatrixProcessor.rerenderObjects, this._rootScene, this._cameraContainer.camera);
         this._coroutineProcessor.endFrameAfterProcess();
         this.loop();
     }
@@ -121,7 +126,8 @@ export class Game {
         this._coroutineProcessor.tryCompact();
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist.");
-        this._renderer.render(this._rootScene, this._cameraContainer.camera);
+        this._transformMatrixProcessor.update();
+        this._renderer.render(this._transformMatrixProcessor.rerenderObjects, this._rootScene, this._cameraContainer.camera);
         this._coroutineProcessor.endFrameAfterProcess();
     }
 
