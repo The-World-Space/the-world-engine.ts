@@ -16,6 +16,7 @@ export class TestBootstrapper extends Bootstrapper {
                 }))
 
             .withChild(instantlater.buildGameObject("test_object")
+                .active(false)
                 .withComponent(CssSpriteRenderer)
                 .withComponent(Rotator))
 

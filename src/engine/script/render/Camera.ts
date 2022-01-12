@@ -24,6 +24,10 @@ export class Camera extends Component {
         this.createOrUpdateCamera();
     }
 
+    public override onWorldMatrixUpdated(): void {
+        //this._camera?.matrixWorldInverse.copy(this.matrixWorld).invert();
+    }
+
     private createOrUpdateCamera(): void {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
 

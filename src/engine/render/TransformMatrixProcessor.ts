@@ -2,31 +2,57 @@ import { Object3D } from "three";
 import { Transform } from "../hierarchy_object/Transform";
 
 export class TransformMatrixProcessor {
-    private readonly _transformsNeedToUpdate: Set<Transform>;
-    private readonly _rerenderObjects: Object3D[];
+    private readonly _transformsNeedToUpdate: Transform[];
+    private _rerenderObjectsReadBuffer: Set<Object3D>;
+    private _rerenderObjectsWriteBuffer: Set<Object3D>;
 
     public constructor() {
-        this._transformsNeedToUpdate = new Set();
-        this._rerenderObjects = [];
+        this._transformsNeedToUpdate = [];
+        this._rerenderObjectsReadBuffer = new Set();
+        this._rerenderObjectsWriteBuffer = new Set();
+    }
+
+    private switchBuffer(): void {
+        const tmp = this._rerenderObjectsReadBuffer;
+        this._rerenderObjectsReadBuffer = this._rerenderObjectsWriteBuffer;
+        this._rerenderObjectsWriteBuffer = tmp;
     }
 
     public enqueueTransformToUpdate(transform: Transform): void {
         if (transform.isRegisteredToProcessor) return;
         transform.isRegisteredToProcessor = true;
-        this._transformsNeedToUpdate.add(transform);
+        this._transformsNeedToUpdate.push(transform);
     }
 
-    public update(): void {
-        const rerenderObjects = this._rerenderObjects;
-        rerenderObjects.length = 0;
+    public enqueueRenderObject(object: Object3D): void {
+        this._rerenderObjectsWriteBuffer.add(object);
+    }
+
+    public flush(): void {
+        this._rerenderObjectsReadBuffer.clear();
+    }
+
+    public update(): Set<Object3D> {
         for (const transform of this._transformsNeedToUpdate) {
-            transform.tryUpdateWorldMatrixRecursivelyFromThisToChildren(rerenderObjects);
+            transform.tryUpdateWorldMatrixRecursivelyFromThisToChildren();
             transform.isRegisteredToProcessor = false;
         }
-        this._transformsNeedToUpdate.clear();
+        this._transformsNeedToUpdate.length = 0;
+
+        for (const object3D of this._rerenderObjectsWriteBuffer) {
+            TransformMatrixProcessor.updateObject3DWorldMatrixRecursively(object3D);
+        }
+        this.switchBuffer();
+        return this._rerenderObjectsReadBuffer;
     }
 
-    public get rerenderObjects(): readonly Object3D[] {
-        return this._rerenderObjects;
+    private static updateObject3DWorldMatrixRecursively(object3D: Object3D): void {
+        if (object3D.matrixAutoUpdate) object3D.updateMatrix();
+        object3D.matrixWorld.multiplyMatrices(object3D.parent!.matrixWorld, object3D.matrix);
+        // update children
+        const children = object3D.children;
+        for (let i = 0, l = children.length; i < l; i++) {
+            TransformMatrixProcessor.updateObject3DWorldMatrixRecursively(children[i]);
+        }
     }
 }

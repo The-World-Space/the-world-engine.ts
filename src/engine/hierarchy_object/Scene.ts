@@ -9,6 +9,7 @@ export class Scene extends THREE.Scene {
     public constructor() {
         super();
         this.matrixAutoUpdate = false;
+        this.autoUpdate = false;
     }
 
     private registerTransform(transform: Transform): void {

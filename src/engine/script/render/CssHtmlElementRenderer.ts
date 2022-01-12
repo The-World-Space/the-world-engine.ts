@@ -40,11 +40,17 @@ export class CssHtmlElementRenderer extends Component {
     }
 
     public override onEnable(): void {
-        if (this._css3DObject) this._css3DObject.visible = true;
+        if (this._css3DObject) {
+            this._css3DObject.visible = true;   
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        }
     }
 
     public override onDisable(): void {
-        if (this._css3DObject) this._css3DObject.visible = false;
+        if (this._css3DObject) {
+            this._css3DObject.visible = false;   
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        }
     }
 
     public onSortByZaxis(zaxis: number): void {
@@ -109,6 +115,7 @@ export class CssHtmlElementRenderer extends Component {
                 this._htmlDivElement!.offsetHeight * this._centerOffset.y, 0
             );
             this._css3DObject.element.style.display = lastDisplayState;
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
     

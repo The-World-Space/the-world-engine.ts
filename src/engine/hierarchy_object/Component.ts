@@ -75,6 +75,12 @@ export abstract class Component {
     public onDisable(): void { }
 
     /**
+     * event function that calls after world matrix is updated
+     */
+    //eslint-disable-next-line @typescript-eslint/no-empty-function
+    public onWorldMatrixUpdated(): void { }
+
+    /**
      * starts a coroutine
      * @param coroutineIterator coroutine iterator
      * @returns corutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable

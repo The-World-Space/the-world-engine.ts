@@ -112,8 +112,9 @@ export class Game {
         this._sceneProcessor.update();
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist in the scene.");
-        this._transformMatrixProcessor.update();
-        this._renderer.render(this._transformMatrixProcessor.rerenderObjects, this._rootScene, this._cameraContainer.camera);
+        const renderObjects = this._transformMatrixProcessor.update();
+        this._renderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
+        this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
         this.loop();
     }
@@ -126,8 +127,9 @@ export class Game {
         this._coroutineProcessor.tryCompact();
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist.");
-        this._transformMatrixProcessor.update();
-        this._renderer.render(this._transformMatrixProcessor.rerenderObjects, this._rootScene, this._cameraContainer.camera);
+        const renderObjects = this._transformMatrixProcessor.update();
+        this._renderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
+        this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
     }
 

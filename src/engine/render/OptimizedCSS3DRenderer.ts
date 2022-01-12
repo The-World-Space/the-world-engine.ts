@@ -47,7 +47,7 @@ export class OptimizedCSS3DRenderer {
         };
     }
 
-    public render(renderObjects: readonly THREE.Object3D[], scene: THREE.Scene, camera: THREE.Camera): void {
+    public render(renderObjects: Set<THREE.Object3D>, scene: THREE.Scene, camera: THREE.Camera): void {
         const fov = camera.projectionMatrix.elements[5] * this._heightHalf;
         if (this._cache.camera.fov !== fov) {
             this.domElement.style.perspective = (camera as any).isPerspectiveCamera ? fov + "px" : "";
@@ -77,8 +77,8 @@ export class OptimizedCSS3DRenderer {
             this._cache.camera.style = style;
         }
 
-        for (let i = 0, l = renderObjects.length; i < l; i++) {
-            this.renderObject(renderObjects[i], scene, camera, cameraCSSMatrix);
+        for (const object of renderObjects) {
+            this.renderObject(object, scene, camera, cameraCSSMatrix);
         }
     }
 

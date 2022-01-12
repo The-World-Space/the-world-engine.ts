@@ -331,17 +331,19 @@ export class Transform {
     public isRegisteredToProcessor = false;
 
     /** @internal */
-    public tryUpdateWorldMatrixRecursivelyFromThisToChildren(rerenderObjects: Object3D[]): boolean {
+    public tryUpdateWorldMatrixRecursivelyFromThisToChildren(): boolean {
         const parent = this.parent;
         if (parent) if (parent._worldMatrixNeedUpdate) return false;
-        return this.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(rerenderObjects);
+        return this.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
     }
 
-    private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(rerenderObjects: Object3D[]): boolean {
+    private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(): boolean {
         if (this._coordinateAsOfLocal) {
             if (!this._localMatrixNeedUpdate /*&& !this.worldMatrixNeedUpdate*/) return true;
             for (const child of this._object3D.children) {
-                if (!(child.userData instanceof Transform)) rerenderObjects.push(child);
+                if (!(child.userData instanceof Transform)) {
+                    this.enqueueRenderAttachedObject3D(child);
+                }
             }
             
             const localMatrix = this._object3D.matrix;
@@ -371,7 +373,9 @@ export class Transform {
         } else {
             if (!this._worldMatrixNeedUpdate) return true;
             for (const child of this._object3D.children) {
-                if (!(child.userData instanceof Transform)) rerenderObjects.push(child);
+                if (!(child.userData instanceof Transform)) {
+                    this.enqueueRenderAttachedObject3D(child);
+                }
             }
             
             const emptyFunction = Transform._emptyFunction;
@@ -396,7 +400,7 @@ export class Transform {
 
         for (const child of this._object3D.children) {
             if (child.userData instanceof Transform) {
-                child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(rerenderObjects);
+                child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
             }
         }
         return true;
@@ -694,12 +698,25 @@ export class Transform {
         if (this_parent) return this_parent.isChildOf(parent);
         return false;
     }
+
+    private static readonly _quaternionBuffer = new Quaternion();
+
     /**
      * Rotates object to face point in space.
      * @param vector A world vector to look at.
      */
-    public lookAt(vector: Vector3 | number, y?: number, z?: number): void {
-        this._object3D.lookAt(vector, y, z);
+    public lookAt(vector: Vector3): void {
+        const parent = this.parent;
+
+        Transform._vector3Buffer.setFromMatrixPosition(this._object3D.matrixWorld);
+        const m = Transform._matrix4Buffer.lookAt(Transform._vector3Buffer, vector, this._object3D.up);
+        this._object3D.quaternion.setFromRotationMatrix(m);
+
+        if (parent) {
+            m.extractRotation(parent._object3D.matrixWorld);
+            const q = Transform._quaternionBuffer.setFromRotationMatrix(m);
+            this._object3D.quaternion.premultiply(q.invert());
+        }
     }
 
     public setRotationFromAxisAngle(axis: Vector3, angle: number): void {
@@ -812,6 +829,10 @@ export class Transform {
      */
     public unsafeGetObject3D(): Object3D {
         return this._object3D;
+    }
+
+    public enqueueRenderAttachedObject3D(rerenderObject: Object3D): void {
+        (this.gameObject.engine as EngineGlobalObject).transformMatrixProcessor.enqueueRenderObject(rerenderObject);
     }
 
     /** @internal */
