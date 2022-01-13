@@ -33,7 +33,9 @@ export class TransformMatrixProcessor {
     }
 
     public update(): Set<Object3D> {
-        for (const transform of this._transformsNeedToUpdate) {
+        const transformsNeedToUpdate = this._transformsNeedToUpdate;
+        for (let i = 0; i < transformsNeedToUpdate.length; i++) {
+            const transform = transformsNeedToUpdate[i];
             transform.tryUpdateWorldMatrixRecursivelyFromThisToChildren();
             transform.isRegisteredToProcessor = false;
         }

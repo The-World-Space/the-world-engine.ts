@@ -86,7 +86,9 @@ export class CompactableCollection<T> {
     }
 
     public forEach(callback: (item: T) => void): void {
-        for (const item of this._list) {
+        const list = this._list;
+        for (let i = 0; i < list.length; i++) {
+            const item = list[i];
             if (item) callback(item);
         }
     }

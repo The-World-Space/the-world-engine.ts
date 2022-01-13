@@ -99,7 +99,9 @@ export class GameObject {
                 return null;
             }
         }
-        for (const requiredComponentCtor of component.requiredComponents) {
+        const requiredComponents = component.requiredComponents;
+        for (let i = 0; i < requiredComponents.length; i++) {
+            const requiredComponentCtor = requiredComponents[i];
             const requiredComponent = this.getComponent(requiredComponentCtor);
             if (!requiredComponent) {
                 console.warn(`Component ${requiredComponentCtor.name} is required by Component ${componentCtor.name} on GameObject ${this.name}`);
@@ -125,7 +127,9 @@ export class GameObject {
      * @returns if success, return the component instance
      */
     public getComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
-        for (const component of this._components) {
+        const components = this._components;
+        for (let i = 0; i < components.length; i++) {
+            const component = components[i];
             if (component instanceof componentCtor) return component;
         }
         return null;
@@ -150,13 +154,15 @@ export class GameObject {
      */
     public getComponents<T extends Component>(componentCtor?: ComponentConstructor<T>): T[] {
         if (!componentCtor) return this._components.slice() as T[];
-        const components: T[] = [];
-        for (const component of this._components) {
+        const components = this._components;
+        const result: T[] = [];
+        for (let i = 0; i < components.length; i++) {
+            const component = components[i];
             if (component instanceof componentCtor) {
-                components.push(component);
+                result.push(component);
             }
         }
-        return components;
+        return result;
     }
 
     /**
@@ -232,12 +238,14 @@ export class GameObject {
      * @param componentCtor 
      */
     public foreachComponent<T extends Component>(callback: (component: T) => void, componentCtor?: ComponentConstructor<T>): void {
+        const components = this._components;
         if (!componentCtor) {
-            for (const component of this._components) {
-                callback(component as T);
+            for (let i = 0; i < components.length; i++) {
+                callback(components[i] as T);
             }
         } else {
-            for (const component of this._components) {
+            for (let i = 0; i < components.length; i++) {
+                const component = components[i];
                 if (component instanceof componentCtor) {
                     callback(component);
                 }
@@ -297,7 +305,9 @@ export class GameObject {
      * destroy the GameObject
      */
     public destroy(): void {
-        for (const component of this._components) {
+        const components = this._components;
+        for (let i = 0; i < components.length; i++) {
+            const component = components[i];
             component.enabled = false;
             component.stopAllCoroutines();
             component.onDestroy();
@@ -329,9 +339,11 @@ export class GameObject {
         this._activeInHierarchy = value;
         this._transform.unsafeGetObject3D().visible = this._activeInHierarchy;
 
+        const components = this._components;
         if (this._activeInHierarchy) {
             //enable components
-            for (const component of this._components) {
+            for (let i = 0; i < components.length; i++) {
+                const component = components[i];
                 if (component.enabled) {
                     component.onEnable();
                     component.unsafeTryEnqueueStart();
@@ -339,7 +351,8 @@ export class GameObject {
                 }
             }
         } else {
-            for (const component of this._components) {
+            for (let i = 0; i < components.length; i++) {
+                const component = components[i];
                 if (component.enabled) {
                     //disable components
                     component.onDisable();
@@ -601,15 +614,17 @@ export class GameObjectBuilder {
 
     private checkComponentRequirements(gameObject: GameObject): void {
         let componentRemoved = false;
-        for (const component of (gameObject as any)._components) {
-            if (component) {
-                for (const requiredComponentCtor of component.requiredComponents) {
-                    const requiredComponent = gameObject.getComponent(requiredComponentCtor);
-                    if (!requiredComponent) {
-                        console.warn(`Component ${requiredComponentCtor.name} is required by Component ${component.constructor.name} on GameObject ${gameObject.name}`);
-                        gameObject.removeComponent(component);
-                        componentRemoved = true;
-                    }
+        const components: Component[] = (gameObject as any)._components;
+        for (let i = 0; i < components.length; i++) {
+            const component = components[i];
+            const requiredComponents = component.requiredComponents;
+            for (let j = 0; j < requiredComponents.length; j++) {
+                const requiredComponentCtor = requiredComponents[j];
+                const requiredComponent = gameObject.getComponent(requiredComponentCtor);
+                if (!requiredComponent) {
+                    console.warn(`Component ${requiredComponentCtor.name} is required by Component ${component.constructor.name} on GameObject ${gameObject.name}`);
+                    gameObject.removeComponent(component);
+                    componentRemoved = true;
                 }
             }
         }
@@ -622,7 +637,11 @@ export class GameObjectBuilder {
      */
     public build(): GameObject {
         this.checkComponentRequirements(this._gameObject);
-        for (const child of this._children) (this._gameObject as any).registerTransform((child.build() as any)._transform);
+        const children = this._children;
+        for (let i = 0; i < children.length; i++) {
+            const child = children[i];
+            (this._gameObject as any).registerTransform((child.build() as any)._transform);
+        }
         return this._gameObject;
     }
 
@@ -630,9 +649,13 @@ export class GameObjectBuilder {
      * execute initialize function of all components recursively for it's children GameObjects
      */
     public initialize(): void {
-        for (const componentInitializeFunc of this._componentInitializeFuncList) {
-            componentInitializeFunc();
+        const componentInitializeFuncList = this._componentInitializeFuncList;
+        for (let i = 0; i < componentInitializeFuncList.length; i++) {
+            componentInitializeFuncList[i]();
         }
-        for (const child of this._children) child.initialize();
+        const children = this._children;
+        for (let i = 0; i < children.length; i++) {
+            children[i].initialize();
+        }
     }
 }

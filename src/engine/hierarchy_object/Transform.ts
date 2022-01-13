@@ -199,7 +199,9 @@ export class Transform {
         }
         this._localMatrixNeedUpdate = true;
         this._worldMatrixNeedUpdate = true;
-        for (const child of this._object3D.children) {
+        const children = this._object3D.children;
+        for (let i = 0, len = children.length; i < len; i++) {
+            const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.setMatrixNeedUpdateRecursivelyInternal();
             }
@@ -208,7 +210,9 @@ export class Transform {
 
     private setHasChangedRecursively(): void {
         this._hasChanged = true;
-        for (const child of this._object3D.children) {
+        const children = this._object3D.children;
+        for (let i = 0, len = children.length; i < len; i++) {
+            const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.setHasChangedRecursively();
             }
@@ -340,7 +344,9 @@ export class Transform {
     private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(): boolean {
         if (this._coordinateAsOfLocal) {
             if (!this._localMatrixNeedUpdate /*&& !this.worldMatrixNeedUpdate*/) return true;
-            for (const child of this._object3D.children) {
+            const object3D_children = this._object3D.children;
+            for (let i = 0, l = object3D_children.length; i < l; i++) {
+                const child = object3D_children[i];
                 if (!(child.userData instanceof Transform)) {
                     this.enqueueRenderAttachedObject3D(child);
                 }
@@ -372,7 +378,9 @@ export class Transform {
             this._worldPositionRotationScaleNeedToUpdate = true;
         } else {
             if (!this._worldMatrixNeedUpdate) return true;
-            for (const child of this._object3D.children) {
+            const object3D_children = this._object3D.children;
+            for (let i = 0, l = object3D_children.length; i < l; i++) {
+                const child = object3D_children[i];
                 if (!(child.userData instanceof Transform)) {
                     this.enqueueRenderAttachedObject3D(child);
                 }
@@ -398,7 +406,9 @@ export class Transform {
             this._localPositionRotationScaleNeedToUpdate = true;
         }
 
-        for (const child of this._object3D.children) {
+        const object3D_children = this._object3D.children;
+        for (let i = 0, l = object3D_children.length; i < l; i++) {
+            const child = object3D_children[i];
             if (child.userData instanceof Transform) {
                 child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
             }
@@ -413,7 +423,9 @@ export class Transform {
      * @param callback 
      */
     public foreachChild(callback: (transform: Transform) => void): void {
-        for (const child of this._object3D.children) {
+        const object3D_children = this._object3D.children;
+        for (let i = 0, l = object3D_children.length; i < l; i++) {
+            const child = object3D_children[i];
             if (child.userData instanceof Transform) {
                 callback(child.userData as Transform);
             }
@@ -425,7 +437,9 @@ export class Transform {
      * @param callback if return false, stop iteration
      */
     public iterateChild(callback: (transform: Transform) => boolean): void {
-        for (const child of this._object3D.children) {
+        const object3D_children = this._object3D.children;
+        for (let i = 0, l = object3D_children.length; i < l; i++) {
+            const child = object3D_children[i];
             if (child.userData instanceof Transform) {
                 if (!callback(child.userData as Transform)) {
                     break;

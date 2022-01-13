@@ -65,7 +65,8 @@ export class Pathfinder {
             closedList.push(currentNode);
 
             const neighbors = this.getNeighbors(currentNode);
-            for (const neighbor of neighbors) {
+            for (let i = 0; i < neighbors.length; i++) {
+                const neighbor = neighbors[i];
                 if (closedList.find(node => node.equals(neighbor)) !== undefined) continue; //already visited
                 else {
                     neighbor.gCost = Number.MAX_VALUE; 
@@ -128,7 +129,9 @@ export class Pathfinder {
     }
 
     private checkCollision(x: number, y: number): boolean {
-        for (const collideMap of this.collideMaps) {
+        const collideMaps = this.collideMaps;
+        for (let i = 0; i < collideMaps.length; i++) {
+            const collideMap = collideMaps[i];
             if (collideMap.checkCollision(
                 x * collideMap.gridCellWidth + collideMap.gridCenterX,
                 y * collideMap.gridCellHeight + collideMap.gridCenterY,
