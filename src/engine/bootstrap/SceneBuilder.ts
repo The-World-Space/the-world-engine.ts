@@ -33,21 +33,27 @@ export class SceneBuilder {
      * @returns components that need to awake and enable
      */
     public build(): { awakeComponents: Component[], enableComponents: Component[] } {
-        for (const child of this._children) {
+        for (let i = 0; i < this._children.length; i++) {
+            const child = this._children[i];
             this._scene.add(child.build().transform.unsafeGetObject3D()); //it's safe because component initialize will be called by SceneProsessor
         }
 
-        for (const child of this._children) child.initialize();
+        for (let i = 0; i < this._children.length; i++) {
+            const child = this._children[i];
+            child.initialize();
+        }
 
         const ComponentsInScene = this.getAllComponentsInScene();
         const activeComponentsInScene = ComponentsInScene.filter(c => {
             return c.gameObject.activeInHierarchy && c.enabled;
         });
-        for (const component of activeComponentsInScene) {
+        for (let i = 0; i < activeComponentsInScene.length; i++) {
+            const component = activeComponentsInScene[i];
             component.unsafeSetStartEnqueueState(true);
         }
         const updateableComponentsInScene = activeComponentsInScene.filter<UpdateableComponent>(isUpdateableComponent);
-        for (const component of updateableComponentsInScene) {
+        for (let i = 0; i < updateableComponentsInScene.length; i++) {
+            const component = updateableComponentsInScene[i];
             component.unsafeSetUpdateEnqueueState(true);
         }
         this._sceneProcessor.addStartComponent(...activeComponentsInScene);
@@ -58,7 +64,9 @@ export class SceneBuilder {
 
     private getAllComponentsInScene(): Component[] {
         const components: Component[] = [];
-        for (const child of this._scene.children) {
+        const scene = this._scene;
+        for (let i = 0; i < this._children.length; i++) {
+            const child = scene.children[i];
             if (child.userData instanceof Transform) {
                 this.getAllComponentsInGameObject(child.userData.gameObject, components);
             }
@@ -68,7 +76,9 @@ export class SceneBuilder {
 
     private getAllComponentsInGameObject(gameObject: GameObject, outArray: Component[]) {
         outArray.push(...gameObject.getComponents());
-        for (const child of gameObject.transform.children) {
+        const transform_children = gameObject.transform.children;
+        for (let i = 0; i < transform_children.length; i++) {
+            const child = transform_children[i];
             this.getAllComponentsInGameObject(child.gameObject, outArray);
         }
     }
