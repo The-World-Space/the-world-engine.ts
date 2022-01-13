@@ -1,120 +1,265 @@
-export class MutIteratableCollection<T> {
-    private _compartor: (a: T, b: T) => number;
-    private _nullCompartor: (a: T|null, b: T|null) => number;
-    private _list: (T|null)[];
-    private _addItemBuffer: T[];
-    private _count: number;
-    private _iterating: boolean;
+//implimentation based on https://github.com/nalply/rbts/blob/master/tree.ts
 
-    public constructor(compartor: (a: T, b: T) => number) {
-        this._compartor = compartor;
-        this._nullCompartor = (a: T|null, b: T|null) => {
-            //null is always bigger than any other value
-            if (a === null) return 1;
-            if (b === null) return -1;
-            return this._compartor(a, b);
-        };
-        this._list = [];
-        this._addItemBuffer = [];
-        this._count = 0;
-        this._iterating = false;
-    }
+export class Node<T> {
+    public value: T;
+    public parent: Node<T> = Node.nilNode as Node<T>;
+    public left: Node<T> = Node.nilNode as Node<T>;
+    public right: Node<T> = Node.nilNode as Node<T>;
+    public black: boolean = true;
 
-    //if found is true then item can list[index] = item
-    //if found is false then list must be spliced
-    private binarySearchFindSpace(item: T): { index: number, found: boolean } {
-        let low = 0;
-        let high = this._list.length - 1;
-        while (low <= high) {
-            const mid = Math.floor((low + high) / 2);
-            const comp = this._nullCompartor(this._list[mid], item);
-            if (comp === 0) {
-                return { index: mid, found: true };
-            } else if (comp < 0) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
+    public get red() { return !this.black; }
+    public set red(value: boolean) { this.black = !value; }
+
+    /** Construct a new standalone Node with key and value */
+    public constructor(value: T) { this.value = value; }
+
+    /** The one and only nil Node */
+    public static readonly nilNode: Node<any> = nilNode();
+
+    /** True if node is nil */
+    public get nil(): boolean { return this === Node.nilNode; }
+
+    /** True if node is not nil */
+    public get ok(): boolean { return this !== Node.nilNode; }
+}
+
+// Must be called only once because we should have only one nil Node!
+function nilNode(): Node<any> {
+    return Object.freeze(
+        new class extends Node<unknown> {
+            constructor() {
+                super(Symbol('nilNode.value'));
+                this.parent = this.left = this.right = this;
             }
-        }
-        return { index: low, found: false };
+        },
+    )
+}
+
+type Less<K, N> = (key: K, node: N) => boolean;
+
+export class Tree<T> {
+    private _root: Node<T> = Node.nilNode;
+    private _size: number = 0
+    private readonly _less: Less<T, Node<T>>;
+    private readonly _equal: (a: T, b: T) => boolean;
+
+    public constructor(
+        lessOp: (a: T, b: T) => boolean,
+        equalOp: (a: T, b: T) => boolean,
+    ) {
+        this._less = (a, b) => lessOp(a, b.value);
+        this._equal = equalOp;
     }
 
-    private binarySearchFindIndex(item: T): number {
-        let low = 0;
-        let high = this._list.length - 1;
-        while (low <= high) {
-            const mid = Math.floor((low + high) / 2);
-            const comp = this._nullCompartor(this._list[mid], item);
-            if (comp === 0) {
-                return mid;
-            } else if (comp < 0) {
-                low = mid + 1;
-            } else {
-                high = mid - 1;
-            }
-        }
-        return -1;
+    /** @returns the number of entries in the tree, O(1) */
+    public get size() {
+        return this._size;
     }
 
-    public add(item: T): void {
-        if (this._iterating) {
-            this._addItemBuffer.push(item);
-        } else {
-            const searchResult = this.binarySearchFindSpace(item);
-            if (searchResult.found) {
-                this._list[searchResult.index] = item;
-            } else {
-                this._list.splice(searchResult.index, 0, item);
-            }
-            this._count += 1;
-        }
+    /** Set an entry, O(log n) */
+    public insert(value: T): this {
+        const node = this.findNode(value);
+        node.ok ? node.value = value : this.insertNode(new Node(value));
+        return this;
     }
 
-    //it can be called when iterating the list
-    public remove(item: T): void {
-        const index = this.binarySearchFindIndex(item);
-        if (index >= 0) {
-            this._list[index] = null;
-            this._count -= 1;
-        }
+    /** Delete an entry with the key from the tree, O(log n)
+     * @returns true if there was a key
+     */
+    public delete(value: T): boolean {
+        const node = this.findNode(value);
+        const result = this.deleteNode(node);
+        if (node.ok) node.parent = node.left = node.right = Node.nilNode;
+        return result;
     }
 
+    /** Clear the tree, same as `Map.clear()`, O(1) */
     public clear(): void {
-        this._list.length = 0;
-        this._addItemBuffer.length = 0;
-        this._count = 0;
+        this._root = Node.nilNode;
+        this._size = 0;
     }
 
-    private flushAddBuffer(): T[] {
-        this._addItemBuffer.sort(this._compartor);
-        this._list.push(...this._addItemBuffer);
-        this._count += this._addItemBuffer.length;
-
-        const ret = this._addItemBuffer;
-        this._addItemBuffer = [];
-        return ret;
+    private firstNode(node: Node<T> = this._root): Node<T> {
+        while (node.left.ok) node = node.left;
+        return node;
     }
 
-    public forEach(callback: (item: T) => void): void {
-        this._iterating = true;
-        
-        for (let i = 0, len = this._list.length; i < len; i++) {
-            const item = this._list[i];
-            if (item) callback(item);
+    private findNode(value: T): Node<T> {
+        let node: Node<T> = this._root;
+        while (node.ok && !this._equal(value, node.value)) {
+            node = this._less(value, node) ? node.left : node.right;
+        }
+        return node
+    }
+
+    private insertNode(node: Node<T>): void {
+        if (node.nil) return;
+
+        node.parent = node.left = node.right = Node.nilNode;
+        this._size += 1;
+        if (this._root.nil) {
+            this._root = node;
+            return;
         }
 
-        if (this._addItemBuffer.length > 0) {
-            do {
-                const foreachList: T[] = this.flushAddBuffer();
-                for (let i = 0, len = foreachList.length; i < len; i++) {
-                    const item = foreachList[i];
-                    callback(item);
+        let parent, n;
+        parent = n = this._root;
+        while (n.ok) {
+            parent = n;
+            n = this._less(node.value, n) ? n.left : n.right;
+        }
+        node.parent = parent;
+
+        if (this._less(node.value, parent)) parent.left = node;
+        else parent.right = node;
+        node.red = true;
+
+        while (node.parent.red) {
+            parent = node.parent;
+            const grandp = parent.parent;
+            if (parent === grandp.left) {
+                if (grandp.right.red) {
+                    parent.black = grandp.right.black = grandp.red = true;
+                    node = grandp;
+                    continue;
                 }
-            } while (this._addItemBuffer.length > 0);
-            
-            this._list.sort(this._nullCompartor);
-            this._list.length = this._count;
+                if (node === parent.right) {
+                    this.leftRotate(parent);
+                    [parent, node] = [node, parent];
+                }
+                parent.black = grandp.red = true;
+                this.rightRotate(grandp);
+                continue
+            }
+            if (grandp.left.red) {
+                parent.black = grandp.left.black = grandp.red = true;
+                node = grandp;
+                continue
+            }
+            if (node === parent.left) {
+                this.rightRotate(parent);
+                [parent, node] = [node, parent];
+            }
+            parent.black = grandp.red = true;
+            this.leftRotate(grandp);
         }
-        this._iterating = false;
+        this._root.black = true;
+        return;
+    }
+
+    private deleteNode(node: Node<T>): boolean {
+        if (node.nil) return false;
+
+        this._size -= 1;
+
+        let child: Node<T>, parent: Node<T>, red: boolean;
+        if (node.left.ok && node.right.ok) {
+            const next = this.firstNode(node.right);
+            if (node === this._root) this._root = next;
+            else {
+                node === node.parent.left
+                    ? node.parent.left = next
+                    : node.parent.right = next;
+            }
+            child = next.right, parent = next.parent, red = next.red;
+            if (node === parent) parent = next;
+            else {
+                if (child.ok) child.parent = parent;
+                parent.left = child;
+                next.right = node.right;
+                node.right.parent = next;
+            }
+            next.parent = node.parent;
+            next.black = node.black;
+            node.left.parent = next;
+            if (red) return true;
+        }
+        else {
+            node.left.ok ? child = node.left : child = node.right;
+            parent = node.parent, red = node.red;
+            if (child.ok) child.parent = parent;
+            if (node === this._root) this._root = child;
+            else parent.left === node ? parent.left = child : parent.right = child;
+            if (red) return true;
+        }
+
+        // Reinstate the red-black tree invariants after the delete
+        node = child;
+        while (node !== this._root && node.black) {
+            if (node === parent.left) {
+                let brother = parent.right;
+                if (brother.red) {
+                    brother.black = parent.red = true;
+                    this.leftRotate(parent)
+                    brother = parent.right;
+                }
+                if (brother.left.black && brother.right.black) {
+                    brother.red = true;
+                    node = parent;
+                    parent = node.parent;
+                    continue
+                }
+                if (brother.right.black) {
+                    brother.left.black = brother.red = true;
+                    this.rightRotate(brother);
+                    brother = parent.right;
+                }
+                brother.black = parent.black;
+                parent.black = brother.right.black = true;
+                this.leftRotate(parent);
+                node = this._root;
+                break
+            }
+            else {
+                let brother = parent.left;
+                if (brother.red) {
+                    brother.black = parent.red = true;
+                    this.rightRotate(parent);
+                    brother = parent.left;
+                }
+                if (brother.left.black && brother.right.black) {
+                    brother.red = true;
+                    node = parent;
+                    parent = node.parent;
+                    continue;
+                }
+                if (brother.left.black) {
+                    brother.right.black = brother.red = true;
+                    this.leftRotate(brother);
+                    brother = parent.left;
+                }
+                brother.black = parent.black;
+                parent.black = brother.left.black = true;
+                this.rightRotate(parent);
+                node = this._root;
+                break;
+            }
+        }
+        if (node.ok) node.black = true;
+        return true;
+    }
+
+    private leftRotate(node: Node<T>): void {
+        const child = node.right;
+        node.right = child.left;
+        if (child.left.ok) child.left.parent = node;
+        child.parent = node.parent;
+        if (node === this._root) this._root = child;
+        else if (node === node.parent.left) node.parent.left = child;
+        else node.parent.right = child;
+        node.parent = child;
+        child.left = node;
+    }
+
+    private rightRotate(node: Node<T>): void {
+        const child = node.left;
+        node.left = child.right;
+        if (child.right.ok) child.right.parent = node;
+        child.parent = node.parent;
+        if (node === this._root) this._root = child;
+        else if (node === node.parent.left) node.parent.left = child;
+        else node.parent.right = child;
+        node.parent = child;
+        child.right = node;
     }
 }
