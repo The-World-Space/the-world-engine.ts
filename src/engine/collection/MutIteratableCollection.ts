@@ -1,6 +1,6 @@
 //implimentation based on https://github.com/nalply/rbts/blob/master/tree.ts
 
-export class Node<T> {
+class Node<T> {
     public value: T;
     public parent: Node<T> = Node.nilNode as Node<T>;
     public left: Node<T> = Node.nilNode as Node<T>;
