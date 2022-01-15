@@ -37,18 +37,18 @@ function nilNode(): Node<any> {
 
 type Less<K, N> = (key: K, node: N) => boolean;
 
-export class Tree<T> {
+export class IteratableCollection<T> {
     private _root: Node<T> = Node.nilNode;
     private _size: number = 0
     private readonly _less: Less<T, Node<T>>;
-    private readonly _equal: (a: T, b: T) => boolean;
+    //private readonly _equal: (a: T, b: T) => boolean; // for performance reasons we don't use this
 
     public constructor(
         lessOp: (a: T, b: T) => boolean,
-        equalOp: (a: T, b: T) => boolean,
+        //equalOp: (a: T, b: T) => boolean,
     ) {
         this._less = (a, b) => lessOp(a, b.value);
-        this._equal = equalOp;
+        //this._equal = equalOp;
     }
 
     /** @returns the number of entries in the tree, O(1) */
@@ -57,10 +57,9 @@ export class Tree<T> {
     }
 
     /** Set an entry, O(log n) */
-    public insert(value: T): this {
+    public insert(value: T): void {
         const node = this.findNode(value);
         node.ok ? node.value = value : this.insertNode(new Node(value));
-        return this;
     }
 
     /** Delete an entry with the key from the tree, O(log n)
@@ -79,17 +78,45 @@ export class Tree<T> {
         this._size = 0;
     }
 
+    public forEach(callback: (value: T) => void): void {
+        let started: boolean = false;
+        let node: Node<T> = Node.nilNode as Node<T>;
+        let end: Node<T> = Node.nilNode as Node<T>;
+
+        for (; ;) {
+            if (node.nil) node = this.firstNode();
+            if (started) node = this.nextNode(node);
+            started = true;
+
+            const done = node.nil || node === end;
+            if (done) return;
+            callback(node.value);
+        }
+    }
+
     private firstNode(node: Node<T> = this._root): Node<T> {
         while (node.left.ok) node = node.left;
         return node;
     }
 
+    private nextNode(node: Node<T>): Node<T> {
+        if (node.nil) return node;
+        if (node.right.ok) return this.firstNode(node.right);
+        let parent = node.parent;
+        while (parent.ok && node === parent.right) {
+            node = parent;
+            parent = parent.parent;
+        }
+        return parent;
+    }
+
     private findNode(value: T): Node<T> {
         let node: Node<T> = this._root;
-        while (node.ok && !this._equal(value, node.value)) {
+        //while (node.ok && !this._equal(value, node.value)) {
+        while (node.ok && value !== node.value) {
             node = this._less(value, node) ? node.left : node.right;
         }
-        return node
+        return node;
     }
 
     private insertNode(node: Node<T>): void {
