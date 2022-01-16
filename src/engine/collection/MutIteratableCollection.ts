@@ -1,10 +1,10 @@
 //implimentation based on https://github.com/nalply/rbts/blob/master/tree.ts
 
-class Node<T> {
+class RbNode<T> {
     public value: T;
-    public parent: Node<T> = Node.nilNode as Node<T>;
-    public left: Node<T> = Node.nilNode as Node<T>;
-    public right: Node<T> = Node.nilNode as Node<T>;
+    public parent: RbNode<T> = RbNode.nilNode as RbNode<T>;
+    public left: RbNode<T> = RbNode.nilNode as RbNode<T>;
+    public right: RbNode<T> = RbNode.nilNode as RbNode<T>;
     public black: boolean = true;
 
     public get red() { return !this.black; }
@@ -14,19 +14,19 @@ class Node<T> {
     public constructor(value: T) { this.value = value; }
 
     /** The one and only nil Node */
-    public static readonly nilNode: Node<any> = nilNode();
+    public static readonly nilNode: RbNode<any> = nilNode();
 
     /** True if node is nil */
-    public get nil(): boolean { return this === Node.nilNode; }
+    public get nil(): boolean { return this === RbNode.nilNode; }
 
     /** True if node is not nil */
-    public get ok(): boolean { return this !== Node.nilNode; }
+    public get ok(): boolean { return this !== RbNode.nilNode; }
 }
 
 // Must be called only once because we should have only one nil Node!
-function nilNode(): Node<any> {
+function nilNode(): RbNode<any> {
     return Object.freeze(
-        new class extends Node<unknown> {
+        new class extends RbNode<unknown> {
             constructor() {
                 super(Symbol('nilNode.value'));
                 this.parent = this.left = this.right = this;
@@ -37,10 +37,10 @@ function nilNode(): Node<any> {
 
 type Less<K, N> = (key: K, node: N) => boolean;
 
-export class IteratableCollection<T> {
-    private _root: Node<T> = Node.nilNode;
+class IteratableCollection<T> {
+    private _root: RbNode<T> = RbNode.nilNode;
     private _size: number = 0
-    private readonly _less: Less<T, Node<T>>;
+    private readonly _less: Less<T, RbNode<T>>;
     //private readonly _equal: (a: T, b: T) => boolean; // for performance reasons we don't use this
 
     public constructor(
@@ -59,7 +59,7 @@ export class IteratableCollection<T> {
     /** Set an entry, O(log n) */
     public insert(value: T): void {
         const node = this.findNode(value);
-        node.ok ? node.value = value : this.insertNode(new Node(value));
+        node.ok ? node.value = value : this.insertNode(new RbNode(value));
     }
 
     /** Delete an entry with the key from the tree, O(log n)
@@ -68,20 +68,20 @@ export class IteratableCollection<T> {
     public delete(value: T): boolean {
         const node = this.findNode(value);
         const result = this.deleteNode(node);
-        if (node.ok) node.parent = node.left = node.right = Node.nilNode;
+        if (node.ok) node.parent = node.left = node.right = RbNode.nilNode;
         return result;
     }
 
     /** Clear the tree, same as `Map.clear()`, O(1) */
     public clear(): void {
-        this._root = Node.nilNode;
+        this._root = RbNode.nilNode;
         this._size = 0;
     }
 
     public forEach(callback: (value: T) => void): void {
         let started: boolean = false;
-        let node: Node<T> = Node.nilNode as Node<T>;
-        let end: Node<T> = Node.nilNode as Node<T>;
+        let node: RbNode<T> = RbNode.nilNode as RbNode<T>;
+        let end: RbNode<T> = RbNode.nilNode as RbNode<T>;
 
         for (; ;) {
             if (node.nil) node = this.firstNode();
@@ -94,12 +94,12 @@ export class IteratableCollection<T> {
         }
     }
 
-    private firstNode(node: Node<T> = this._root): Node<T> {
+    private firstNode(node: RbNode<T> = this._root): RbNode<T> {
         while (node.left.ok) node = node.left;
         return node;
     }
 
-    private nextNode(node: Node<T>): Node<T> {
+    private nextNode(node: RbNode<T>): RbNode<T> {
         if (node.nil) return node;
         if (node.right.ok) return this.firstNode(node.right);
         let parent = node.parent;
@@ -110,8 +110,8 @@ export class IteratableCollection<T> {
         return parent;
     }
 
-    private findNode(value: T): Node<T> {
-        let node: Node<T> = this._root;
+    private findNode(value: T): RbNode<T> {
+        let node: RbNode<T> = this._root;
         //while (node.ok && !this._equal(value, node.value)) {
         while (node.ok && value !== node.value) {
             node = this._less(value, node) ? node.left : node.right;
@@ -119,10 +119,10 @@ export class IteratableCollection<T> {
         return node;
     }
 
-    private insertNode(node: Node<T>): void {
+    private insertNode(node: RbNode<T>): void {
         if (node.nil) return;
 
-        node.parent = node.left = node.right = Node.nilNode;
+        node.parent = node.left = node.right = RbNode.nilNode;
         this._size += 1;
         if (this._root.nil) {
             this._root = node;
@@ -174,12 +174,12 @@ export class IteratableCollection<T> {
         return;
     }
 
-    private deleteNode(node: Node<T>): boolean {
+    private deleteNode(node: RbNode<T>): boolean {
         if (node.nil) return false;
 
         this._size -= 1;
 
-        let child: Node<T>, parent: Node<T>, red: boolean;
+        let child: RbNode<T>, parent: RbNode<T>, red: boolean;
         if (node.left.ok && node.right.ok) {
             const next = this.firstNode(node.right);
             if (node === this._root) this._root = next;
@@ -266,7 +266,7 @@ export class IteratableCollection<T> {
         return true;
     }
 
-    private leftRotate(node: Node<T>): void {
+    private leftRotate(node: RbNode<T>): void {
         const child = node.right;
         node.right = child.left;
         if (child.left.ok) child.left.parent = node;
@@ -278,7 +278,7 @@ export class IteratableCollection<T> {
         child.left = node;
     }
 
-    private rightRotate(node: Node<T>): void {
+    private rightRotate(node: RbNode<T>): void {
         const child = node.left;
         node.left = child.right;
         if (child.right.ok) child.right.parent = node;
@@ -288,5 +288,87 @@ export class IteratableCollection<T> {
         else node.parent.right = child;
         node.parent = child;
         child.right = node;
+    }
+}
+
+export class MutIteratableCollection<T> {
+    private _iterateCollection: IteratableCollection<T>|null = null;
+    private _currentItem: T|null = null;
+    private _collection: IteratableCollection<T>;
+
+    private _insertBuffer: IteratableCollection<T>;
+    private _insertBufferSwap: IteratableCollection<T>;
+    private _deleteBuffer: IteratableCollection<T>;
+
+    public constructor(lessOp: (a: T, b: T) => boolean) {
+        this._collection = new IteratableCollection<T>(lessOp);
+        this._insertBuffer = new IteratableCollection<T>(lessOp);
+        this._insertBufferSwap = new IteratableCollection<T>(lessOp);
+        this._deleteBuffer = new IteratableCollection<T>(lessOp);
+    }
+
+    public get size(): number {
+        return this._collection.size;
+    }
+
+    /** Set an entry, O(log n) */
+    public insert(value: T): void {
+        if (this._iterateCollection !== null) this._insertBuffer.insert(value);
+        else this._collection.insert(value);
+    }
+
+    /** Delete an entry with the key from the tree, O(log n) 
+     *  Error: if the key is not in the tree */
+    public delete(value: T): void {
+        if (this._iterateCollection !== null) {
+            if (this._currentItem === value) {
+                this._deleteBuffer.insert(value);
+            } else if (!this._iterateCollection.delete(value)) {
+                if (!this._insertBuffer.delete(value)) throw new Error("Value not found");
+            }
+        }
+        else if (!this._collection.delete(value)) throw new Error("Value not found");
+    }
+
+    /** Clear the tree, same as `Map.clear()`, O(1) 
+     * UB: you don't call this when iterating the tree */
+    public clear(): void {
+        this._collection.clear();
+        this._insertBuffer.clear();
+        this._deleteBuffer.clear();
+    }
+
+    public forEach(callback: (value: T) => void): void {
+        this._iterateCollection = this._collection;
+        this._iterateCollection.forEach((value: T) => {
+            this._currentItem = value;
+            callback(value);
+        });
+        this._currentItem = null;
+
+        if (0 < this._insertBuffer.size) {
+            do {
+                this._iterateCollection = this.flushBuffer();
+                this._iterateCollection.forEach((value: T) => {
+                    this._currentItem = value;
+                    callback(value);
+                });
+            } while (0 < this._insertBuffer.size);
+        }
+        this._iterateCollection = null;
+    }
+
+    private flushBuffer(): IteratableCollection<T> {
+        this._deleteBuffer.forEach((value: T) => this.delete(value));
+        this._insertBuffer.forEach((value: T) => this.insert(value));
+        
+        const insertBuffer = this._insertBuffer;
+        this._insertBuffer = this._insertBufferSwap;
+        this._insertBufferSwap = insertBuffer;
+
+        this._insertBuffer.clear();
+        this._deleteBuffer.clear();
+
+        return insertBuffer;
     }
 }
