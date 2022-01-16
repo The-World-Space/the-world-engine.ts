@@ -1,34 +1,53 @@
 import { MutIteratableCollection } from "./MutIteratableCollection";
 
 class TestItem {
-    private static idGenerator = 0;
-    private id: number;
-    private func: () => void;
+    private static _idGenerator = 0;
+    private _id: number;
+    private _func: () => void;
+    private _executionOrder: number;
 
-    public constructor(func: () => void) {
-        this.id = TestItem.idGenerator += 1;
-        this.func = func;
+    public constructor(func: () => void, executionOrder: number) {
+        this._id = TestItem._idGenerator;
+        TestItem._idGenerator += 1;
+        this._func = func;
+        this._executionOrder = executionOrder;
+    }
+
+    public get id(): number {
+        return this._id;
     }
 
     public execute(): void {
-        this.func();
+        this._func();
     }
 
     public static lessOp(a: TestItem, b: TestItem): boolean {
-        return a.id < b.id;
+        if (a._executionOrder === b._executionOrder) {
+            return a._id < b._id;
+        }
+        return a._executionOrder < b._executionOrder;
     }
 }
 
 export function mutIteratableCollectionTest1(): void {
     const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.lessOp);
 
-    mutIteratableCollection.insert(new TestItem(() => {
-        console.log("item1");
-    }));
+    const item2 = new TestItem(() => {
+        console.log("2");
+    }, 2);
 
     mutIteratableCollection.insert(new TestItem(() => {
-        console.log("item2");
-    }));
+        console.log("1");
+        mutIteratableCollection.insert(new TestItem(() => {
+            console.log("3");
+        }, -1));
+        mutIteratableCollection.insert(new TestItem(() => {
+            console.log("4");
+        }, -2));
+        mutIteratableCollection.delete(item2);
+    }, 1));
+
+    mutIteratableCollection.insert(item2);
 
     mutIteratableCollection.forEach(item => {
         item.execute();
