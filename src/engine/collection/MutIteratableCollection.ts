@@ -5,7 +5,7 @@ class RbNode<T> {
     public parent: RbNode<T> = RbNode.nilNode as RbNode<T>;
     public left: RbNode<T> = RbNode.nilNode as RbNode<T>;
     public right: RbNode<T> = RbNode.nilNode as RbNode<T>;
-    public black: boolean = true;
+    public black = true;
 
     public get red() { return !this.black; }
     public set red(value: boolean) { this.black = !value; }
@@ -27,19 +27,19 @@ class RbNode<T> {
 function nilNode(): RbNode<any> {
     return Object.freeze(
         new class extends RbNode<unknown> {
-            constructor() {
-                super(Symbol('nilNode.value'));
+            public constructor() {
+                super(Symbol("nilNode.value"));
                 this.parent = this.left = this.right = this;
             }
         },
-    )
+    );
 }
 
 type Less<K, N> = (key: K, node: N) => boolean;
 
 class IteratableCollection<T> {
     private _root: RbNode<T> = RbNode.nilNode;
-    private _size: number = 0
+    private _size = 0;
     private readonly _less: Less<T, RbNode<T>>;
     //private readonly _equal: (a: T, b: T) => boolean; // for performance reasons we don't use this
 
@@ -79,9 +79,9 @@ class IteratableCollection<T> {
     }
 
     public forEach(callback: (value: T) => void): void {
-        let started: boolean = false;
+        let started = false;
         let node: RbNode<T> = RbNode.nilNode as RbNode<T>;
-        let end: RbNode<T> = RbNode.nilNode as RbNode<T>;
+        const end: RbNode<T> = RbNode.nilNode as RbNode<T>;
 
         for (; ;) {
             if (node.nil) node = this.firstNode();
@@ -156,12 +156,12 @@ class IteratableCollection<T> {
                 }
                 parent.black = grandp.red = true;
                 this.rightRotate(grandp);
-                continue
+                continue;
             }
             if (grandp.left.red) {
                 parent.black = grandp.left.black = grandp.red = true;
                 node = grandp;
-                continue
+                continue;
             }
             if (node === parent.left) {
                 this.rightRotate(parent);
@@ -217,14 +217,14 @@ class IteratableCollection<T> {
                 let brother = parent.right;
                 if (brother.red) {
                     brother.black = parent.red = true;
-                    this.leftRotate(parent)
+                    this.leftRotate(parent);
                     brother = parent.right;
                 }
                 if (brother.left.black && brother.right.black) {
                     brother.red = true;
                     node = parent;
                     parent = node.parent;
-                    continue
+                    continue;
                 }
                 if (brother.right.black) {
                     brother.left.black = brother.red = true;
@@ -235,7 +235,7 @@ class IteratableCollection<T> {
                 parent.black = brother.right.black = true;
                 this.leftRotate(parent);
                 node = this._root;
-                break
+                break;
             }
             else {
                 let brother = parent.left;
