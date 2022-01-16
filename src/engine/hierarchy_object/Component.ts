@@ -6,7 +6,6 @@ import { EngineGlobalObject } from "../EngineGlobalObject";
 import { isUpdateableComponent } from "../SceneProcessor";
 import { Coroutine } from "../coroutine/Coroutine";
 import { CoroutineIterator } from "../coroutine/CoroutineIterator";
-import { ICoroutine } from "../coroutine/ICoroutine";
 import { Transform } from "./Transform";
 
 /**
@@ -87,7 +86,7 @@ export abstract class Component {
      * @param coroutineIterator coroutine iterator
      * @returns corutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
      */
-    public startCorutine(coroutineIterator: CoroutineIterator): ICoroutine {
+    public startCorutine(coroutineIterator: CoroutineIterator): Coroutine {
         const coroutine = new Coroutine(this, coroutineIterator, () => {
             const index = this._runningCoroutines.indexOf(coroutine);
             if (index >= 0) {
@@ -113,7 +112,7 @@ export abstract class Component {
      * stop coroutine that is executed by this component
      * @param coroutine coroutine instance
      */
-    public stopCoroutine(coroutine: ICoroutine): void {
+    public stopCoroutine(coroutine: Coroutine): void {
         if ((coroutine as Coroutine).component !== this) {
             throw new Error("Coroutine is not owned by this component");
         }

@@ -6,7 +6,7 @@ export { SceneBuilder } from "./engine/bootstrap/SceneBuilder";
 //coroutine
 export type { CoroutineIterator } from "./engine/coroutine/CoroutineIterator";
 export { CoroutineProcessor } from "./engine/coroutine/CoroutineProcessor";
-export type { ICoroutine } from "./engine/coroutine/ICoroutine";
+export { Coroutine } from "./engine/coroutine/Coroutine";
 export { YieldInstruction, WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./engine/coroutine/YieldInstruction";
 
 //hierarchy_object
