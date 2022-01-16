@@ -56,9 +56,13 @@ export class SceneBuilder {
             const component = updateableComponentsInScene[i];
             component.unsafeSetUpdateEnqueueState(true);
         }
-        this._sceneProcessor.addStartComponent(...activeComponentsInScene);
-        this._sceneProcessor.addUpdateComponent(...updateableComponentsInScene);
-
+        for (let i = 0; i < activeComponentsInScene.length; i++) {
+            this._sceneProcessor.addStartComponent(activeComponentsInScene[i]);
+        }
+        for (let i = 0; i < updateableComponentsInScene.length; i++) {
+            this._sceneProcessor.addUpdateComponent(updateableComponentsInScene[i]);
+        }
+        
         return { awakeComponents: ComponentsInScene, enableComponents: activeComponentsInScene };
     }
 

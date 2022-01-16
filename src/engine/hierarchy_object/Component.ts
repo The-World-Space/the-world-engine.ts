@@ -25,6 +25,7 @@ export abstract class Component {
     private _starting: boolean;
     private _updateEnqueued: boolean;
     private _gameObject: GameObject;
+    private _instanceId: number;
     private _runningCoroutines: Coroutine[] = [];
 
     public constructor(gameObject: GameObject) {
@@ -36,6 +37,7 @@ export abstract class Component {
         this._starting = false;
         this._updateEnqueued = false;
         this._gameObject = gameObject;
+        this._instanceId = gameObject.engine.instantlater.generateId();
     }
 
     /**
@@ -297,5 +299,20 @@ export abstract class Component {
      */
     public get executionOrder(): number {
         return this._executionOrder;
+    }
+
+    /**
+     * get instance id of this component
+     */
+    public get instanceId(): number {
+        return this._instanceId;
+    }
+
+    /** @internal */
+    public static lessOperation(a: Component, b: Component): boolean {
+        if (a.executionOrder === b.executionOrder) {
+            return a.instanceId < b.instanceId;
+        }
+        return a.executionOrder < b.executionOrder;
     }
 }

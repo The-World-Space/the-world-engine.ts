@@ -11,6 +11,7 @@ import { IEngine } from "../IEngine";
  */
 export class GameObject {
     private _engineGlobalObject: EngineGlobalObject;
+    private _instanceId: number;
     private _transform: Transform;
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
@@ -18,6 +19,7 @@ export class GameObject {
 
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
         this._engineGlobalObject = engineGlobalObject;
+        this._instanceId = engineGlobalObject.instantlater.generateId();
         this._activeInHierarchy = true;
         this._transform = new Transform(this);
         this._transform.unsafeGetObject3D().visible = true;
@@ -401,7 +403,6 @@ export class GameObject {
 
     /**
      * get transform of the GameObject
-     * DO NOT cast this to Transform, instead use unsafeGetTransform
      */
     public get transform(): Transform {
         return this._transform;
@@ -422,17 +423,10 @@ export class GameObject {
     }
 
     /**
-     * get uuid of the GameObject
+     * get instance id of the GameObject
      */
-    public get uuid(): string {
-        return this._transform.unsafeGetObject3D().uuid;
-    }
-
-    /**
-     * get id of the GameObject
-     */
-    public get id(): number {
-        return this._transform.unsafeGetObject3D().id;
+    public get instanceId(): number {
+        return this._instanceId;
     }
 }
 

@@ -9,9 +9,17 @@ import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
  */
 export class Instantiater {
     private readonly _engineGlobalObject: EngineGlobalObject;
+    private _instanceNextId = 0;
     
     public constructor(engineGlobalObject: EngineGlobalObject) {
         this._engineGlobalObject = engineGlobalObject;
+    }
+
+    /** @internal */
+    public generateId(): number {
+        const id = this._instanceNextId;
+        this._instanceNextId += 1;
+        return id;
     }
 
     /**
