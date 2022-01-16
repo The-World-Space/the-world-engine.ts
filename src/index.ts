@@ -13,7 +13,6 @@ export { YieldInstruction, WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhi
 export { Component } from "./engine/hierarchy_object/Component";
 export type { ComponentConstructor } from "./engine/hierarchy_object/ComponentConstructor";
 export { GameObject, GameObjectBuilder } from "./engine/hierarchy_object/GameObject";
-export type { ITransform } from "./engine/hierarchy_object/ITransform";
 export { Prefab } from "./engine/hierarchy_object/Prefab";
 export type { PrefabConstructor } from "./engine/hierarchy_object/PrefabConstructor";
 export { PrefabRef } from "./engine/hierarchy_object/PrefabRef";
@@ -44,7 +43,6 @@ export type { WritableVector4 } from "./engine/math/WritableVector4";
 export { CameraContainer } from "./engine/render/CameraContainer";
 export { CameraInfo } from "./engine/render/CameraInfo";
 export { Color } from "./engine/render/Color";
-export { GameScreen } from "./engine/render/GameScreen";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 
 //time
