@@ -1,6 +1,7 @@
 import { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute, MathUtils, Matrix3, Matrix4, Quaternion, Spherical, Vector3 } from "three";
 
 //duck typed class of THREE.Vector3
+/** @internal */
 export class ObservableVector3 {
     public readonly isVector3 = true;
     private _x: number;

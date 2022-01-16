@@ -1,15 +1,16 @@
-import { IEngine } from "../IEngine";
 import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 
 /**
  * make game scene with interop object and scene builder
+ * do not drive this class
  */
 export abstract class Bootstrapper<T = any> {
     private _engineGlobalObject: EngineGlobalObject;
     private _interopObject: T|null;
     private _sceneBuilder: SceneBuilder;
 
+    /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, interopObject?: T) {
         this._engineGlobalObject = engineGlobalObject;
         this._interopObject = interopObject || null;
@@ -24,7 +25,7 @@ export abstract class Bootstrapper<T = any> {
     /**
      * get engine global object
      */
-    protected get engine(): IEngine {
+    protected get engine(): EngineGlobalObject {
         return this._engineGlobalObject;
     }
     

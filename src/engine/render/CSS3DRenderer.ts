@@ -3,6 +3,7 @@
  */
 import * as THREE from "three";
 
+/** @internal */
 export class CSS3DObject extends THREE.Object3D {
     public isCSS3DObject = true;
     public element: HTMLElement;
@@ -32,6 +33,7 @@ export class CSS3DObject extends THREE.Object3D {
     }
 }
 
+/** @internal */
 export class CSS3DSprite extends CSS3DObject {
     public isCSS3DSprite = true;
     private rotation2D: number;
@@ -54,6 +56,7 @@ const _scale = new THREE.Vector3();
 const _matrix = new THREE.Matrix4();
 const _matrix2 = new THREE.Matrix4();
 
+/** @internal */
 export class CSS3DRenderer {
     public domElement: HTMLElement;
     private _width = 0;

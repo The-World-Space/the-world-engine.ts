@@ -29,6 +29,7 @@ class TestItem {
     }
 }
 
+/** @internal */
 export function mutIteratableCollectionTest1(): void {
     const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.lessOp);
 

@@ -4,19 +4,22 @@ import { ComponentConstructor } from "./ComponentConstructor";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { PrefabRef } from "./PrefabRef";
 import { Transform } from "./Transform";
-import { IEngine } from "../IEngine";
 
 /**
  * base class for all entities in scenes
+ * do not drive this class
  */
 export class GameObject {
     private _engineGlobalObject: EngineGlobalObject;
     private _instanceId: number;
-    private _transform: Transform;
+    /** @internal */
+    public _transform: Transform;
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
-    private _components: Component[];
+    /** @internal */
+    public _components: Component[];
 
+    /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
         this._engineGlobalObject = engineGlobalObject;
         this._instanceId = engineGlobalObject.instantlater.generateId();
@@ -28,7 +31,8 @@ export class GameObject {
         this._components = [];
     }
 
-    private registerTransform(transform: Transform): void {
+    /** @internal */
+    public registerTransform(transform: Transform): void {
         this._transform.unsafeGetObject3D().add(transform.unsafeGetObject3D());
         const gameObject = transform.gameObject;
 
@@ -46,14 +50,14 @@ export class GameObject {
         gameObjectBuilder.initialize();
         this.registerTransform(gameObject._transform);
         gameObject.foreachComponentInChildren(component => {
-            component.unsafeTryCallAwake();
+            component.internalTryCallAwake();
         });
         if (gameObject._activeInHierarchy) {
             gameObject.foreachComponentInChildren(component => {
                 if (component.enabled) {
                     component.onEnable();
-                    component.unsafeTryEnqueueStart();
-                    component.unsafeTryEnqueueUpdate();
+                    component.internalTryEnqueueStart();
+                    component.internalTryEnqueueUpdate();
                 }
             });
         }
@@ -80,7 +84,7 @@ export class GameObject {
             if (!this.activeInHierarchy) {
                 this.foreachComponentInChildren(component => {
                     component.onDisable();
-                    component.unsafeTryDequeueUpdate();
+                    component.internalTryDequeueUpdate();
                 });
             }
         }
@@ -112,12 +116,12 @@ export class GameObject {
         }
         this._components.push(component);
 
-        component.unsafeTryCallAwake();
+        component.internalTryCallAwake();
         if (this._activeInHierarchy) {
             if (component.enabled) {
                 component.onEnable();
-                component.unsafeTryEnqueueStart();
-                component.unsafeTryEnqueueUpdate();
+                component.internalTryEnqueueStart();
+                component.internalTryEnqueueUpdate();
             }
         }
         return component;
@@ -324,7 +328,7 @@ export class GameObject {
     /**
      * global engine object
      */
-    public get engine(): IEngine {
+    public get engine(): EngineGlobalObject {
         return this._engineGlobalObject;
     }
 
@@ -348,8 +352,8 @@ export class GameObject {
                 const component = components[i];
                 if (component.enabled) {
                     component.onEnable();
-                    component.unsafeTryEnqueueStart();
-                    component.unsafeTryEnqueueUpdate();
+                    component.internalTryEnqueueStart();
+                    component.internalTryEnqueueUpdate();
                 }
             }
         } else {
@@ -359,7 +363,7 @@ export class GameObject {
                     //disable components
                     component.onDisable();
                     //dequeue update
-                    component.unsafeTryDequeueUpdate();
+                    component.internalTryDequeueUpdate();
                     
                     component.stopAllCoroutines();
                 }
@@ -589,7 +593,7 @@ export class GameObjectBuilder {
                 return this;
             }
         }
-        (this._gameObject as any)._components.push(component);
+        this._gameObject._components.push(component);
         if (componentInitializeFunc) {
             this._componentInitializeFuncList.push(() => componentInitializeFunc(component));
         }
@@ -608,7 +612,7 @@ export class GameObjectBuilder {
 
     private checkComponentRequirements(gameObject: GameObject): void {
         let componentRemoved = false;
-        const components: Component[] = (gameObject as any)._components;
+        const components: Component[] = gameObject._components;
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
             const requiredComponents = component.requiredComponents;
@@ -634,7 +638,7 @@ export class GameObjectBuilder {
         const children = this._children;
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
-            (this._gameObject as any).registerTransform((child.build() as any)._transform);
+            this._gameObject.registerTransform(child.build()._transform);
         }
         return this._gameObject;
     }

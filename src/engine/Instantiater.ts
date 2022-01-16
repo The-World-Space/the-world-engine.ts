@@ -6,11 +6,13 @@ import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
 
 /**
  * instantiate a game object
+ * do not drive this class
  */
 export class Instantiater {
     private readonly _engineGlobalObject: EngineGlobalObject;
     private _instanceNextId = 0;
-    
+
+    /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject) {
         this._engineGlobalObject = engineGlobalObject;
     }

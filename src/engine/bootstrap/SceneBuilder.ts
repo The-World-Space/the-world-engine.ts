@@ -6,12 +6,14 @@ import { isUpdateableComponent, SceneProcessor, UpdateableComponent } from "../S
 
 /**
  * an object that makes a scene
+ * do not drive this class
  */
 export class SceneBuilder {
     private readonly _sceneProcessor: SceneProcessor;
     private readonly _scene: Scene;
     private readonly _children: GameObjectBuilder[];
     
+    /** @internal */
     public constructor(sceneProcessor: SceneProcessor, scene: Scene) {
         this._sceneProcessor = sceneProcessor;
         this._scene = scene;
@@ -49,12 +51,12 @@ export class SceneBuilder {
         });
         for (let i = 0; i < activeComponentsInScene.length; i++) {
             const component = activeComponentsInScene[i];
-            component.unsafeSetStartEnqueueState(true);
+            component.internalSetStartEnqueueState(true);
         }
         const updateableComponentsInScene = activeComponentsInScene.filter<UpdateableComponent>(isUpdateableComponent);
         for (let i = 0; i < updateableComponentsInScene.length; i++) {
             const component = updateableComponentsInScene[i];
-            component.unsafeSetUpdateEnqueueState(true);
+            component.internalSetUpdateEnqueueState(true);
         }
         for (let i = 0; i < activeComponentsInScene.length; i++) {
             this._sceneProcessor.addStartComponent(activeComponentsInScene[i]);

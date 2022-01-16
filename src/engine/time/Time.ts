@@ -1,5 +1,6 @@
 import { IReadOnlyTime } from "./IReadOnlyTime";
 
+/** @internal */
 export class Time implements IReadOnlyTime {
     private _deltaTime: number;
     private _startTime: number;

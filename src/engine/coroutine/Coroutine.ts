@@ -2,6 +2,9 @@ import { Component } from "../hierarchy_object/Component";
 import { CoroutineIterator } from "./CoroutineIterator";
 import { YieldInstruction } from "./YieldInstruction";
 
+/**
+ * do not drive this class
+ */
 export class Coroutine {
     private _component: Component;
     private _elapsedTime: number;

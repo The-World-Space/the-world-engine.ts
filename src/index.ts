@@ -5,7 +5,6 @@ export { SceneBuilder } from "./engine/bootstrap/SceneBuilder";
 
 //coroutine
 export type { CoroutineIterator } from "./engine/coroutine/CoroutineIterator";
-export { CoroutineProcessor } from "./engine/coroutine/CoroutineProcessor";
 export { Coroutine } from "./engine/coroutine/Coroutine";
 export { YieldInstruction, WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./engine/coroutine/YieldInstruction";
 
@@ -41,20 +40,20 @@ export type { WritableVector4 } from "./engine/math/WritableVector4";
 
 //render
 export { CameraContainer } from "./engine/render/CameraContainer";
-export { CameraInfo } from "./engine/render/CameraInfo";
 export { Color } from "./engine/render/Color";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 
 //time
-export type { IReadOnlyTime as IReadonlyTime } from "./engine/time/IReadOnlyTime";
-export { Time } from "./engine/time/Time";
+export type { IReadOnlyTime } from "./engine/time/IReadOnlyTime";
 
 //engine
+export { EngineGlobalObject } from "./engine/EngineGlobalObject";
 export { Game } from "./engine/Game";
-export type { IReadonlyGameState } from "./engine/GameState";
-export { GameState, GameStateKind } from "./engine/GameState";
-export type { IEngine } from "./engine/IEngine";
+export type { IReadOnlyGameState } from "./engine/GameState";
+export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";
+
+export { GlobalConfig } from "./GlobalConfig";
 
 
 //engine_internal_script

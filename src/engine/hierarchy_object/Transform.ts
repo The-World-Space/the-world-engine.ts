@@ -6,10 +6,10 @@ import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
 import { ReadOnlyVector3 } from "../math/ReadOnlyVector3";
 import { WritableVector3 } from "../math/WritableVector3";
-import { EngineGlobalObject } from "../EngineGlobalObject";
 
 /**
  * transform that delegates Object3D
+ * do not drive this class
  */
 export class Transform {
     private readonly _object3D: Object3D;
@@ -45,6 +45,7 @@ export class Transform {
     private readonly _onWorldEulerRotationChangeBind = this.onWorldEulerRotationChange.bind(this);
     private readonly _onWorldRotationChangeBind = this.onWorldRotationChange.bind(this);
 
+    /** @internal */
     public constructor(gameObject: GameObject) {
         this._object3D = new Object3D();
         this._object3D.matrixAutoUpdate = false;
@@ -189,7 +190,7 @@ export class Transform {
     // #endregion
 
     private setMatrixNeedUpdateRecursively(): void {
-        (this.gameObject.engine as EngineGlobalObject).transformMatrixProcessor.enqueueTransformToUpdate(this);
+        this.gameObject.engine.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.setMatrixNeedUpdateRecursivelyInternal();
     }
 
@@ -846,7 +847,7 @@ export class Transform {
     }
 
     public enqueueRenderAttachedObject3D(rerenderObject: Object3D): void {
-        (this.gameObject.engine as EngineGlobalObject).transformMatrixProcessor.enqueueRenderObject(rerenderObject);
+        this.gameObject.engine.transformMatrixProcessor.enqueueRenderObject(rerenderObject);
     }
 
     /** @internal */

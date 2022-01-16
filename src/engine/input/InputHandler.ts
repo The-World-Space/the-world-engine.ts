@@ -2,6 +2,7 @@ import { IInputEventHandleable } from "./IInputEventHandleable";
 
 /**
  * engine global input event handler
+ * do not drive this class
  */
 export class InputHandler implements IInputEventHandleable {
     private _map: Map<string, boolean>;
@@ -33,6 +34,7 @@ export class InputHandler implements IInputEventHandleable {
     private readonly _handleTouchMoveBind = this.handleTouchMove.bind(this);
     private readonly _handleTouchCancelBind = this.handleTouchCancel.bind(this);
 
+    /** @internal */
     public constructor(renderTargetDom: HTMLElement) {
         this._map = new Map<string, boolean>();
         this._isDisposed = false;
@@ -48,6 +50,7 @@ export class InputHandler implements IInputEventHandleable {
 
     /**
      * stop event handle and dispose this object
+     * @internal
      */
     public dispose(): void {
         this.stopHandleEvents();

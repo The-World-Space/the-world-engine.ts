@@ -1,22 +1,24 @@
 import { IReadOnlyTime } from "./time/IReadOnlyTime";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
-import { IReadonlyGameState } from "./GameState";
+import { IReadOnlyGameState } from "./GameState";
 import { Scene } from "./hierarchy_object/Scene";
 import { CameraContainer } from "./render/CameraContainer";
 import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
 import { SceneProcessor } from "./SceneProcessor";
-import { IEngine } from "./IEngine";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 
-export class EngineGlobalObject implements IEngine {
+/** 
+ * do not drive this class
+ */
+export class EngineGlobalObject {
     private readonly _rootScene: Scene;
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: IReadOnlyTime;
     private readonly _inputHandler: InputHandler;
     private readonly _instantlater: Instantiater;
-    private readonly _gameState: IReadonlyGameState;
+    private readonly _gameState: IReadOnlyGameState;
     private readonly _screen: IReadonlyGameScreen;
     
     //engine internal objects
@@ -24,11 +26,12 @@ export class EngineGlobalObject implements IEngine {
     private readonly _coroutineProcessor: CoroutineProcessor;
     private readonly _transformMatrixProcessor: TransformMatrixProcessor;
     
+    /** @internal */
     public constructor(
         rootScene: Scene,
         cameraContainer: CameraContainer,
         time: IReadOnlyTime,
-        gameState: IReadonlyGameState,
+        gameState: IReadOnlyGameState,
         gameScreen: IReadonlyGameScreen,
         sceneProcessor: SceneProcessor,
         coroutineProcessor: CoroutineProcessor,
@@ -47,6 +50,7 @@ export class EngineGlobalObject implements IEngine {
         this._instantlater = new Instantiater(this);
     }
 
+    /** @internal */
     public dispose(): void {
         this._inputHandler.dispose();
     }
@@ -71,7 +75,7 @@ export class EngineGlobalObject implements IEngine {
         return this._time;
     }
 
-    public get gameState(): IReadonlyGameState {
+    public get gameState(): IReadOnlyGameState {
         return this._gameState;
     }
 
@@ -79,14 +83,17 @@ export class EngineGlobalObject implements IEngine {
         return this._instantlater;
     }
 
+    /** @internal */
     public get sceneProcessor(): SceneProcessor {
         return this._sceneProcessor;
     }
 
+    /** @internal */
     public get coroutineProcessor(): CoroutineProcessor {
         return this._coroutineProcessor;
     }
 
+    /** @internal */
     public get transformMatrixProcessor(): TransformMatrixProcessor {
         return this._transformMatrixProcessor;
     }

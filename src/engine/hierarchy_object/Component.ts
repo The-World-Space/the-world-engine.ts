@@ -1,7 +1,6 @@
 import { ComponentConstructor } from "./ComponentConstructor";
 import { GameObject } from "./GameObject";
 import { GameStateKind } from "../GameState";
-import { IEngine } from "../IEngine";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { isUpdateableComponent } from "../SceneProcessor";
 import { Coroutine } from "../coroutine/Coroutine";
@@ -10,6 +9,7 @@ import { Transform } from "./Transform";
 
 /**
  * component is the base class from which every engine script derives
+ * do not override constructor it's break the engine
  */
 export abstract class Component {
     protected readonly _disallowMultipleComponent: boolean = false;
@@ -27,6 +27,7 @@ export abstract class Component {
     private _instanceId: number;
     private _runningCoroutines: Coroutine[] = [];
 
+    /** @internal */
     public constructor(gameObject: GameObject) {
         this._enabled = true;
         this._awakened = false;
@@ -94,7 +95,7 @@ export abstract class Component {
             }
         });
         this._runningCoroutines.push(coroutine);
-        (this.engine as EngineGlobalObject).coroutineProcessor.addCoroutine(coroutine);
+        this.engine.coroutineProcessor.addCoroutine(coroutine);
         return coroutine;
     }
 
@@ -116,17 +117,15 @@ export abstract class Component {
         if ((coroutine as Coroutine).component !== this) {
             throw new Error("Coroutine is not owned by this component");
         }
-        (this.engine as EngineGlobalObject).coroutineProcessor.removeCoroutine(coroutine as Coroutine);
+        this.engine.coroutineProcessor.removeCoroutine(coroutine as Coroutine);
         const index = this._runningCoroutines.indexOf(coroutine as Coroutine);
         if (index >= 0) {
             this._runningCoroutines.splice(index, 1);
         }
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeTryCallAwake(): void {
+    /** @internal */
+    public internalTryCallAwake(): void {
         if (this._awakened) return;
         this._awakening = true;
         this.awake();
@@ -134,10 +133,8 @@ export abstract class Component {
         this._awakened = true;
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeTryCallStart(): void {
+    /** @internal */
+    public internalTryCallStart(): void {
         if (this._started) return;
         this._starting = true;
         this.start();
@@ -145,47 +142,37 @@ export abstract class Component {
         this._started = true;
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeSetStartEnqueueState(state: boolean): void {
+    /** @internal */
+    public internalSetStartEnqueueState(state: boolean): void {
         this._startEnqueued = state;
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeSetUpdateEnqueueState(state: boolean): void {
+    /** @internal */
+    public internalSetUpdateEnqueueState(state: boolean): void {
         this._updateEnqueued = state;
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeTryEnqueueStart(): void {
+    /** @internal */
+    public internalTryEnqueueStart(): void {
         if (this._startEnqueued) return;
-        (this.engine as EngineGlobalObject).sceneProcessor.addStartComponent(this);
+        this.engine.sceneProcessor.addStartComponent(this);
         this._startEnqueued = true;
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeTryEnqueueUpdate(): void {
+    /** @internal */
+    public internalTryEnqueueUpdate(): void {
         if (this._updateEnqueued) return;
         if (isUpdateableComponent(this)) {
-            (this.engine as EngineGlobalObject).sceneProcessor.addUpdateComponent(this);
+            this.engine.sceneProcessor.addUpdateComponent(this);
             this._updateEnqueued = true;
         }
     }
 
-    /**
-     * this method is called by the engine, do not call it manually
-     */
-    public unsafeTryDequeueUpdate(): void {
+    /** @internal */
+    public internalTryDequeueUpdate(): void {
         if (!this._updateEnqueued) return;
         if (isUpdateableComponent(this)) {
-            (this.engine as EngineGlobalObject).sceneProcessor.removeUpdateComponent(this);
+            this.engine.sceneProcessor.removeUpdateComponent(this);
             this._updateEnqueued = false;
         }
     }
@@ -210,7 +197,7 @@ export abstract class Component {
         }
         
         if (this._gameObject.activeInHierarchy) {
-            const sceneProcessor = (this.engine as EngineGlobalObject).sceneProcessor;
+            const sceneProcessor = this.engine.sceneProcessor;
 
             if (this._enabled) {
                 this.onEnable();
@@ -218,14 +205,14 @@ export abstract class Component {
                     sceneProcessor.addStartComponent(this);
                     this._startEnqueued = true;
                 }
-                this.unsafeTryEnqueueUpdate();
+                this.internalTryEnqueueUpdate();
             } else {
                 this.onDisable();
                 if (this._startEnqueued && !this._started) {
                     sceneProcessor.removeStartComponent(this);
                     this._startEnqueued = false;
                 }
-                this.unsafeTryDequeueUpdate();
+                this.internalTryDequeueUpdate();
             }
         }
     }
@@ -275,7 +262,7 @@ export abstract class Component {
     /**
      * global engine object
      */
-    public get engine(): IEngine {
+    public get engine(): EngineGlobalObject {
         return this._gameObject.engine;
     }
 

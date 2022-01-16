@@ -2,6 +2,7 @@ import { IReadOnlyTime } from "../time/IReadOnlyTime";
 import { Coroutine } from "./Coroutine";
 import { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./YieldInstruction";
 
+/** @internal */
 export class CoroutineProcessor {
     private _time: IReadOnlyTime;
     private _coroutines: (Coroutine|null)[];

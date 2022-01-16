@@ -1,6 +1,7 @@
 import { Object3D } from "three";
 import { Transform } from "../hierarchy_object/Transform";
 
+/** @internal */
 export class TransformMatrixProcessor {
     private readonly _transformsNeedToUpdate: Transform[];
     private _rerenderObjectsReadBuffer: Set<Object3D>;

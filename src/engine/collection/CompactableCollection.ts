@@ -1,3 +1,4 @@
+/** @internal */
 export class CompactableCollection<T> {
     private _compartor: (a: T, b: T) => number;
     private _nullCompartor: (a: T|null, b: T|null) => number;

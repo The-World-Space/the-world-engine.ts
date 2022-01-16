@@ -1,5 +1,6 @@
 import { BufferAttribute, Euler, InterleavedBufferAttribute, MathUtils, Matrix4, Quaternion, Vector3 } from "three";
 
+/** @internal */
 export class ObservableQuaternion {
     public readonly isQuaternion = true;
     

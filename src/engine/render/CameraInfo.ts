@@ -2,6 +2,7 @@ import { Color } from "./Color";
 
 /**
  * camera info object
+ * @internal
  */
 export class CameraInfo {
     private _priority: number;

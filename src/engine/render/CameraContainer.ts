@@ -4,6 +4,7 @@ import { Color } from "./Color";
 
 /**
  * schedule camera by priority to be rendered
+ * do not drive this class
  */
 export class CameraContainer {
     private _camera: THREE.Camera|null = null;
@@ -11,6 +12,7 @@ export class CameraContainer {
     private _cameraList: {camera: THREE.Camera, info: CameraInfo}[] = [];
     private _onChangeBackgroundColor: (color: Color) => void;
 
+    /** @internal */
     public constructor(onChangeBackgroundColor: (color: Color) => void) {
         this._onChangeBackgroundColor = onChangeBackgroundColor;
     }
@@ -24,6 +26,7 @@ export class CameraContainer {
 
     /**
      * get current camera priority
+     * @internal
      */
     public get currentCameraPriority(): number {
         return this._currentCameraPriority;
@@ -33,6 +36,8 @@ export class CameraContainer {
      * add new camera to camera container
      * @param camera 
      * @param info 
+     * 
+     * @internal
      */
     public addCamera(camera: THREE.Camera, info: CameraInfo): void {
         this._cameraList.push({camera, info});
@@ -43,6 +48,8 @@ export class CameraContainer {
     /**
      * remove camera from camera container
      * @param camera 
+     * 
+     * @internal
      */
     public removeCamera(camera: THREE.Camera): void {
         this._cameraList = this._cameraList.filter(c => c.camera !== camera);
@@ -53,6 +60,8 @@ export class CameraContainer {
      * change camera priority
      * @param camera 
      * @param priority 
+     * 
+     * @internal
      */
     public changeCameraPriority(camera: THREE.Camera, priority: number): void {
         const index = this._cameraList.findIndex(c => c.camera === camera);
@@ -67,6 +76,8 @@ export class CameraContainer {
      * change camera background color
      * @param camera 
      * @param color 
+     * 
+     * @internal
      */
     public changeCameraBackgroundColor(camera: THREE.Camera, color: Color): void {
         const index = this._cameraList.findIndex(c => c.camera === camera);

@@ -1,14 +1,15 @@
 /**
  * readonly game state interface
  */
-export interface IReadonlyGameState {
+export interface IReadOnlyGameState {
     /**
      * get game state
      */
     get kind(): GameStateKind;
 }
 
-export class GameState implements IReadonlyGameState {
+/** @internal */
+export class GameState implements IReadOnlyGameState {
     private _gameStateKind: GameStateKind;
 
     public constructor(gameStateKind: GameStateKind) {

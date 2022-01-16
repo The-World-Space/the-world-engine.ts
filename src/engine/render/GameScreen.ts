@@ -1,3 +1,4 @@
+/** @internal */
 export class GameScreen {
     private _width: number;
     private _height: number;

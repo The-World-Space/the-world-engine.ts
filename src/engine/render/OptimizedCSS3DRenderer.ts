@@ -9,6 +9,7 @@ const _scale = new THREE.Vector3();
 const _matrix = new THREE.Matrix4();
 const _matrix2 = new THREE.Matrix4();
 
+/** @internal */
 export class OptimizedCSS3DRenderer {
     public domElement: HTMLElement;
     private _width = 0;

@@ -291,6 +291,7 @@ class IteratableCollection<T> {
     }
 }
 
+/** @internal */
 export class MutIteratableCollection<T> {
     private _iterateCollection: IteratableCollection<T>|null = null;
     private _currentItem: T|null = null;

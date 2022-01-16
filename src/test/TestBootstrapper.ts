@@ -5,6 +5,7 @@ import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { Camera } from "../engine/script/render/Camera";
 import { Rotator } from "./script/Rotator";
 
+/** @internal */
 export class TestBootstrapper extends Bootstrapper {
     public run(): SceneBuilder {
         const instantlater = this.engine.instantlater;

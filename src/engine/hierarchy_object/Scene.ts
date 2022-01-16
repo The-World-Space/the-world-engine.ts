@@ -4,8 +4,10 @@ import { Transform } from "./Transform";
 
 /**
  * scene is a container for all game objects
+ * do not drive this class
  */
 export class Scene extends THREE.Scene {
+    /** @internal */
     public constructor() {
         super();
         this.matrixAutoUpdate = false;
@@ -25,7 +27,7 @@ export class Scene extends THREE.Scene {
 
             transform.unsafeGetObject3D().traverseVisible(item => {
                 if (item.userData instanceof Transform) item.userData.gameObject.foreachComponent(c => {
-                    if (c.enabled) c.unsafeTryCallStart();
+                    if (c.enabled) c.internalTryCallStart();
                 }); //tryStartComponents
             });
         }

@@ -1,6 +1,7 @@
 import { Quaternion, Vector3 } from "three";
 import { Component } from "../../engine/hierarchy_object/Component";
 
+/** @internal */
 export class Rotator extends Component {
     private _accumulator = 0;
     private readonly _quternion = new Quaternion();
