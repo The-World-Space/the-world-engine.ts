@@ -21,7 +21,7 @@ export class PathfindTest extends Component {
 
     private readonly _onPointerDownBind = this.onPointerDown.bind(this);
 
-    protected override start(): void {
+    public start(): void {
         if (this._player === null) {
             throw new Error("Player not set");
         }
@@ -35,7 +35,7 @@ export class PathfindTest extends Component {
         this._gridPointer.addOnPointerDownEventListener(this._onPointerDownBind);
     }
 
-    public override onDestroy(): void {
+    public onDestroy(): void {
         this._gridPointer?.removeOnPointerDownEventListener(this._onPointerDownBind);
     }
 

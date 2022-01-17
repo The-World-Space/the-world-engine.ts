@@ -71,12 +71,12 @@ export class SpriteAtlasStaticInstancer extends Component {
 
     private _initializeFunction: (() => void)|null = null;
 
-    protected override start(): void {
+    public start(): void {
         this._initializeFunction?.call(this);
     }
 
     public setInstances(instances: SpriteAtlasInstance[]) {
-        if (!this.awakened && !this.awakening) {
+        if (!this.initialized) {
             this._initializeFunction = () => this.setInstances(instances);
             return;
         }

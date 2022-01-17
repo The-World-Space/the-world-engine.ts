@@ -15,7 +15,7 @@ export class SpriteAtlasAnimator extends Component {
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
     
-    protected override awake(): void {
+    public awake(): void {
         this._spriteAtlasRenderer = this.gameObject.getComponent(CssSpriteAtlasRenderer);
     }
     

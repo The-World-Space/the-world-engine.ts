@@ -19,14 +19,14 @@ export class CssHtmlElementRenderer extends Component {
 
     private static readonly _defaultElement: HTMLDivElement = document.createElement("div");
 
-    protected override awake(): void {
+    public awake(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlDivElement) {
             this.setElement(CssHtmlElementRenderer._defaultElement);
         }
     }
 
-    protected override start(): void {
+    public start(): void {
         if (this._css3DObject) {
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
@@ -34,19 +34,18 @@ export class CssHtmlElementRenderer extends Component {
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
         if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._css3DObject) {
             this._css3DObject.visible = true;   
             this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._css3DObject) {
             this._css3DObject.visible = false;   
             this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
@@ -65,7 +64,7 @@ export class CssHtmlElementRenderer extends Component {
     }
 
     public setElement(value: HTMLDivElement|null): void {
-        if (!this.awakened && !this.awakening) {
+        if (!this.initialized) {
             this._initializeFunction = () => {
                 this.setElement(value);
             };

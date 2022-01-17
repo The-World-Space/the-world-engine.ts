@@ -14,13 +14,13 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected override start(): void {
+    public start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
 
     public addEvent(x: number, y: number, callback: (gridX: number, gridY: number, target: GameObject) => void): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.addEvent(x, y, callback);
             });
@@ -37,7 +37,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         xOffset: number,
         yOffset: number
     ): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.addEventsFromTwoDimensionalArray(array, xOffset, yOffset);
             });

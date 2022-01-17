@@ -6,7 +6,7 @@ export class ZaxisInitializer extends ZaxisSortable {
 
     private _runOnce = true;
 
-    protected override start(): void { 
+    public start(): void { 
         this.process();
         if (this.runOnce) this.enabled = false;
     }

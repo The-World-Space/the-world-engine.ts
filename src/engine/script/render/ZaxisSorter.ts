@@ -6,7 +6,7 @@ export class ZaxisSorter extends ZaxisSortable {
     private _offset = 0;
     private _runOnce = true;
 
-    protected override start(): void { 
+    public start(): void { 
         this.update();
         if (!this._runOnce) return;
         this.gameObject.removeComponent(this);

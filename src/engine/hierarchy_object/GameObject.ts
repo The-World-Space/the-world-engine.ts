@@ -12,23 +12,26 @@ import { Transform } from "./Transform";
 export class GameObject {
     private _engineGlobalObject: EngineGlobalObject;
     private _instanceId: number;
-    /** @internal */
-    public _transform: Transform;
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
     /** @internal */
+    public _initialized: boolean;
+    /** @internal */
     public _components: Component[];
+    /** @internal */
+    public _transform: Transform;
 
     /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
         this._engineGlobalObject = engineGlobalObject;
         this._instanceId = engineGlobalObject.instantlater.generateId();
         this._activeInHierarchy = true;
+        this._activeSelf = true;
+        this._initialized = false;
+        this._components = [];
         this._transform = new Transform(this);
         this._transform.unsafeGetObject3D().visible = true;
         this._transform.unsafeGetObject3D().name = name;
-        this._activeSelf = true;
-        this._components = [];
     }
 
     /** @internal */
@@ -50,12 +53,12 @@ export class GameObject {
         gameObjectBuilder.initialize();
         this.registerTransform(gameObject._transform);
         gameObject.foreachComponentInChildren(component => {
-            component.internalTryCallAwake();
+            component.eventInvoker.tryCallAwake();
         });
         if (gameObject._activeInHierarchy) {
             gameObject.foreachComponentInChildren(component => {
                 if (component.enabled) {
-                    component.onEnable();
+                    component.eventInvoker.tryCallOnEnable();
                     component.internalTryEnqueueStart();
                     component.internalTryEnqueueUpdate();
                 }
@@ -67,6 +70,7 @@ export class GameObject {
      * change parent of this game object
      * @param newParent new parent game object. you can't set parent that in another engine instance
      */
+    //TODO: fix change parent
     public changeParent(newParent: GameObject): void {
         if (this._engineGlobalObject !== newParent._engineGlobalObject) {
             throw new Error("can't change parent to another engine instance");
@@ -83,7 +87,7 @@ export class GameObject {
         } else {
             if (!this.activeInHierarchy) {
                 this.foreachComponentInChildren(component => {
-                    component.onDisable();
+                    component.eventInvoker.tryCallOnDisable();
                     component.internalTryDequeueUpdate();
                 });
             }
@@ -116,10 +120,10 @@ export class GameObject {
         }
         this._components.push(component);
 
-        component.internalTryCallAwake();
+        component.eventInvoker.tryCallAwake();
         if (this._activeInHierarchy) {
             if (component.enabled) {
-                component.onEnable();
+                component.eventInvoker.tryCallOnEnable();
                 component.internalTryEnqueueStart();
                 component.internalTryEnqueueUpdate();
             }
@@ -300,7 +304,7 @@ export class GameObject {
             if (this._components[i] === component) {
                 component.enabled = false;
                 component.stopAllCoroutines();
-                component.onDestroy();
+                component.eventInvoker.tryCallOnDestroy();
                 this._components.splice(i, 1);
                 break;
             }
@@ -316,7 +320,7 @@ export class GameObject {
             const component = components[i];
             component.enabled = false;
             component.stopAllCoroutines();
-            component.onDestroy();
+            component.eventInvoker.tryCallOnDestroy();
         }
         this._transform.children.forEach(child => { // modified values in foreach but array is not modified
             if (child instanceof Transform) child.gameObject.destroy();
@@ -351,7 +355,7 @@ export class GameObject {
             for (let i = 0; i < components.length; i++) {
                 const component = components[i];
                 if (component.enabled) {
-                    component.onEnable();
+                    component.eventInvoker.tryCallOnEnable();
                     component.internalTryEnqueueStart();
                     component.internalTryEnqueueUpdate();
                 }
@@ -361,7 +365,7 @@ export class GameObject {
                 const component = components[i];
                 if (component.enabled) {
                     //disable components
-                    component.onDisable();
+                    component.eventInvoker.tryCallOnDisable();
                     //dequeue update
                     component.internalTryDequeueUpdate();
                     
@@ -431,6 +435,13 @@ export class GameObject {
      */
     public get instanceId(): number {
         return this._instanceId;
+    }
+
+    /**
+     * if instantiate process is finished, this will be true
+     */
+    public get initialized(): boolean {
+        return this._initialized;
     }
 }
 
@@ -632,6 +643,8 @@ export class GameObjectBuilder {
     /**
      * build GameObject. check component requirements and link GameObjects tranform
      * @returns 
+     * 
+     * @internal
      */
     public build(): GameObject {
         this.checkComponentRequirements(this._gameObject);
@@ -645,6 +658,8 @@ export class GameObjectBuilder {
 
     /**
      * execute initialize function of all components recursively for it's children GameObjects
+     * 
+     * @internal
      */
     public initialize(): void {
         const componentInitializeFuncList = this._componentInitializeFuncList;
@@ -655,5 +670,7 @@ export class GameObjectBuilder {
         for (let i = 0; i < children.length; i++) {
             children[i].initialize();
         }
+
+        this._gameObject._initialized = true;
     }
 }

@@ -37,7 +37,7 @@ export class PlayerGridMovementController extends Directionable
 
     private readonly _tempVector2: Vector2 = new Vector2();
 
-    protected override start(): void {
+    public start(): void {
         this._pathfinder = new Pathfinder(this._collideMaps);
 
         const transform = this.transform;

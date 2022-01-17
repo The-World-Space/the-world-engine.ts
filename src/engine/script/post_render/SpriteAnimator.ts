@@ -15,7 +15,7 @@ export class SpriteAnimator extends Component {
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
     
-    protected override awake(): void {
+    public awake(): void {
         this._spriteRenderer = this.gameObject.getComponent(CssSpriteRenderer);
     }
     

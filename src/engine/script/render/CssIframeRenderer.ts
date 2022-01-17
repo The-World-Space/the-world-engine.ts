@@ -15,22 +15,24 @@ export class CssIframeRenderer extends Component {
     private _iframeSource = "";
     private _pointerEvents = true;
     private _zindex = 0;
+    private _started = false;
 
-    protected override start(): void { 
+    public start(): void { 
         this.drawIframe();
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
+        this._started = true;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
+        if (!this._started) return;
         if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 

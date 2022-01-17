@@ -17,12 +17,12 @@ export class GridCollideMap extends Component implements IGridCollidable {
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected override start(): void {
+    public start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._showCollider && !this._colliderIsShowing) {
             this.addColliderImages();
             this._colliderIsShowing = true;
@@ -30,14 +30,14 @@ export class GridCollideMap extends Component implements IGridCollidable {
         this._collideEnabled = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         this.removeColliderImages();
         this._colliderIsShowing = false;
         this._collideEnabled = false;
     }
 
     public addCollider(x: number, y: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.addCollider(x, y);
             });
@@ -51,7 +51,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
     }
 
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.addColliderFromTwoDimensionalArray(array, xOffset, yOffset);
             });
@@ -68,7 +68,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
     }
 
     public removeCollider(x: number, y: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.removeCollider(x, y);
             });

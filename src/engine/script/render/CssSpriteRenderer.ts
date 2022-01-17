@@ -17,30 +17,32 @@ export class CssSpriteRenderer extends Component {
     private _imageFlipY = false;
     private _opacity = 1;
     private _pointerEvents = true;
+    private _started = false;
 
     private _initializeFunction: (() => void)|null = null;
     
     private static readonly _defaultImagePath: string = GlobalConfig.defaultSpriteSrc;
 
-    protected override start(): void {
+    public start(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlImageElement) {
             this.asyncSetImagePath(CssSpriteRenderer._defaultImagePath);
         }
         
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
+        this._started = true;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
+        if (!this._started) return;
         if (this._sprite) this.transform.unsafeGetObject3D().remove(this._sprite); //it's safe because _sprite is not GameObject and remove is from onDestroy
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._sprite) this._sprite.visible = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._sprite) this._sprite.visible = false;
     }
 
@@ -56,7 +58,7 @@ export class CssSpriteRenderer extends Component {
     }
 
     public asyncSetImagePath(path: string|null, onComplete?: () => void): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunction = () => {
                 this.asyncSetImagePath(path, onComplete);
             };

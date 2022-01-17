@@ -14,13 +14,13 @@ export class TestTileBrush extends Component {
     private readonly _onPointerUpBind = this.onPointerUp.bind(this);
     private readonly _onPointerMoveBind = this.onPointerMove.bind(this);
 
-    protected override start(): void {
+    public start(): void {
         if (!this._colideTilemapChunk) {
             throw new Error("TestTileBrush: colideTilemapChunk is not set");
         }
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (!this._gridPointer) {
             throw new Error("TestTileBrush: gridPointer is not set");
         }
@@ -29,7 +29,7 @@ export class TestTileBrush extends Component {
         this._gridPointer.addOnPointerMoveEventListener(this._onPointerMoveBind);
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._gridPointer) {
             this._gridPointer.removeOnPointerDownEventListener(this._onPointerDownBind);
             this._gridPointer.removeOnPointerUpEventListener(this._onPointerUpBind);

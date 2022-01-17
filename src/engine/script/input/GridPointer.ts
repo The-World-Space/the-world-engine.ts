@@ -18,6 +18,7 @@ export class GridPointer extends Component {
     private _onPointerUpDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onPointerMoveDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _isMouseDown = false;
+    private _started = false;
 
     private readonly _onPointerEnterBind = this.onPointerEnter.bind(this);
     private readonly _onPointerLeaveBind = this.onPointerLeave.bind(this);
@@ -25,7 +26,7 @@ export class GridPointer extends Component {
     private readonly _onPointerUpBind = this.onPointerUp.bind(this);
     private readonly _onPointerMoveBind = this.onPointerMove.bind(this);
 
-    protected override start(): void {
+    public start(): void {
         this._pointerGridInputListener = this.gameObject.getComponent(PointerGridInputListener);
         this._pointerGridInputListener!.addOnPointerEnterEventListener(this._onPointerEnterBind);
         this._pointerGridInputListener!.addOnPointerLeaveEventListener(this._onPointerLeaveBind);
@@ -49,10 +50,11 @@ export class GridPointer extends Component {
                 .getGameObject(pointerObject));
         this._pointerObject = pointerObject.ref;
         this._pointerRenderer = pointerRenderer.ref;
+        this._started = true;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
+        if (!this._started) return;
         if (this._pointerGridInputListener) {
             this._pointerGridInputListener.removeOnPointerEnterEventListener(this._onPointerEnterBind);
             this._pointerGridInputListener.removeOnPointerLeaveEventListener(this._onPointerLeaveBind);

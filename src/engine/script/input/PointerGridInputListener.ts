@@ -45,6 +45,7 @@ export class PointerGridInputListener extends Component {
     private _onPointerMoveDelegates: ((event: PointerGridEvent) => void)[] = [];
     private _onTouchStartFunc: (() => void)|null = null;
     private _touchMoveOccured = false;
+    private _started = false;
 
     private readonly _onMouseDownBind = this.onMouseDown.bind(this);
     private readonly _onMouseUpBind = this.onMouseUp.bind(this);
@@ -56,7 +57,7 @@ export class PointerGridInputListener extends Component {
     private readonly _onTouchMoveBind = this.onTouchMove.bind(this);
     private readonly _onTouchCancelBind = this.onTouchCancel.bind(this);
 
-    protected override start(): void {
+    public start(): void {
         this._htmlDivElement = document.createElement("div");
         this._css3DObject = new CSS3DObject(this._htmlDivElement);
         this._htmlDivElement.style.width = this._inputWidth + "px";
@@ -74,6 +75,8 @@ export class PointerGridInputListener extends Component {
 
         this.transform.unsafeGetObject3D().add(this._css3DObject);
         //it's safe because _css3DObject is not a GameObject and i"m removing it from the scene in onDestroy
+
+        this._started = true;
     }
 
     private readonly _tempVector3: Vector3 = new Vector3();
@@ -90,8 +93,8 @@ export class PointerGridInputListener extends Component {
         this._css3DObject!.position.y = cameraLocalPosition.y;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
+        if (!this._started) return;
         if (this._htmlDivElement) { //it's the intended useless branch
             this._htmlDivElement.removeEventListener("mousedown", this._onMouseDownBind);
             this._htmlDivElement.removeEventListener("mouseup", this._onMouseUpBind);

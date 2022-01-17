@@ -18,16 +18,17 @@ export class Scene extends THREE.Scene {
         this.add(transform.unsafeGetObject3D());
         const gameObject = transform.gameObject;
 
+        //TODO: fix this traverseVisible
         if (gameObject.activeInHierarchy) {
             transform.unsafeGetObject3D().traverseVisible(item => {
                 if (item.userData instanceof Transform) item.userData.gameObject.foreachComponent(c => {
-                    if (c.enabled) c.onEnable();
+                    if (c.enabled) c.eventInvoker.tryCallOnEnable();
                 }); //tryEnableComponents
             });
 
             transform.unsafeGetObject3D().traverseVisible(item => {
                 if (item.userData instanceof Transform) item.userData.gameObject.foreachComponent(c => {
-                    if (c.enabled) c.internalTryCallStart();
+                    if (c.enabled) c.eventInvoker.tryCallStart();
                 }); //tryStartComponents
             });
         }

@@ -43,27 +43,29 @@ export class CssTilemapRenderer extends Component{
     private _imageSources: TileAtlasItem[]|null = null;
     private _pointerEvents = true;
     private _zindex = 0;
+    private _started = false;
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected override start(): void { 
+    public start(): void { 
         this.drawTileMap();
 
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
+        this._started = true;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
+        if (!this._started) return;
         if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 
@@ -91,7 +93,7 @@ export class CssTilemapRenderer extends Component{
     }
 
     public drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.drawTile(column, row, imageIndex, atlasIndex);
             });
@@ -124,7 +126,7 @@ export class CssTilemapRenderer extends Component{
 
     //i is imageIndex and a is atlasIndex
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset);
             });
@@ -163,7 +165,7 @@ export class CssTilemapRenderer extends Component{
     }
 
     public clearTile(column: number, row: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.clearTile(column, row);
             });
@@ -175,7 +177,7 @@ export class CssTilemapRenderer extends Component{
     }
 
     public set imageSources(value: TileAtlasItem[]) {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.imageSources = value;
             });

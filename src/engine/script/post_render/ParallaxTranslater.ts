@@ -9,7 +9,7 @@ export class ParallaxTranslater extends Component {
     private _initializeCenterFromPosition = true;
     private readonly _center: Vector2 = new Vector2();
 
-    protected override start(): void {
+    public start(): void {
         if (this._initializeCenterFromPosition) {
             this._center.set(this.transform.localPosition.x, this.transform.localPosition.y);
         }

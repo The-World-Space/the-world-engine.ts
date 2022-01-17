@@ -14,7 +14,7 @@ export class GridCollider extends Component {
     private _collideInfoAddedToMap = false;
     private _initializeFunctions: ((() => void))[] = [];
 
-    protected override start(): void {
+    public start(): void {
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
 
@@ -23,7 +23,7 @@ export class GridCollider extends Component {
         }
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._showCollideSpot && !this._collideSpotIsShowing) {
             this.addColliderImages();
             this._collideSpotIsShowing = true;
@@ -31,7 +31,7 @@ export class GridCollider extends Component {
         this.addAllCollideInfoToMap();
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._showCollideSpot) {
             this.removeColliderImages();
             this._collideSpotIsShowing = false;
@@ -41,7 +41,7 @@ export class GridCollider extends Component {
         }
     }
 
-    public override onDestroy(): void {
+    public onDestroy(): void {
         this.removeColliderImages();
         this.removeAllCollideInfoFromMap();
     }
@@ -53,7 +53,7 @@ export class GridCollider extends Component {
      * @returns 
      */
     public addCollider(x: number, y: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.addCollider(x, y);
             });
@@ -72,7 +72,7 @@ export class GridCollider extends Component {
     }
 
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.addColliderFromTwoDimensionalArray(array, xOffset, yOffset);
             });
@@ -89,7 +89,7 @@ export class GridCollider extends Component {
     }
 
     public removeCollider(x: number, y: number): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunctions.push(() => {
                 this.removeCollider(x, y);
             });

@@ -21,7 +21,7 @@ export class TrackCameraController extends Component {
     private _lerpTrack = false;
     private _lerpAlpha = 0.1;
 
-    protected override start(): void {
+    public start(): void {
         if (this._trackTarget) {
             const targetPosition = this._tempVector.copy(this._trackTarget.transform.position);
             targetPosition.z += this._cameraDistanceOffset;

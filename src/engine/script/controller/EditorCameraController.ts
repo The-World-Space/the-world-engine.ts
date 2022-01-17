@@ -28,7 +28,7 @@ export class EditorCameraController extends Component {
     private _onPointerLeaveBind = this.onPointerLeave.bind(this);
     private _onResizeBind = this.onResize.bind(this);
 
-    protected override awake(): void {
+    public awake(): void {
         this._camera = this.gameObject.getComponent(Camera);
         const aspect = this.engine.screen.width / this.engine.screen.height;
         this._defaultViewSize = this._camera!.viewSize;
@@ -37,7 +37,7 @@ export class EditorCameraController extends Component {
         this._camera!.viewSize = this._currentViewSize / aspect;
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         const input = this.engine.input;
         input.addOnKeyDownEventListener(this._onKeyDownBind);
         input.addOnWheelEventListener(this._onWheelBind);
@@ -48,7 +48,7 @@ export class EditorCameraController extends Component {
         this.engine.screen.addOnResizeEventListener(this._onResizeBind);
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         const input = this.engine.input;
         input.removeOnKeyDownEventListener(this._onKeyDownBind);
         input.removeOnWheelEventListener(this._onWheelBind);

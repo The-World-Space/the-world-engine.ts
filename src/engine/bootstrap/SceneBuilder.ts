@@ -33,6 +33,8 @@ export class SceneBuilder {
     /**
      * link GameObjects transform, initialize components and add to scene processor
      * @returns components that need to awake and enable
+     * 
+     * @internal
      */
     public build(): { awakeComponents: Component[], enableComponents: Component[] } {
         for (let i = 0; i < this._children.length; i++) {

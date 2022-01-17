@@ -18,7 +18,7 @@ export class EditorGridRenderer extends Component {
     private _renderHeight = 100;
     private _lineWidth = 0.2;
 
-    protected override awake(): void {
+    public awake(): void {
         const cssHtmlRendererRef = new PrefabRef<CssHtmlElementRenderer>();
         const cssHemlRendererObjectRef = new PrefabRef<GameObject>();
 
@@ -43,11 +43,11 @@ export class EditorGridRenderer extends Component {
         this._cssHtmlRendererObject = cssHemlRendererObjectRef.ref;
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         this._cssHtmlRendererObject!.activeSelf = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         this._cssHtmlRendererObject!.activeSelf = false;
     }
 
@@ -70,7 +70,7 @@ export class EditorGridRenderer extends Component {
         }
     }
 
-    public override onDestroy(): void {
+    public onDestroy(): void {
         this._cssHtmlRendererObject!.destroy();
     }
 

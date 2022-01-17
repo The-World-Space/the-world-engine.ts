@@ -22,30 +22,32 @@ export class CssSpriteAtlasRenderer extends Component {
     private _currentImageIndex = 0;
     private readonly _imageCenterOffset: Vector2 = new Vector2(0, 0);
     private _zindex = 0;
+    private _started = false;
     
     private _initializeFunction: (() => void)|null = null;
 
     private static readonly _defaultImagePath: string = GlobalConfig.defaultSpriteSrc;
 
-    protected override start(): void {
+    public start(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlImageElement) {
             this.asyncSetImage(CssSpriteAtlasRenderer._defaultImagePath, 1, 1);
         }
         
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
+        this._started = true;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
+        if (!this._started) return;
         if (this._sprite) this.transform.unsafeGetObject3D().remove(this._sprite); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._sprite) this._sprite.visible = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._sprite) this._sprite.visible = false;
     }
 
@@ -61,7 +63,7 @@ export class CssSpriteAtlasRenderer extends Component {
     }
 
     public asyncSetImage(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
-        if (!this.started && !this.starting) {
+        if (!this.initialized) {
             this._initializeFunction = () => {
                 this.asyncSetImage(path, rowCount, columnCount, onComplete);
             };

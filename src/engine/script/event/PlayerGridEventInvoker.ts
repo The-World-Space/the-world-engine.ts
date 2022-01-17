@@ -12,12 +12,12 @@ export class PlayerGridEventInvoker extends Component {
     private _gridEventMaps: GridEventMap[] = [];
     private _onMoveToTargetBind: (x: number, y: number) => void = this.onMoveToTarget.bind(this);
 
-    protected override awake(): void {
+    public awake(): void {
         this._playerGridMovementController = this.gameObject.getComponent(PlayerGridMovementController);
         this._playerGridMovementController!.addOnMoveToTargetEventListener(this._onMoveToTargetBind);
     }
 
-    public override onDestroy(): void {
+    public onDestroy(): void {
         this._playerGridMovementController!.removeOnMoveToTargetEventListener(this._onMoveToTargetBind);
     }
 

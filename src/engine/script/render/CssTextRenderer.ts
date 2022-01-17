@@ -34,14 +34,14 @@ export class CssTextRenderer extends Component {
 
     private static readonly _defaultText: string = "Text";
 
-    protected override awake(): void {
+    public awake(): void {
         this._initializeFunction?.call(this);
         if (!this._htmlDivElement) {
             this.text = CssTextRenderer._defaultText;
         }
     }
 
-    protected override start(): void {
+    public start(): void {
         if (this._css3DObject) {
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
@@ -49,16 +49,15 @@ export class CssTextRenderer extends Component {
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public override onEnable(): void {
+    public onEnable(): void {
         if (this._css3DObject) this._css3DObject.visible = true;
     }
 
-    public override onDisable(): void {
+    public onDisable(): void {
         if (this._css3DObject) this._css3DObject.visible = false;
     }
 
-    public override onDestroy(): void {
-        if (!this.started) return;
+    public onDestroy(): void {
         if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
     }
 
@@ -74,7 +73,7 @@ export class CssTextRenderer extends Component {
     }
 
     public set text(value: string|null) {
-        if (!this.awakened && !this.awakening) {
+        if (!this.initialized) {
             this._initializeFunction = () => {
                 this.text = value;
             };

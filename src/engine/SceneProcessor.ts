@@ -38,13 +38,13 @@ export class SceneProcessor {
     }
 
     public init(initializeComponents: { awakeComponents: Component[], enableComponents: Component[] }): void {
-        initializeComponents.awakeComponents.forEach(component => component.internalTryCallAwake()); //depending on the unity implementation, awake order not guaranteed 
+        initializeComponents.awakeComponents.forEach(component => component.eventInvoker.tryCallAwake()); //depending on the unity implementation, awake order not guaranteed 
         //initializeComponents.enableComponents.sort(Component.lessOperation);
-        initializeComponents.enableComponents.forEach(component => component.onEnable());
+        initializeComponents.enableComponents.forEach(component => component.eventInvoker.tryCallOnEnable());
     }
 
     public update(): void {
-        this._startComponents.forEach(component => component.internalTryCallStart());
+        this._startComponents.forEach(component => component.eventInvoker.tryCallStart());
         this._updateComponents.forEach(component => component.update());
     }
 }
