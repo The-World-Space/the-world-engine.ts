@@ -1,4 +1,5 @@
-import { Component } from './Component';
+import { Component } from "./Component";
+import { ComponentEvent } from "./ComponentEvent";
 
 /**
  * awake is called when the script instance is being loaded.
@@ -51,66 +52,16 @@ function isOnDisableableComponent(component: Component): component is OnDisablea
     return (component as OnDisableableComponent).onDisable !== undefined;
 }
 
-/**
- * event function that calls after world matrix is updated
- */
-type OnWorldMatrixUpdatedableComponent = Component & { onWorldMatrixUpdated(): void; };
-
-function isOnWorldMatrixUpdatedableComponent(component: Component): component is OnWorldMatrixUpdatedableComponent {
-    return (component as OnWorldMatrixUpdatedableComponent).onWorldMatrixUpdated !== undefined;
-}
-
-/** @internal */
-export class ComponentEventInvoker {
-    private readonly _awake: (() => void)|null = null;
-    private _awakened = false;
-
-    private readonly _start: (() => void)|null = null;
-    private _started = false;
-
-    private readonly _onDestroy: (() => void)|null = null;
-    private readonly _onEnable: (() => void)|null = null;
-    private readonly _onDisable: (() => void)|null = null;
-    private readonly _onWorldMatrixUpdated: (() => void)|null = null;
+export class ComponentEventContainer {
+    private readonly _awake: ComponentEvent|null = null;
 
     public constructor(component: Component) {
-        if (isAwakeableComponent(component)) this._awake = component.awake;
-        if (isStartableComponent(component)) this._start = component.start;
-        if (isOnDestroyableComponent(component)) this._onDestroy = component.onDestroy;
-        if (isOnEnableableComponent(component)) this._onEnable = component.onEnable;
-        if (isOnDisableableComponent(component)) this._onDisable = component.onDisable;
-        if (isOnWorldMatrixUpdatedableComponent(component)) this._onWorldMatrixUpdated = component.onWorldMatrixUpdated;
+        if (isAwakeableComponent(component)) {
+            this._awake = ComponentEvent.createAwakeEvent(component, component.awake);
+        }
     }
 
-    public tryCallAwake(): void {
-        if (this._awakened) return;
-        this._awake?.();
-        this._awakened = true;
-    }
-
-    public tryCallStart(): void {
-        if (this._started) return;
-        this._start?.();
-        this._started = true;
-    }
-
-    public get started(): boolean {
-        return this._started;
-    }
-
-    public tryCallOnDestroy(): void {
-        this._onDestroy?.();
-    }
-
-    public tryCallOnEnable(): void {
-        this._onEnable?.();
-    }
-
-    public tryCallOnDisable(): void {
-        this._onDisable?.();
-    }
-
-    public tryCallOnWorldMatrixUpdated(): void {
-        this._onWorldMatrixUpdated?.();
+    public get awake(): ComponentEvent|null {
+        return this._awake;
     }
 }

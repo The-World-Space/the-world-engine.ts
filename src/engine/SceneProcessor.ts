@@ -1,50 +1,36 @@
 import { MutIteratableCollection } from "./collection/MutIteratableCollection";
-import { Component } from "./hierarchy_object/Component";
-
-/** @internal */
-export type UpdateableComponent = Component & {
-    update(): void;
-};
-
-/** @internal */
-export function isUpdateableComponent(component: Component): component is UpdateableComponent {
-    return (component as UpdateableComponent).update !== undefined;
-}
+import { ComponentEvent } from "./hierarchy_object/ComponentEvent";
 
 /** @internal */
 export class SceneProcessor {
-    private _startComponents: MutIteratableCollection<Component>;
-    private _updateComponents: MutIteratableCollection<UpdateableComponent>;
+    private _nonSyncedEvents : MutIteratableCollection<ComponentEvent>;
+    private _syncedEvents : MutIteratableCollection<ComponentEvent>;
+    private _processingSyncedEvent: boolean;
     
     public constructor() {
-        this._startComponents = new MutIteratableCollection(Component.lessOperation);
-        this._updateComponents = new MutIteratableCollection<UpdateableComponent>(Component.lessOperation);
+        this._nonSyncedEvents = new MutIteratableCollection(ComponentEvent.lessOp);
+        this._syncedEvents = new MutIteratableCollection(ComponentEvent.lessOp);
+        this._processingSyncedEvent = false;
     }
 
-    public addStartComponent(component: Component): void {
-        this._startComponents.insert(component);
+    public addEventToNonSyncedCollection(event: ComponentEvent): void {
+        this._nonSyncedEvents.insert(event);
     }
 
-    public addUpdateComponent(component: UpdateableComponent): void {
-        this._updateComponents.insert(component);
+    public addEventToSyncedCollection(event: ComponentEvent): void {
+        this._syncedEvents.insert(event);
     }
 
-    public removeStartComponent(component: Component): void {
-        this._startComponents.delete(component);
+    public startProcessNonSyncedEvent(): void {
+        this._nonSyncedEvents.forEach(event => event.tryInvoke());
     }
 
-    public removeUpdateComponent(component: UpdateableComponent): void {
-        this._updateComponents.delete(component);
-    }
-
-    public init(initializeComponents: { awakeComponents: Component[], enableComponents: Component[] }): void {
-        initializeComponents.awakeComponents.forEach(component => component.eventInvoker.tryCallAwake()); //depending on the unity implementation, awake order not guaranteed 
-        //initializeComponents.enableComponents.sort(Component.lessOperation);
-        initializeComponents.enableComponents.forEach(component => component.eventInvoker.tryCallOnEnable());
-    }
-
-    public update(): void {
-        this._startComponents.forEach(component => component.eventInvoker.tryCallStart());
-        this._updateComponents.forEach(component => component.update());
+    // excuted when callstack does not have forEach
+    public tryStartProcessSyncedEvent(): void {
+        if (this._processingSyncedEvent) return;
+        this._processingSyncedEvent = true;
+        this._syncedEvents.forEach(event => event.tryInvoke());
+        this._syncedEvents.clear();
+        this._processingSyncedEvent = false;
     }
 }

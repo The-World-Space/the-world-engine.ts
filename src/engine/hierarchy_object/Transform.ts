@@ -6,6 +6,7 @@ import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
 import { ReadOnlyVector3 } from "../math/ReadOnlyVector3";
 import { WritableVector3 } from "../math/WritableVector3";
+import { EngineGlobalObject } from "../EngineGlobalObject";
 
 /**
  * transform that delegates Object3D
@@ -14,6 +15,8 @@ import { WritableVector3 } from "../math/WritableVector3";
 export class Transform {
     private readonly _object3D: Object3D;
     private readonly _gameObject: GameObject;
+    private readonly _engineGlobalObject: EngineGlobalObject;
+    private readonly _onParentChanged: (oldParent: Transform|null, newParent: Transform|null) => void;
 
     private readonly _worldPosition: ObservableVector3;
     private readonly _worldRotationEuler: ObservableEuler;
@@ -46,10 +49,18 @@ export class Transform {
     private readonly _onWorldRotationChangeBind = this.onWorldRotationChange.bind(this);
 
     /** @internal */
-    public constructor(gameObject: GameObject) {
+    public constructor(
+        gameObject: GameObject,
+        engineGlobalObject: EngineGlobalObject,
+        _onParentChanged: (oldParent: Transform|null, newParent: Transform|null) => void
+    ) {
+        this._engineGlobalObject = engineGlobalObject;
+        this._onParentChanged = _onParentChanged;
+
         this._object3D = new Object3D();
         this._object3D.matrixAutoUpdate = false;
         this._object3D.userData = this;
+        this._object3D.parent = this._engineGlobalObject.rootScene;
         
         Object.defineProperties(this._object3D, {
             position: {
@@ -190,7 +201,7 @@ export class Transform {
     // #endregion
 
     private setMatrixNeedUpdateRecursively(): void {
-        this.gameObject.engine.transformMatrixProcessor.enqueueTransformToUpdate(this);
+        this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.setMatrixNeedUpdateRecursivelyInternal();
     }
 
@@ -456,6 +467,28 @@ export class Transform {
         if (this._object3D.parent instanceof Scene) return null;
         return this._object3D.parent as Transform | null;
     }
+
+    /**
+     * set parent, if value is null, set to scene
+     * 
+     * you can't set parent that in another engine instance
+     */
+    public set parent(value: Transform | null) {
+        if (value) {
+            const oldParent = this.parent;
+            this._object3D.removeFromParent();
+            value._object3D.add(this._object3D);
+            this.setMatrixNeedUpdateRecursively();
+            this._onParentChanged(oldParent, value);
+        } else {
+            const oldParent = this.parent;
+            this._object3D.removeFromParent();
+            this._engineGlobalObject.rootScene.add(this._object3D);
+            this.setMatrixNeedUpdateRecursively();
+            this._onParentChanged(oldParent, null);
+        }
+    }
+
 
     /**
      * get children. it returns new instance of Array, so you can change it
@@ -847,7 +880,7 @@ export class Transform {
     }
 
     public enqueueRenderAttachedObject3D(rerenderObject: Object3D): void {
-        this.gameObject.engine.transformMatrixProcessor.enqueueRenderObject(rerenderObject);
+        this._engineGlobalObject.transformMatrixProcessor.enqueueRenderObject(rerenderObject);
     }
 
     /** @internal */

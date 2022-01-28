@@ -1,12 +1,11 @@
 import { ComponentConstructor } from "./ComponentConstructor";
 import { GameObject } from "./GameObject";
-import { GameStateKind } from "../GameState";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { isUpdateableComponent } from "../SceneProcessor";
 import { Coroutine } from "../coroutine/Coroutine";
 import { CoroutineIterator } from "../coroutine/CoroutineIterator";
 import { Transform } from "./Transform";
-import { ComponentEventInvoker } from "./ComponentEventInvoker";
+import { ComponentEventContainer } from "./ComponentEventContainer";
 
 /**
  * component is the base class from which every engine script derives
@@ -14,17 +13,35 @@ import { ComponentEventInvoker } from "./ComponentEventInvoker";
  * do not override constructor it's break the engine
  */
 export abstract class Component {
-    protected readonly _disallowMultipleComponent: boolean = false;
-    protected readonly _requiredComponents: ComponentConstructor[] = [];
-    protected readonly _executionOrder: number = 0;
+    /**
+     * if this true, this component can't be added multiple times to the same game object
+     * @internal
+     */
+    public readonly disallowMultipleComponent: boolean = false;
+    
+    /**
+     * if this array is not empty, this component can be added only if all of the components in this array are already added to the game object
+     * @internal
+     */
+    public readonly requiredComponents: ComponentConstructor[] = [];
+    
+    /**
+     * script execution order of this component
+     */
+    public readonly executionOrder: number = 0;
 
     private _enabled: boolean;
     private _startEnqueued: boolean;
     private _updateEnqueued: boolean;
-    private _gameObject: GameObject;
-    private _instanceId: number;
-    private _runningCoroutines: Coroutine[] = [];
-    private readonly _componentEventInvoker: ComponentEventInvoker;
+
+    private readonly _gameObject: GameObject;
+    private readonly _instanceId: number;
+    private readonly _runningCoroutines: Coroutine[] = [];
+    
+    /** @internal */
+    public readonly _componentEventContainer: ComponentEventContainer;
+    /** @internal */
+    public _destroyed = false;
 
     /** @internal */
     public constructor(gameObject: GameObject) {
@@ -33,7 +50,7 @@ export abstract class Component {
         this._updateEnqueued = false;
         this._gameObject = gameObject;
         this._instanceId = gameObject.engine.instantlater.generateId();
-        this._componentEventInvoker = new ComponentEventInvoker(this);
+        this._componentEventContainer = new ComponentEventContainer(this);
     }
 
     /**
@@ -128,9 +145,7 @@ export abstract class Component {
 
         this._enabled = value;
 
-        if (this.engine.gameState.kind === GameStateKind.Initializing) {
-            return;
-        }
+        if (!this._gameObject.initialized) return;
         
         if (this._gameObject.activeInHierarchy) {
             const sceneProcessor = this.engine.sceneProcessor;
@@ -175,30 +190,6 @@ export abstract class Component {
     }
 
     /**
-     * if this true, this component can't be added multiple times to the same game object
-     * @internal
-     */
-    public get disallowMultipleComponent(): boolean {
-        return this._disallowMultipleComponent;
-    }
-
-    /**
-     * if this array is not empty, this component can be added only if all of the components in this array are already added to the game object
-     * @internal
-     */
-    public get requiredComponents(): ComponentConstructor[] {
-        return this._requiredComponents;
-    }
-
-    /**
-     * script execution order of this component
-     * @internal
-     */
-    public get executionOrder(): number {
-        return this._executionOrder;
-    }
-
-    /**
      * get instance id of this component
      */
     public get instanceId(): number {
@@ -210,11 +201,6 @@ export abstract class Component {
      */
     public get initialized(): boolean {
         return this._gameObject.initialized;
-    }
-
-    /** @internal */
-    public get eventInvoker(): ComponentEventInvoker {
-        return this._componentEventInvoker;
     }
 
     /** @internal */

@@ -29,19 +29,8 @@ export class GameObject {
         this._activeSelf = true;
         this._initialized = false;
         this._components = [];
-        this._transform = new Transform(this);
-        this._transform.unsafeGetObject3D().visible = true;
+        this._transform = new Transform(this, engineGlobalObject, this.onChangeParent.bind(this));
         this._transform.unsafeGetObject3D().name = name;
-    }
-
-    /** @internal */
-    public registerTransform(transform: Transform): void {
-        this._transform.unsafeGetObject3D().add(transform.unsafeGetObject3D());
-        const gameObject = transform.gameObject;
-
-        if (gameObject._activeSelf) {
-            gameObject.activeInHierarchy = this._activeInHierarchy; // update child activeInHierarchy
-        }
     }
 
     /**
@@ -51,7 +40,7 @@ export class GameObject {
     public addChildFromBuilder(gameObjectBuilder: GameObjectBuilder): void {
         const gameObject = gameObjectBuilder.build();
         gameObjectBuilder.initialize();
-        this.registerTransform(gameObject._transform);
+        gameObject.transform.parent = this.transform;
         gameObject.foreachComponentInChildren(component => {
             component.eventInvoker.tryCallAwake();
         });
@@ -66,18 +55,23 @@ export class GameObject {
         }
     }
 
-    /**
-     * change parent of this game object
-     * @param newParent new parent game object. you can't set parent that in another engine instance
-     */
-    //TODO: fix change parent
-    public changeParent(newParent: GameObject): void {
-        if (this._engineGlobalObject !== newParent._engineGlobalObject) {
+    private onChangeParent(_oldParent: Transform|null, newParent: Transform|null): void {
+        if (newParent && this._engineGlobalObject !== newParent.gameObject._engineGlobalObject) {
             throw new Error("can't change parent to another engine instance");
         }
         const prevActiveInHierarchy = this._activeInHierarchy;
-        this._transform.unsafeGetObject3D().removeFromParent();
-        this.registerTransform(newParent._transform);
+
+        const gameObject = this.transform.gameObject;
+        if (newParent) {
+            if (gameObject._activeSelf) {
+                gameObject.activeInHierarchy = newParent.gameObject._activeInHierarchy; // update child activeInHierarchy
+            }
+        } else {
+            gameObject.activeInHierarchy = gameObject._activeSelf;
+        }
+        
+        if (!this.initialized) return; 
+
         if (!prevActiveInHierarchy) {
             if (this.activeInHierarchy) {
                 this.foreachComponentInChildren(component => {
@@ -347,7 +341,6 @@ export class GameObject {
         if (this._activeInHierarchy === value) return;
 
         this._activeInHierarchy = value;
-        this._transform.unsafeGetObject3D().visible = this._activeInHierarchy;
 
         const components = this._components;
         if (this._activeInHierarchy) {
@@ -651,7 +644,7 @@ export class GameObjectBuilder {
         const children = this._children;
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
-            this._gameObject.registerTransform(child.build()._transform);
+            child.build().transform.parent = this._gameObject.transform;
         }
         return this._gameObject;
     }
