@@ -15,13 +15,11 @@ import { ComponentEventContainer } from "./ComponentEventContainer";
 export abstract class Component {
     /**
      * if this true, this component can't be added multiple times to the same game object
-     * @internal
      */
     public readonly disallowMultipleComponent: boolean = false;
     
     /**
      * if this array is not empty, this component can be added only if all of the components in this array are already added to the game object
-     * @internal
      */
     public readonly requiredComponents: ComponentConstructor[] = [];
     

@@ -109,7 +109,7 @@ export class Game {
         //it is certain that the camera exists in the global variable from this point on.
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist in the scene.");
         this._gameState.kind = GameStateKind.Running;
-        this._sceneProcessor.update();
+        this._sceneProcessor.startProcessNonSyncedEvent(); // execute start() and update() event
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist in the scene.");
         const renderObjects = this._transformMatrixProcessor.update();

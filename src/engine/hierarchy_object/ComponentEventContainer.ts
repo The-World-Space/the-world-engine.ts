@@ -26,6 +26,16 @@ function isStartableComponent(component: Component): component is StartableCompo
 }
 
 /**
+ * update is called every frame, if the script is enabled.
+ * https://docs.unity3d.com/ScriptReference/MonoBehaviour.Update.html
+ */
+type UpdatableComponent = Component & { update(): void; };
+
+function isUpdatableComponent(component: Component): component is UpdatableComponent {
+    return (component as UpdatableComponent).update !== undefined;
+}
+
+/**
  * onDestroy occurs when a component is destroyed
  */
 type OnDestroyableComponent = Component & { onDestroy(): void; };

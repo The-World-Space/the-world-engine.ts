@@ -1,5 +1,6 @@
 import { Component } from "../hierarchy_object/Component";
-import { GameObject, GameObjectBuilder } from "../hierarchy_object/GameObject";
+import { GameObject } from "../hierarchy_object/GameObject";
+import { GameObjectBuilder } from "../hierarchy_object/GameObjectBuilder";
 import { Scene } from "../hierarchy_object/Scene";
 import { Transform } from "../hierarchy_object/Transform";
 import { isUpdateableComponent, SceneProcessor, UpdateableComponent } from "../SceneProcessor";
@@ -39,7 +40,7 @@ export class SceneBuilder {
     public build(): { awakeComponents: Component[], enableComponents: Component[] } {
         for (let i = 0; i < this._children.length; i++) {
             const child = this._children[i];
-            this._scene.add(child.build().transform.unsafeGetObject3D()); //it's safe because component initialize will be called by SceneProsessor
+            child.build().transform.parent = null; //null is root
         }
 
         for (let i = 0; i < this._children.length; i++) {
