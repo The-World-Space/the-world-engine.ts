@@ -298,21 +298,21 @@ export class GameObject {
         }
     }
 
-    /**
-     * remove component from the GameObject
-     * @param component 
-     */
-    public removeComponent(component: Component): void {
-        for (let i = 0; i < this._components.length; i++) {
-            if (this._components[i] === component) {
-                component.enabled = false;
-                component.stopAllCoroutines();
-                component.eventInvoker.tryCallOnDestroy();
-                this._components.splice(i, 1);
-                break;
-            }
-        }
-    }
+    // /**
+    //  * remove component from the GameObject
+    //  * @param component 
+    //  */
+    // public removeComponent(component: Component): void {
+    //     for (let i = 0; i < this._components.length; i++) {
+    //         if (this._components[i] === component) {
+    //             component.enabled = false;
+    //             component.stopAllCoroutines();
+    //             component.eventInvoker.tryCallOnDestroy();
+    //             this._components.splice(i, 1);
+    //             break;
+    //         }
+    //     }
+    // }
 
     /**
      * destroy the GameObject
@@ -329,6 +329,16 @@ export class GameObject {
             if (child instanceof Transform) child.gameObject.destroy();
         });
         this._transform.unsafeGetObject3D().removeFromParent();
+    }
+
+    /** @internal */
+    public removeFromParent() {
+        this._transform.unsafeGetObject3D().removeFromParent();
+    }
+
+    /** @internal */
+    public removeComponent(component: Component) {
+        
     }
 
     /**

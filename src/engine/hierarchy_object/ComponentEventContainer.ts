@@ -1,5 +1,7 @@
+import { SceneProcessor } from "../SceneProcessor";
 import { Component } from "./Component";
 import { ComponentEvent } from "./ComponentEvent";
+import { ComponentEventState } from "./ComponentEventState";
 
 /**
  * awake is called when the script instance is being loaded.
@@ -13,6 +15,33 @@ type AwakeableComponent = Component & { awake(): void; };
 
 function isAwakeableComponent(component: Component): component is AwakeableComponent {
     return (component as AwakeableComponent).awake !== undefined;
+}
+
+/**
+ * this function is called when the object becomes enabled and active
+ */
+type OnEnableableComponent = Component & { onEnable(): void; };
+
+function isOnEnableableComponent(component: Component): component is OnEnableableComponent {
+    return (component as OnEnableableComponent).onEnable !== undefined;
+}
+
+/**
+ * this function is called when the component becomes disabled
+ */
+type OnDisableableComponent = Component & { onDisable(): void; };
+
+function isOnDisableableComponent(component: Component): component is OnDisableableComponent {
+    return (component as OnDisableableComponent).onDisable !== undefined;
+}
+
+/**
+ * onDestroy occurs when a component is destroyed
+ */
+type OnDestroyableComponent = Component & { onDestroy(): void; };
+
+function isOnDestroyableComponent(component: Component): component is OnDestroyableComponent {
+    return (component as OnDestroyableComponent).onDestroy !== undefined;
 }
 
 /**
@@ -35,43 +64,74 @@ function isUpdatableComponent(component: Component): component is UpdatableCompo
     return (component as UpdatableComponent).update !== undefined;
 }
 
-/**
- * onDestroy occurs when a component is destroyed
- */
-type OnDestroyableComponent = Component & { onDestroy(): void; };
-
-function isOnDestroyableComponent(component: Component): component is OnDestroyableComponent {
-    return (component as OnDestroyableComponent).onDestroy !== undefined;
-}
-
-/**
- * this function is called when the object becomes enabled and active
- */
-type OnEnableableComponent = Component & { onEnable(): void; };
-
-function isOnEnableableComponent(component: Component): component is OnEnableableComponent {
-    return (component as OnEnableableComponent).onEnable !== undefined;
-}
-
-/**
- * this function is called when the component becomes disabled
- */
-type OnDisableableComponent = Component & { onDisable(): void; };
-
-function isOnDisableableComponent(component: Component): component is OnDisableableComponent {
-    return (component as OnDisableableComponent).onDisable !== undefined;
-}
-
 export class ComponentEventContainer {
+    private readonly _sceneProcessor: SceneProcessor;
+    private readonly _eventState: ComponentEventState;
+
     private readonly _awake: ComponentEvent|null = null;
+    private readonly _onEnable: ComponentEvent|null = null;
+    private readonly _onDisable: ComponentEvent|null = null;
+    private readonly _onDestroy: ComponentEvent|null = null;
+
+    private readonly _start: ComponentEvent|null = null;
+    private readonly _update: ComponentEvent|null = null;
 
     public constructor(component: Component) {
+        this._sceneProcessor = component.engine.sceneProcessor;
+        this._eventState = new ComponentEventState();
+        
         if (isAwakeableComponent(component)) {
             this._awake = ComponentEvent.createAwakeEvent(component, component.awake);
         }
+        if (isOnEnableableComponent(component)) {
+            this._onEnable = ComponentEvent.createOnEnableEvent(component, component.onEnable);
+        }
+        if (isOnDisableableComponent(component)) {
+            this._onDisable = ComponentEvent.createOnDisableEvent(component, component.onDisable);
+        }
+        
+
+        if (isStartableComponent(component)) {
+            this._start = ComponentEvent.createStartEvent(component, () => { //lambda for run once
+                component.start();
+                this._eventState.startCalled = true;
+                this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
+            });
+        }
+        if (isUpdatableComponent(component)) {
+            this._update = ComponentEvent.createUpdateEvent(component, component.update);
+        }
     }
 
-    public get awake(): ComponentEvent|null {
-        return this._awake;
+    public tryCallAwake(): void {
+        this._awake?.forceInvoke();
+    }
+
+    public tryCallStart(): void {
+        if (!this._start) return; //if start is not defined, do nothing
+        if (this._eventState.startRegistered) return;
+        this._eventState.startRegistered = true;
+        this._sceneProcessor.addEventToNonSyncedCollection(this._start);
+    }
+
+    public tryCancelStart(): void {
+        if (!this._start) return; //if start is not defined, do nothing
+        if (!this._eventState.startRegistered) return;
+        this._eventState.startRegistered = false;
+        this._sceneProcessor.removeEventFromNonSyncedCollection(this._start);
+    }
+
+    public tryRegisterUpdate(): void {
+        if (!this._update) return; //if update is not defined, do nothing
+        if (this._eventState.updateRegistered) return;
+        this._eventState.updateRegistered = true;
+        this._sceneProcessor.addEventToNonSyncedCollection(this._update);
+    }
+
+    public tryUnregisterUpdate(): void {
+        if (!this._update) return; //if update is not defined, do nothing
+        if (!this._eventState.updateRegistered) return;
+        this._eventState.updateRegistered = false;
+        this._sceneProcessor.removeEventFromNonSyncedCollection(this._update);
     }
 }

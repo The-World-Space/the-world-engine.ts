@@ -240,7 +240,7 @@ import { ComponentConstructor } from "./ComponentConstructor";
 
         //awake
         for (let i = 0; i < components.length; i++) {
-            components[i]._componentEventContainer.awake?.tryInvoke();
+            components[i]._componentEventContainer.tryCallAwake();
         }
         
         const sceneProcessor = this._gameObject.engine.scneneProcessor;
