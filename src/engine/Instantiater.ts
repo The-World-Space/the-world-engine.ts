@@ -1,6 +1,7 @@
 import { Quaternion, Vector3 } from "three";
 import { EngineGlobalObject } from "./EngineGlobalObject";
-import { GameObject, GameObjectBuilder } from "./hierarchy_object/GameObject";
+import { GameObject } from "./hierarchy_object/GameObject";
+import { GameObjectBuilder } from "./hierarchy_object/GameObjectBuilder";
 import { Prefab } from "./hierarchy_object/Prefab";
 import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
 

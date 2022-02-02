@@ -338,7 +338,10 @@ export class GameObject {
 
     /** @internal */
     public removeComponent(component: Component) {
-        
+        const index = this._components.indexOf(component);
+        if (index >= 0) {
+            this._components.splice(index, 1);
+        }
     }
 
     /**

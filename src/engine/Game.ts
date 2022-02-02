@@ -116,6 +116,7 @@ export class Game {
         this._renderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
+        this._sceneProcessor.processRemoveObject();
         this.loop();
     }
 
@@ -123,7 +124,7 @@ export class Game {
         this._animationFrameId = requestAnimationFrame(this._loopBind);
         this._time.deltaTime = this._clock.getDelta(); //order is matter.
         this._time.elapsedTime = this._clock.elapsedTime; //order is matter.
-        this._sceneProcessor.update();
+        this._sceneProcessor.startProcessNonSyncedEvent();
         this._coroutineProcessor.tryCompact();
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist.");
@@ -131,6 +132,7 @@ export class Game {
         this._renderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
+        this._sceneProcessor.processRemoveObject();
     }
 
     /**

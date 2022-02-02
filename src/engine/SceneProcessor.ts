@@ -9,14 +9,16 @@ export class SceneProcessor {
     private readonly _syncedEvents : MutIteratableCollection<ComponentEvent>;
     private _processingSyncedEvent: boolean;
 
-    private readonly _removeObjects: (GameObject|Component)[];
+    private readonly _removeGameObjects: GameObject[];
+    private readonly _removeComponents: Component[];
     
     public constructor() {
         this._nonSyncedEvents = new MutIteratableCollection(ComponentEvent.lessOp);
         this._syncedEvents = new MutIteratableCollection(ComponentEvent.lessOp);
         this._processingSyncedEvent = false;
 
-        this._removeObjects = [];
+        this._removeGameObjects = [];
+        this._removeComponents = [];
     }
 
     public addEventToNonSyncedCollection(event: ComponentEvent): void {
@@ -44,14 +46,23 @@ export class SceneProcessor {
         this._processingSyncedEvent = false;
     }
 
-    public addRemoveObject(object: GameObject|Component) {
-        this._removeObjects.push(object);
+    public addRemoveGameObject(object: GameObject) {
+        this._removeGameObjects.push(object);
+    }
+
+    public addRemoveComponent(component: Component) {
+        this._removeComponents.push(component);
     }
 
     public processRemoveObject() {
-        const removeObjects = this._removeObjects;
-        for (let i = 0; i < removeObjects.length; ++i) {
-            removeObjects[i].
+        const removeComponents = this._removeComponents;
+        for (let i = 0; i < removeComponents.length; i++) {
+            removeComponents[i].gameObject.removeComponent(removeComponents[i]);
+        }
+        
+        const removeGameObjects = this._removeGameObjects;
+        for (let i = 0; i < removeGameObjects.length; i++) {
+            removeGameObjects[i].removeFromParent();
         }
     }
 }
