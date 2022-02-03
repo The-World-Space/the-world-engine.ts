@@ -81,30 +81,32 @@ export class ComponentEventContainer {
         this._eventState = new ComponentEventState();
         
         if (isAwakeableComponent(component)) {
-            this._awake = ComponentEvent.createAwakeEvent(component, component.awake);
+            this._awake = ComponentEvent.createAwakeEvent(component.awake);
         }
         if (isOnEnableableComponent(component)) {
-            this._onEnable = ComponentEvent.createOnEnableEvent(component, component.onEnable);
+            this._onEnable = ComponentEvent.createOnEnableEvent(component.onEnable);
         }
         if (isOnDisableableComponent(component)) {
-            this._onDisable = ComponentEvent.createOnDisableEvent(component, component.onDisable);
+            this._onDisable = ComponentEvent.createOnDisableEvent(component.onDisable);
         }
         
 
         if (isStartableComponent(component)) {
-            this._start = ComponentEvent.createStartEvent(component, () => { //lambda for run once
+            this._start = ComponentEvent.createStartEvent(() => { //lambda for run once
                 component.start();
                 this._eventState.startCalled = true;
                 this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
             });
         }
         if (isUpdatableComponent(component)) {
-            this._update = ComponentEvent.createUpdateEvent(component, component.update);
+            this._update = ComponentEvent.createUpdateEvent(component.update);
         }
     }
 
     public tryCallAwake(): void {
-        this._awake?.forceInvoke();
+        if (this._eventState.awakeCalled) return;
+        this._awake?.invoke();
+        this._eventState.awakeCalled = true;
     }
 
     public tryCallStart(): void {

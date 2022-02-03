@@ -240,10 +240,13 @@ import { ComponentConstructor } from "./ComponentConstructor";
 
         //awake
         for (let i = 0; i < components.length; i++) {
-            components[i]._componentEventContainer.tryCallAwake();
+            const component = components[i];
+            if (component.gameObject.activeInHierarchy && component.enabled) {
+                component._componentEventContainer.tryCallAwake();
+            }
         }
         
-        const sceneProcessor = this._gameObject.engine.scneneProcessor;
+        const sceneProcessor = this._gameObject.engine.sceneProcessor;
         
         //onEnable
         for (let i = 0; i < components.length; i++) {

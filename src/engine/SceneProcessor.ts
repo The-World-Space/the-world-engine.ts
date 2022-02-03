@@ -34,14 +34,14 @@ export class SceneProcessor {
     }
 
     public startProcessNonSyncedEvent(): void {
-        this._nonSyncedEvents.forEach(event => event.forceInvoke());
+        this._nonSyncedEvents.forEach(event => event.invoke());
     }
 
     // excuted when callstack does not have forEach
     public tryStartProcessSyncedEvent(): void {
         if (this._processingSyncedEvent) return;
         this._processingSyncedEvent = true;
-        this._syncedEvents.forEach(event => event.tryInvoke());
+        this._syncedEvents.forEach(event => event.invoke());
         this._syncedEvents.clear();
         this._processingSyncedEvent = false;
     }
