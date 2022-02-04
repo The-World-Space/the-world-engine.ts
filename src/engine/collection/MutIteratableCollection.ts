@@ -347,15 +347,13 @@ export class MutIteratableCollection<T> {
         });
         this._currentItem = null;
 
-        if (0 < this._insertBuffer.size) {
-            do {
-                this._iterateCollection = this.flushBuffer();
-                this._iterateCollection.forEach((value: T) => {
-                    this._currentItem = value;
-                    callback(value);
-                });
-            } while (0 < this._insertBuffer.size);
-        }
+        do {
+            this._iterateCollection = this.flushBuffer();
+            this._iterateCollection.forEach((value: T) => {
+                this._currentItem = value;
+                callback(value);
+            });
+        } while (0 < this._insertBuffer.size || 0 < this._deleteBuffer.size);
         this._iterateCollection = null;
     }
 

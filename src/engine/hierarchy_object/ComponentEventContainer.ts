@@ -110,7 +110,9 @@ export class ComponentEventContainer {
             this._start = ComponentEvent.createStartEvent(() => { //lambda for run once
                 this._eventState.startCalled = true;
                 component.start();
-                this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
+                if (this._eventState.startRegistered) {
+                    this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
+                }
             }, component.executionOrder);
         }
 
