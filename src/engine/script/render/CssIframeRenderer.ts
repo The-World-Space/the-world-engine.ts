@@ -1,6 +1,7 @@
 import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
+import { Transform } from "../../hierarchy_object/Transform";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export class CssIframeRenderer extends Component {
@@ -29,17 +30,30 @@ export class CssIframeRenderer extends Component {
     }
 
     public onEnable(): void {
-        if (this._css3DObject) this._css3DObject.visible = true;
+        if (this._css3DObject) {
+            this._css3DObject.visible = true;
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        }
     }
 
     public onDisable(): void {
-        if (this._css3DObject) this._css3DObject.visible = false;
+        if (this._css3DObject) {
+            this._css3DObject.visible = false;
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        }
     }
 
     public onSortByZaxis(zaxis: number): void {
         this._zindex = zaxis;
         if (this._css3DObject) {
             this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
+        }
+    }
+    
+    public onWorldMatrixUpdated(): void {
+        if (this._css3DObject) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
@@ -58,6 +72,9 @@ export class CssIframeRenderer extends Component {
         this._htmlIframeElement.style.border = "none";
         this._htmlIframeElement.style.zIndex = Math.floor(this._zindex).toString();
         this._htmlIframeElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
+
+        Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
     }
 
     private updateCenterOffset(): void {
@@ -66,6 +83,8 @@ export class CssIframeRenderer extends Component {
                 this._width * this._iframeCenterOffset.x,
                 this._height * this._iframeCenterOffset.y, 0
             );
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
@@ -106,6 +125,8 @@ export class CssIframeRenderer extends Component {
             this._htmlIframeElement!.width = (this._width / this.viewScale).toString();
             this._htmlIframeElement!.height = (this._height / this.viewScale).toString();
             this._css3DObject.scale.set(value, value, value);
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 

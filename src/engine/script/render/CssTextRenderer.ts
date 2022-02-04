@@ -1,6 +1,7 @@
 import { Vector2 } from "three";
 import { CSS3DObject } from  "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
+import { Transform } from "../../hierarchy_object/Transform";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export enum TextAlign {
@@ -50,11 +51,17 @@ export class CssTextRenderer extends Component {
     }
 
     public onEnable(): void {
-        if (this._css3DObject) this._css3DObject.visible = true;
+        if (this._css3DObject) {
+            this._css3DObject.visible = true;
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        }
     }
 
     public onDisable(): void {
-        if (this._css3DObject) this._css3DObject.visible = false;
+        if (this._css3DObject) {
+            this._css3DObject.visible = false;
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        }
     }
 
     public onDestroy(): void {
@@ -65,6 +72,13 @@ export class CssTextRenderer extends Component {
         this._zindex = zaxis;
         if (this._css3DObject) {
             this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
+        }
+    }
+    
+    public onWorldMatrixUpdated(): void {
+        if (this._css3DObject) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
@@ -104,9 +118,12 @@ export class CssTextRenderer extends Component {
             this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
             this.updateCenterOffset();
             this.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-                
+            
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
+            
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
@@ -116,6 +133,8 @@ export class CssTextRenderer extends Component {
                 this._htmlDivElement!.offsetWidth * this._textCenterOffset.x,
                 this._htmlDivElement!.offsetHeight * this._textCenterOffset.y, 0
             );
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
     

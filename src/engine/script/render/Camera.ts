@@ -75,6 +75,8 @@ export class Camera extends Component {
         } else {
             throw new Error("Camera type not supported");
         }
+        
+        Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
         this.engine.cameraContainer.addCamera(this._camera, new CameraInfo(this._priority, this._backgroudColor));
     }
 

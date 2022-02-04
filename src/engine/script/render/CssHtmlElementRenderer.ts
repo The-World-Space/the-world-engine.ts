@@ -36,19 +36,21 @@ export class CssHtmlElementRenderer extends Component {
     }
 
     public onDestroy(): void {
-        if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        if (this._css3DObject) {
+            this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        }
     }
 
     public onEnable(): void {
         if (this._css3DObject) {
-            this._css3DObject.visible = true;   
+            this._css3DObject.visible = true;
             this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
     public onDisable(): void {
         if (this._css3DObject) {
-            this._css3DObject.visible = false;   
+            this._css3DObject.visible = false;
             this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
@@ -63,6 +65,7 @@ export class CssHtmlElementRenderer extends Component {
     public onWorldMatrixUpdated(): void {
         if (this._css3DObject) {
             Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
@@ -109,6 +112,8 @@ export class CssHtmlElementRenderer extends Component {
     
             if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
             else this._css3DObject.visible = false;
+
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 
@@ -121,6 +126,7 @@ export class CssHtmlElementRenderer extends Component {
                 this._htmlDivElement!.offsetHeight * this._centerOffset.y, 0
             );
             this._css3DObject.element.style.display = lastDisplayState;
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
             this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }

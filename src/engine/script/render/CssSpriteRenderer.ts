@@ -3,6 +3,7 @@ import { CSS3DObject } from  "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 import { GlobalConfig } from "../../../GlobalConfig";
+import { Transform } from "../../hierarchy_object/Transform";
 
 export class CssSpriteRenderer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
@@ -39,17 +40,30 @@ export class CssSpriteRenderer extends Component {
     }
 
     public onEnable(): void {
-        if (this._sprite) this._sprite.visible = true;
+        if (this._sprite) {
+            this._sprite.visible = true;
+            this.transform.enqueueRenderAttachedObject3D(this._sprite);
+        }
     }
 
     public onDisable(): void {
-        if (this._sprite) this._sprite.visible = false;
+        if (this._sprite) {
+            this._sprite.visible = false;
+            this.transform.enqueueRenderAttachedObject3D(this._sprite);
+        }
     }
 
     public onSortByZaxis(zaxis: number): void {
         this._zindex = zaxis;
         if (this._sprite) {
             this._sprite.element.style.zIndex = Math.floor(this._zindex).toString();
+        }
+    }
+    
+    public onWorldMatrixUpdated(): void {
+        if (this._sprite) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this._sprite);
+            this.transform.enqueueRenderAttachedObject3D(this._sprite);
         }
     }
 
@@ -95,6 +109,9 @@ export class CssSpriteRenderer extends Component {
                 
                 if (this.enabled && this.gameObject.activeInHierarchy) this._sprite.visible = true;
                 else this._sprite.visible = false;
+                
+                Transform.updateRawObject3DWorldMatrixRecursively(this._sprite);
+                this.transform.enqueueRenderAttachedObject3D(this._sprite);
             }
 
             onComplete?.();
@@ -108,6 +125,9 @@ export class CssSpriteRenderer extends Component {
                 this._imageWidth * this._imageCenterOffset.x,
                 this._imageHeight * this._imageCenterOffset.y, 0
             );
+            
+            Transform.updateRawObject3DWorldMatrixRecursively(this._sprite);
+            this.transform.enqueueRenderAttachedObject3D(this._sprite);
         }
     }
     
@@ -152,6 +172,8 @@ export class CssSpriteRenderer extends Component {
         this._imageFlipX = value;
         if (this._sprite) {
             this._sprite.scale.x = this._imageFlipX ? -1 : 1;
+            Transform.updateRawObject3DWorldMatrixRecursively(this._sprite);
+            this.transform.enqueueRenderAttachedObject3D(this._sprite);
         }
     }
 
@@ -163,6 +185,8 @@ export class CssSpriteRenderer extends Component {
         this._imageFlipY = value;
         if (this._sprite) {
             this._sprite.scale.y = this._imageFlipY ? -1 : 1;
+            Transform.updateRawObject3DWorldMatrixRecursively(this._sprite);
+            this.transform.enqueueRenderAttachedObject3D(this._sprite);
         }
     }
 
