@@ -4,6 +4,7 @@ import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { Camera } from "../engine/script/render/Camera";
 import { Rotator } from "./script/Rotator";
+import { TimeDestroy } from "./script/TimeDestroy";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -13,11 +14,11 @@ export class TestBootstrapper extends Bootstrapper {
         return this.sceneBuilder
             .withChild(instantlater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
-                    c.viewSize = 100;
+                    c.viewSize = 200;
                 }))
 
             .withChild(instantlater.buildGameObject("test_object")
-                .active(false)
+                .withComponent(TimeDestroy)
                 .withComponent(CssSpriteRenderer)
                 .withComponent(Rotator))
 
