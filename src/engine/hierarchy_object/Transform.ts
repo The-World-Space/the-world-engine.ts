@@ -60,7 +60,7 @@ export class Transform {
         this._object3D = new Object3D();
         this._object3D.matrixAutoUpdate = false;
         this._object3D.userData = this;
-        this._object3D.parent = this._engineGlobalObject.rootScene;
+        engineGlobalObject.rootScene.add(this._object3D);
         
         Object.defineProperties(this._object3D, {
             position: {

@@ -7,6 +7,7 @@ enum EventPriority { // lower number means higher priority
     onDestroy = 4, // called once
 }
 
+/** @internal */
 export class ComponentEvent {
     private readonly _priority: EventPriority;
     private readonly _eventId: number;

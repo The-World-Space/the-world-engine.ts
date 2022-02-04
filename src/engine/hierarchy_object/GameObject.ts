@@ -36,10 +36,10 @@ export class GameObject {
      * add a child game object
      * @param gameObjectBuilder 
      */
-    public addChildFromBuilder(gameObjectBuilder: GameObjectBuilder): void {
-        const gameObject = gameObjectBuilder.build();
+    public addChildFromBuilder(gameObjectBuilder: GameObjectBuilder): GameObject {
+        const gameObject = gameObjectBuilder.build(this.transform);
         gameObjectBuilder.processEvent();
-        gameObject.transform.parent = this.transform;
+        return gameObject;
     }
 
     private onChangeParent(_oldParent: Transform|null, newParent: Transform|null): void {
@@ -291,17 +291,29 @@ export class GameObject {
      * destroy the GameObject
      */
     public destroy(): void {
+        this.destroyEventProcess();
+        this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();
+        this._engineGlobalObject.sceneProcessor.addRemoveGameObject(this);
+    }
+
+    private destroyEventProcess(): void {
         const components = this._components;
+
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
-            component.enabled = false;
+            if (component.enabled && this._activeInHierarchy) {
+                component._componentEventContainer.tryRegisterOnDisable();
+                component._componentEventContainer.tryUnregisterStart();
+                component._componentEventContainer.tryUnregisterUpdate();
+            }
             component.stopAllCoroutines();
-            component.eventInvoker.tryCallOnDestroy();
+            component._componentEventContainer.tryRegisterOnDestroy();
+
+            component._destroyed = true;
         }
         this._transform.children.forEach(child => { // modified values in foreach but array is not modified
-            if (child instanceof Transform) child.gameObject.destroy();
+            if (child instanceof Transform) child.gameObject.destroyEventProcess();
         });
-        this._transform.unsafeGetObject3D().removeFromParent();
     }
 
     /** @internal */

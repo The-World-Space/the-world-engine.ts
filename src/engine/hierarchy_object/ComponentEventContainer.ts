@@ -111,12 +111,14 @@ export class ComponentEventContainer {
 
     public tryRegisterOnEnable(): void {
         if (!isOnEnableableComponent(this._component)) return;
+        if (this._component._destroyed) return;
         const onEnableEvent = ComponentEvent.createOnEnableEvent(this._component.onEnable, this._component.executionOrder);
         this._sceneProcessor.addEventToSyncedCollection(onEnableEvent);
     }
 
     public tryRegisterOnDisable(): void {
         if (!isOnDisableableComponent(this._component)) return;
+        if (this._component._destroyed) return;
         const onDisableEvent = ComponentEvent.createOnDisableEvent(this._component.onDisable, this._component.executionOrder);
         this._sceneProcessor.addEventToSyncedCollection(onDisableEvent);
     }
@@ -129,6 +131,7 @@ export class ComponentEventContainer {
 
     public tryRegisterStart(): void {
         if (!this._start) return; //if start is not defined, do nothing
+        if (this._component._destroyed) return;
         if (this._eventState.startCalled) return;
         if (this._eventState.startRegistered) return;
         this._eventState.startRegistered = true;
@@ -144,6 +147,7 @@ export class ComponentEventContainer {
 
     public tryRegisterUpdate(): void {
         if (!this._update) return; //if update is not defined, do nothing
+        if (this._component._destroyed) return;
         if (this._eventState.updateRegistered) return;
         this._eventState.updateRegistered = true;
         this._sceneProcessor.addEventToNonSyncedCollection(this._update);

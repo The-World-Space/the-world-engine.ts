@@ -4,6 +4,8 @@ import { EngineGlobalObject } from "../EngineGlobalObject";
 import { GameObject } from "./GameObject";
 import { Component } from "./Component";
 import { ComponentConstructor } from "./ComponentConstructor";
+import { SceneProcessor } from "../SceneProcessor";
+import { Transform } from "./Transform";
 
 /**
  * builder for GameObject
@@ -208,19 +210,20 @@ export class GameObjectBuilder {
     }
 
     /** @internal */
-    public build(): GameObject {
-        this.registerTransform();
+    public build(parent: Transform|null): GameObject {
+        this.registerTransform(parent);
         this.chackComponentRequirementsRecursive();
         this.componentInitialize();
         return this._gameObject;
     }
 
-    private registerTransform(): void {
+    private registerTransform(parent: Transform|null): void {
+        this._gameObject.transform.parent = parent;
+
         const children = this._children;
         for (let i = 0; i < children.length; i++) {
             const child = children[i];
-            child._gameObject.transform.parent = this._gameObject.transform;
-            child.registerTransform();
+            child.registerTransform(this._gameObject.transform);
         }
     }
 
@@ -247,8 +250,16 @@ export class GameObjectBuilder {
 
     /** @internal */
     public processEvent(): void {
-        const components = this._gameObject.getComponentsInChildren();
-        
+        GameObjectBuilder.processEventByGroup([this], this._gameObject.engine.sceneProcessor);
+    }
+
+    /** @internal */
+    public static processEventByGroup(builders: GameObjectBuilder[], sceneProcessor: SceneProcessor): void {
+        const components = [];
+        for (let i = 0; i < builders.length; i++) {
+            components.push(...builders[i]._gameObject.getComponentsInChildren());
+        }
+
         //awake
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
@@ -268,6 +279,6 @@ export class GameObjectBuilder {
             }
         }
 
-        this._gameObject.engine.sceneProcessor.tryStartProcessSyncedEvent();
+        sceneProcessor.tryStartProcessSyncedEvent();
     }
 }

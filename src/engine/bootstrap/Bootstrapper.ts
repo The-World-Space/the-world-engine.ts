@@ -14,7 +14,7 @@ export abstract class Bootstrapper<T = any> {
     public constructor(engineGlobalObject: EngineGlobalObject, interopObject?: T) {
         this._engineGlobalObject = engineGlobalObject;
         this._interopObject = interopObject || null;
-        this._sceneBuilder = new SceneBuilder(this._engineGlobalObject.sceneProcessor, this._engineGlobalObject.rootScene);
+        this._sceneBuilder = new SceneBuilder(this._engineGlobalObject.sceneProcessor);
     }
 
     /**

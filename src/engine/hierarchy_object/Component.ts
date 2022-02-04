@@ -172,4 +172,22 @@ export abstract class Component {
     public get initialized(): boolean {
         return this._gameObject.initialized;
     }
+
+    /**
+     * destroy this component
+     */
+    public destroy(): void {
+        if (this.enabled && this.gameObject.activeInHierarchy) {
+            this._componentEventContainer.tryRegisterOnDisable();
+            this._componentEventContainer.tryUnregisterStart();
+            this._componentEventContainer.tryUnregisterUpdate();
+        }
+        this.stopAllCoroutines();
+        this._componentEventContainer.tryRegisterOnDestroy();
+        
+        this._destroyed = true;
+        
+        this.engine.sceneProcessor.tryStartProcessSyncedEvent();
+        this.engine.sceneProcessor.addRemoveComponent(this);
+    }
 }
