@@ -1,4 +1,5 @@
 import * as THREE from "three";
+import { Transform } from "../../..";
 import { Component } from "../../hierarchy_object/Component";
 import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
@@ -25,7 +26,10 @@ export class Camera extends Component {
     }
 
     public onWorldMatrixUpdated(): void {
-        //this._camera?.matrixWorldInverse.copy(this.matrixWorld).invert();
+        if (this._camera) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
+            this._camera?.matrixWorldInverse.copy(this._camera.matrixWorld).invert();
+        }
     }
 
     private createOrUpdateCamera(): void {

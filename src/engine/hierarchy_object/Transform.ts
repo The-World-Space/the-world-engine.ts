@@ -356,14 +356,6 @@ export class Transform {
     private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(): boolean {
         if (this._coordinateAsOfLocal) {
             if (!this._localMatrixNeedUpdate /*&& !this.worldMatrixNeedUpdate*/) return true;
-            const object3D_children = this._object3D.children;
-            for (let i = 0, l = object3D_children.length; i < l; i++) {
-                const child = object3D_children[i];
-                if (!(child.userData instanceof Transform)) {
-                    this.enqueueRenderAttachedObject3D(child);
-                }
-            }
-            
             const localMatrix = this._object3D.matrix;
 
             const emptyFunction = Transform._emptyFunction;
@@ -390,14 +382,6 @@ export class Transform {
             this._worldPositionRotationScaleNeedToUpdate = true;
         } else {
             if (!this._worldMatrixNeedUpdate) return true;
-            const object3D_children = this._object3D.children;
-            for (let i = 0, l = object3D_children.length; i < l; i++) {
-                const child = object3D_children[i];
-                if (!(child.userData instanceof Transform)) {
-                    this.enqueueRenderAttachedObject3D(child);
-                }
-            }
-            
             const emptyFunction = Transform._emptyFunction;
             this._worldPosition.onBeforeGetComponent(emptyFunction);
             this._worldRotation.onBeforeGetComponent(emptyFunction);
@@ -416,6 +400,11 @@ export class Transform {
             this._localMatrixNeedUpdate = true;
             this._worldMatrixNeedUpdate = false;
             this._localPositionRotationScaleNeedToUpdate = true;
+        }
+
+        const components = this._gameObject._components;
+        for (let j = 0, l = components.length; j < l; j++) {
+            components[j]._componentEventContainer.tryCallOnWorldMatrixUpdated();
         }
 
         const object3D_children = this._object3D.children;
@@ -881,6 +870,16 @@ export class Transform {
 
     public enqueueRenderAttachedObject3D(rerenderObject: Object3D): void {
         this._engineGlobalObject.transformMatrixProcessor.enqueueRenderObject(rerenderObject);
+    }
+
+    public static updateRawObject3DWorldMatrixRecursively(object3D: Object3D): void {
+        if (object3D.matrixAutoUpdate) object3D.updateMatrix();
+        object3D.matrixWorld.multiplyMatrices(object3D.parent!.matrixWorld, object3D.matrix);
+        // update children
+        const children = object3D.children;
+        for (let i = 0, l = children.length; i < l; i++) {
+            Transform.updateRawObject3DWorldMatrixRecursively(children[i]);
+        }
     }
 
     /** @internal */

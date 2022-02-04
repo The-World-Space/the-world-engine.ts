@@ -1,5 +1,6 @@
 import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { Transform } from "../../..";
 import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
@@ -56,6 +57,12 @@ export class CssHtmlElementRenderer extends Component {
         this._zindex = zaxis;
         if (this._css3DObject) {
             this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
+        }
+    }
+    
+    public onWorldMatrixUpdated(): void {
+        if (this._css3DObject) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
         }
     }
 

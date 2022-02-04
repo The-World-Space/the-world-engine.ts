@@ -45,6 +45,15 @@ function isOnDestroyableComponent(component: Component): component is OnDestroya
 }
 
 /**
+ * called when world matrix is changed
+ */
+type OnWorldMatrixUpdatedableComponent = Component & { onWorldMatrixUpdated(): void; };
+
+function isOnWorldMatrixUpdatedableComponent(component: Component): component is OnWorldMatrixUpdatedableComponent {
+    return (component as OnWorldMatrixUpdatedableComponent).onWorldMatrixUpdated !== undefined;
+}
+
+/**
  * start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
  * https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html
  */
@@ -72,21 +81,26 @@ export class ComponentEventContainer {
 
     private readonly _awake: ComponentEvent|null = null;
     private readonly _onDestroy: ComponentEvent|null = null;
+    private readonly _onWorldMatrixUpdated: (() => void)|null = null;
 
     private readonly _start: ComponentEvent|null = null;
     private readonly _update: ComponentEvent|null = null;
 
     public constructor(component: Component) {
         this._component = component;
-        this._sceneProcessor = component.engine.sceneProcessor;
+        this._sceneProcessor = component.engine.sceneProcessor; 
         this._eventState = new ComponentEventState();
         
         if (isAwakeableComponent(component)) {
-            this._awake = ComponentEvent.createAwakeEvent(component.awake);
+            this._awake = ComponentEvent.createAwakeEvent(component.awake.bind(component));
         }
 
         if (isOnDestroyableComponent(component)) {
-            this._onDestroy = ComponentEvent.createOnDestroyEvent(component.onDestroy, component.executionOrder);
+            this._onDestroy = ComponentEvent.createOnDestroyEvent(component.onDestroy.bind(component), component.executionOrder);
+        }
+        
+        if (isOnWorldMatrixUpdatedableComponent(component)) {
+            this._onWorldMatrixUpdated = component.onWorldMatrixUpdated.bind(component);
         }
         
 
@@ -99,7 +113,7 @@ export class ComponentEventContainer {
         }
 
         if (isUpdatableComponent(component)) {
-            this._update = ComponentEvent.createUpdateEvent(component.update, component.executionOrder);
+            this._update = ComponentEvent.createUpdateEvent(component.update.bind(component), component.executionOrder);
         }
     }
 
@@ -112,20 +126,24 @@ export class ComponentEventContainer {
     public tryRegisterOnEnable(): void {
         if (!isOnEnableableComponent(this._component)) return;
         if (this._component._destroyed) return;
-        const onEnableEvent = ComponentEvent.createOnEnableEvent(this._component.onEnable, this._component.executionOrder);
+        const onEnableEvent = ComponentEvent.createOnEnableEvent(this._component.onEnable.bind(this._component), this._component.executionOrder);
         this._sceneProcessor.addEventToSyncedCollection(onEnableEvent);
     }
 
     public tryRegisterOnDisable(): void {
         if (!isOnDisableableComponent(this._component)) return;
         if (this._component._destroyed) return;
-        const onDisableEvent = ComponentEvent.createOnDisableEvent(this._component.onDisable, this._component.executionOrder);
+        const onDisableEvent = ComponentEvent.createOnDisableEvent(this._component.onDisable.bind(this._component), this._component.executionOrder);
         this._sceneProcessor.addEventToSyncedCollection(onDisableEvent);
     }
 
     public tryRegisterOnDestroy(): void {
         if (!this._onDestroy) return; //if onDestroy is not defined, do nothing
         this._sceneProcessor.addEventToSyncedCollection(this._onDestroy);
+    }
+
+    public tryCallOnWorldMatrixUpdated(): void {
+        this._onWorldMatrixUpdated?.();
     }
 
 
