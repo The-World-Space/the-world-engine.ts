@@ -3,8 +3,8 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 
 export class SpriteAtlasAnimator extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [CssSpriteAtlasRenderer];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteAtlasRenderer];
     
     private _spriteAtlasRenderer: CssSpriteAtlasRenderer|null = null;
     private _animations: { [key: string]: number[] } = {};

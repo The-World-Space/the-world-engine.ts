@@ -7,8 +7,8 @@ import { Camera } from "../render/Camera";
 import { CssHtmlElementRenderer } from "../render/CssHtmlElementRenderer";
 
 export class EditorGridRenderer extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [Camera];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [Camera];
     
     private _cssHtmlRenderer: CssHtmlElementRenderer|null = null;
     private _cssHtmlRendererObject: GameObject|null = null;

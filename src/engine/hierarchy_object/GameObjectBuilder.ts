@@ -8,7 +8,7 @@ import { ComponentConstructor } from "./ComponentConstructor";
 /**
  * builder for GameObject
  */
- export class GameObjectBuilder {
+export class GameObjectBuilder {
     private readonly _gameObject: GameObject;
     private readonly _children: GameObjectBuilder[];
     private readonly _componentInitializeFuncList: (() => void)[];
@@ -162,6 +162,8 @@ import { ComponentConstructor } from "./ComponentConstructor";
         componentInitializeFunc?: (component: T) => void
     ): GameObjectBuilder {
         const component = new componentCtor(this._gameObject);
+        component.constructAfterProcess();
+
         if (component.disallowMultipleComponent) {
             const existingComponent = this._gameObject.getComponent(componentCtor);
             if (existingComponent) {
@@ -208,8 +210,8 @@ import { ComponentConstructor } from "./ComponentConstructor";
     /** @internal */
     public build(): GameObject {
         this.registerTransform();
+        this.chackComponentRequirementsRecursive();
         this.componentInitialize();
-        this.processEvent();
         return this._gameObject;
     }
 
@@ -219,6 +221,14 @@ import { ComponentConstructor } from "./ComponentConstructor";
             const child = children[i];
             child._gameObject.transform.parent = this._gameObject.transform;
             child.registerTransform();
+        }
+    }
+
+    private chackComponentRequirementsRecursive(): void {
+        this.checkComponentRequirements(this._gameObject);
+        const children = this._children;
+        for (let i = 0; i < children.length; i++) {
+            children[i].chackComponentRequirementsRecursive();
         }
     }
 
@@ -235,9 +245,10 @@ import { ComponentConstructor } from "./ComponentConstructor";
         this._gameObject._initialized = true;
     }
 
-    private processEvent(): void {
+    /** @internal */
+    public processEvent(): void {
         const components = this._gameObject.getComponentsInChildren();
-
+        
         //awake
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
@@ -246,24 +257,17 @@ import { ComponentConstructor } from "./ComponentConstructor";
             }
         }
         
-        const sceneProcessor = this._gameObject.engine.sceneProcessor;
-        
-        //onEnable
+        //onEnable start update
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
             if (component._destroyed) continue;
             if (component.gameObject.activeInHierarchy && component.enabled) {
-                sceneProcessor.addEventToSyncedCollection(component._componentEventContainer.syncedEvents);
+                component._componentEventContainer.tryRegisterOnEnable();
+                component._componentEventContainer.tryRegisterStart();
+                component._componentEventContainer.tryRegisterUpdate();
             }
         }
 
-        //start
-        for (let i = 0; i < components.length; i++) {
-            const component = components[i];
-            if (component._destroyed) continue;
-            if (component.gameObject.activeInHierarchy && component.enabled) {
-                sceneProcessor.addEventToNonSyncedCollection(components[i]._componentEventContainer.nonSyncedEvents);
-            }
-        }
+        this._gameObject.engine.sceneProcessor.tryStartProcessSyncedEvent();
     }
 }

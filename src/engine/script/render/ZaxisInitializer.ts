@@ -2,7 +2,7 @@ import { GameObject } from "../../hierarchy_object/GameObject";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class ZaxisInitializer extends ZaxisSortable {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _runOnce = true;
 

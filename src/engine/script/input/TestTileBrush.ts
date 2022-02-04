@@ -4,7 +4,7 @@ import { GridPointer } from "./GridPointer";
 import { PointerGridEvent } from "./PointerGridInputListener";
 
 export class TestTileBrush extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
     
     private _gridPointer: GridPointer|null = null;
     private _colideTilemapChunk: CssCollideTilemapChunkRenderer|null = null;

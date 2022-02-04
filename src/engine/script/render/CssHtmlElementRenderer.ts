@@ -4,7 +4,7 @@ import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export class CssHtmlElementRenderer extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;

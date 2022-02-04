@@ -3,8 +3,8 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
 export class SpriteAnimator extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
     
     private _spriteRenderer: CssSpriteRenderer|null = null;
     private _animations: { [key: string]: string[] } = {};

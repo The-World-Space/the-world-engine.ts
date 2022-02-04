@@ -5,7 +5,7 @@ import { ZaxisInitializer } from "./ZaxisInitializer";
 import { GlobalConfig } from "../../../GlobalConfig";
 
 export class CssSpriteRenderer extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _sprite: CSS3DObject|null = null;
     private _htmlImageElement: HTMLImageElement|null = null;

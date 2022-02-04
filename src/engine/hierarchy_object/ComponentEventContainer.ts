@@ -64,61 +64,80 @@ function isUpdatableComponent(component: Component): component is UpdatableCompo
     return (component as UpdatableComponent).update !== undefined;
 }
 
+/** @internal */
 export class ComponentEventContainer {
+    private readonly _component: Component;
     private readonly _sceneProcessor: SceneProcessor;
     private readonly _eventState: ComponentEventState;
 
     private readonly _awake: ComponentEvent|null = null;
-    private readonly _onEnable: ComponentEvent|null = null;
-    private readonly _onDisable: ComponentEvent|null = null;
     private readonly _onDestroy: ComponentEvent|null = null;
 
     private readonly _start: ComponentEvent|null = null;
     private readonly _update: ComponentEvent|null = null;
 
     public constructor(component: Component) {
+        this._component = component;
         this._sceneProcessor = component.engine.sceneProcessor;
         this._eventState = new ComponentEventState();
         
         if (isAwakeableComponent(component)) {
             this._awake = ComponentEvent.createAwakeEvent(component.awake);
         }
-        if (isOnEnableableComponent(component)) {
-            this._onEnable = ComponentEvent.createOnEnableEvent(component.onEnable);
-        }
-        if (isOnDisableableComponent(component)) {
-            this._onDisable = ComponentEvent.createOnDisableEvent(component.onDisable);
+
+        if (isOnDestroyableComponent(component)) {
+            this._onDestroy = ComponentEvent.createOnDestroyEvent(component.onDestroy, component.executionOrder);
         }
         
 
         if (isStartableComponent(component)) {
             this._start = ComponentEvent.createStartEvent(() => { //lambda for run once
-                component.start();
                 this._eventState.startCalled = true;
+                component.start();
                 this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
-            });
+            }, component.executionOrder);
         }
+
         if (isUpdatableComponent(component)) {
-            this._update = ComponentEvent.createUpdateEvent(component.update);
+            this._update = ComponentEvent.createUpdateEvent(component.update, component.executionOrder);
         }
     }
 
     public tryCallAwake(): void {
         if (this._eventState.awakeCalled) return;
-        this._awake?.invoke();
         this._eventState.awakeCalled = true;
+        this._awake?.invoke();
     }
 
-    public tryCallStart(): void {
+    public tryRegisterOnEnable(): void {
+        if (!isOnEnableableComponent(this._component)) return;
+        const onEnableEvent = ComponentEvent.createOnEnableEvent(this._component.onEnable, this._component.executionOrder);
+        this._sceneProcessor.addEventToSyncedCollection(onEnableEvent);
+    }
+
+    public tryRegisterOnDisable(): void {
+        if (!isOnDisableableComponent(this._component)) return;
+        const onDisableEvent = ComponentEvent.createOnDisableEvent(this._component.onDisable, this._component.executionOrder);
+        this._sceneProcessor.addEventToSyncedCollection(onDisableEvent);
+    }
+
+    public tryRegisterOnDestroy(): void {
+        if (!this._onDestroy) return; //if onDestroy is not defined, do nothing
+        this._sceneProcessor.addEventToSyncedCollection(this._onDestroy);
+    }
+
+
+    public tryRegisterStart(): void {
         if (!this._start) return; //if start is not defined, do nothing
+        if (this._eventState.startCalled) return;
         if (this._eventState.startRegistered) return;
         this._eventState.startRegistered = true;
         this._sceneProcessor.addEventToNonSyncedCollection(this._start);
     }
 
-    public tryCancelStart(): void {
+    public tryUnregisterStart(): void {
         if (!this._start) return; //if start is not defined, do nothing
-        if (!this._eventState.startRegistered) return;
+        if (!this._eventState.startRegistered || this._eventState.startCalled) return;
         this._eventState.startRegistered = false;
         this._sceneProcessor.removeEventFromNonSyncedCollection(this._start);
     }

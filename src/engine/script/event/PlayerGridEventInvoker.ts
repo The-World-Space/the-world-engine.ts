@@ -4,8 +4,8 @@ import { GridEventMap } from "./GridEventMap";
 import { PlayerGridMovementController } from "../controller/PlayerGridMovementController";
 
 export class PlayerGridEventInvoker extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
 
     private readonly _collideSize: number = 8;
     private _playerGridMovementController: PlayerGridMovementController|null = null;

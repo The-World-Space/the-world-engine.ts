@@ -1,6 +1,6 @@
 import { Quaternion, Vector3 } from "three";
 import { EngineGlobalObject } from "../EngineGlobalObject";
-import { GameObjectBuilder } from "./GameObject";
+import { GameObjectBuilder } from "./GameObjectBuilder";
 
 /**
  * this class is used to define a prefab

@@ -2,7 +2,7 @@ import { Vector2, Vector3 } from "three";
 import { Component } from "../../hierarchy_object/Component";
 
 export class ParallaxTranslater extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _offsetX = 1.5;
     private _offsetY = 1.5;

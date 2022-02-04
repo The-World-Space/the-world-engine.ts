@@ -4,7 +4,7 @@ import { Component } from "../../hierarchy_object/Component";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export class CssIframeRenderer extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
     
     private _width = 128;
     private _height = 128;

@@ -10,8 +10,8 @@ import { Camera } from "../render/Camera";
  * it supports pixel perfect and lerp movement
  */
 export class TrackCameraController extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [Camera];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [Camera];
 
     private _trackTarget: GameObject|null = null;
     private readonly _targetOffset: Vector2 = new Vector2();

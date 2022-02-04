@@ -7,8 +7,8 @@ import { PointerGridEvent, PointerGridInputListener } from "./PointerGridInputLi
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 
 export class GridPointer extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
 
     private _pointerGridInputListener: PointerGridInputListener|null = null;
     private _pointerZoffset = 0;

@@ -9,8 +9,8 @@ import { Camera } from "../render/Camera";
  * camera type is must be set to CameraType.Orthographic
  */
 export class EditorCameraController extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
-    protected override readonly _requiredComponents: ComponentConstructor[] = [Camera];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [Camera];
 
     private _camera: Camera|null = null;
     private _mouseMiddleDown = false;

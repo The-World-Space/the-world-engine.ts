@@ -1,7 +1,6 @@
 import { ComponentConstructor } from "./ComponentConstructor";
 import { GameObject } from "./GameObject";
 import { EngineGlobalObject } from "../EngineGlobalObject";
-import { isUpdateableComponent } from "../SceneProcessor";
 import { Coroutine } from "../coroutine/Coroutine";
 import { CoroutineIterator } from "../coroutine/CoroutineIterator";
 import { Transform } from "./Transform";
@@ -29,8 +28,6 @@ export abstract class Component {
     public readonly executionOrder: number = 0;
 
     private _enabled: boolean;
-    private _startEnqueued: boolean;
-    private _updateEnqueued: boolean;
 
     private readonly _gameObject: GameObject;
     private readonly _instanceId: number;
@@ -44,12 +41,28 @@ export abstract class Component {
     /** @internal */
     public constructor(gameObject: GameObject) {
         this._enabled = true;
-        this._startEnqueued = false;
-        this._updateEnqueued = false;
         this._gameObject = gameObject;
         this._instanceId = gameObject.engine.instantlater.generateId();
         this._componentEventContainer = new ComponentEventContainer(this);
     }
+
+    /** @internal */
+    public constructAfterProcess(): void {
+        Object.defineProperties(this, {
+            disallowMultipleComponent: {
+                configurable: false,
+                writable: false,
+            },
+            requiredComponents: {
+                configurable: false,
+                writable: false,
+            },
+            executionOrder: {
+                configurable: false,
+                writable: false,
+            }
+        });
+    }   
 
     /**
      * starts a coroutine
@@ -75,7 +88,7 @@ export abstract class Component {
         this._runningCoroutines.forEach(coroutine => {
             this.stopCoroutine(coroutine);
         });
-        this._runningCoroutines = [];
+        this._runningCoroutines.length = 0;
     }
 
     /**
@@ -90,41 +103,6 @@ export abstract class Component {
         const index = this._runningCoroutines.indexOf(coroutine as Coroutine);
         if (index >= 0) {
             this._runningCoroutines.splice(index, 1);
-        }
-    }
-
-    /** @internal */
-    public internalSetStartEnqueueState(state: boolean): void {
-        this._startEnqueued = state;
-    }
-
-    /** @internal */
-    public internalSetUpdateEnqueueState(state: boolean): void {
-        this._updateEnqueued = state;
-    }
-
-    /** @internal */
-    public internalTryEnqueueStart(): void {
-        if (this._startEnqueued) return;
-        this.engine.sceneProcessor.addStartComponent(this);
-        this._startEnqueued = true;
-    }
-
-    /** @internal */
-    public internalTryEnqueueUpdate(): void {
-        if (this._updateEnqueued) return;
-        if (isUpdateableComponent(this)) {
-            this.engine.sceneProcessor.addUpdateComponent(this);
-            this._updateEnqueued = true;
-        }
-    }
-
-    /** @internal */
-    public internalTryDequeueUpdate(): void {
-        if (!this._updateEnqueued) return;
-        if (isUpdateableComponent(this)) {
-            this.engine.sceneProcessor.removeUpdateComponent(this);
-            this._updateEnqueued = false;
         }
     }
 
@@ -146,22 +124,16 @@ export abstract class Component {
         if (!this._gameObject.initialized) return;
         
         if (this._gameObject.activeInHierarchy) {
-            const sceneProcessor = this.engine.sceneProcessor;
-
             if (this._enabled) {
-                this._componentEventInvoker.tryCallOnEnable();
-                if (!this._startEnqueued) {
-                    sceneProcessor.addStartComponent(this);
-                    this._startEnqueued = true;
-                }
-                this.internalTryEnqueueUpdate();
+                this._componentEventContainer.tryRegisterOnEnable();
+                this._componentEventContainer.tryRegisterStart();
+                this._componentEventContainer.tryRegisterUpdate();
+                this.engine.sceneProcessor.tryStartProcessSyncedEvent();
             } else {
-                this._componentEventInvoker.tryCallOnDisable();
-                if (this._startEnqueued && !this._componentEventInvoker.started) {
-                    sceneProcessor.removeStartComponent(this);
-                    this._startEnqueued = false;
-                }
-                this.internalTryDequeueUpdate();
+                this._componentEventContainer.tryRegisterOnDisable();
+                this._componentEventContainer.tryUnregisterStart();
+                this._componentEventContainer.tryUnregisterUpdate();
+                this.engine.sceneProcessor.tryStartProcessSyncedEvent();
             }
         }
     }
@@ -199,13 +171,5 @@ export abstract class Component {
      */
     public get initialized(): boolean {
         return this._gameObject.initialized;
-    }
-
-    /** @internal */
-    public static lessOperation(a: Component, b: Component): boolean {
-        if (a.executionOrder === b.executionOrder) {
-            return a.instanceId < b.instanceId;
-        }
-        return a.executionOrder < b.executionOrder;
     }
 }

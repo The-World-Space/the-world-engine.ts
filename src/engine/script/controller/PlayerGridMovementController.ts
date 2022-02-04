@@ -13,7 +13,7 @@ import { IGridPositionable } from "../helper/IGridPositionable";
  */
 export class PlayerGridMovementController extends Directionable
     implements IGridPositionable {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _speed = 80;
     private _gridCellHeight = 16;

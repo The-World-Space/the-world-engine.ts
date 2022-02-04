@@ -1,7 +1,7 @@
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class ZaxisSorter extends ZaxisSortable {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _offset = 0;
     private _runOnce = true;

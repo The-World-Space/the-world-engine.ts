@@ -38,52 +38,22 @@ export class GameObject {
      */
     public addChildFromBuilder(gameObjectBuilder: GameObjectBuilder): void {
         const gameObject = gameObjectBuilder.build();
-        gameObjectBuilder.initialize();
+        gameObjectBuilder.processEvent();
         gameObject.transform.parent = this.transform;
-        gameObject.foreachComponentInChildren(component => {
-            component.eventInvoker.tryCallAwake();
-        });
-        if (gameObject._activeInHierarchy) {
-            gameObject.foreachComponentInChildren(component => {
-                if (component.enabled) {
-                    component.eventInvoker.tryCallOnEnable();
-                    component.internalTryEnqueueStart();
-                    component.internalTryEnqueueUpdate();
-                }
-            });
-        }
     }
 
     private onChangeParent(_oldParent: Transform|null, newParent: Transform|null): void {
         if (newParent && this._engineGlobalObject !== newParent.gameObject._engineGlobalObject) {
             throw new Error("can't change parent to another engine instance");
         }
-        const prevActiveInHierarchy = this._activeInHierarchy;
 
         const gameObject = this.transform.gameObject;
         if (newParent) {
             if (gameObject._activeSelf) {
-                gameObject.activeInHierarchy = newParent.gameObject._activeInHierarchy; // update child activeInHierarchy
+                gameObject.setActiveInHierarchyWithEvent(newParent.gameObject._activeInHierarchy); // update child activeInHierarchy
             }
         } else {
-            gameObject.activeInHierarchy = gameObject._activeSelf;
-        }
-        
-        if (!this.initialized) return; 
-
-        if (!prevActiveInHierarchy) {
-            if (this.activeInHierarchy) {
-                this.foreachComponentInChildren(component => {
-                    component.enabled = true;
-                });
-            }
-        } else {
-            if (!this.activeInHierarchy) {
-                this.foreachComponentInChildren(component => {
-                    component.eventInvoker.tryCallOnDisable();
-                    component.internalTryDequeueUpdate();
-                });
-            }
+            gameObject.setActiveInHierarchyWithEvent(gameObject._activeSelf);
         }
     }
 
@@ -95,6 +65,8 @@ export class GameObject {
      */
     public addComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T|null {
         const component = new componentCtor(this);
+        component.constructAfterProcess();
+        
         if (component.disallowMultipleComponent) {
             const existingComponent = this.getComponent(componentCtor);
             if (existingComponent) {
@@ -113,12 +85,13 @@ export class GameObject {
         }
         this._components.push(component);
 
-        component.eventInvoker.tryCallAwake();
         if (this._activeInHierarchy) {
             if (component.enabled) {
-                component.eventInvoker.tryCallOnEnable();
-                component.internalTryEnqueueStart();
-                component.internalTryEnqueueUpdate();
+                component._componentEventContainer.tryCallAwake();
+                component._componentEventContainer.tryRegisterOnEnable();
+                component._componentEventContainer.tryRegisterStart();
+                component._componentEventContainer.tryRegisterUpdate();
+                this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();
             }
         }
         return component;
@@ -363,27 +336,29 @@ export class GameObject {
 
         this._activeInHierarchy = value;
 
-        const components = this._components;
-        if (this._activeInHierarchy) {
-            //enable components
-            for (let i = 0; i < components.length; i++) {
-                const component = components[i];
-                if (component.enabled) {
-                    component.eventInvoker.tryCallOnEnable();
-                    component.internalTryEnqueueStart();
-                    component.internalTryEnqueueUpdate();
+        if (this._initialized) {
+            const components = this._components;
+            if (this._activeInHierarchy) {
+                //enable components
+                for (let i = 0; i < components.length; i++) {
+                    const component = components[i];
+                    if (component.enabled) {
+                        component._componentEventContainer.tryRegisterOnEnable();
+                        component._componentEventContainer.tryRegisterStart();
+                        component._componentEventContainer.tryRegisterUpdate();
+                    }
                 }
-            }
-        } else {
-            for (let i = 0; i < components.length; i++) {
-                const component = components[i];
-                if (component.enabled) {
-                    //disable components
-                    component.eventInvoker.tryCallOnDisable();
-                    //dequeue update
-                    component.internalTryDequeueUpdate();
-                    
-                    component.stopAllCoroutines();
+            } else {
+                for (let i = 0; i < components.length; i++) {
+                    const component = components[i];
+                    if (component.enabled) {
+                        //disable components
+                        component._componentEventContainer.tryRegisterOnDisable();
+                        //dequeue update
+                        component._componentEventContainer.tryUnregisterUpdate();
+                        
+                        component.stopAllCoroutines();
+                    }
                 }
             }
         }
@@ -396,6 +371,12 @@ export class GameObject {
                 gameObject.activeInHierarchy = false;
             }
         });
+    }
+
+    private setActiveInHierarchyWithEvent(value: boolean) {
+        if (this._activeInHierarchy === value) return;
+        this.activeInHierarchy = value;
+        if (this._initialized) this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();
     }
 
     /**
@@ -414,12 +395,12 @@ export class GameObject {
         this._activeSelf = value;
         if (this._transform.parent instanceof Transform) { // if parent is a gameobject
             if (this._transform.parent.gameObject._activeInHierarchy) {
-                this.activeInHierarchy = this._activeSelf;
+                this.setActiveInHierarchyWithEvent(this._activeSelf);
             } else {
-                this.activeInHierarchy = false;
+                this.setActiveInHierarchyWithEvent(false);
             }
         } else { // parent is root it means parent always active in hierarchy
-            this.activeInHierarchy = this._activeSelf;
+            this.setActiveInHierarchyWithEvent(this._activeSelf);
         }
     }
 

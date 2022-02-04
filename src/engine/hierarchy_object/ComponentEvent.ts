@@ -10,39 +10,41 @@ enum EventPriority { // lower number means higher priority
 export class ComponentEvent {
     private readonly _priority: EventPriority;
     private readonly _eventId: number;
+    private readonly _componentExecutionOrder: number;
     private readonly _eventFunc: () => void;
 
-    private static _eventIdCounter: number = 0;
+    private static _eventIdCounter = 0;
 
-    private constructor(eventFunc: () => void, priority: EventPriority) {
+    private constructor(eventFunc: () => void, priority: EventPriority, componentExecutionOrder: number) {
         this._priority = priority;
         this._eventId = ComponentEvent._eventIdCounter;
         ComponentEvent._eventIdCounter += 1;
+        this._componentExecutionOrder = componentExecutionOrder;
         this._eventFunc = eventFunc;
     }
 
     public static createAwakeEvent(eventFunc: () => void): ComponentEvent {
-        return new ComponentEvent(eventFunc, EventPriority.awake);
+        return new ComponentEvent(eventFunc, EventPriority.awake, 0);
     }
 
-    public static createStartEvent(eventFunc: () => void): ComponentEvent {
-        return new ComponentEvent(eventFunc, EventPriority.start);
+    public static createStartEvent(eventFunc: () => void, componentExecutionOrder: number): ComponentEvent {
+        return new ComponentEvent(eventFunc, EventPriority.start, componentExecutionOrder);
     }
 
-    public static createUpdateEvent(eventFunc: () => void): ComponentEvent {
-        return new ComponentEvent(eventFunc, EventPriority.update);
+    public static createUpdateEvent(eventFunc: () => void, componentExecutionOrder: number): ComponentEvent {
+        return new ComponentEvent(eventFunc, EventPriority.update, componentExecutionOrder);
     }
 
-    public static createOnEnableEvent(eventFunc: () => void): ComponentEvent {
-        return new ComponentEvent(eventFunc, EventPriority.onEnable);
+    public static createOnEnableEvent(eventFunc: () => void, componentExecutionOrder: number): ComponentEvent {
+        return new ComponentEvent(eventFunc, EventPriority.onEnable, componentExecutionOrder);
     }
 
-    public static createOnDisableEvent(eventFunc: () => void): ComponentEvent {
-        return new ComponentEvent(eventFunc, EventPriority.onDisable);
+    public static createOnDisableEvent(eventFunc: () => void, componentExecutionOrder: number): ComponentEvent {
+        return new ComponentEvent(eventFunc, EventPriority.onDisable, componentExecutionOrder);
     }
 
-    public static createOnDestroyEvent(eventFunc: () => void): ComponentEvent {
-        return new ComponentEvent(eventFunc, EventPriority.onDestroy);
+    public static createOnDestroyEvent(eventFunc: () => void, componentExecutionOrder: number): ComponentEvent {
+        return new ComponentEvent(eventFunc, EventPriority.onDestroy, componentExecutionOrder);
     }
 
     public invoke(): void {
@@ -51,7 +53,11 @@ export class ComponentEvent {
 
     public static lessOp(a: ComponentEvent, b: ComponentEvent): boolean {
         if (a._priority === b._priority) {
-            return a._eventId < b._eventId;
+            if (a._componentExecutionOrder === b._componentExecutionOrder) {
+                return a._eventId < b._eventId;
+            } else {
+                return a._componentExecutionOrder < b._componentExecutionOrder;
+            }
         }
         return a._priority < b._priority;
     }

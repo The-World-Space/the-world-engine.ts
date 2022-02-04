@@ -28,7 +28,7 @@ export class PointerGridEvent {
 }
 
 export class PointerGridInputListener extends Component {
-    protected override readonly _disallowMultipleComponent: boolean = true;
+    public override readonly disallowMultipleComponent: boolean = true;
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
