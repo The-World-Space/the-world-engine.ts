@@ -3,22 +3,24 @@ import { ComponentConstructor } from "./ComponentConstructor";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { Transform } from "./Transform";
 import { GameObjectBuilder } from "./GameObjectBuilder";
+import { isOnWorldMatrixUpdatedableComponent, OnWorldMatrixUpdatedableComponent } from "./ComponentEventContainer";
 
 /**
  * base class for all entities in scenes
  * do not drive this class
  */
 export class GameObject {
-    private _engineGlobalObject: EngineGlobalObject;
-    private _instanceId: number;
+    private readonly _engineGlobalObject: EngineGlobalObject;
+    private readonly _instanceId: number;
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
     /** @internal */
     public _initialized: boolean;
     /** @internal */
-    public _components: Component[];
+    public readonly _components: Component[];
+    private readonly _matrixUpdateComponents: OnWorldMatrixUpdatedableComponent[];
     /** @internal */
-    public _transform: Transform;
+    public readonly _transform: Transform;
 
     /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
@@ -28,6 +30,7 @@ export class GameObject {
         this._activeSelf = true;
         this._initialized = false;
         this._components = [];
+        this._matrixUpdateComponents = [];
         this._transform = new Transform(this, engineGlobalObject, this.onChangeParent.bind(this));
         this._transform.unsafeGetObject3D().name = name;
     }
@@ -84,6 +87,7 @@ export class GameObject {
             }
         }
         this._components.push(component);
+        this.tryAddMatrixUpdateComponent(component);
 
         if (this._activeInHierarchy) {
             if (component.enabled) {
@@ -95,6 +99,20 @@ export class GameObject {
             }
         }
         return component;
+    }
+
+    /** @internal */
+    public tryAddMatrixUpdateComponent(component: Component): void {
+        if (isOnWorldMatrixUpdatedableComponent(component)) {
+            this._matrixUpdateComponents.push(component);
+        }
+    }
+
+    /** @internal */
+    public invokeOnMatrixUpdate() {
+        for (let i = 0; i < this._matrixUpdateComponents.length; i++) {
+            this._matrixUpdateComponents[i].onWorldMatrixUpdated();
+        }
     }
 
     // #region getComponent

@@ -402,10 +402,7 @@ export class Transform {
             this._localPositionRotationScaleNeedToUpdate = true;
         }
 
-        const components = this._gameObject._components;
-        for (let j = 0, l = components.length; j < l; j++) {
-            components[j]._componentEventContainer.tryCallOnWorldMatrixUpdated();
-        }
+        this._gameObject.invokeOnMatrixUpdate();
 
         const object3D_children = this._object3D.children;
         for (let i = 0, l = object3D_children.length; i < l; i++) {

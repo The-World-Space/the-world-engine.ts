@@ -174,6 +174,8 @@ export class GameObjectBuilder {
             }
         }
         this._gameObject._components.push(component);
+        this._gameObject.tryAddMatrixUpdateComponent(component);
+        
         if (componentInitializeFunc) {
             this._componentInitializeFuncList.push(() => componentInitializeFunc(component));
         }

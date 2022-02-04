@@ -46,10 +46,12 @@ function isOnDestroyableComponent(component: Component): component is OnDestroya
 
 /**
  * called when world matrix is changed
+ * @internal
  */
-type OnWorldMatrixUpdatedableComponent = Component & { onWorldMatrixUpdated(): void; };
+export type OnWorldMatrixUpdatedableComponent = Component & { onWorldMatrixUpdated(): void; };
 
-function isOnWorldMatrixUpdatedableComponent(component: Component): component is OnWorldMatrixUpdatedableComponent {
+/** @intenral */
+export function isOnWorldMatrixUpdatedableComponent(component: Component): component is OnWorldMatrixUpdatedableComponent {
     return (component as OnWorldMatrixUpdatedableComponent).onWorldMatrixUpdated !== undefined;
 }
 
