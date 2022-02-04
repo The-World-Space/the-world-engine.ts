@@ -18,7 +18,9 @@ export class TestBootstrapper extends Bootstrapper {
                 }))
 
             .withChild(instantlater.buildGameObject("test_object")
-                .withComponent(TimeDestroy)
+                .withComponent(TimeDestroy, c => {
+                    c.enabled = false;
+                })
                 .withComponent(CssSpriteRenderer)
                 .withComponent(Rotator))
 
