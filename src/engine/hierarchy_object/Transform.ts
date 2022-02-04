@@ -871,11 +871,25 @@ export class Transform {
 
     public static updateRawObject3DWorldMatrixRecursively(object3D: Object3D): void {
         if (object3D.matrixAutoUpdate) object3D.updateMatrix();
+        if (object3D.parent) {
+            object3D.matrixWorld.multiplyMatrices(object3D.parent!.matrixWorld, object3D.matrix);
+        } else {
+            object3D.matrixWorld.copy(object3D.matrix);
+        }
+        // update children
+        const children = object3D.children;
+        for (let i = 0, l = children.length; i < l; i++) {
+            Transform.updateRawObject3DWorldMatrixRecursivelyInternal(children[i]);
+        }
+    }
+
+    private static updateRawObject3DWorldMatrixRecursivelyInternal(object3D: Object3D): void {
+        if (object3D.matrixAutoUpdate) object3D.updateMatrix();
         object3D.matrixWorld.multiplyMatrices(object3D.parent!.matrixWorld, object3D.matrix);
         // update children
         const children = object3D.children;
         for (let i = 0, l = children.length; i < l; i++) {
-            Transform.updateRawObject3DWorldMatrixRecursively(children[i]);
+            Transform.updateRawObject3DWorldMatrixRecursivelyInternal(children[i]);
         }
     }
 
