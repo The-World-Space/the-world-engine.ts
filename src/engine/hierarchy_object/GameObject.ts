@@ -373,6 +373,7 @@ export class GameObject {
                 for (let i = 0; i < components.length; i++) {
                     const component = components[i];
                     if (component.enabled) {
+                        component._componentEventContainer.tryCallAwake();
                         component._componentEventContainer.tryRegisterOnEnable();
                         component._componentEventContainer.tryRegisterStart();
                         component._componentEventContainer.tryRegisterUpdate();

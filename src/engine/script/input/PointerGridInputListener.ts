@@ -1,6 +1,7 @@
 import { Vector2, Vector3 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
+import { Transform } from "../../hierarchy_object/Transform";
 import { IGridCollidable } from "../physics/IGridCollidable";
 
 export class PointerGridEvent {
@@ -74,7 +75,9 @@ export class PointerGridInputListener extends Component {
         this._htmlDivElement.addEventListener("touchcancel", this._onTouchCancelBind);
 
         this.transform.unsafeGetObject3D().add(this._css3DObject);
-        //it's safe because _css3DObject is not a GameObject and i"m removing it from the scene in onDestroy
+        //it's safe because _css3DObject is not a GameObject and i'm removing it from the scene in onDestroy
+        Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
 
         this._started = true;
     }
@@ -108,7 +111,7 @@ export class PointerGridInputListener extends Component {
         }
         if (this._css3DObject) {
             this.transform.unsafeGetObject3D().remove(this._css3DObject);
-            //it's safe because _css3DObject is not a GameObject and i"m removing it from the scene in onDestroy
+            //it's safe because _css3DObject is not a GameObject and i'm removing it from the scene in onDestroy
         }
     }
 
@@ -116,6 +119,13 @@ export class PointerGridInputListener extends Component {
         this._zindex = zaxis;
         if (this._css3DObject) {
             this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
+        }
+    }
+    
+    public onWorldMatrixUpdated(): void {
+        if (this._css3DObject) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 

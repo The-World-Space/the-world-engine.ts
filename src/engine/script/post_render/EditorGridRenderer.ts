@@ -20,9 +20,8 @@ export class EditorGridRenderer extends Component {
 
     public awake(): void {
         const cssHtmlRendererRef = new PrefabRef<CssHtmlElementRenderer>();
-        const cssHemlRendererObjectRef = new PrefabRef<GameObject>();
 
-        this.gameObject.addChildFromBuilder(
+        this._cssHtmlRendererObject = this.gameObject.addChildFromBuilder(
             this.engine.instantlater.buildGameObject("grid-renderer", new Vector3(0, 0, -1), undefined, new Vector3(this._lineWidth, this._lineWidth, this._lineWidth))
                 .active(false)
                 .withComponent(CssHtmlElementRenderer, c => {
@@ -36,11 +35,9 @@ export class EditorGridRenderer extends Component {
                     c.pointerEvents = false;
                     c.setElement(element);
                 })
-                .getComponent(CssHtmlElementRenderer, cssHtmlRendererRef)
-                .getGameObject(cssHemlRendererObjectRef));
+                .getComponent(CssHtmlElementRenderer, cssHtmlRendererRef));
         
         this._cssHtmlRenderer = cssHtmlRendererRef.ref;
-        this._cssHtmlRendererObject = cssHemlRendererObjectRef.ref;
     }
 
     public onEnable(): void {

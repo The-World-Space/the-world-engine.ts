@@ -451,7 +451,7 @@ export class Transform {
      */
     public get parent(): Transform | null {
         if (this._object3D.parent instanceof Scene) return null;
-        return this._object3D.parent as Transform | null;
+        return this._object3D.parent!.userData as Transform;
     }
 
     /**
