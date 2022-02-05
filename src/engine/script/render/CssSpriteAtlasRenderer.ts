@@ -30,13 +30,13 @@ export class CssSpriteAtlasRenderer extends Component {
     private static readonly _defaultImagePath: string = GlobalConfig.defaultSpriteSrc;
 
     public start(): void {
+        this._started = true;
         this._initializeFunction?.call(this);
         if (!this._htmlImageElement) {
             this.asyncSetImage(CssSpriteAtlasRenderer._defaultImagePath, 1, 1);
         }
         
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
-        this._started = true;
     }
 
     public onDestroy(): void {
@@ -82,7 +82,7 @@ export class CssSpriteAtlasRenderer extends Component {
     }
 
     public asyncSetImage(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunction = () => {
                 this.asyncSetImage(path, rowCount, columnCount, onComplete);
             };

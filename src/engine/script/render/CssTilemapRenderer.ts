@@ -48,13 +48,13 @@ export class CssTilemapRenderer extends Component{
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    public start(): void { 
+    public start(): void {
+        this._started = true;
         this.drawTileMap();
 
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
-        this._started = true;
     }
 
     public onDestroy(): void {
@@ -108,7 +108,7 @@ export class CssTilemapRenderer extends Component{
     }
 
     public drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTile(column, row, imageIndex, atlasIndex);
             });
@@ -141,7 +141,7 @@ export class CssTilemapRenderer extends Component{
 
     //i is imageIndex and a is atlasIndex
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset);
             });
@@ -180,7 +180,7 @@ export class CssTilemapRenderer extends Component{
     }
 
     public clearTile(column: number, row: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.clearTile(column, row);
             });
@@ -192,7 +192,7 @@ export class CssTilemapRenderer extends Component{
     }
 
     public set imageSources(value: TileAtlasItem[]) {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.imageSources = value;
             });

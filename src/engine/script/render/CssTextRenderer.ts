@@ -30,12 +30,14 @@ export class CssTextRenderer extends Component {
     private _textalign: TextAlign = TextAlign.Left;
     private _opacity = 1;
     private _pointerEvents = true;
+    private _awaked = false;
 
     private _initializeFunction: (() => void)|null = null;
 
     private static readonly _defaultText: string = "Text";
 
     public awake(): void {
+        this._awaked = true;
         this._initializeFunction?.call(this);
         if (!this._htmlDivElement) {
             this.text = CssTextRenderer._defaultText;
@@ -87,7 +89,7 @@ export class CssTextRenderer extends Component {
     }
 
     public set text(value: string|null) {
-        if (!this.initialized) {
+        if (!this._awaked) {
             this._initializeFunction = () => {
                 this.text = value;
             };

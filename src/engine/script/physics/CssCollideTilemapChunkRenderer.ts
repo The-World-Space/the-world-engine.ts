@@ -15,8 +15,10 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     private _collideEnabled = false;
     
     private _initializeFunctions: (() => void)[] = [];
+    private _started = false;
 
     public start(): void {
+        this._started = true;
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
@@ -91,7 +93,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     public drawTile(x: number, y: number, imageIndex: number, atlasIndex?: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTile(x, y, imageIndex, atlasIndex);
             });
@@ -109,7 +111,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTileFromTwoDimensionalArray(array, xOffset, yOffset);
             });
@@ -125,7 +127,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     public clearTile(x: number, y: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.clearTile(x, y);
             });
@@ -142,7 +144,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     public addCollider(x: number, y: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.addCollider(x, y);
             });
@@ -184,7 +186,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     public set imageSources(value: TileAtlasItem[]) {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.imageSources = value;
             });

@@ -61,13 +61,15 @@ export class SpriteStaticInstancer extends Component {
     private _pointerEvents = true;
 
     private _initializeFunction: (() => void)|null = null;
+    private _started = false;
 
     public start(): void {
+        this._started = true;
         this._initializeFunction?.call(this);
     }
 
     public setInstances(instances: SpriteInstance[]) {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunction = () => this.setInstances(instances);
             return;
         }

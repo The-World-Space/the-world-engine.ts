@@ -13,8 +13,10 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     private _pointerEvents = true;
     
     private _initializeFunctions: ((() => void))[] = [];
+    private _started = false;
 
     public start(): void {
+        this._started = true;
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
@@ -81,7 +83,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     }
 
     public drawTile(x: number, y: number, imageIndex: number, atlasIndex?: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTile(x, y, imageIndex, atlasIndex);
             });
@@ -98,7 +100,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     }
 
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTileFromTwoDimensionalArray(array, xOffset, yOffset);
             });
@@ -114,7 +116,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     }
 
     public clearTile(x: number, y: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.clearTile(x, y);
             });
@@ -145,7 +147,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     }
     
     public set imageSources(value: TileAtlasItem[]) {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.imageSources = value;
             });

@@ -16,8 +16,10 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
     private _collideEnabled = false;
     
     private _initializeFunctions: ((() => void))[] = [];
+    private _started = false;
 
     public start(): void {
+        this._started = true;
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
     }
@@ -37,7 +39,7 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
     }
 
     public addCollider(x: number, y: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.addCollider(x, y);
             });
@@ -51,7 +53,7 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
     }
 
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
-        if (!this.initialized) {
+        if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.addColliderFromTwoDimensionalArray(array, xOffset, yOffset);
             });

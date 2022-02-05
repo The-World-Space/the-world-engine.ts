@@ -17,10 +17,12 @@ export class CssHtmlElementRenderer extends Component {
     private _pointerEvents = true;
 
     private _initializeFunction: (() => void)|null = null;
+    private _awaked = false;
 
     private static readonly _defaultElement: HTMLDivElement = document.createElement("div");
 
     public awake(): void {
+        this._awaked = true;
         this._initializeFunction?.call(this);
         if (!this._htmlDivElement) {
             this.setElement(CssHtmlElementRenderer._defaultElement);
@@ -74,7 +76,7 @@ export class CssHtmlElementRenderer extends Component {
     }
 
     public setElement(value: HTMLDivElement|null): void {
-        if (!this.initialized) {
+        if (!this._awaked) {
             this._initializeFunction = () => {
                 this.setElement(value);
             };
