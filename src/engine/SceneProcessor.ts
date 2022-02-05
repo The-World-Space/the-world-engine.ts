@@ -13,8 +13,8 @@ export class SceneProcessor {
     private readonly _removeComponents: Component[];
     
     public constructor() {
-        this._nonSyncedEvents = new MutIteratableCollection(ComponentEvent.lessOp);
-        this._syncedEvents = new MutIteratableCollection(ComponentEvent.lessOp);
+        this._nonSyncedEvents = new MutIteratableCollection(ComponentEvent.comparator);
+        this._syncedEvents = new MutIteratableCollection(ComponentEvent.comparator);
         this._processingSyncedEvent = false;
 
         this._removeGameObjects = [];

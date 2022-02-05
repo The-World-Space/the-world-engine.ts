@@ -79,14 +79,14 @@ export class ComponentEvent {
         this._eventFunc();
     }
 
-    public static lessOp(a: ComponentEvent, b: ComponentEvent): boolean {
+    public static comparator(a: ComponentEvent, b: ComponentEvent): number {
         if (a._priority === b._priority) {
             if (a._componentExecutionOrder === b._componentExecutionOrder) {
-                return a._eventId < b._eventId;
+                return a._eventId - b._eventId;
             } else {
-                return a._componentExecutionOrder < b._componentExecutionOrder;
+                return a._componentExecutionOrder - b._componentExecutionOrder;
             }
         }
-        return a._priority < b._priority;
+        return a._priority - b._priority;
     }
 }

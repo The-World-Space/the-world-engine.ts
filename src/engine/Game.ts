@@ -105,11 +105,11 @@ export class Game {
         bootstrapper.run().build();
         //If a camera exists in the bootstrapper,
         //it is certain that the camera exists in the global variable from this point on.
-        if (!this._cameraContainer.camera) throw new Error("Camera is not exist in the scene.");
+        if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._gameState.kind = GameStateKind.Running;
         this._sceneProcessor.startProcessNonSyncedEvent(); // execute start() and update() event
         this._coroutineProcessor.updateAfterProcess();
-        if (!this._cameraContainer.camera) throw new Error("Camera is not exist in the scene.");
+        if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
         this._renderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
@@ -125,7 +125,7 @@ export class Game {
         this._sceneProcessor.startProcessNonSyncedEvent();
         this._coroutineProcessor.tryCompact();
         this._coroutineProcessor.updateAfterProcess();
-        if (!this._cameraContainer.camera) throw new Error("Camera is not exist.");
+        if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
         this._renderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);

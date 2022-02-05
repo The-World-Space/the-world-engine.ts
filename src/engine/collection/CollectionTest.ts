@@ -21,17 +21,17 @@ class TestItem {
         this._func();
     }
 
-    public static lessOp(a: TestItem, b: TestItem): boolean {
+    public static comparator(a: TestItem, b: TestItem): number {
         if (a._executionOrder === b._executionOrder) {
-            return a._id < b._id;
+            return a._id - b._id;
         }
-        return a._executionOrder < b._executionOrder;
+        return a._executionOrder - b._executionOrder;
     }
 }
 
 /** @internal */
 export function mutIteratableCollectionTest1(): void {
-    const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.lessOp);
+    const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.comparator);
 
     const item2 = new TestItem(() => {
         console.log("2");
@@ -57,7 +57,7 @@ export function mutIteratableCollectionTest1(): void {
 
 /** @internal */
 export function mutIteratableCollectionTest2(): void {
-    const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.lessOp);
+    const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.comparator);
 
     const item1 = new TestItem(() => {
         console.log("1");
