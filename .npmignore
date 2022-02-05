@@ -1,6 +1,7 @@
 .cache
 node_modules
 src
+docs
 .babelrc
 .eslintrc.js
 .gitattributes
