@@ -1,6 +1,6 @@
 import { Game } from "../engine/Game";
 import { TestBootstrapper } from "./TestBootstrapper";
-//import { mutIteratableCollectionTest1 } from "./../engine/collection/CollectionTest";
+import { mutIteratableCollectionTest2 } from "./../engine/collection/CollectionTest";
 
 function startTestGame(container: HTMLElement) {
     const game = new Game(container);
@@ -9,4 +9,5 @@ function startTestGame(container: HTMLElement) {
 }
 
 //mutIteratableCollectionTest1();
+mutIteratableCollectionTest2();
 startTestGame(document.getElementById("game_view")!);

@@ -54,3 +54,29 @@ export function mutIteratableCollectionTest1(): void {
         item.execute();
     });
 }
+
+/** @internal */
+export function mutIteratableCollectionTest2(): void {
+    const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.lessOp);
+
+    const item1 = new TestItem(() => {
+        console.log("1");
+    }, 1);
+    const item2 = new TestItem(() => {
+        console.log("2");
+    }, 2);
+    const item3 = new TestItem(() => {
+        console.log("3");
+    }, 3);
+    const item4 = new TestItem(() => {
+        console.log("4");
+    }, 4);
+
+    mutIteratableCollection.insert(item1);
+    mutIteratableCollection.insert(item2);
+    mutIteratableCollection.insert(item3);
+    mutIteratableCollection.insert(item4);
+
+    mutIteratableCollection.delete(item1);
+    mutIteratableCollection.delete(item3);
+}
