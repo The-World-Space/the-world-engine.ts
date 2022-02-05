@@ -42,7 +42,7 @@ export abstract class Component {
     public constructor(gameObject: GameObject) {
         this._enabled = true;
         this._gameObject = gameObject;
-        this._instanceId = gameObject.engine.instantlater.generateId();
+        this._instanceId = gameObject.engine.instantiater.generateId();
         this._componentEventContainer = new ComponentEventContainer(this);
     }
 
