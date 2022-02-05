@@ -13,7 +13,7 @@ import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
  * do not drive this class
  */
 export class EngineGlobalObject {
-    private readonly _rootScene: Scene;
+    private readonly _scene: Scene;
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: IReadOnlyTime;
     private readonly _inputHandler: InputHandler;
@@ -28,7 +28,7 @@ export class EngineGlobalObject {
     
     /** @internal */
     public constructor(
-        rootScene: Scene,
+        scene: Scene,
         cameraContainer: CameraContainer,
         time: IReadOnlyTime,
         gameState: IReadOnlyGameState,
@@ -38,7 +38,7 @@ export class EngineGlobalObject {
         transformMatrixProcessor: TransformMatrixProcessor,
         renderTargetDom: HTMLElement
     ) {
-        this._rootScene = rootScene;
+        this._scene = scene;
         this._cameraContainer = cameraContainer;
         this._time = time;
         this._gameState = gameState;
@@ -55,8 +55,8 @@ export class EngineGlobalObject {
         this._inputHandler.dispose();
     }
 
-    public get rootScene(): Scene {
-        return this._rootScene;
+    public get scene(): Scene {
+        return this._scene;
     }
 
     public get cameraContainer(): CameraContainer {

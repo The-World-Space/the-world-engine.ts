@@ -60,7 +60,7 @@ export class Transform {
         this._object3D = new Object3D();
         this._object3D.matrixAutoUpdate = false;
         this._object3D.userData = this;
-        engineGlobalObject.rootScene.add(this._object3D);
+        engineGlobalObject.scene.add(this._object3D);
         
         Object.defineProperties(this._object3D, {
             position: {
@@ -469,7 +469,7 @@ export class Transform {
         } else {
             const oldParent = this.parent;
             this._object3D.removeFromParent();
-            this._engineGlobalObject.rootScene.add(this._object3D);
+            this._engineGlobalObject.scene.add(this._object3D);
             this.setMatrixNeedUpdateRecursively();
             this._onParentChanged(oldParent, null);
         }
