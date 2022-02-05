@@ -12,6 +12,7 @@ import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
 export class Instantiater {
     private readonly _engineGlobalObject: EngineGlobalObject;
     private _instanceNextId = 0;
+    private _eventInstanceNextId = 0;
 
     /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject) {
@@ -22,6 +23,13 @@ export class Instantiater {
     public generateId(): number {
         const id = this._instanceNextId;
         this._instanceNextId += 1;
+        return id;
+    }
+
+    /** @internal */
+    public generateEventId(): number {
+        const id = this._eventInstanceNextId;
+        this._eventInstanceNextId += 1;
         return id;
     }
 

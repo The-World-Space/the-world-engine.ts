@@ -2,6 +2,7 @@ import { SceneProcessor } from "../SceneProcessor";
 import { Component } from "./Component";
 import { ComponentEvent } from "./ComponentEvent";
 import { ComponentEventState } from "./ComponentEventState";
+import { Instantiater } from "../Instantiater";
 
 /**
  * awake is called when the script instance is being loaded.
@@ -79,6 +80,7 @@ function isUpdatableComponent(component: Component): component is UpdatableCompo
 export class ComponentEventContainer {
     private readonly _component: Component;
     private readonly _sceneProcessor: SceneProcessor;
+    private readonly _instantiater: Instantiater;
     private readonly _eventState: ComponentEventState;
 
     private readonly _awake: ComponentEvent|null = null;
@@ -91,14 +93,22 @@ export class ComponentEventContainer {
     public constructor(component: Component) {
         this._component = component;
         this._sceneProcessor = component.engine.sceneProcessor; 
+        this._instantiater = component.engine.instantiater;
         this._eventState = new ComponentEventState();
         
         if (isAwakeableComponent(component)) {
-            this._awake = ComponentEvent.createAwakeEvent(component.awake.bind(component));
+            this._awake = ComponentEvent.createAwakeEvent(
+                this._instantiater,
+                component.awake.bind(component)
+            );
         }
 
         if (isOnDestroyableComponent(component)) {
-            this._onDestroy = ComponentEvent.createOnDestroyEvent(component.onDestroy.bind(component), component.executionOrder);
+            this._onDestroy = ComponentEvent.createOnDestroyEvent(
+                this._instantiater,
+                component.onDestroy.bind(component),
+                component.executionOrder
+            );
         }
         
         if (isOnWorldMatrixUpdatedableComponent(component)) {
@@ -107,17 +117,24 @@ export class ComponentEventContainer {
         
 
         if (isStartableComponent(component)) {
-            this._start = ComponentEvent.createStartEvent(() => { //lambda for run once
-                this._eventState.startCalled = true;
-                component.start();
-                if (this._eventState.startRegistered) {
-                    this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
-                }
-            }, component.executionOrder);
+            this._start = ComponentEvent.createStartEvent(
+                this._instantiater,
+                () => { //lambda for run once
+                    this._eventState.startCalled = true;
+                    component.start();
+                    if (this._eventState.startRegistered) {
+                        this._sceneProcessor.removeEventFromNonSyncedCollection(this._start!);
+                    }
+                },
+                component.executionOrder
+            );
         }
 
         if (isUpdatableComponent(component)) {
-            this._update = ComponentEvent.createUpdateEvent(component.update.bind(component), component.executionOrder);
+            this._update = ComponentEvent.createUpdateEvent(
+                this._instantiater,
+                component.update.bind(component), component.executionOrder
+            );
         }
     }
 
@@ -130,14 +147,26 @@ export class ComponentEventContainer {
     public tryRegisterOnEnable(): void {
         if (!isOnEnableableComponent(this._component)) return;
         if (this._component._destroyed) return;
-        const onEnableEvent = ComponentEvent.createOnEnableEvent(this._component.onEnable.bind(this._component), this._component.executionOrder);
+        if (this._eventState.enabled) return;
+        this._eventState.enabled = true;
+        const onEnableEvent = ComponentEvent.createOnEnableEvent(
+            this._instantiater,
+            this._component.onEnable.bind(this._component),
+            this._component.executionOrder
+        );
         this._sceneProcessor.addEventToSyncedCollection(onEnableEvent);
     }
 
     public tryRegisterOnDisable(): void {
         if (!isOnDisableableComponent(this._component)) return;
         if (this._component._destroyed) return;
-        const onDisableEvent = ComponentEvent.createOnDisableEvent(this._component.onDisable.bind(this._component), this._component.executionOrder);
+        if (!this._eventState.enabled) return;
+        this._eventState.enabled = false;
+        const onDisableEvent = ComponentEvent.createOnDisableEvent(
+            this._instantiater,
+            this._component.onDisable.bind(this._component),
+            this._component.executionOrder
+        );
         this._sceneProcessor.addEventToSyncedCollection(onDisableEvent);
     }
 

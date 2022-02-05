@@ -4,4 +4,5 @@ export class ComponentEventState {
     public startRegistered = false;
     public startCalled = false;
     public updateRegistered = false;
+    public enabled = false;
 }
