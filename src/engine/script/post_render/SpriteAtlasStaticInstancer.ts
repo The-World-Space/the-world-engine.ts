@@ -81,7 +81,7 @@ export class SpriteAtlasStaticInstancer extends Component {
             return;
         }
 
-        const instantlater = this.engine.instantlater;
+        const instantlater = this.engine.instantiater;
         for (let i = 0; i < instances.length; i++) {
             const instance = instances[i];
 

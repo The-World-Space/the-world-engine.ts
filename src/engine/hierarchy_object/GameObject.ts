@@ -25,7 +25,7 @@ export class GameObject {
     /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
         this._engineGlobalObject = engineGlobalObject;
-        this._instanceId = engineGlobalObject.instantlater.generateId();
+        this._instanceId = engineGlobalObject.instantiater.generateId();
         this._activeInHierarchy = true;
         this._activeSelf = true;
         this._initialized = false;

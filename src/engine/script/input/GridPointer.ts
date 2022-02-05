@@ -37,7 +37,7 @@ export class GridPointer extends Component {
         const pointerObject: PrefabRef<GameObject> = new PrefabRef();
         const pointerRenderer: PrefabRef<CssHtmlElementRenderer> = new PrefabRef();
         this.gameObject.addChildFromBuilder(
-            this.engine.instantlater.buildGameObject("pointer", new Vector3(0, 0, this._pointerZoffset))
+            this.engine.instantiater.buildGameObject("pointer", new Vector3(0, 0, this._pointerZoffset))
                 .active(false)
                 .withComponent(CssHtmlElementRenderer, c => {
                     c.pointerEvents = false;

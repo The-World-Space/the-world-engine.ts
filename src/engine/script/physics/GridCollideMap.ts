@@ -103,7 +103,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
     private addDebugImage(x: number, y: number) {
         const gameObjectRef = new PrefabRef<GameObject>();
         this.gameObject.addChildFromBuilder(
-            this.engine.instantlater.buildGameObject(
+            this.engine.instantiater.buildGameObject(
                 "debugImage", new Vector3(x, y, 410000))
                 .withComponent(ZaxisInitializer)
                 .withComponent(CssSpriteRenderer, c => {

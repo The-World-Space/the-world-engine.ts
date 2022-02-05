@@ -22,7 +22,7 @@ export class EditorGridRenderer extends Component {
         const cssHtmlRendererRef = new PrefabRef<CssHtmlElementRenderer>();
 
         this._cssHtmlRendererObject = this.gameObject.addChildFromBuilder(
-            this.engine.instantlater.buildGameObject("grid-renderer", new Vector3(0, 0, -1), undefined, new Vector3(this._lineWidth, this._lineWidth, this._lineWidth))
+            this.engine.instantiater.buildGameObject("grid-renderer", new Vector3(0, 0, -1), undefined, new Vector3(this._lineWidth, this._lineWidth, this._lineWidth))
                 .active(false)
                 .withComponent(CssHtmlElementRenderer, c => {
                     const element = document.createElement("div");

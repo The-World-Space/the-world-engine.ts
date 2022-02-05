@@ -79,7 +79,7 @@ export class EngineGlobalObject {
         return this._gameState;
     }
 
-    public get instantlater(): Instantiater {
+    public get instantiater(): Instantiater {
         return this._instantlater;
     }
 
