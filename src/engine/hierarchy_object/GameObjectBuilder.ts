@@ -164,7 +164,7 @@ export class GameObjectBuilder {
         componentInitializeFunc?: (component: T) => void
     ): GameObjectBuilder {
         const component = new componentCtor(this._gameObject);
-        component.constructAfterProcess();
+        component.engine_internal_constructAfterProcess();
 
         if (component.disallowMultipleComponent) {
             const existingComponent = this._gameObject.getComponent(componentCtor);
@@ -266,18 +266,18 @@ export class GameObjectBuilder {
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
             if (component.gameObject.activeInHierarchy && component.enabled) {
-                component._componentEventContainer.tryCallAwake();
+                component._engine_internal_componentEventContainer.tryCallAwake();
             }
         }
         
         //onEnable start update
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
-            if (component._destroyed) continue;
+            if (component._engine_internal_destroyed) continue;
             if (component.gameObject.activeInHierarchy && component.enabled) {
-                component._componentEventContainer.tryRegisterOnEnable();
-                component._componentEventContainer.tryRegisterStart();
-                component._componentEventContainer.tryRegisterUpdate();
+                component._engine_internal_componentEventContainer.tryRegisterOnEnable();
+                component._engine_internal_componentEventContainer.tryRegisterStart();
+                component._engine_internal_componentEventContainer.tryRegisterUpdate();
             }
         }
 

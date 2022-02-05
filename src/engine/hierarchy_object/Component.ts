@@ -34,20 +34,20 @@ export abstract class Component {
     private readonly _runningCoroutines: Coroutine[] = [];
     
     /** @internal */
-    public readonly _componentEventContainer: ComponentEventContainer;
+    public readonly _engine_internal_componentEventContainer: ComponentEventContainer;
     /** @internal */
-    public _destroyed = false;
+    public _engine_internal_destroyed = false;
 
     /** @internal */
     public constructor(gameObject: GameObject) {
         this._enabled = true;
         this._gameObject = gameObject;
         this._instanceId = gameObject.engine.instantiater.generateId();
-        this._componentEventContainer = new ComponentEventContainer(this);
+        this._engine_internal_componentEventContainer = new ComponentEventContainer(this);
     }
 
     /** @internal */
-    public constructAfterProcess(): void {
+    public engine_internal_constructAfterProcess(): void {
         Object.defineProperties(this, {
             disallowMultipleComponent: {
                 configurable: false,
@@ -125,14 +125,14 @@ export abstract class Component {
         
         if (this._gameObject.activeInHierarchy) {
             if (this._enabled) {
-                this._componentEventContainer.tryRegisterOnEnable();
-                this._componentEventContainer.tryRegisterStart();
-                this._componentEventContainer.tryRegisterUpdate();
+                this._engine_internal_componentEventContainer.tryRegisterOnEnable();
+                this._engine_internal_componentEventContainer.tryRegisterStart();
+                this._engine_internal_componentEventContainer.tryRegisterUpdate();
                 this.engine.sceneProcessor.tryStartProcessSyncedEvent();
             } else {
-                this._componentEventContainer.tryRegisterOnDisable();
-                this._componentEventContainer.tryUnregisterStart();
-                this._componentEventContainer.tryUnregisterUpdate();
+                this._engine_internal_componentEventContainer.tryRegisterOnDisable();
+                this._engine_internal_componentEventContainer.tryUnregisterStart();
+                this._engine_internal_componentEventContainer.tryUnregisterUpdate();
                 this.engine.sceneProcessor.tryStartProcessSyncedEvent();
             }
         }
@@ -178,14 +178,14 @@ export abstract class Component {
      */
     public destroy(): void {
         if (this.enabled && this.gameObject.activeInHierarchy) {
-            this._componentEventContainer.tryRegisterOnDisable();
-            this._componentEventContainer.tryUnregisterStart();
-            this._componentEventContainer.tryUnregisterUpdate();
+            this._engine_internal_componentEventContainer.tryRegisterOnDisable();
+            this._engine_internal_componentEventContainer.tryUnregisterStart();
+            this._engine_internal_componentEventContainer.tryUnregisterUpdate();
         }
         this.stopAllCoroutines();
-        this._componentEventContainer.tryRegisterOnDestroy();
+        this._engine_internal_componentEventContainer.tryRegisterOnDestroy();
         
-        this._destroyed = true;
+        this._engine_internal_destroyed = true;
         
         this.engine.sceneProcessor.tryStartProcessSyncedEvent();
         this.engine.sceneProcessor.addRemoveComponent(this);

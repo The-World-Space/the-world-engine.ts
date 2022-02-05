@@ -68,7 +68,7 @@ export class GameObject {
      */
     public addComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T|null {
         const component = new componentCtor(this);
-        component.constructAfterProcess();
+        component.engine_internal_constructAfterProcess();
         
         if (component.disallowMultipleComponent) {
             const existingComponent = this.getComponent(componentCtor);
@@ -91,10 +91,10 @@ export class GameObject {
 
         if (this._activeInHierarchy) {
             if (component.enabled) {
-                component._componentEventContainer.tryCallAwake();
-                component._componentEventContainer.tryRegisterOnEnable();
-                component._componentEventContainer.tryRegisterStart();
-                component._componentEventContainer.tryRegisterUpdate();
+                component._engine_internal_componentEventContainer.tryCallAwake();
+                component._engine_internal_componentEventContainer.tryRegisterOnEnable();
+                component._engine_internal_componentEventContainer.tryRegisterStart();
+                component._engine_internal_componentEventContainer.tryRegisterUpdate();
                 this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();
             }
         }
@@ -320,14 +320,14 @@ export class GameObject {
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
             if (component.enabled && this._activeInHierarchy) {
-                component._componentEventContainer.tryRegisterOnDisable();
-                component._componentEventContainer.tryUnregisterStart();
-                component._componentEventContainer.tryUnregisterUpdate();
+                component._engine_internal_componentEventContainer.tryRegisterOnDisable();
+                component._engine_internal_componentEventContainer.tryUnregisterStart();
+                component._engine_internal_componentEventContainer.tryUnregisterUpdate();
             }
             component.stopAllCoroutines();
-            component._componentEventContainer.tryRegisterOnDestroy();
+            component._engine_internal_componentEventContainer.tryRegisterOnDestroy();
 
-            component._destroyed = true;
+            component._engine_internal_destroyed = true;
         }
         this._transform.children.forEach(child => { // modified values in foreach but array is not modified
             if (child instanceof Transform) child.gameObject.destroyEventProcess();
@@ -373,10 +373,10 @@ export class GameObject {
                 for (let i = 0; i < components.length; i++) {
                     const component = components[i];
                     if (component.enabled) {
-                        component._componentEventContainer.tryCallAwake();
-                        component._componentEventContainer.tryRegisterOnEnable();
-                        component._componentEventContainer.tryRegisterStart();
-                        component._componentEventContainer.tryRegisterUpdate();
+                        component._engine_internal_componentEventContainer.tryCallAwake();
+                        component._engine_internal_componentEventContainer.tryRegisterOnEnable();
+                        component._engine_internal_componentEventContainer.tryRegisterStart();
+                        component._engine_internal_componentEventContainer.tryRegisterUpdate();
                     }
                 }
             } else {
@@ -384,9 +384,9 @@ export class GameObject {
                     const component = components[i];
                     if (component.enabled) {
                         //disable components
-                        component._componentEventContainer.tryRegisterOnDisable();
+                        component._engine_internal_componentEventContainer.tryRegisterOnDisable();
                         //dequeue update
-                        component._componentEventContainer.tryUnregisterUpdate();
+                        component._engine_internal_componentEventContainer.tryUnregisterUpdate();
                         
                         component.stopAllCoroutines();
                     }

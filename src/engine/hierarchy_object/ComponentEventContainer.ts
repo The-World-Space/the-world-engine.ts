@@ -146,7 +146,7 @@ export class ComponentEventContainer {
 
     public tryRegisterOnEnable(): void {
         if (!isOnEnableableComponent(this._component)) return;
-        if (this._component._destroyed) return;
+        if (this._component._engine_internal_destroyed) return;
         if (this._eventState.enabled) return;
         this._eventState.enabled = true;
         const onEnableEvent = ComponentEvent.createOnEnableEvent(
@@ -159,7 +159,7 @@ export class ComponentEventContainer {
 
     public tryRegisterOnDisable(): void {
         if (!isOnDisableableComponent(this._component)) return;
-        if (this._component._destroyed) return;
+        if (this._component._engine_internal_destroyed) return;
         if (!this._eventState.enabled) return;
         this._eventState.enabled = false;
         const onDisableEvent = ComponentEvent.createOnDisableEvent(
@@ -182,7 +182,7 @@ export class ComponentEventContainer {
 
     public tryRegisterStart(): void {
         if (!this._start) return; //if start is not defined, do nothing
-        if (this._component._destroyed) return;
+        if (this._component._engine_internal_destroyed) return;
         if (this._eventState.startCalled) return;
         if (this._eventState.startRegistered) return;
         this._eventState.startRegistered = true;
@@ -198,7 +198,7 @@ export class ComponentEventContainer {
 
     public tryRegisterUpdate(): void {
         if (!this._update) return; //if update is not defined, do nothing
-        if (this._component._destroyed) return;
+        if (this._component._engine_internal_destroyed) return;
         if (this._eventState.updateRegistered) return;
         this._eventState.updateRegistered = true;
         this._sceneProcessor.addEventToNonSyncedCollection(this._update);
