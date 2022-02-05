@@ -1,5 +1,6 @@
 import { Component } from "../../engine/hierarchy_object/Component";
 
+/** @internal */
 export class EventTest1 extends Component {
     public awake() {
         console.log("EventTest1.awake()");
