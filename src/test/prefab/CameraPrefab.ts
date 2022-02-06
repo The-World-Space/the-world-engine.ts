@@ -14,7 +14,7 @@ export class CameraPrefab extends Prefab {
             .withComponent(Camera)
             .withComponent(TrackCameraController, c => {
                 c.setTrackTarget(this._trackTarget.ref!);
-                c.targetOffset = new Vector2(0, 32);
+                c.targetOffset = new Vector2(0, 0);
             });
     }
 }

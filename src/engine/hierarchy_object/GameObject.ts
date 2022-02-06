@@ -109,7 +109,7 @@ export class GameObject {
     }
 
     /** @internal */
-    public invokeOnMatrixUpdate() {
+    public invokeOnWorldMatrixUpdate() {
         for (let i = 0; i < this._matrixUpdateComponents.length; i++) {
             this._matrixUpdateComponents[i].onWorldMatrixUpdated();
         }

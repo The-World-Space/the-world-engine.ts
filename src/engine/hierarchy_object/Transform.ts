@@ -206,7 +206,7 @@ export class Transform {
     }
 
     private setMatrixNeedUpdateRecursivelyInternal(): void {
-        if (this._localMatrixNeedUpdate /*|| this.worldMatrixNeedUpdate*/) {
+        if (this._localMatrixNeedUpdate && this._worldMatrixNeedUpdate) {
             return;
         }
         this._localMatrixNeedUpdate = true;
@@ -285,6 +285,8 @@ export class Transform {
             this._worldMatrixNeedUpdate = false;
             this._localPositionRotationScaleNeedToUpdate = true;
         }
+        
+        this._gameObject.invokeOnWorldMatrixUpdate();
     }
 
     private updateWorldPositionRotationScale(): void {
@@ -355,7 +357,7 @@ export class Transform {
 
     private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(): boolean {
         if (this._coordinateAsOfLocal) {
-            if (!this._localMatrixNeedUpdate /*&& !this.worldMatrixNeedUpdate*/) return true;
+            if (!this._localMatrixNeedUpdate /*&& !this._worldMatrixNeedUpdate*/) return true;
             const localMatrix = this._object3D.matrix;
 
             const emptyFunction = Transform._emptyFunction;
@@ -402,7 +404,7 @@ export class Transform {
             this._localPositionRotationScaleNeedToUpdate = true;
         }
 
-        this._gameObject.invokeOnMatrixUpdate();
+        this._gameObject.invokeOnWorldMatrixUpdate();
 
         const object3D_children = this._object3D.children;
         for (let i = 0, l = object3D_children.length; i < l; i++) {

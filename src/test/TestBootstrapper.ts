@@ -21,7 +21,7 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(CssSpriteRenderer)
                 .withComponent(Rotator)
                 .getGameObject(test_object))
-
+                
             .withChild(instantlater.buildGameObject("test_object2", new Vector3(0, 10, 0))
                 .withComponent(CssHtmlElementRenderer, c => {
                     c.autoSize = true;
@@ -32,6 +32,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.setElement(element);
                     c.centerOffset = new Vector2(0.5, 0.5);
                 }))
+                
             .withChild(instantlater.buildPrefab("camera_controller", CameraPrefab)
                 .withTrackTarget(test_object)
                 .make())
