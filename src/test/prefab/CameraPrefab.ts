@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { TrackCameraController, Camera, GameObject, GameObjectBuilder, Prefab, PrefabRef } from "../../index";
+import { TrackCameraController, Camera, GameObject, GameObjectBuilder, Prefab, PrefabRef, Color } from "../../index";
 
 export class CameraPrefab extends Prefab {
     private _trackTarget = new PrefabRef<GameObject>();
@@ -11,7 +11,9 @@ export class CameraPrefab extends Prefab {
 
     public make(): GameObjectBuilder {
         return this.gameObjectBuilder
-            .withComponent(Camera)
+            .withComponent(Camera, c => {
+                c.backgroundColor = new Color(0, 0, 0);
+            })
             .withComponent(TrackCameraController, c => {
                 c.setTrackTarget(this._trackTarget.ref!);
                 c.targetOffset = new Vector2(0, 0);

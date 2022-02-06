@@ -357,51 +357,53 @@ export class Transform {
 
     private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(): boolean {
         if (this._coordinateAsOfLocal) {
-            if (!this._localMatrixNeedUpdate /*&& !this._worldMatrixNeedUpdate*/) return true;
-            const localMatrix = this._object3D.matrix;
+            if (this._localMatrixNeedUpdate /*|| this._worldMatrixNeedUpdate*/) {
+                const localMatrix = this._object3D.matrix;
 
-            const emptyFunction = Transform._emptyFunction;
-            (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
-            (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-            (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
-            
-            localMatrix.compose(this.localPosition, this.localRotation, this.localScale);
-            
-            this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
-            (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
-            (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-            (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
-            
-            const parent = this.parent;
-            if (parent) {
-                this._object3D.matrixWorld.multiplyMatrices(parent._object3D.matrixWorld, localMatrix);
-            } else {
-                this._object3D.matrixWorld.copy(localMatrix);
+                const emptyFunction = Transform._emptyFunction;
+                (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
+                (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
+                (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
+                
+                localMatrix.compose(this.localPosition, this.localRotation, this.localScale);
+                
+                this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
+                (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
+                (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
+                (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
+                
+                const parent = this.parent;
+                if (parent) {
+                    this._object3D.matrixWorld.multiplyMatrices(parent._object3D.matrixWorld, localMatrix);
+                } else {
+                    this._object3D.matrixWorld.copy(localMatrix);
+                }
+                
+                this._localMatrixNeedUpdate = false;
+                this._worldMatrixNeedUpdate = false;
+                this._worldPositionRotationScaleNeedToUpdate = true;
             }
-            
-            this._localMatrixNeedUpdate = false;
-            this._worldMatrixNeedUpdate = false;
-            this._worldPositionRotationScaleNeedToUpdate = true;
         } else {
-            if (!this._worldMatrixNeedUpdate) return true;
-            const emptyFunction = Transform._emptyFunction;
-            this._worldPosition.onBeforeGetComponent(emptyFunction);
-            this._worldRotation.onBeforeGetComponent(emptyFunction);
-            this._worldScale.onBeforeGetComponent(emptyFunction);
+            if (this._worldMatrixNeedUpdate) {
+                const emptyFunction = Transform._emptyFunction;
+                this._worldPosition.onBeforeGetComponent(emptyFunction);
+                this._worldRotation.onBeforeGetComponent(emptyFunction);
+                this._worldScale.onBeforeGetComponent(emptyFunction);
 
-            this._object3D.matrixWorld.compose(
-                (this._worldPosition as unknown as Vector3),
-                (this._worldRotation as unknown as Quaternion),
-                (this._worldScale as unknown as Vector3)
-            );
+                this._object3D.matrixWorld.compose(
+                    (this._worldPosition as unknown as Vector3),
+                    (this._worldRotation as unknown as Quaternion),
+                    (this._worldScale as unknown as Vector3)
+                );
 
-            this._worldPosition.onBeforeGetComponent(this._onBeforeGetWorldBind);
-            this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
-            this._worldScale.onBeforeGetComponent(this._onBeforeGetWorldBind);
+                this._worldPosition.onBeforeGetComponent(this._onBeforeGetWorldBind);
+                this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
+                this._worldScale.onBeforeGetComponent(this._onBeforeGetWorldBind);
 
-            this._localMatrixNeedUpdate = true;
-            this._worldMatrixNeedUpdate = false;
-            this._localPositionRotationScaleNeedToUpdate = true;
+                this._localMatrixNeedUpdate = true;
+                this._worldMatrixNeedUpdate = false;
+                this._localPositionRotationScaleNeedToUpdate = true;
+            }
         }
 
         this._gameObject.invokeOnWorldMatrixUpdate();

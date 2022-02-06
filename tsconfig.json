@@ -27,7 +27,10 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "declaration": true,
-    "outDir": "dist/"
+    "outDir": "dist/",
+    "typeRoots": [
+      "src/types"
+    ]
   },
   "include": [
     "src"
