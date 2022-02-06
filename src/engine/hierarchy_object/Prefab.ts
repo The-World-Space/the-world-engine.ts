@@ -10,7 +10,6 @@ export abstract class Prefab {
     protected _engine: EngineGlobalObject;
     protected _gameObjectBuilder: GameObjectBuilder;
 
-    /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, name: string, localPosition?: Vector3, localRotation?: Quaternion, localScale?: Vector3) {
         this._engine = engineGlobalObject;
         this._gameObjectBuilder = new GameObjectBuilder(engineGlobalObject, name, localPosition, localRotation, localScale);

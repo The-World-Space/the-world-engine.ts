@@ -10,7 +10,6 @@ export abstract class Bootstrapper<T = any> {
     private _interopObject: T|null;
     private _sceneBuilder: SceneBuilder;
 
-    /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, interopObject?: T) {
         this._engineGlobalObject = engineGlobalObject;
         this._interopObject = interopObject || null;

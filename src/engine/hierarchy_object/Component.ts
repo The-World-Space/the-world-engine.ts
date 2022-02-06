@@ -38,7 +38,6 @@ export abstract class Component {
     /** @internal */
     public _engine_internal_destroyed = false;
 
-    /** @internal */
     public constructor(gameObject: GameObject) {
         this._enabled = true;
         this._gameObject = gameObject;
