@@ -39,8 +39,7 @@ export class MutIteratableCollection<T> {
             } else {
                 this._iterateCollection.eraseElementByValue(value);
             }
-        }
-        this._collection.eraseElementByValue(value);
+        } else this._collection.eraseElementByValue(value);
     }
 
     /** Clear the tree, same as `Map.clear()`, O(1) 
@@ -70,6 +69,7 @@ export class MutIteratableCollection<T> {
     }
 
     private flushBuffer(): SetType<T> {
+        this._iterateCollection = null;
         this._deleteBuffer.forEach((value: T) => this.delete(value));
         this._insertBuffer.forEach((value: T) => this.insert(value));
         
