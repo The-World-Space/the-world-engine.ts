@@ -10,7 +10,7 @@ export class TestBootstrapper extends Bootstrapper {
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("test_object")
-                .withComponent(TimeTest))
+                .withComponent(TimeTest, c => c.enabled = false))
             .withChild(instantiater.buildGameObject("camera")
                 .withComponent(Camera, c => {
                     c.backgroundColor = new Color(0.1, 0.1, 0.1);
