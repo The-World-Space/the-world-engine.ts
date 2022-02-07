@@ -305,7 +305,8 @@ export class GameObject {
     //     }
     // }
 
-    private _destroyed = false;
+    /** @internal */
+    public _destroyed = false;
 
     /**
      * destroy the GameObject

@@ -350,6 +350,7 @@ export class Transform {
 
     /** @internal */
     public tryUpdateWorldMatrixRecursivelyFromThisToChildren(): boolean {
+        if (this._gameObject._destroyed) return false;
         const parent = this.parent;
         if (parent) if (parent._worldMatrixNeedUpdate) return false;
         return this.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
