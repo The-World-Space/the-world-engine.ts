@@ -176,6 +176,7 @@ export abstract class Component {
      * destroy this component
      */
     public destroy(): void {
+        if (this._engine_internal_destroyed) return;
         if (this.enabled && this.gameObject.activeInHierarchy) {
             this._engine_internal_componentEventContainer.tryRegisterOnDisable();
             this._engine_internal_componentEventContainer.tryUnregisterStart();

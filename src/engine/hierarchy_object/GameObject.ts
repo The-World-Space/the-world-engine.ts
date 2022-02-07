@@ -305,10 +305,14 @@ export class GameObject {
     //     }
     // }
 
+    private _destroyed = false;
+
     /**
      * destroy the GameObject
      */
     public destroy(): void {
+        if (this._destroyed) return;
+        this._destroyed = true;
         this.destroyEventProcess();
         this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();
         this._engineGlobalObject.sceneProcessor.addRemoveGameObject(this);
@@ -319,6 +323,7 @@ export class GameObject {
 
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
+            if (component._engine_internal_destroyed) continue;
             if (component.enabled && this._activeInHierarchy) {
                 component._engine_internal_componentEventContainer.tryRegisterOnDisable();
                 component._engine_internal_componentEventContainer.tryUnregisterStart();
