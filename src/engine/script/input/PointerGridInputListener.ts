@@ -94,6 +94,8 @@ export class PointerGridInputListener extends Component {
         }
         this._css3DObject!.position.x = cameraLocalPosition.x;
         this._css3DObject!.position.y = cameraLocalPosition.y;
+        Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject!);
+        this.transform.enqueueRenderAttachedObject3D(this._css3DObject!);
     }
 
     public onDestroy(): void {

@@ -1,4 +1,4 @@
-import { Camera, Color } from "..";
+import { Camera, EditorCameraController, EditorGridRenderer, PointerGridInputListener } from "..";
 import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { TimeTest } from "./script/TimeTest";
@@ -10,10 +10,16 @@ export class TestBootstrapper extends Bootstrapper {
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("test_object")
-                .withComponent(TimeTest, c => c.enabled = false))
+                .withComponent(TimeTest, c => c.enabled = false)
+                .withComponent(PointerGridInputListener))
             .withChild(instantiater.buildGameObject("camera")
-                .withComponent(Camera, c => {
-                    c.backgroundColor = new Color(0.1, 0.1, 0.1);
+                .withComponent(Camera)
+                .withComponent(EditorCameraController, c => {
+                    c.maxViewSize = 500;
+                })
+                .withComponent(EditorGridRenderer, c => {
+                    c.renderWidth = 1000;
+                    c.renderHeight = 1000;
                 }))
         ;
     }
