@@ -17,7 +17,7 @@ export class EngineGlobalObject {
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: IReadOnlyTime;
     private readonly _inputHandler: InputHandler;
-    private readonly _instantlater: Instantiater;
+    private readonly _instantiater: Instantiater;
     private readonly _gameState: IReadOnlyGameState;
     private readonly _screen: IReadonlyGameScreen;
     
@@ -47,7 +47,7 @@ export class EngineGlobalObject {
         this._coroutineProcessor = coroutineProcessor;
         this._transformMatrixProcessor = transformMatrixProcessor;
         this._inputHandler = new InputHandler(renderTargetDom);
-        this._instantlater = new Instantiater(this);
+        this._instantiater = new Instantiater(this);
     }
 
     /** @internal */
@@ -80,7 +80,7 @@ export class EngineGlobalObject {
     }
 
     public get instantiater(): Instantiater {
-        return this._instantlater;
+        return this._instantiater;
     }
 
     /** @internal */
