@@ -407,6 +407,7 @@ export class Transform {
         for (let i = 0, l = object3D_children.length; i < l; i++) {
             const child = object3D_children[i];
             if (child.userData instanceof Transform) {
+                if (this._coordinateAsOfLocal) child.userData._coordinateAsOfLocal = true;
                 child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
             }
         }
