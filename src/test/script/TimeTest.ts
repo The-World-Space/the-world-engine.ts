@@ -1,5 +1,6 @@
 import { Component } from "../../engine/hierarchy_object/Component";
 
+/** @internal */
 export class TimeTest extends Component {
     private accumulator = 0;
 

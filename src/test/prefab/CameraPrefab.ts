@@ -1,6 +1,7 @@
 import { Vector2 } from "three";
 import { TrackCameraController, Camera, GameObject, GameObjectBuilder, Prefab, PrefabRef, Color } from "../../index";
 
+/** @internal */
 export class CameraPrefab extends Prefab {
     private _trackTarget = new PrefabRef<GameObject>();
     private _backgroundColor = new PrefabRef<Color>();

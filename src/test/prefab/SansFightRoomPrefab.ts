@@ -19,6 +19,7 @@ import SansFightRoomTileAtlas from "../asset/room_sanscorridor.png";
 import SansBlack from "../asset/Sans black.png";
 import Pillar from "../asset/spr_foregroundpillar.png";
 
+/** @internal */
 export class SansFightRoomPrefab extends Prefab {
     private _colideTilemapChunkRenderer = new PrefabRef<CssCollideTilemapChunkRenderer>();
     private _gridObjectCollideMap = new PrefabRef<GridObjectCollideMap>();
