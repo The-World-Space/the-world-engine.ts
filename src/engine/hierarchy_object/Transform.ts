@@ -58,7 +58,7 @@ export class Transform {
         this._onParentChanged = _onParentChanged;
 
         this._object3D = new Object3D();
-        this._object3D.matrixAutoUpdate = false;
+        this._object3D.matrixAutoUpdate = true;
         this._object3D.userData = this;
         engineGlobalObject.scene.add(this._object3D);
         
