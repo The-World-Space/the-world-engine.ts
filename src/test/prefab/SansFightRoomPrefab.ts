@@ -38,6 +38,7 @@ export class SansFightRoomPrefab extends Prefab {
 
         return this.gameObjectBuilder
             .withChild(instantiater.buildGameObject("tilemap")
+                //.active(false)
                 .withComponent(CameraRelativeZaxisSorter, c => c.offset = -500)
 
                 .withChild(instantiater.buildGameObject("floor", new Vector3(0, 0, -10))
@@ -153,6 +154,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .getComponent(CssCollideTilemapChunkRenderer, this._colideTilemapChunkRenderer)))
 
             .withChild(instantiater.buildGameObject("object_collide_map", new Vector3(8, 8, 0))
+                //.active(false)
                 .withComponent(GridObjectCollideMap, c => {
                     c.gridCellHeight = this._colideTilemapChunkRenderer.ref!.gridCellHeight;
                     c.gridCellWidth = this._colideTilemapChunkRenderer.ref!.gridCellWidth;
@@ -187,6 +189,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(ZaxisSorter))
 
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 5, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
@@ -201,6 +204,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -60))
                     
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 11, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
@@ -215,6 +219,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -60))
                     
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 17, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
@@ -229,6 +234,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -60))
                     
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 23, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
@@ -243,6 +249,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -60))
                     
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 29, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
@@ -257,6 +264,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -60))
                     
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 35, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
@@ -271,6 +279,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -60))
                     
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(8 + 16 * 41, 16 * -2, 0))
+                    //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
                         c.imageCenterOffset = new Vector2(0, 0.5);
