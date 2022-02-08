@@ -9,7 +9,7 @@ export class ZaxisSorter extends ZaxisSortable {
     public start(): void { 
         this.update();
         if (!this._runOnce) return;
-        this.gameObject.removeComponent(this);
+        this.destroy();
     }
 
     public update(): void {

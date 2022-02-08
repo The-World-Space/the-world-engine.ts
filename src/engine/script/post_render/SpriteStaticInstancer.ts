@@ -99,7 +99,7 @@ export class SpriteStaticInstancer extends Component {
 
             this.gameObject.addChildFromBuilder(spriteBuilder);
         }
-        this.gameObject.removeComponent(this);
+        this.destroy();
     }
 
     public get imageSource(): string {

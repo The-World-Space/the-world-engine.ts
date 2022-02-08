@@ -109,7 +109,7 @@ export class SpriteAtlasStaticInstancer extends Component {
 
             this.gameObject.addChildFromBuilder(spriteBuilder);
         }
-        this.gameObject.removeComponent(this);
+        this.destroy();
     }
 
     public setSliceCount(rowCount: number, columnCount: number) {
