@@ -28,7 +28,7 @@ export class Camera extends Component {
     public onWorldMatrixUpdated(): void {
         if (this._camera) {
             Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
-            this._camera?.matrixWorldInverse.copy(this._camera.matrixWorld).invert();
+            this._camera.matrixWorldInverse.copy(this._camera.matrixWorld).invert();
         }
     }
 
