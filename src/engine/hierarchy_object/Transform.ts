@@ -27,13 +27,7 @@ export class Transform {
     // if this value is true, matrix computed from ancesstor to this local recursively, otherwise, matrix computed from world values
     private _coordinateAsOfLocal = true;
     private _localMatrixNeedUpdate = false;
-    
-    private get _worldMatrixNeedUpdate(): boolean {
-        return this._object3D.matrixWorldNeedsUpdate;
-    }
-    private set _worldMatrixNeedUpdate(value: boolean) {
-        this._object3D.matrixWorldNeedsUpdate = value;
-    }
+    private _worldMatrixNeedUpdate = false;
 
     private _worldPositionRotationScaleNeedToUpdate = false;
     private _localPositionRotationScaleNeedToUpdate = false;
