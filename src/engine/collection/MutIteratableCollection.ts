@@ -2,9 +2,8 @@ import { Set } from "js-sdsl";
 import { SetType } from "js-sdsl/dist/cjs/Set/Set";
 
 /** @internal */
-export class MutIteratableCollection<T> {
+export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     private _iterateCollection: SetType<T>|null = null;
-    private _currentItem: T|null = null;
     private _collection: SetType<T>;
 
     private _insertBuffer: SetType<T>;
@@ -32,13 +31,8 @@ export class MutIteratableCollection<T> {
      *  Error: if the key is not in the tree */
     public delete(value: T): void {
         if (this._iterateCollection !== null) {
-            if (this._currentItem === value) {
-                this._deleteBuffer.insert(value);
-            } else if (!this._iterateCollection.find(value)) {
-                this._insertBuffer.eraseElementByValue(value);
-            } else {
-                this._iterateCollection.eraseElementByValue(value);
-            }
+            value.isRemoved = true;
+            this._deleteBuffer.insert(value);
         } else this._collection.eraseElementByValue(value);
     }
 
@@ -53,16 +47,13 @@ export class MutIteratableCollection<T> {
     public forEach(callback: (value: T) => void): void {
         this._iterateCollection = this._collection;
         this._iterateCollection.forEach((value: T) => {
-            this._currentItem = value;
-            callback(value);
+            if (!value.isRemoved) callback(value);
         });
-        this._currentItem = null;
 
         do {
             this._iterateCollection = this.flushBuffer();
             this._iterateCollection.forEach((value: T) => {
-                this._currentItem = value;
-                callback(value);
+                if (!value.isRemoved) callback(value);
             });
         } while (0 < this._insertBuffer.size() || 0 < this._deleteBuffer.size());
         this._iterateCollection = null;

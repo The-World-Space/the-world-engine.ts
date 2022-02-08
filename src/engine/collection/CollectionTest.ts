@@ -1,6 +1,7 @@
 import { MutIteratableCollection } from "./MutIteratableCollection";
 
 class TestItem {
+    public isRemoved = false;
     private static _idGenerator = 0;
     private _id: number;
     private _func: () => void;
