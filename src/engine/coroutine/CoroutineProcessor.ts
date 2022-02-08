@@ -1,16 +1,16 @@
-import { IReadOnlyTime } from "../time/IReadOnlyTime";
+import { Time } from "../time/Time";
 import { Coroutine } from "./Coroutine";
 import { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./YieldInstruction";
 
 /** @internal */
 export class CoroutineProcessor {
-    private _time: IReadOnlyTime;
+    private _time: Time;
     private _coroutines: (Coroutine|null)[];
     private _coroutineCount: number;
 
     private static readonly _needToCompactCount = 16;
 
-    public constructor(time: IReadOnlyTime) {
+    public constructor(time: Time) {
         this._time = time;
         this._coroutines = [];
         this._coroutineCount = 0;

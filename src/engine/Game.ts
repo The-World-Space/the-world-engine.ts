@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import { Bootstrapper } from "./bootstrap/Bootstrapper";
 import { CameraContainer } from "./render/CameraContainer";
 import { EngineGlobalObject } from "./EngineGlobalObject";
@@ -23,7 +22,6 @@ export class Game {
     private readonly _gameScreen: GameScreen;
     private readonly _renderer: OptimizedCSS3DRenderer;
     private readonly _cameraContainer: CameraContainer;
-    private readonly _clock: THREE.Clock;
     private readonly _time: Time;
     private readonly _gameState: GameState;
     private readonly _sceneProcessor: SceneProcessor;
@@ -51,7 +49,6 @@ export class Game {
         this._cameraContainer = new CameraContainer((color: Color) => {
             this._renderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
         });
-        this._clock = new THREE.Clock();
         this._time = new Time();
         this._gameState = new GameState(GameStateKind.WaitingForStart);
         this._sceneProcessor = new SceneProcessor();
@@ -99,8 +96,7 @@ export class Game {
         if (this._isDisposed) throw new Error("Game is disposed.");
         if (this._gameState.kind !== GameStateKind.WaitingForStart) throw new Error("Game is already running.");
         this._gameState.kind = GameStateKind.Initializing;
-        this._clock.start();
-        this._time.startTime = this._clock.startTime;
+        this._time.start();
         const bootstrapper = new bootstrapperCtor(this._engineGlobalObject, interopObject);
         bootstrapper.run().build();
         //If a camera exists in the bootstrapper,
@@ -120,8 +116,7 @@ export class Game {
 
     private loop(): void {
         this._animationFrameId = requestAnimationFrame(this._loopBind);
-        this._time.deltaTime = this._clock.getDelta(); //order is matter.
-        this._time.elapsedTime = this._clock.elapsedTime; //order is matter.
+        this._time.update();
         this._sceneProcessor.startProcessNonSyncedEvent();
         this._coroutineProcessor.tryCompact();
         this._coroutineProcessor.updateAfterProcess();

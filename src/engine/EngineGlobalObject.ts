@@ -1,4 +1,4 @@
-import { IReadOnlyTime } from "./time/IReadOnlyTime";
+import { Time } from "./time/Time";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
 import { IReadOnlyGameState } from "./GameState";
@@ -15,7 +15,7 @@ import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 export class EngineGlobalObject {
     private readonly _scene: Scene;
     private readonly _cameraContainer: CameraContainer;
-    private readonly _time: IReadOnlyTime;
+    private readonly _time: Time;
     private readonly _inputHandler: InputHandler;
     private readonly _instantiater: Instantiater;
     private readonly _gameState: IReadOnlyGameState;
@@ -30,7 +30,7 @@ export class EngineGlobalObject {
     public constructor(
         scene: Scene,
         cameraContainer: CameraContainer,
-        time: IReadOnlyTime,
+        time: Time,
         gameState: IReadOnlyGameState,
         gameScreen: IReadonlyGameScreen,
         sceneProcessor: SceneProcessor,
@@ -71,7 +71,7 @@ export class EngineGlobalObject {
         return this._inputHandler;
     }
 
-    public get time(): IReadOnlyTime {
+    public get time(): Time {
         return this._time;
     }
 

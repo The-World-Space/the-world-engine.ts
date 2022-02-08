@@ -45,7 +45,7 @@ export { Color } from "./engine/render/Color";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 
 //time
-export type { IReadOnlyTime } from "./engine/time/IReadOnlyTime";
+export { Time } from "./engine/time/Time";
 
 //engine
 export { EngineGlobalObject } from "./engine/EngineGlobalObject";
