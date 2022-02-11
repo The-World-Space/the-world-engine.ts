@@ -47,7 +47,7 @@ export class TestBootstrapper extends Bootstrapper {
                     .make()
                     //.active(false)
                     .withComponent(EditorGridRenderer, c => {
-                        //c.enabled = false;
+                        c.enabled = false;
                         c.renderWidth = 1000;
                         c.renderHeight = 1000;
                     })))
