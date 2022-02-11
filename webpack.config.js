@@ -38,8 +38,11 @@ module.exports = {
     }),
   ],
   devServer: {
-    host: "localhost",
-    port: 5500,
+    host: "0.0.0.0",
+    port: 20310,
+    allowedHosts: [
+      "nonamehome.iptime.org",
+    ],
   },
   mode: "development",
 };
