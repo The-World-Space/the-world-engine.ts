@@ -51,7 +51,7 @@ export class EditorGridRenderer extends Component {
     private readonly _lastPosition: Vector3 = new Vector3();
 
     public update(): void {
-        const position = this.transform.localPosition;
+        const position = this.transform.position;
 
         const centerX = this._renderWidth / this._lineWidth / 2;
         const centerY = this._renderHeight / this._lineWidth / 2;
