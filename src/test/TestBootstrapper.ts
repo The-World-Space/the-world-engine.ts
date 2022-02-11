@@ -1,5 +1,4 @@
-import { Vector3 } from "three";
-import { Camera, Color, CssSpriteRenderer, EditorCameraController, EditorGridRenderer, GameObject, PlayerGridMovementController, PointerGridInputListener, PrefabRef } from "..";
+import { Camera, Color, CssCollideTilemapChunkRenderer, CssSpriteRenderer, EditorCameraController, EditorGridRenderer, GameObject, PlayerGridMovementController, PointerGridInputListener, PrefabRef } from "..";
 import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { CameraPrefab } from "./prefab/CameraPrefab";
@@ -12,9 +11,11 @@ export class TestBootstrapper extends Bootstrapper {
         const instantiater = this.engine.instantiater;
 
         const trackObject = new PrefabRef<GameObject>();
+        const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
 
         return this.sceneBuilder
-            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(8, 8, 0))
+            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab)
+                .getColideTilemapChunkRendererRef(gridMap)
                 .make())
 
             .withChild(instantiater.buildGameObject("test_object")
@@ -23,7 +24,9 @@ export class TestBootstrapper extends Bootstrapper {
 
             .withChild(instantiater.buildGameObject("track_object")
                 .withComponent(CssSpriteRenderer)
-                .withComponent(PlayerGridMovementController)
+                .withComponent(PlayerGridMovementController, c => {
+                    c.setGridInfoFromCollideMap(gridMap.ref!);
+                })
                 .getGameObject(trackObject))
             
             .withChild(instantiater.buildGameObject("camera_parent")

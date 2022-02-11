@@ -306,21 +306,21 @@ export class Transform {
             this._localMatrixNeedUpdate = false;
         }
         //update local position, rotation, scale from local matrix
-        const localMatrix = this._object3D.matrix;
-
         const emptyFunction = Transform._emptyFunction;
-        (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
-        (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
+        (this.localPosition as unknown as ObservableVector3).onChange(emptyFunction);
+        (this.localRotation as unknown as ObservableQuaternion)._onChange(emptyFunction);
+        (this.localRotation as unknown as ObservableQuaternion).onBeforeGetComponent(emptyFunction);
         (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-        (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
-        
-        localMatrix.compose(this.localPosition, this.localRotation, this.localScale);
-        
+        (this.localScale as unknown as ObservableVector3).onChange(emptyFunction);
+
+        this._object3D.matrix.decompose(this.localPosition, this.localRotation, this.localScale);
+
         this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
-        (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
-        (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
+        (this.localPosition as unknown as ObservableVector3).onChange(this._onLocalChangeBind);
+        (this.localRotation as unknown as ObservableQuaternion)._onChange(this._onLocalRotationChangeBind);
+        (this.localRotation as unknown as ObservableQuaternion).onBeforeGetComponent(this._onBeforeGetLocalBind);
         (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-        (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
+        (this.localScale as unknown as ObservableVector3).onChange(this._onLocalChangeBind);
         
         this._localPositionRotationScaleNeedUpdate = false;
     }
