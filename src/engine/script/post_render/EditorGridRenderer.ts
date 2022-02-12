@@ -48,7 +48,7 @@ export class EditorGridRenderer extends Component {
         this._cssHtmlRendererObject!.activeSelf = false;
     }
 
-    private readonly _lastPosition: Vector3 = new Vector3();
+    private readonly _lastPosition: Vector3 = new Vector3(NaN, NaN, NaN);
 
     public update(): void {
         const position = this.transform.position;
