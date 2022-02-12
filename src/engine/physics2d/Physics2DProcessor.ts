@@ -5,8 +5,8 @@ import * as b2 from "../../box2d.ts/build/index";
 export class Physics2DProcessor {
     //configuration variables
     private _defaultMaterial: PhysicsMaterial2D|null = null;
-    private _velocityIterations: number = 8;
-    private _positionIterations: number = 3;
+    private _velocityIterations = 8;
+    private _positionIterations = 3;
     // private _velocityThreshold: number = 1;
     // private _maxLinearCorrection: number = 0.2;
     // private _maxAngularCorrection: number = 8;

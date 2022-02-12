@@ -8,6 +8,8 @@ import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
 import { SceneProcessor } from "./SceneProcessor";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
+import { Physics2DProcessor } from "./physics2d/Physics2DProcessor";
+import { IPhysics2D } from "..";
 
 /** 
  * do not drive this class
@@ -20,6 +22,7 @@ export class EngineGlobalObject {
     private readonly _instantiater: Instantiater;
     private readonly _gameState: IReadOnlyGameState;
     private readonly _screen: IReadonlyGameScreen;
+    private readonly _physics2DProcessor: Physics2DProcessor;
     
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
@@ -36,6 +39,7 @@ export class EngineGlobalObject {
         sceneProcessor: SceneProcessor,
         coroutineProcessor: CoroutineProcessor,
         transformMatrixProcessor: TransformMatrixProcessor,
+        physics2DProcessor: Physics2DProcessor,
         renderTargetDom: HTMLElement
     ) {
         this._scene = scene;
@@ -46,6 +50,7 @@ export class EngineGlobalObject {
         this._sceneProcessor = sceneProcessor;
         this._coroutineProcessor = coroutineProcessor;
         this._transformMatrixProcessor = transformMatrixProcessor;
+        this._physics2DProcessor = physics2DProcessor;
         this._inputHandler = new InputHandler(renderTargetDom);
         this._instantiater = new Instantiater(this);
     }
@@ -75,6 +80,10 @@ export class EngineGlobalObject {
         return this._time;
     }
 
+    public get physics(): IPhysics2D {
+        throw new Error("not implemented");
+    }
+
     public get gameState(): IReadOnlyGameState {
         return this._gameState;
     }
@@ -96,5 +105,10 @@ export class EngineGlobalObject {
     /** @internal */
     public get transformMatrixProcessor(): TransformMatrixProcessor {
         return this._transformMatrixProcessor;
+    }
+
+    /** @internal */
+    public get physics2DProcessor(): Physics2DProcessor {
+        return this._physics2DProcessor;
     }
 }
