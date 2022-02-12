@@ -2,7 +2,7 @@ import { Vector2, Vector3 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
-import { IGridCollidable } from "../physics2d/IGridCollidable";
+import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 
 export class PointerGridEvent {
     private _gridPosition: Vector2;

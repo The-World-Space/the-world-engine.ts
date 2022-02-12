@@ -1,5 +1,5 @@
 import { Component } from "../../hierarchy_object/Component";
-import { CssCollideTilemapChunkRenderer } from "../physics2d/CssCollideTilemapChunkRenderer";
+import { CssCollideTilemapChunkRenderer } from "../grid_physics2d/CssCollideTilemapChunkRenderer";
 import { GridPointer } from "./GridPointer";
 import { PointerGridEvent } from "./PointerGridInputListener";
 

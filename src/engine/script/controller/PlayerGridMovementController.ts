@@ -2,7 +2,7 @@ import { Vector2 } from "three";
 import { Pathfinder } from "../ai/pathfind/Pathfinder";
 import { GridPointer } from "../input/GridPointer";
 import { PointerGridEvent } from "../input/PointerGridInputListener";
-import { IGridCollidable } from "../physics2d/IGridCollidable";
+import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 import { Direction, Directionable } from "../helper/Directionable";
 import { IGridPositionable } from "../helper/IGridPositionable";
 

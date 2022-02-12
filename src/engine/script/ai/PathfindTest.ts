@@ -4,7 +4,7 @@ import { GameObject } from "../../hierarchy_object/GameObject";
 import { IGridPositionable } from "../helper/IGridPositionable";
 import { GridPointer } from "../input/GridPointer";
 import { PointerGridEvent } from "../input/PointerGridInputListener";
-import { IGridCollidable } from "../physics2d/IGridCollidable";
+import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { Pathfinder } from "./pathfind/Pathfinder";

@@ -86,12 +86,12 @@ export { GridPointer } from "./engine/script/input/GridPointer";
 export { PointerGridEvent, PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
 
 //physics
-export { CssCollideTilemapChunkRenderer } from "./engine/script/physics2d/CssCollideTilemapChunkRenderer";
-export { CssCollideTilemapRenderer } from "./engine/script/physics2d/CssCollideTilemapRenderer";
-export { GridCollideMap } from "./engine/script/physics2d/GridCollideMap";
-export { GridCollider } from "./engine/script/physics2d/GridCollider";
-export { GridObjectCollideMap } from "./engine/script/physics2d/GridObjectCollideMap";
-export type { IGridCollidable } from "./engine/script/physics2d/IGridCollidable";
+export { CssCollideTilemapChunkRenderer } from "./engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
+export { CssCollideTilemapRenderer } from "./engine/script/grid_physics2d/CssCollideTilemapRenderer";
+export { GridCollideMap } from "./engine/script/grid_physics2d/GridCollideMap";
+export { GridCollider } from "./engine/script/grid_physics2d/GridCollider";
+export { GridObjectCollideMap } from "./engine/script/grid_physics2d/GridObjectCollideMap";
+export type { IGridCollidable } from "./engine/script/grid_physics2d/IGridCollidable";
 
 //post_render
 export { CssTilemapChunkRenderer } from "./engine/script/post_render/CssTilemapChunkRenderer";
