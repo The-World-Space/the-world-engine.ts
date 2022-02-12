@@ -160,12 +160,10 @@ export class Transform {
         this.updateLocalPositionRotationScaleFromOthers();
     }
 
-    //private counter = 0;
 
     private onBeforeLocalChange(): void {
         if (this._ignoreObservableEvent) return;
 
-        //if (this.counter++ === 1 && this._gameObject.name === "sans_fight_room") debugger;
         this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
         this._localPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
         this._localMatrixNeedUpdate = true;
@@ -246,7 +244,6 @@ export class Transform {
     }
 
     private setWorldMatrixNeedUpdateRecursivelyInternal(): void {
-        if (this._worldMatrixNeedUpdate) return;
         this._worldMatrixNeedUpdate = true;
         const children = this._object3D.children;
         for (let i = 0, len = children.length; i < len; i++) {
@@ -443,7 +440,6 @@ export class Transform {
         for (let i = 0, l = object3D_children.length; i < l; i++) {
             const child = object3D_children[i];
             if (child.userData instanceof Transform) {
-                if (!child.userData._worldMatrixNeedUpdate) continue;
                 child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
             }
         }
