@@ -39,6 +39,9 @@ export type { WritableVector2 } from "./engine/math/WritableVector2";
 export type { WritableVector3 } from "./engine/math/WritableVector3";
 export type { WritableVector4 } from "./engine/math/WritableVector4";
 
+//physics2d
+export type { IPhysics2D } from "./engine/physics2d/IPhysics2D";
+
 //render
 export { CameraContainer } from "./engine/render/CameraContainer";
 export { Color } from "./engine/render/Color";
@@ -50,6 +53,7 @@ export { Time } from "./engine/time/Time";
 //engine
 export { EngineGlobalObject } from "./engine/EngineGlobalObject";
 export { Game } from "./engine/Game";
+export type { GameSetting } from "./engine/GameSetting";
 export type { IReadOnlyGameState } from "./engine/GameState";
 export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";
@@ -82,12 +86,12 @@ export { GridPointer } from "./engine/script/input/GridPointer";
 export { PointerGridEvent, PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
 
 //physics
-export { CssCollideTilemapChunkRenderer } from "./engine/script/physics/CssCollideTilemapChunkRenderer";
-export { CssCollideTilemapRenderer } from "./engine/script/physics/CssCollideTilemapRenderer";
-export { GridCollideMap } from "./engine/script/physics/GridCollideMap";
-export { GridCollider } from "./engine/script/physics/GridCollider";
-export { GridObjectCollideMap } from "./engine/script/physics/GridObjectCollideMap";
-export type { IGridCollidable } from "./engine/script/physics/IGridCollidable";
+export { CssCollideTilemapChunkRenderer } from "./engine/script/physics2d/CssCollideTilemapChunkRenderer";
+export { CssCollideTilemapRenderer } from "./engine/script/physics2d/CssCollideTilemapRenderer";
+export { GridCollideMap } from "./engine/script/physics2d/GridCollideMap";
+export { GridCollider } from "./engine/script/physics2d/GridCollider";
+export { GridObjectCollideMap } from "./engine/script/physics2d/GridObjectCollideMap";
+export type { IGridCollidable } from "./engine/script/physics2d/IGridCollidable";
 
 //post_render
 export { CssTilemapChunkRenderer } from "./engine/script/post_render/CssTilemapChunkRenderer";
