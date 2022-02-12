@@ -85,7 +85,7 @@ export type { IGridPositionable } from "./engine/script/helper/IGridPositionable
 export { GridPointer } from "./engine/script/input/GridPointer";
 export { PointerGridEvent, PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
 
-//physics
+//grid_physics2d
 export { CssCollideTilemapChunkRenderer } from "./engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
 export { CssCollideTilemapRenderer } from "./engine/script/grid_physics2d/CssCollideTilemapRenderer";
 export { GridCollideMap } from "./engine/script/grid_physics2d/GridCollideMap";
