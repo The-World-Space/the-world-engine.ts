@@ -15,48 +15,34 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-System.register(["./b2_settings.js"], function (exports_1, context_1) {
-    "use strict";
-    var b2_settings_js_1, b2GrowableStack;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [
-            function (b2_settings_js_1_1) {
-                b2_settings_js_1 = b2_settings_js_1_1;
-            }
-        ],
-        execute: function () {
-            /// This is a growable LIFO stack with an initial capacity of N.
-            /// If the stack size exceeds the initial capacity, the heap is used
-            /// to increase the size of the stack.
-            b2GrowableStack = class b2GrowableStack {
-                constructor(N) {
-                    this.m_stack = [];
-                    this.m_count = 0;
-                    this.m_stack = b2_settings_js_1.b2MakeArray(N, (index) => null);
-                    this.m_count = 0;
-                }
-                Reset() {
-                    this.m_count = 0;
-                    return this;
-                }
-                Push(element) {
-                    this.m_stack[this.m_count] = element;
-                    this.m_count++;
-                }
-                Pop() {
-                    // DEBUG: b2Assert(this.m_count > 0);
-                    this.m_count--;
-                    const element = this.m_stack[this.m_count];
-                    this.m_stack[this.m_count] = null;
-                    return element;
-                }
-                GetCount() {
-                    return this.m_count;
-                }
-            };
-            exports_1("b2GrowableStack", b2GrowableStack);
-        }
-    };
-});
-//# sourceMappingURL=b2_growable_stack.js.map
+// DEBUG: import { b2Assert } from "./b2_settings.js";
+import { b2MakeArray } from "./b2_settings.js";
+/// This is a growable LIFO stack with an initial capacity of N.
+/// If the stack size exceeds the initial capacity, the heap is used
+/// to increase the size of the stack.
+export class b2GrowableStack {
+    constructor(N) {
+        this.m_stack = [];
+        this.m_count = 0;
+        this.m_stack = b2MakeArray(N, (index) => null);
+        this.m_count = 0;
+    }
+    Reset() {
+        this.m_count = 0;
+        return this;
+    }
+    Push(element) {
+        this.m_stack[this.m_count] = element;
+        this.m_count++;
+    }
+    Pop() {
+        // DEBUG: b2Assert(this.m_count > 0);
+        this.m_count--;
+        const element = this.m_stack[this.m_count];
+        this.m_stack[this.m_count] = null;
+        return element;
+    }
+    GetCount() {
+        return this.m_count;
+    }
+}

@@ -15,17 +15,5 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-System.register([], function (exports_1, context_1) {
-    "use strict";
-    var b2StackAllocator;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [],
-        execute: function () {
-            b2StackAllocator = class b2StackAllocator {
-            };
-            exports_1("b2StackAllocator", b2StackAllocator);
-        }
-    };
-});
-//# sourceMappingURL=b2_stack_allocator.js.map
+export class b2StackAllocator {
+}

@@ -15,54 +15,26 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-System.register(["./b2_common.js"], function (exports_1, context_1) {
-    "use strict";
-    var __moduleName = context_1 && context_1.id;
-    /// @file
-    /// Settings that can be overriden for your application
-    ///
-    // Tunable Constants
-    /// You can use this to change the length scale used by your game.
-    /// For example for inches you could use 39.4.
-    // export const b2_lengthUnitsPerMeter: number = 1.0;
-    /// The maximum number of vertices on a convex polygon. You cannot increase
-    /// this too much because b2BlockAllocator has a maximum object size.
-    // export const b2_maxPolygonVertices: number = 8;
-    // Memory Allocation
-    /// Implement this function to use your own memory allocator.
-    function b2Alloc(size) {
-        return null;
-    }
-    exports_1("b2Alloc", b2Alloc);
-    /// If you implement b2Alloc, you should also implement this function.
-    function b2Free(mem) {
-    }
-    exports_1("b2Free", b2Free);
-    /// Logging function.
-    function b2Log(message, ...args) {
-        // console.log(message, ...args);
-    }
-    exports_1("b2Log", b2Log);
-    var exportedNames_1 = {
-        "b2Alloc": true,
-        "b2Free": true,
-        "b2Log": true
-    };
-    function exportStar_1(m) {
-        var exports = {};
-        for (var n in m) {
-            if (n !== "default" && !exportedNames_1.hasOwnProperty(n)) exports[n] = m[n];
-        }
-        exports_1(exports);
-    }
-    return {
-        setters: [
-            function (b2_common_js_1_1) {
-                exportStar_1(b2_common_js_1_1);
-            }
-        ],
-        execute: function () {
-        }
-    };
-});
-//# sourceMappingURL=b2_settings.js.map
+/// @file
+/// Settings that can be overriden for your application
+///
+// Tunable Constants
+/// You can use this to change the length scale used by your game.
+/// For example for inches you could use 39.4.
+// export const b2_lengthUnitsPerMeter: number = 1.0;
+/// The maximum number of vertices on a convex polygon. You cannot increase
+/// this too much because b2BlockAllocator has a maximum object size.
+// export const b2_maxPolygonVertices: number = 8;
+// Memory Allocation
+/// Implement this function to use your own memory allocator.
+export function b2Alloc(size) {
+    return null;
+}
+/// If you implement b2Alloc, you should also implement this function.
+export function b2Free(mem) {
+}
+/// Logging function.
+export function b2Log(message, ...args) {
+    // console.log(message, ...args);
+}
+export * from "./b2_common.js";

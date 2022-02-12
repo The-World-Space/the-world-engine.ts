@@ -1,958 +1,284 @@
-System.register(["./common/b2_block_allocator.js", "./common/b2_draw.js", "./common/b2_growable_stack.js", "./common/b2_math.js", "./common/b2_settings.js", "./common/b2_stack_allocator.js", "./common/b2_timer.js", "./collision/b2_broad_phase.js", "./collision/b2_chain_shape.js", "./collision/b2_circle_shape.js", "./collision/b2_collide_circle.js", "./collision/b2_collide_edge.js", "./collision/b2_collide_polygon.js", "./collision/b2_collision.js", "./collision/b2_distance.js", "./collision/b2_dynamic_tree.js", "./collision/b2_edge_shape.js", "./collision/b2_polygon_shape.js", "./collision/b2_shape.js", "./collision/b2_time_of_impact.js", "./dynamics/b2_area_joint.js", "./dynamics/b2_body.js", "./dynamics/b2_chain_circle_contact.js", "./dynamics/b2_chain_polygon_contact.js", "./dynamics/b2_circle_contact.js", "./dynamics/b2_contact_factory.js", "./dynamics/b2_contact_manager.js", "./dynamics/b2_contact_solver.js", "./dynamics/b2_contact.js", "./dynamics/b2_distance_joint.js", "./dynamics/b2_edge_circle_contact.js", "./dynamics/b2_edge_polygon_contact.js", "./dynamics/b2_fixture.js", "./dynamics/b2_friction_joint.js", "./dynamics/b2_gear_joint.js", "./dynamics/b2_island.js", "./dynamics/b2_joint.js", "./dynamics/b2_motor_joint.js", "./dynamics/b2_mouse_joint.js", "./dynamics/b2_polygon_circle_contact.js", "./dynamics/b2_polygon_contact.js", "./dynamics/b2_prismatic_joint.js", "./dynamics/b2_pulley_joint.js", "./dynamics/b2_revolute_joint.js", "./dynamics/b2_time_step.js", "./dynamics/b2_weld_joint.js", "./dynamics/b2_wheel_joint.js", "./dynamics/b2_world_callbacks.js", "./dynamics/b2_world.js", "./rope/b2_rope.js", "./controllers/b2_buoyancy_controller.js", "./controllers/b2_constant_accel_controller.js", "./controllers/b2_constant_force_controller.js", "./controllers/b2_controller.js", "./controllers/b2_gravity_controller.js", "./controllers/b2_tensor_damping_controller.js", "./particle/b2_particle_group.js", "./particle/b2_particle_system.js", "./particle/b2_particle.js", "./particle/b2_stack_queue.js", "./particle/b2_voronoi_diagram.js"], function (exports_1, context_1) {
-    "use strict";
-    var b2_body_js_1, staticBody, kinematicBody, dynamicBody, b2_rope_js_1, springAngleBendingModel, pbdAngleBendingModel, xpbdAngleBendingModel, pbdDistanceBendingModel, pbdHeightBendingModel, pbdTriangleBendingModel, b2_rope_js_2, pbdStretchingModel, xpbdStretchingModel;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [
-            function (b2_block_allocator_js_1_1) {
-                exports_1({
-                    "BlockAllocator": b2_block_allocator_js_1_1["b2BlockAllocator"]
-                });
-            },
-            function (b2_draw_js_1_1) {
-                exports_1({
-                    "Draw": b2_draw_js_1_1["b2Draw"]
-                });
-                exports_1({
-                    "Color": b2_draw_js_1_1["b2Color"]
-                });
-                exports_1({
-                    "DrawFlags": b2_draw_js_1_1["b2DrawFlags"]
-                });
-            },
-            function (b2_growable_stack_js_1_1) {
-                exports_1({
-                    "GrowableStack": b2_growable_stack_js_1_1["b2GrowableStack"]
-                });
-            },
-            function (b2_math_js_1_1) {
-                exports_1({
-                    "Mat22": b2_math_js_1_1["b2Mat22"]
-                });
-                exports_1({
-                    "Mat33": b2_math_js_1_1["b2Mat33"]
-                });
-                exports_1({
-                    "Rot": b2_math_js_1_1["b2Rot"]
-                });
-                exports_1({
-                    "Sweep": b2_math_js_1_1["b2Sweep"]
-                });
-                exports_1({
-                    "Transform": b2_math_js_1_1["b2Transform"]
-                });
-                exports_1({
-                    "Vec2": b2_math_js_1_1["b2Vec2"]
-                });
-                exports_1({
-                    "Vec3": b2_math_js_1_1["b2Vec3"]
-                });
-                exports_1({
-                    "_pi_over_180": b2_math_js_1_1["b2_pi_over_180"]
-                });
-                exports_1({
-                    "_180_over_pi": b2_math_js_1_1["b2_180_over_pi"]
-                });
-                exports_1({
-                    "two_pi": b2_math_js_1_1["b2_two_pi"]
-                });
-                exports_1({
-                    "Abs": b2_math_js_1_1["b2Abs"]
-                });
-                exports_1({
-                    "Acos": b2_math_js_1_1["b2Acos"]
-                });
-                exports_1({
-                    "Asin": b2_math_js_1_1["b2Asin"]
-                });
-                exports_1({
-                    "Atan2": b2_math_js_1_1["b2Atan2"]
-                });
-                exports_1({
-                    "Cos": b2_math_js_1_1["b2Cos"]
-                });
-                exports_1({
-                    "IsValid": b2_math_js_1_1["b2IsValid"]
-                });
-                exports_1({
-                    "Pow": b2_math_js_1_1["b2Pow"]
-                });
-                exports_1({
-                    "Sin": b2_math_js_1_1["b2Sin"]
-                });
-                exports_1({
-                    "Sqrt": b2_math_js_1_1["b2Sqrt"]
-                });
-                exports_1({
-                    "Vec2_zero": b2_math_js_1_1["b2Vec2_zero"]
-                });
-                exports_1({
-                    "Clamp": b2_math_js_1_1["b2Clamp"]
-                });
-                exports_1({
-                    "DegToRad": b2_math_js_1_1["b2DegToRad"]
-                });
-                exports_1({
-                    "InvSqrt": b2_math_js_1_1["b2InvSqrt"]
-                });
-                exports_1({
-                    "IsPowerOfTwo": b2_math_js_1_1["b2IsPowerOfTwo"]
-                });
-                exports_1({
-                    "Max": b2_math_js_1_1["b2Max"]
-                });
-                exports_1({
-                    "Min": b2_math_js_1_1["b2Min"]
-                });
-                exports_1({
-                    "NextPowerOfTwo": b2_math_js_1_1["b2NextPowerOfTwo"]
-                });
-                exports_1({
-                    "RadToDeg": b2_math_js_1_1["b2RadToDeg"]
-                });
-                exports_1({
-                    "Random": b2_math_js_1_1["b2Random"]
-                });
-                exports_1({
-                    "RandomRange": b2_math_js_1_1["b2RandomRange"]
-                });
-                exports_1({
-                    "Sq": b2_math_js_1_1["b2Sq"]
-                });
-                exports_1({
-                    "Swap": b2_math_js_1_1["b2Swap"]
-                });
-            },
-            function (b2_settings_js_1_1) {
-                exports_1({
-                    "Version": b2_settings_js_1_1["b2Version"]
-                });
-                exports_1({
-                    "aabbExtension": b2_settings_js_1_1["b2_aabbExtension"]
-                });
-                exports_1({
-                    "aabbMultiplier": b2_settings_js_1_1["b2_aabbMultiplier"]
-                });
-                exports_1({
-                    "angularSleepTolerance": b2_settings_js_1_1["b2_angularSleepTolerance"]
-                });
-                exports_1({
-                    "angularSlop": b2_settings_js_1_1["b2_angularSlop"]
-                });
-                exports_1({
-                    "barrierCollisionTime": b2_settings_js_1_1["b2_barrierCollisionTime"]
-                });
-                exports_1({
-                    "baumgarte": b2_settings_js_1_1["b2_baumgarte"]
-                });
-                exports_1({
-                    "branch": b2_settings_js_1_1["b2_branch"]
-                });
-                exports_1({
-                    "commit": b2_settings_js_1_1["b2_commit"]
-                });
-                exports_1({
-                    "epsilon": b2_settings_js_1_1["b2_epsilon"]
-                });
-                exports_1({
-                    "epsilon_sq": b2_settings_js_1_1["b2_epsilon_sq"]
-                });
-                exports_1({
-                    "invalidParticleIndex": b2_settings_js_1_1["b2_invalidParticleIndex"]
-                });
-                exports_1({
-                    "lengthUnitsPerMeter": b2_settings_js_1_1["b2_lengthUnitsPerMeter"]
-                });
-                exports_1({
-                    "linearSleepTolerance": b2_settings_js_1_1["b2_linearSleepTolerance"]
-                });
-                exports_1({
-                    "linearSlop": b2_settings_js_1_1["b2_linearSlop"]
-                });
-                exports_1({
-                    "maxAngularCorrection": b2_settings_js_1_1["b2_maxAngularCorrection"]
-                });
-                exports_1({
-                    "maxFloat": b2_settings_js_1_1["b2_maxFloat"]
-                });
-                exports_1({
-                    "maxLinearCorrection": b2_settings_js_1_1["b2_maxLinearCorrection"]
-                });
-                exports_1({
-                    "maxManifoldPoints": b2_settings_js_1_1["b2_maxManifoldPoints"]
-                });
-                exports_1({
-                    "maxParticleForce": b2_settings_js_1_1["b2_maxParticleForce"]
-                });
-                exports_1({
-                    "maxParticleIndex": b2_settings_js_1_1["b2_maxParticleIndex"]
-                });
-                exports_1({
-                    "maxParticlePressure": b2_settings_js_1_1["b2_maxParticlePressure"]
-                });
-                exports_1({
-                    "maxPolygonVertices": b2_settings_js_1_1["b2_maxPolygonVertices"]
-                });
-                exports_1({
-                    "maxRotation": b2_settings_js_1_1["b2_maxRotation"]
-                });
-                exports_1({
-                    "maxRotationSquared": b2_settings_js_1_1["b2_maxRotationSquared"]
-                });
-                exports_1({
-                    "maxSubSteps": b2_settings_js_1_1["b2_maxSubSteps"]
-                });
-                exports_1({
-                    "maxTOIContacts": b2_settings_js_1_1["b2_maxTOIContacts"]
-                });
-                exports_1({
-                    "maxTranslation": b2_settings_js_1_1["b2_maxTranslation"]
-                });
-                exports_1({
-                    "maxTranslationSquared": b2_settings_js_1_1["b2_maxTranslationSquared"]
-                });
-                exports_1({
-                    "maxTriadDistance": b2_settings_js_1_1["b2_maxTriadDistance"]
-                });
-                exports_1({
-                    "maxTriadDistanceSquared": b2_settings_js_1_1["b2_maxTriadDistanceSquared"]
-                });
-                exports_1({
-                    "minParticleSystemBufferCapacity": b2_settings_js_1_1["b2_minParticleSystemBufferCapacity"]
-                });
-                exports_1({
-                    "minParticleWeight": b2_settings_js_1_1["b2_minParticleWeight"]
-                });
-                exports_1({
-                    "particleStride": b2_settings_js_1_1["b2_particleStride"]
-                });
-                exports_1({
-                    "pi": b2_settings_js_1_1["b2_pi"]
-                });
-                exports_1({
-                    "polygonRadius": b2_settings_js_1_1["b2_polygonRadius"]
-                });
-                exports_1({
-                    "timeToSleep": b2_settings_js_1_1["b2_timeToSleep"]
-                });
-                exports_1({
-                    "toiBaumgarte": b2_settings_js_1_1["b2_toiBaumgarte"]
-                });
-                exports_1({
-                    "version": b2_settings_js_1_1["b2_version"]
-                });
-                exports_1({
-                    "Alloc": b2_settings_js_1_1["b2Alloc"]
-                });
-                exports_1({
-                    "Assert": b2_settings_js_1_1["b2Assert"]
-                });
-                exports_1({
-                    "Free": b2_settings_js_1_1["b2Free"]
-                });
-                exports_1({
-                    "Log": b2_settings_js_1_1["b2Log"]
-                });
-                exports_1({
-                    "MakeArray": b2_settings_js_1_1["b2MakeArray"]
-                });
-                exports_1({
-                    "MakeNullArray": b2_settings_js_1_1["b2MakeNullArray"]
-                });
-                exports_1({
-                    "MakeNumberArray": b2_settings_js_1_1["b2MakeNumberArray"]
-                });
-                exports_1({
-                    "Maybe": b2_settings_js_1_1["b2Maybe"]
-                });
-                exports_1({
-                    "ParseInt": b2_settings_js_1_1["b2ParseInt"]
-                });
-                exports_1({
-                    "ParseUInt": b2_settings_js_1_1["b2ParseUInt"]
-                });
-            },
-            function (b2_stack_allocator_js_1_1) {
-                exports_1({
-                    "StackAllocator": b2_stack_allocator_js_1_1["b2StackAllocator"]
-                });
-            },
-            function (b2_timer_js_1_1) {
-                exports_1({
-                    "Counter": b2_timer_js_1_1["b2Counter"]
-                });
-                exports_1({
-                    "Timer": b2_timer_js_1_1["b2Timer"]
-                });
-            },
-            function (b2_broad_phase_js_1_1) {
-                exports_1({
-                    "BroadPhase": b2_broad_phase_js_1_1["b2BroadPhase"]
-                });
-                exports_1({
-                    "Pair": b2_broad_phase_js_1_1["b2Pair"]
-                });
-            },
-            function (b2_chain_shape_js_1_1) {
-                exports_1({
-                    "ChainShape": b2_chain_shape_js_1_1["b2ChainShape"]
-                });
-            },
-            function (b2_circle_shape_js_1_1) {
-                exports_1({
-                    "CircleShape": b2_circle_shape_js_1_1["b2CircleShape"]
-                });
-            },
-            function (b2_collide_circle_js_1_1) {
-                exports_1({
-                    "CollideCircles": b2_collide_circle_js_1_1["b2CollideCircles"]
-                });
-                exports_1({
-                    "CollidePolygonAndCircle": b2_collide_circle_js_1_1["b2CollidePolygonAndCircle"]
-                });
-            },
-            function (b2_collide_edge_js_1_1) {
-                exports_1({
-                    "CollideEdgeAndCircle": b2_collide_edge_js_1_1["b2CollideEdgeAndCircle"]
-                });
-                exports_1({
-                    "CollideEdgeAndPolygon": b2_collide_edge_js_1_1["b2CollideEdgeAndPolygon"]
-                });
-            },
-            function (b2_collide_polygon_js_1_1) {
-                exports_1({
-                    "CollidePolygons": b2_collide_polygon_js_1_1["b2CollidePolygons"]
-                });
-            },
-            function (b2_collision_js_1_1) {
-                exports_1({
-                    "AABB": b2_collision_js_1_1["b2AABB"]
-                });
-                exports_1({
-                    "ClipVertex": b2_collision_js_1_1["b2ClipVertex"]
-                });
-                exports_1({
-                    "ContactFeature": b2_collision_js_1_1["b2ContactFeature"]
-                });
-                exports_1({
-                    "ContactID": b2_collision_js_1_1["b2ContactID"]
-                });
-                exports_1({
-                    "Manifold": b2_collision_js_1_1["b2Manifold"]
-                });
-                exports_1({
-                    "ManifoldPoint": b2_collision_js_1_1["b2ManifoldPoint"]
-                });
-                exports_1({
-                    "RayCastInput": b2_collision_js_1_1["b2RayCastInput"]
-                });
-                exports_1({
-                    "RayCastOutput": b2_collision_js_1_1["b2RayCastOutput"]
-                });
-                exports_1({
-                    "WorldManifold": b2_collision_js_1_1["b2WorldManifold"]
-                });
-                exports_1({
-                    "ContactFeatureType": b2_collision_js_1_1["b2ContactFeatureType"]
-                });
-                exports_1({
-                    "ManifoldType": b2_collision_js_1_1["b2ManifoldType"]
-                });
-                exports_1({
-                    "PointState": b2_collision_js_1_1["b2PointState"]
-                });
-                exports_1({
-                    "ClipSegmentToLine": b2_collision_js_1_1["b2ClipSegmentToLine"]
-                });
-                exports_1({
-                    "GetPointStates": b2_collision_js_1_1["b2GetPointStates"]
-                });
-                exports_1({
-                    "TestOverlapAABB": b2_collision_js_1_1["b2TestOverlapAABB"]
-                });
-                exports_1({
-                    "TestOverlapShape": b2_collision_js_1_1["b2TestOverlapShape"]
-                });
-            },
-            function (b2_distance_js_1_1) {
-                exports_1({
-                    "DistanceInput": b2_distance_js_1_1["b2DistanceInput"]
-                });
-                exports_1({
-                    "DistanceOutput": b2_distance_js_1_1["b2DistanceOutput"]
-                });
-                exports_1({
-                    "DistanceProxy": b2_distance_js_1_1["b2DistanceProxy"]
-                });
-                exports_1({
-                    "ShapeCastInput": b2_distance_js_1_1["b2ShapeCastInput"]
-                });
-                exports_1({
-                    "ShapeCastOutput": b2_distance_js_1_1["b2ShapeCastOutput"]
-                });
-                exports_1({
-                    "Simplex": b2_distance_js_1_1["b2Simplex"]
-                });
-                exports_1({
-                    "SimplexCache": b2_distance_js_1_1["b2SimplexCache"]
-                });
-                exports_1({
-                    "SimplexVertex": b2_distance_js_1_1["b2SimplexVertex"]
-                });
-                exports_1({
-                    "Distance": b2_distance_js_1_1["b2Distance"]
-                });
-                exports_1({
-                    "gjk_reset": b2_distance_js_1_1["b2_gjk_reset"]
-                });
-                exports_1({
-                    "ShapeCast": b2_distance_js_1_1["b2ShapeCast"]
-                });
-                exports_1({
-                    "gjkCalls": b2_distance_js_1_1["b2_gjkCalls"]
-                });
-                exports_1({
-                    "gjkIters": b2_distance_js_1_1["b2_gjkIters"]
-                });
-                exports_1({
-                    "gjkMaxIters": b2_distance_js_1_1["b2_gjkMaxIters"]
-                });
-            },
-            function (b2_dynamic_tree_js_1_1) {
-                exports_1({
-                    "DynamicTree": b2_dynamic_tree_js_1_1["b2DynamicTree"]
-                });
-                exports_1({
-                    "TreeNode": b2_dynamic_tree_js_1_1["b2TreeNode"]
-                });
-            },
-            function (b2_edge_shape_js_1_1) {
-                exports_1({
-                    "EdgeShape": b2_edge_shape_js_1_1["b2EdgeShape"]
-                });
-            },
-            function (b2_polygon_shape_js_1_1) {
-                exports_1({
-                    "PolygonShape": b2_polygon_shape_js_1_1["b2PolygonShape"]
-                });
-            },
-            function (b2_shape_js_1_1) {
-                exports_1({
-                    "Shape": b2_shape_js_1_1["b2Shape"]
-                });
-                exports_1({
-                    "MassData": b2_shape_js_1_1["b2MassData"]
-                });
-                exports_1({
-                    "ShapeType": b2_shape_js_1_1["b2ShapeType"]
-                });
-            },
-            function (b2_time_of_impact_js_1_1) {
-                exports_1({
-                    "SeparationFunction": b2_time_of_impact_js_1_1["b2SeparationFunction"]
-                });
-                exports_1({
-                    "TOIInput": b2_time_of_impact_js_1_1["b2TOIInput"]
-                });
-                exports_1({
-                    "TOIOutput": b2_time_of_impact_js_1_1["b2TOIOutput"]
-                });
-                exports_1({
-                    "SeparationFunctionType": b2_time_of_impact_js_1_1["b2SeparationFunctionType"]
-                });
-                exports_1({
-                    "TOIOutputState": b2_time_of_impact_js_1_1["b2TOIOutputState"]
-                });
-                exports_1({
-                    "TimeOfImpact": b2_time_of_impact_js_1_1["b2TimeOfImpact"]
-                });
-                exports_1({
-                    "toi_reset": b2_time_of_impact_js_1_1["b2_toi_reset"]
-                });
-                exports_1({
-                    "toiCalls": b2_time_of_impact_js_1_1["b2_toiCalls"]
-                });
-                exports_1({
-                    "toiIters": b2_time_of_impact_js_1_1["b2_toiIters"]
-                });
-                exports_1({
-                    "toiMaxIters": b2_time_of_impact_js_1_1["b2_toiMaxIters"]
-                });
-                exports_1({
-                    "toiMaxRootIters": b2_time_of_impact_js_1_1["b2_toiMaxRootIters"]
-                });
-                exports_1({
-                    "toiMaxTime": b2_time_of_impact_js_1_1["b2_toiMaxTime"]
-                });
-                exports_1({
-                    "toiRootIters": b2_time_of_impact_js_1_1["b2_toiRootIters"]
-                });
-                exports_1({
-                    "toiTime": b2_time_of_impact_js_1_1["b2_toiTime"]
-                });
-            },
-            function (b2_area_joint_js_1_1) {
-                exports_1({
-                    "AreaJointDef": b2_area_joint_js_1_1["b2AreaJointDef"]
-                });
-                exports_1({
-                    "AreaJoint": b2_area_joint_js_1_1["b2AreaJoint"]
-                });
-            },
-            function (b2_body_js_2_1) {
-                exports_1({
-                    "Body": b2_body_js_2_1["b2Body"]
-                });
-                exports_1({
-                    "BodyDef": b2_body_js_2_1["b2BodyDef"]
-                });
-                exports_1({
-                    "BodyType": b2_body_js_2_1["b2BodyType"]
-                });
-                b2_body_js_1 = b2_body_js_2_1;
-            },
-            function (b2_chain_circle_contact_js_1_1) {
-                exports_1({
-                    "ChainAndCircleContact": b2_chain_circle_contact_js_1_1["b2ChainAndCircleContact"]
-                });
-            },
-            function (b2_chain_polygon_contact_js_1_1) {
-                exports_1({
-                    "ChainAndPolygonContact": b2_chain_polygon_contact_js_1_1["b2ChainAndPolygonContact"]
-                });
-            },
-            function (b2_circle_contact_js_1_1) {
-                exports_1({
-                    "CircleContact": b2_circle_contact_js_1_1["b2CircleContact"]
-                });
-            },
-            function (b2_contact_factory_js_1_1) {
-                exports_1({
-                    "ContactFactory": b2_contact_factory_js_1_1["b2ContactFactory"]
-                });
-                exports_1({
-                    "ContactRegister": b2_contact_factory_js_1_1["b2ContactRegister"]
-                });
-            },
-            function (b2_contact_manager_js_1_1) {
-                exports_1({
-                    "ContactManager": b2_contact_manager_js_1_1["b2ContactManager"]
-                });
-            },
-            function (b2_contact_solver_js_1_1) {
-                exports_1({
-                    "ContactPositionConstraint": b2_contact_solver_js_1_1["b2ContactPositionConstraint"]
-                });
-                exports_1({
-                    "ContactSolver": b2_contact_solver_js_1_1["b2ContactSolver"]
-                });
-                exports_1({
-                    "ContactSolverDef": b2_contact_solver_js_1_1["b2ContactSolverDef"]
-                });
-                exports_1({
-                    "ContactVelocityConstraint": b2_contact_solver_js_1_1["b2ContactVelocityConstraint"]
-                });
-                exports_1({
-                    "PositionSolverManifold": b2_contact_solver_js_1_1["b2PositionSolverManifold"]
-                });
-                exports_1({
-                    "VelocityConstraintPoint": b2_contact_solver_js_1_1["b2VelocityConstraintPoint"]
-                });
-                exports_1({
-                    "blockSolve": b2_contact_solver_js_1_1["g_blockSolve"]
-                });
-                exports_1({
-                    "get_g_blockSolve": b2_contact_solver_js_1_1["get_g_blockSolve"]
-                });
-                exports_1({
-                    "set_g_blockSolve": b2_contact_solver_js_1_1["set_g_blockSolve"]
-                });
-            },
-            function (b2_contact_js_1_1) {
-                exports_1({
-                    "Contact": b2_contact_js_1_1["b2Contact"]
-                });
-                exports_1({
-                    "ContactEdge": b2_contact_js_1_1["b2ContactEdge"]
-                });
-                exports_1({
-                    "MixFriction": b2_contact_js_1_1["b2MixFriction"]
-                });
-                exports_1({
-                    "MixRestitution": b2_contact_js_1_1["b2MixRestitution"]
-                });
-                exports_1({
-                    "MixRestitutionThreshold": b2_contact_js_1_1["b2MixRestitutionThreshold"]
-                });
-            },
-            function (b2_distance_joint_js_1_1) {
-                exports_1({
-                    "DistanceJointDef": b2_distance_joint_js_1_1["b2DistanceJointDef"]
-                });
-                exports_1({
-                    "DistanceJoint": b2_distance_joint_js_1_1["b2DistanceJoint"]
-                });
-            },
-            function (b2_edge_circle_contact_js_1_1) {
-                exports_1({
-                    "EdgeAndCircleContact": b2_edge_circle_contact_js_1_1["b2EdgeAndCircleContact"]
-                });
-            },
-            function (b2_edge_polygon_contact_js_1_1) {
-                exports_1({
-                    "EdgeAndPolygonContact": b2_edge_polygon_contact_js_1_1["b2EdgeAndPolygonContact"]
-                });
-            },
-            function (b2_fixture_js_1_1) {
-                exports_1({
-                    "Filter": b2_fixture_js_1_1["b2Filter"]
-                });
-                exports_1({
-                    "Fixture": b2_fixture_js_1_1["b2Fixture"]
-                });
-                exports_1({
-                    "FixtureDef": b2_fixture_js_1_1["b2FixtureDef"]
-                });
-                exports_1({
-                    "FixtureProxy": b2_fixture_js_1_1["b2FixtureProxy"]
-                });
-            },
-            function (b2_friction_joint_js_1_1) {
-                exports_1({
-                    "FrictionJointDef": b2_friction_joint_js_1_1["b2FrictionJointDef"]
-                });
-                exports_1({
-                    "FrictionJoint": b2_friction_joint_js_1_1["b2FrictionJoint"]
-                });
-            },
-            function (b2_gear_joint_js_1_1) {
-                exports_1({
-                    "GearJointDef": b2_gear_joint_js_1_1["b2GearJointDef"]
-                });
-                exports_1({
-                    "GearJoint": b2_gear_joint_js_1_1["b2GearJoint"]
-                });
-            },
-            function (b2_island_js_1_1) {
-                exports_1({
-                    "Island": b2_island_js_1_1["b2Island"]
-                });
-            },
-            function (b2_joint_js_1_1) {
-                exports_1({
-                    "JointDef": b2_joint_js_1_1["b2JointDef"]
-                });
-                exports_1({
-                    "Joint": b2_joint_js_1_1["b2Joint"]
-                });
-                exports_1({
-                    "Jacobian": b2_joint_js_1_1["b2Jacobian"]
-                });
-                exports_1({
-                    "JointEdge": b2_joint_js_1_1["b2JointEdge"]
-                });
-                exports_1({
-                    "JointType": b2_joint_js_1_1["b2JointType"]
-                });
-                exports_1({
-                    "AngularStiffness": b2_joint_js_1_1["b2AngularStiffness"]
-                });
-                exports_1({
-                    "LinearStiffness": b2_joint_js_1_1["b2LinearStiffness"]
-                });
-            },
-            function (b2_motor_joint_js_1_1) {
-                exports_1({
-                    "MotorJointDef": b2_motor_joint_js_1_1["b2MotorJointDef"]
-                });
-                exports_1({
-                    "MotorJoint": b2_motor_joint_js_1_1["b2MotorJoint"]
-                });
-            },
-            function (b2_mouse_joint_js_1_1) {
-                exports_1({
-                    "MouseJointDef": b2_mouse_joint_js_1_1["b2MouseJointDef"]
-                });
-                exports_1({
-                    "MouseJoint": b2_mouse_joint_js_1_1["b2MouseJoint"]
-                });
-            },
-            function (b2_polygon_circle_contact_js_1_1) {
-                exports_1({
-                    "PolygonAndCircleContact": b2_polygon_circle_contact_js_1_1["b2PolygonAndCircleContact"]
-                });
-            },
-            function (b2_polygon_contact_js_1_1) {
-                exports_1({
-                    "PolygonContact": b2_polygon_contact_js_1_1["b2PolygonContact"]
-                });
-            },
-            function (b2_prismatic_joint_js_1_1) {
-                exports_1({
-                    "PrismaticJointDef": b2_prismatic_joint_js_1_1["b2PrismaticJointDef"]
-                });
-                exports_1({
-                    "PrismaticJoint": b2_prismatic_joint_js_1_1["b2PrismaticJoint"]
-                });
-            },
-            function (b2_pulley_joint_js_1_1) {
-                exports_1({
-                    "PulleyJointDef": b2_pulley_joint_js_1_1["b2PulleyJointDef"]
-                });
-                exports_1({
-                    "PulleyJoint": b2_pulley_joint_js_1_1["b2PulleyJoint"]
-                });
-                exports_1({
-                    "minPulleyLength": b2_pulley_joint_js_1_1["b2_minPulleyLength"]
-                });
-            },
-            function (b2_revolute_joint_js_1_1) {
-                exports_1({
-                    "RevoluteJointDef": b2_revolute_joint_js_1_1["b2RevoluteJointDef"]
-                });
-                exports_1({
-                    "RevoluteJoint": b2_revolute_joint_js_1_1["b2RevoluteJoint"]
-                });
-            },
-            function (b2_time_step_js_1_1) {
-                exports_1({
-                    "Position": b2_time_step_js_1_1["b2Position"]
-                });
-                exports_1({
-                    "Profile": b2_time_step_js_1_1["b2Profile"]
-                });
-                exports_1({
-                    "SolverData": b2_time_step_js_1_1["b2SolverData"]
-                });
-                exports_1({
-                    "TimeStep": b2_time_step_js_1_1["b2TimeStep"]
-                });
-                exports_1({
-                    "Velocity": b2_time_step_js_1_1["b2Velocity"]
-                });
-            },
-            function (b2_weld_joint_js_1_1) {
-                exports_1({
-                    "WeldJointDef": b2_weld_joint_js_1_1["b2WeldJointDef"]
-                });
-                exports_1({
-                    "WeldJoint": b2_weld_joint_js_1_1["b2WeldJoint"]
-                });
-            },
-            function (b2_wheel_joint_js_1_1) {
-                exports_1({
-                    "WheelJointDef": b2_wheel_joint_js_1_1["b2WheelJointDef"]
-                });
-                exports_1({
-                    "WheelJoint": b2_wheel_joint_js_1_1["b2WheelJoint"]
-                });
-            },
-            function (b2_world_callbacks_js_1_1) {
-                exports_1({
-                    "ContactFilter": b2_world_callbacks_js_1_1["b2ContactFilter"]
-                });
-                exports_1({
-                    "ContactImpulse": b2_world_callbacks_js_1_1["b2ContactImpulse"]
-                });
-                exports_1({
-                    "ContactListener": b2_world_callbacks_js_1_1["b2ContactListener"]
-                });
-                exports_1({
-                    "DestructionListener": b2_world_callbacks_js_1_1["b2DestructionListener"]
-                });
-                exports_1({
-                    "QueryCallback": b2_world_callbacks_js_1_1["b2QueryCallback"]
-                });
-                exports_1({
-                    "RayCastCallback": b2_world_callbacks_js_1_1["b2RayCastCallback"]
-                });
-            },
-            function (b2_world_js_1_1) {
-                exports_1({
-                    "World": b2_world_js_1_1["b2World"]
-                });
-            },
-            function (b2_rope_js_3_1) {
-                exports_1({
-                    "RopeDef": b2_rope_js_3_1["b2RopeDef"]
-                });
-                exports_1({
-                    "Rope": b2_rope_js_3_1["b2Rope"]
-                });
-                exports_1({
-                    "RopeTuning": b2_rope_js_3_1["b2RopeTuning"]
-                });
-                exports_1({
-                    "BendingModel": b2_rope_js_3_1["b2BendingModel"]
-                });
-                b2_rope_js_1 = b2_rope_js_3_1;
-                exports_1({
-                    "StretchingModel": b2_rope_js_3_1["b2StretchingModel"]
-                });
-                b2_rope_js_2 = b2_rope_js_3_1;
-            },
-            function (b2_buoyancy_controller_js_1_1) {
-                exports_1({
-                    "BuoyancyController": b2_buoyancy_controller_js_1_1["b2BuoyancyController"]
-                });
-            },
-            function (b2_constant_accel_controller_js_1_1) {
-                exports_1({
-                    "ConstantAccelController": b2_constant_accel_controller_js_1_1["b2ConstantAccelController"]
-                });
-            },
-            function (b2_constant_force_controller_js_1_1) {
-                exports_1({
-                    "ConstantForceController": b2_constant_force_controller_js_1_1["b2ConstantForceController"]
-                });
-            },
-            function (b2_controller_js_1_1) {
-                exports_1({
-                    "Controller": b2_controller_js_1_1["b2Controller"]
-                });
-                exports_1({
-                    "ControllerEdge": b2_controller_js_1_1["b2ControllerEdge"]
-                });
-            },
-            function (b2_gravity_controller_js_1_1) {
-                exports_1({
-                    "GravityController": b2_gravity_controller_js_1_1["b2GravityController"]
-                });
-            },
-            function (b2_tensor_damping_controller_js_1_1) {
-                exports_1({
-                    "TensorDampingController": b2_tensor_damping_controller_js_1_1["b2TensorDampingController"]
-                });
-            },
-            function (b2_particle_group_js_1_1) {
-                exports_1({
-                    "ParticleGroup": b2_particle_group_js_1_1["b2ParticleGroup"]
-                });
-                exports_1({
-                    "ParticleGroupDef": b2_particle_group_js_1_1["b2ParticleGroupDef"]
-                });
-                exports_1({
-                    "ParticleGroupFlag": b2_particle_group_js_1_1["b2ParticleGroupFlag"]
-                });
-            },
-            function (b2_particle_system_js_1_1) {
-                exports_1({
-                    "FixtureParticleQueryCallback": b2_particle_system_js_1_1["b2FixtureParticleQueryCallback"]
-                });
-                exports_1({
-                    "GrowableBuffer": b2_particle_system_js_1_1["b2GrowableBuffer"]
-                });
-                exports_1({
-                    "ParticleBodyContact": b2_particle_system_js_1_1["b2ParticleBodyContact"]
-                });
-                exports_1({
-                    "ParticleContact": b2_particle_system_js_1_1["b2ParticleContact"]
-                });
-                exports_1({
-                    "ParticlePair": b2_particle_system_js_1_1["b2ParticlePair"]
-                });
-                exports_1({
-                    "ParticlePairSet": b2_particle_system_js_1_1["b2ParticlePairSet"]
-                });
-                exports_1({
-                    "ParticleSystem": b2_particle_system_js_1_1["b2ParticleSystem"]
-                });
-                exports_1({
-                    "ParticleSystem_CompositeShape": b2_particle_system_js_1_1["b2ParticleSystem_CompositeShape"]
-                });
-                exports_1({
-                    "ParticleSystem_ConnectionFilter": b2_particle_system_js_1_1["b2ParticleSystem_ConnectionFilter"]
-                });
-                exports_1({
-                    "ParticleSystemDef": b2_particle_system_js_1_1["b2ParticleSystemDef"]
-                });
-                exports_1({
-                    "ParticleSystem_DestroyParticlesInShapeCallback": b2_particle_system_js_1_1["b2ParticleSystem_DestroyParticlesInShapeCallback"]
-                });
-                exports_1({
-                    "ParticleSystem_FixedSetAllocator": b2_particle_system_js_1_1["b2ParticleSystem_FixedSetAllocator"]
-                });
-                exports_1({
-                    "ParticleSystem_FixtureParticle": b2_particle_system_js_1_1["b2ParticleSystem_FixtureParticle"]
-                });
-                exports_1({
-                    "ParticleSystem_FixtureParticleSet": b2_particle_system_js_1_1["b2ParticleSystem_FixtureParticleSet"]
-                });
-                exports_1({
-                    "ParticleSystem_InsideBoundsEnumerator": b2_particle_system_js_1_1["b2ParticleSystem_InsideBoundsEnumerator"]
-                });
-                exports_1({
-                    "ParticleSystem_JoinParticleGroupsFilter": b2_particle_system_js_1_1["b2ParticleSystem_JoinParticleGroupsFilter"]
-                });
-                exports_1({
-                    "ParticleSystem_ParticleListNode": b2_particle_system_js_1_1["b2ParticleSystem_ParticleListNode"]
-                });
-                exports_1({
-                    "ParticleSystem_ParticlePair": b2_particle_system_js_1_1["b2ParticleSystem_ParticlePair"]
-                });
-                exports_1({
-                    "ParticleSystem_Proxy": b2_particle_system_js_1_1["b2ParticleSystem_Proxy"]
-                });
-                exports_1({
-                    "ParticleSystem_ReactiveFilter": b2_particle_system_js_1_1["b2ParticleSystem_ReactiveFilter"]
-                });
-                exports_1({
-                    "ParticleSystem_SolveCollisionCallback": b2_particle_system_js_1_1["b2ParticleSystem_SolveCollisionCallback"]
-                });
-                exports_1({
-                    "ParticleSystem_UpdateBodyContactsCallback": b2_particle_system_js_1_1["b2ParticleSystem_UpdateBodyContactsCallback"]
-                });
-                exports_1({
-                    "ParticleSystem_UserOverridableBuffer": b2_particle_system_js_1_1["b2ParticleSystem_UserOverridableBuffer"]
-                });
-                exports_1({
-                    "ParticleTriad": b2_particle_system_js_1_1["b2ParticleTriad"]
-                });
-            },
-            function (b2_particle_js_1_1) {
-                exports_1({
-                    "ParticleDef": b2_particle_js_1_1["b2ParticleDef"]
-                });
-                exports_1({
-                    "ParticleHandle": b2_particle_js_1_1["b2ParticleHandle"]
-                });
-                exports_1({
-                    "ParticleFlag": b2_particle_js_1_1["b2ParticleFlag"]
-                });
-                exports_1({
-                    "CalculateParticleIterations": b2_particle_js_1_1["b2CalculateParticleIterations"]
-                });
-            },
-            function (b2_stack_queue_js_1_1) {
-                exports_1({
-                    "StackQueue": b2_stack_queue_js_1_1["b2StackQueue"]
-                });
-            },
-            function (b2_voronoi_diagram_js_1_1) {
-                exports_1({
-                    "VoronoiDiagram": b2_voronoi_diagram_js_1_1["b2VoronoiDiagram"]
-                });
-                exports_1({
-                    "VoronoiDiagram_Generator": b2_voronoi_diagram_js_1_1["b2VoronoiDiagram_Generator"]
-                });
-                exports_1({
-                    "VoronoiDiagram_Task": b2_voronoi_diagram_js_1_1["b2VoronoiDiagram_Task"]
-                });
-            }
-        ],
-        execute: function () {
-            exports_1("staticBody", staticBody = b2_body_js_1.b2BodyType.b2_staticBody);
-            exports_1("kinematicBody", kinematicBody = b2_body_js_1.b2BodyType.b2_kinematicBody);
-            exports_1("dynamicBody", dynamicBody = b2_body_js_1.b2BodyType.b2_dynamicBody);
-            exports_1("springAngleBendingModel", springAngleBendingModel = b2_rope_js_1.b2BendingModel.b2_springAngleBendingModel);
-            exports_1("pbdAngleBendingModel", pbdAngleBendingModel = b2_rope_js_1.b2BendingModel.b2_pbdAngleBendingModel);
-            exports_1("xpbdAngleBendingModel", xpbdAngleBendingModel = b2_rope_js_1.b2BendingModel.b2_xpbdAngleBendingModel);
-            exports_1("pbdDistanceBendingModel", pbdDistanceBendingModel = b2_rope_js_1.b2BendingModel.b2_pbdDistanceBendingModel);
-            exports_1("pbdHeightBendingModel", pbdHeightBendingModel = b2_rope_js_1.b2BendingModel.b2_pbdHeightBendingModel);
-            exports_1("pbdTriangleBendingModel", pbdTriangleBendingModel = b2_rope_js_1.b2BendingModel.b2_pbdTriangleBendingModel);
-            exports_1("pbdStretchingModel", pbdStretchingModel = b2_rope_js_2.b2StretchingModel.b2_pbdStretchingModel);
-            exports_1("xpbdStretchingModel", xpbdStretchingModel = b2_rope_js_2.b2StretchingModel.b2_xpbdStretchingModel);
-        }
-    };
-});
-//# sourceMappingURL=index.js.map
+export { /*class*/ b2BlockAllocator as BlockAllocator } from "./common/b2_block_allocator.js";
+export { /*abstract class*/ b2Draw as Draw } from "./common/b2_draw.js";
+export { /*class*/ b2Color as Color } from "./common/b2_draw.js";
+export { /*enum*/ b2DrawFlags as DrawFlags } from "./common/b2_draw.js";
+export { /*class*/ b2GrowableStack as GrowableStack } from "./common/b2_growable_stack.js";
+export { /*class*/ b2Mat22 as Mat22 } from "./common/b2_math.js";
+export { /*class*/ b2Mat33 as Mat33 } from "./common/b2_math.js";
+export { /*class*/ b2Rot as Rot } from "./common/b2_math.js";
+export { /*class*/ b2Sweep as Sweep } from "./common/b2_math.js";
+export { /*class*/ b2Transform as Transform } from "./common/b2_math.js";
+export { /*class*/ b2Vec2 as Vec2 } from "./common/b2_math.js";
+export { /*class*/ b2Vec3 as Vec3 } from "./common/b2_math.js";
+export { /*const*/ b2_pi_over_180 as _pi_over_180 } from "./common/b2_math.js";
+export { /*const*/ b2_180_over_pi as _180_over_pi } from "./common/b2_math.js";
+export { /*const*/ b2_two_pi as two_pi } from "./common/b2_math.js";
+export { /*const*/ b2Abs as Abs } from "./common/b2_math.js";
+export { /*const*/ b2Acos as Acos } from "./common/b2_math.js";
+export { /*const*/ b2Asin as Asin } from "./common/b2_math.js";
+export { /*const*/ b2Atan2 as Atan2 } from "./common/b2_math.js";
+export { /*const*/ b2Cos as Cos } from "./common/b2_math.js";
+export { /*const*/ b2IsValid as IsValid } from "./common/b2_math.js";
+export { /*const*/ b2Pow as Pow } from "./common/b2_math.js";
+export { /*const*/ b2Sin as Sin } from "./common/b2_math.js";
+export { /*const*/ b2Sqrt as Sqrt } from "./common/b2_math.js";
+export { /*const*/ b2Vec2_zero as Vec2_zero } from "./common/b2_math.js";
+export { /*function*/ b2Clamp as Clamp } from "./common/b2_math.js";
+export { /*function*/ b2DegToRad as DegToRad } from "./common/b2_math.js";
+export { /*function*/ b2InvSqrt as InvSqrt } from "./common/b2_math.js";
+export { /*function*/ b2IsPowerOfTwo as IsPowerOfTwo } from "./common/b2_math.js";
+export { /*function*/ b2Max as Max } from "./common/b2_math.js";
+export { /*function*/ b2Min as Min } from "./common/b2_math.js";
+export { /*function*/ b2NextPowerOfTwo as NextPowerOfTwo } from "./common/b2_math.js";
+export { /*function*/ b2RadToDeg as RadToDeg } from "./common/b2_math.js";
+export { /*function*/ b2Random as Random } from "./common/b2_math.js";
+export { /*function*/ b2RandomRange as RandomRange } from "./common/b2_math.js";
+export { /*function*/ b2Sq as Sq } from "./common/b2_math.js";
+export { /*function*/ b2Swap as Swap } from "./common/b2_math.js";
+export { /*class*/ b2Version as Version } from "./common/b2_settings.js";
+export { /*const*/ b2_aabbExtension as aabbExtension } from "./common/b2_settings.js";
+export { /*const*/ b2_aabbMultiplier as aabbMultiplier } from "./common/b2_settings.js";
+export { /*const*/ b2_angularSleepTolerance as angularSleepTolerance } from "./common/b2_settings.js";
+export { /*const*/ b2_angularSlop as angularSlop } from "./common/b2_settings.js";
+export { /*const*/ b2_barrierCollisionTime as barrierCollisionTime } from "./common/b2_settings.js";
+export { /*const*/ b2_baumgarte as baumgarte } from "./common/b2_settings.js";
+export { /*const*/ b2_branch as branch } from "./common/b2_settings.js";
+export { /*const*/ b2_commit as commit } from "./common/b2_settings.js";
+export { /*const*/ b2_epsilon as epsilon } from "./common/b2_settings.js";
+export { /*const*/ b2_epsilon_sq as epsilon_sq } from "./common/b2_settings.js";
+export { /*const*/ b2_invalidParticleIndex as invalidParticleIndex } from "./common/b2_settings.js";
+export { /*const*/ b2_lengthUnitsPerMeter as lengthUnitsPerMeter } from "./common/b2_settings.js";
+export { /*const*/ b2_linearSleepTolerance as linearSleepTolerance } from "./common/b2_settings.js";
+export { /*const*/ b2_linearSlop as linearSlop } from "./common/b2_settings.js";
+export { /*const*/ b2_maxAngularCorrection as maxAngularCorrection } from "./common/b2_settings.js";
+export { /*const*/ b2_maxFloat as maxFloat } from "./common/b2_settings.js";
+export { /*const*/ b2_maxLinearCorrection as maxLinearCorrection } from "./common/b2_settings.js";
+export { /*const*/ b2_maxManifoldPoints as maxManifoldPoints } from "./common/b2_settings.js";
+export { /*const*/ b2_maxParticleForce as maxParticleForce } from "./common/b2_settings.js";
+export { /*const*/ b2_maxParticleIndex as maxParticleIndex } from "./common/b2_settings.js";
+export { /*const*/ b2_maxParticlePressure as maxParticlePressure } from "./common/b2_settings.js";
+export { /*const*/ b2_maxPolygonVertices as maxPolygonVertices } from "./common/b2_settings.js";
+export { /*const*/ b2_maxRotation as maxRotation } from "./common/b2_settings.js";
+export { /*const*/ b2_maxRotationSquared as maxRotationSquared } from "./common/b2_settings.js";
+export { /*const*/ b2_maxSubSteps as maxSubSteps } from "./common/b2_settings.js";
+export { /*const*/ b2_maxTOIContacts as maxTOIContacts } from "./common/b2_settings.js";
+export { /*const*/ b2_maxTranslation as maxTranslation } from "./common/b2_settings.js";
+export { /*const*/ b2_maxTranslationSquared as maxTranslationSquared } from "./common/b2_settings.js";
+export { /*const*/ b2_maxTriadDistance as maxTriadDistance } from "./common/b2_settings.js";
+export { /*const*/ b2_maxTriadDistanceSquared as maxTriadDistanceSquared } from "./common/b2_settings.js";
+export { /*const*/ b2_minParticleSystemBufferCapacity as minParticleSystemBufferCapacity } from "./common/b2_settings.js";
+export { /*const*/ b2_minParticleWeight as minParticleWeight } from "./common/b2_settings.js";
+export { /*const*/ b2_particleStride as particleStride } from "./common/b2_settings.js";
+export { /*const*/ b2_pi as pi } from "./common/b2_settings.js";
+export { /*const*/ b2_polygonRadius as polygonRadius } from "./common/b2_settings.js";
+export { /*const*/ b2_timeToSleep as timeToSleep } from "./common/b2_settings.js";
+export { /*const*/ b2_toiBaumgarte as toiBaumgarte } from "./common/b2_settings.js";
+export { /*const*/ b2_version as version } from "./common/b2_settings.js";
+export { /*function*/ b2Alloc as Alloc } from "./common/b2_settings.js";
+export { /*function*/ b2Assert as Assert } from "./common/b2_settings.js";
+export { /*function*/ b2Free as Free } from "./common/b2_settings.js";
+export { /*function*/ b2Log as Log } from "./common/b2_settings.js";
+export { /*function*/ b2MakeArray as MakeArray } from "./common/b2_settings.js";
+export { /*function*/ b2MakeNullArray as MakeNullArray } from "./common/b2_settings.js";
+export { /*function*/ b2MakeNumberArray as MakeNumberArray } from "./common/b2_settings.js";
+export { /*function*/ b2Maybe as Maybe } from "./common/b2_settings.js";
+export { /*function*/ b2ParseInt as ParseInt } from "./common/b2_settings.js";
+export { /*function*/ b2ParseUInt as ParseUInt } from "./common/b2_settings.js";
+export { /*class*/ b2StackAllocator as StackAllocator } from "./common/b2_stack_allocator.js";
+export { /*class*/ b2Counter as Counter } from "./common/b2_timer.js";
+export { /*class*/ b2Timer as Timer } from "./common/b2_timer.js";
+export { /*class*/ b2BroadPhase as BroadPhase } from "./collision/b2_broad_phase.js";
+export { /*class*/ b2Pair as Pair } from "./collision/b2_broad_phase.js";
+export { /*class*/ b2ChainShape as ChainShape } from "./collision/b2_chain_shape.js";
+export { /*class*/ b2CircleShape as CircleShape } from "./collision/b2_circle_shape.js";
+export { /*function*/ b2CollideCircles as CollideCircles } from "./collision/b2_collide_circle.js";
+export { /*function*/ b2CollidePolygonAndCircle as CollidePolygonAndCircle } from "./collision/b2_collide_circle.js";
+export { /*function*/ b2CollideEdgeAndCircle as CollideEdgeAndCircle } from "./collision/b2_collide_edge.js";
+export { /*function*/ b2CollideEdgeAndPolygon as CollideEdgeAndPolygon } from "./collision/b2_collide_edge.js";
+export { /*function*/ b2CollidePolygons as CollidePolygons } from "./collision/b2_collide_polygon.js";
+export { /*class*/ b2AABB as AABB } from "./collision/b2_collision.js";
+export { /*class*/ b2ClipVertex as ClipVertex } from "./collision/b2_collision.js";
+export { /*class*/ b2ContactFeature as ContactFeature } from "./collision/b2_collision.js";
+export { /*class*/ b2ContactID as ContactID } from "./collision/b2_collision.js";
+export { /*class*/ b2Manifold as Manifold } from "./collision/b2_collision.js";
+export { /*class*/ b2ManifoldPoint as ManifoldPoint } from "./collision/b2_collision.js";
+export { /*class*/ b2RayCastInput as RayCastInput } from "./collision/b2_collision.js";
+export { /*class*/ b2RayCastOutput as RayCastOutput } from "./collision/b2_collision.js";
+export { /*class*/ b2WorldManifold as WorldManifold } from "./collision/b2_collision.js";
+export { /*enum*/ b2ContactFeatureType as ContactFeatureType } from "./collision/b2_collision.js";
+export { /*enum*/ b2ManifoldType as ManifoldType } from "./collision/b2_collision.js";
+export { /*enum*/ b2PointState as PointState } from "./collision/b2_collision.js";
+export { /*function*/ b2ClipSegmentToLine as ClipSegmentToLine } from "./collision/b2_collision.js";
+export { /*function*/ b2GetPointStates as GetPointStates } from "./collision/b2_collision.js";
+export { /*function*/ b2TestOverlapAABB as TestOverlapAABB } from "./collision/b2_collision.js";
+export { /*function*/ b2TestOverlapShape as TestOverlapShape } from "./collision/b2_collision.js";
+export { /*class*/ b2DistanceInput as DistanceInput } from "./collision/b2_distance.js";
+export { /*class*/ b2DistanceOutput as DistanceOutput } from "./collision/b2_distance.js";
+export { /*class*/ b2DistanceProxy as DistanceProxy } from "./collision/b2_distance.js";
+export { /*class*/ b2ShapeCastInput as ShapeCastInput } from "./collision/b2_distance.js";
+export { /*class*/ b2ShapeCastOutput as ShapeCastOutput } from "./collision/b2_distance.js";
+export { /*class*/ b2Simplex as Simplex } from "./collision/b2_distance.js";
+export { /*class*/ b2SimplexCache as SimplexCache } from "./collision/b2_distance.js";
+export { /*class*/ b2SimplexVertex as SimplexVertex } from "./collision/b2_distance.js";
+export { /*function*/ b2Distance as Distance } from "./collision/b2_distance.js";
+export { /*function*/ b2_gjk_reset as gjk_reset } from "./collision/b2_distance.js";
+export { /*function*/ b2ShapeCast as ShapeCast } from "./collision/b2_distance.js";
+export { /*let*/ b2_gjkCalls as gjkCalls } from "./collision/b2_distance.js";
+export { /*let*/ b2_gjkIters as gjkIters } from "./collision/b2_distance.js";
+export { /*let*/ b2_gjkMaxIters as gjkMaxIters } from "./collision/b2_distance.js";
+export { /*class*/ b2DynamicTree as DynamicTree } from "./collision/b2_dynamic_tree.js";
+export { /*class*/ b2TreeNode as TreeNode } from "./collision/b2_dynamic_tree.js";
+export { /*class*/ b2EdgeShape as EdgeShape } from "./collision/b2_edge_shape.js";
+export { /*class*/ b2PolygonShape as PolygonShape } from "./collision/b2_polygon_shape.js";
+export { /*abstract class*/ b2Shape as Shape } from "./collision/b2_shape.js";
+export { /*class*/ b2MassData as MassData } from "./collision/b2_shape.js";
+export { /*enum*/ b2ShapeType as ShapeType } from "./collision/b2_shape.js";
+export { /*class*/ b2SeparationFunction as SeparationFunction } from "./collision/b2_time_of_impact.js";
+export { /*class*/ b2TOIInput as TOIInput } from "./collision/b2_time_of_impact.js";
+export { /*class*/ b2TOIOutput as TOIOutput } from "./collision/b2_time_of_impact.js";
+export { /*enum*/ b2SeparationFunctionType as SeparationFunctionType } from "./collision/b2_time_of_impact.js";
+export { /*enum*/ b2TOIOutputState as TOIOutputState } from "./collision/b2_time_of_impact.js";
+export { /*function*/ b2TimeOfImpact as TimeOfImpact } from "./collision/b2_time_of_impact.js";
+export { /*function*/ b2_toi_reset as toi_reset } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiCalls as toiCalls } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiIters as toiIters } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiMaxIters as toiMaxIters } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiMaxRootIters as toiMaxRootIters } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiMaxTime as toiMaxTime } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiRootIters as toiRootIters } from "./collision/b2_time_of_impact.js";
+export { /*let*/ b2_toiTime as toiTime } from "./collision/b2_time_of_impact.js";
+export { /*class*/ b2AreaJointDef as AreaJointDef } from "./dynamics/b2_area_joint.js";
+export { /*class*/ b2AreaJoint as AreaJoint } from "./dynamics/b2_area_joint.js";
+export { /*class*/ b2Body as Body } from "./dynamics/b2_body.js";
+export { /*class*/ b2BodyDef as BodyDef } from "./dynamics/b2_body.js";
+export { /*enum*/ b2BodyType as BodyType } from "./dynamics/b2_body.js";
+import { b2BodyType } from "./dynamics/b2_body.js";
+export const staticBody = b2BodyType.b2_staticBody;
+export const kinematicBody = b2BodyType.b2_kinematicBody;
+export const dynamicBody = b2BodyType.b2_dynamicBody;
+export { /*class*/ b2ChainAndCircleContact as ChainAndCircleContact } from "./dynamics/b2_chain_circle_contact.js";
+export { /*class*/ b2ChainAndPolygonContact as ChainAndPolygonContact } from "./dynamics/b2_chain_polygon_contact.js";
+export { /*class*/ b2CircleContact as CircleContact } from "./dynamics/b2_circle_contact.js";
+export { /*class*/ b2ContactFactory as ContactFactory } from "./dynamics/b2_contact_factory.js";
+export { /*class*/ b2ContactRegister as ContactRegister } from "./dynamics/b2_contact_factory.js";
+export { /*class*/ b2ContactManager as ContactManager } from "./dynamics/b2_contact_manager.js";
+export { /*class*/ b2ContactPositionConstraint as ContactPositionConstraint } from "./dynamics/b2_contact_solver.js";
+export { /*class*/ b2ContactSolver as ContactSolver } from "./dynamics/b2_contact_solver.js";
+export { /*class*/ b2ContactSolverDef as ContactSolverDef } from "./dynamics/b2_contact_solver.js";
+export { /*class*/ b2ContactVelocityConstraint as ContactVelocityConstraint } from "./dynamics/b2_contact_solver.js";
+export { /*class*/ b2PositionSolverManifold as PositionSolverManifold } from "./dynamics/b2_contact_solver.js";
+export { /*class*/ b2VelocityConstraintPoint as VelocityConstraintPoint } from "./dynamics/b2_contact_solver.js";
+export { /*let*/ g_blockSolve as blockSolve } from "./dynamics/b2_contact_solver.js";
+export { /*function*/ get_g_blockSolve as get_g_blockSolve } from "./dynamics/b2_contact_solver.js";
+export { /*function*/ set_g_blockSolve as set_g_blockSolve } from "./dynamics/b2_contact_solver.js";
+export { /*abstract class*/ b2Contact as Contact } from "./dynamics/b2_contact.js";
+export { /*class*/ b2ContactEdge as ContactEdge } from "./dynamics/b2_contact.js";
+export { /*function*/ b2MixFriction as MixFriction } from "./dynamics/b2_contact.js";
+export { /*function*/ b2MixRestitution as MixRestitution } from "./dynamics/b2_contact.js";
+export { /*function*/ b2MixRestitutionThreshold as MixRestitutionThreshold } from "./dynamics/b2_contact.js";
+export { /*class*/ b2DistanceJointDef as DistanceJointDef } from "./dynamics/b2_distance_joint.js";
+export { /*class*/ b2DistanceJoint as DistanceJoint } from "./dynamics/b2_distance_joint.js";
+export { /*class*/ b2EdgeAndCircleContact as EdgeAndCircleContact } from "./dynamics/b2_edge_circle_contact.js";
+export { /*class*/ b2EdgeAndPolygonContact as EdgeAndPolygonContact } from "./dynamics/b2_edge_polygon_contact.js";
+export { /*class*/ b2Filter as Filter } from "./dynamics/b2_fixture.js";
+export { /*class*/ b2Fixture as Fixture } from "./dynamics/b2_fixture.js";
+export { /*class*/ b2FixtureDef as FixtureDef } from "./dynamics/b2_fixture.js";
+export { /*class*/ b2FixtureProxy as FixtureProxy } from "./dynamics/b2_fixture.js";
+export { /*class*/ b2FrictionJointDef as FrictionJointDef } from "./dynamics/b2_friction_joint.js";
+export { /*class*/ b2FrictionJoint as FrictionJoint } from "./dynamics/b2_friction_joint.js";
+export { /*class*/ b2GearJointDef as GearJointDef } from "./dynamics/b2_gear_joint.js";
+export { /*class*/ b2GearJoint as GearJoint } from "./dynamics/b2_gear_joint.js";
+export { /*class*/ b2Island as Island } from "./dynamics/b2_island.js";
+export { /*abstract class*/ b2JointDef as JointDef } from "./dynamics/b2_joint.js";
+export { /*abstract class*/ b2Joint as Joint } from "./dynamics/b2_joint.js";
+export { /*class*/ b2Jacobian as Jacobian } from "./dynamics/b2_joint.js";
+export { /*class*/ b2JointEdge as JointEdge } from "./dynamics/b2_joint.js";
+export { /*enum*/ b2JointType as JointType } from "./dynamics/b2_joint.js";
+export { /*function*/ b2AngularStiffness as AngularStiffness } from "./dynamics/b2_joint.js";
+export { /*function*/ b2LinearStiffness as LinearStiffness } from "./dynamics/b2_joint.js";
+export { /*class*/ b2MotorJointDef as MotorJointDef } from "./dynamics/b2_motor_joint.js";
+export { /*class*/ b2MotorJoint as MotorJoint } from "./dynamics/b2_motor_joint.js";
+export { /*class*/ b2MouseJointDef as MouseJointDef } from "./dynamics/b2_mouse_joint.js";
+export { /*class*/ b2MouseJoint as MouseJoint } from "./dynamics/b2_mouse_joint.js";
+export { /*class*/ b2PolygonAndCircleContact as PolygonAndCircleContact } from "./dynamics/b2_polygon_circle_contact.js";
+export { /*class*/ b2PolygonContact as PolygonContact } from "./dynamics/b2_polygon_contact.js";
+export { /*class*/ b2PrismaticJointDef as PrismaticJointDef } from "./dynamics/b2_prismatic_joint.js";
+export { /*class*/ b2PrismaticJoint as PrismaticJoint } from "./dynamics/b2_prismatic_joint.js";
+export { /*class*/ b2PulleyJointDef as PulleyJointDef } from "./dynamics/b2_pulley_joint.js";
+export { /*class*/ b2PulleyJoint as PulleyJoint } from "./dynamics/b2_pulley_joint.js";
+export { /*const*/ b2_minPulleyLength as minPulleyLength } from "./dynamics/b2_pulley_joint.js";
+export { /*class*/ b2RevoluteJointDef as RevoluteJointDef } from "./dynamics/b2_revolute_joint.js";
+export { /*class*/ b2RevoluteJoint as RevoluteJoint } from "./dynamics/b2_revolute_joint.js";
+export { /*class*/ b2Position as Position } from "./dynamics/b2_time_step.js";
+export { /*class*/ b2Profile as Profile } from "./dynamics/b2_time_step.js";
+export { /*class*/ b2SolverData as SolverData } from "./dynamics/b2_time_step.js";
+export { /*class*/ b2TimeStep as TimeStep } from "./dynamics/b2_time_step.js";
+export { /*class*/ b2Velocity as Velocity } from "./dynamics/b2_time_step.js";
+export { /*class*/ b2WeldJointDef as WeldJointDef } from "./dynamics/b2_weld_joint.js";
+export { /*class*/ b2WeldJoint as WeldJoint } from "./dynamics/b2_weld_joint.js";
+export { /*class*/ b2WheelJointDef as WheelJointDef } from "./dynamics/b2_wheel_joint.js";
+export { /*class*/ b2WheelJoint as WheelJoint } from "./dynamics/b2_wheel_joint.js";
+export { /*class*/ b2ContactFilter as ContactFilter } from "./dynamics/b2_world_callbacks.js";
+export { /*class*/ b2ContactImpulse as ContactImpulse } from "./dynamics/b2_world_callbacks.js";
+export { /*class*/ b2ContactListener as ContactListener } from "./dynamics/b2_world_callbacks.js";
+export { /*class*/ b2DestructionListener as DestructionListener } from "./dynamics/b2_world_callbacks.js";
+export { /*class*/ b2QueryCallback as QueryCallback } from "./dynamics/b2_world_callbacks.js";
+export { /*class*/ b2RayCastCallback as RayCastCallback } from "./dynamics/b2_world_callbacks.js";
+export { /*class*/ b2World as World } from "./dynamics/b2_world.js";
+export { /*class*/ b2RopeDef as RopeDef } from "./rope/b2_rope.js";
+export { /*class*/ b2Rope as Rope } from "./rope/b2_rope.js";
+export { /*class*/ b2RopeTuning as RopeTuning } from "./rope/b2_rope.js";
+export { /*enum*/ b2BendingModel as BendingModel } from "./rope/b2_rope.js";
+import { b2BendingModel } from "./rope/b2_rope.js";
+export const springAngleBendingModel = b2BendingModel.b2_springAngleBendingModel;
+export const pbdAngleBendingModel = b2BendingModel.b2_pbdAngleBendingModel;
+export const xpbdAngleBendingModel = b2BendingModel.b2_xpbdAngleBendingModel;
+export const pbdDistanceBendingModel = b2BendingModel.b2_pbdDistanceBendingModel;
+export const pbdHeightBendingModel = b2BendingModel.b2_pbdHeightBendingModel;
+export const pbdTriangleBendingModel = b2BendingModel.b2_pbdTriangleBendingModel;
+export { /*enum*/ b2StretchingModel as StretchingModel } from "./rope/b2_rope.js";
+import { b2StretchingModel } from "./rope/b2_rope.js";
+export const pbdStretchingModel = b2StretchingModel.b2_pbdStretchingModel;
+export const xpbdStretchingModel = b2StretchingModel.b2_xpbdStretchingModel;
+export { /*class*/ b2BuoyancyController as BuoyancyController } from "./controllers/b2_buoyancy_controller.js";
+export { /*class*/ b2ConstantAccelController as ConstantAccelController } from "./controllers/b2_constant_accel_controller.js";
+export { /*class*/ b2ConstantForceController as ConstantForceController } from "./controllers/b2_constant_force_controller.js";
+export { /*abstract class*/ b2Controller as Controller } from "./controllers/b2_controller.js";
+export { /*class*/ b2ControllerEdge as ControllerEdge } from "./controllers/b2_controller.js";
+export { /*class*/ b2GravityController as GravityController } from "./controllers/b2_gravity_controller.js";
+export { /*class*/ b2TensorDampingController as TensorDampingController } from "./controllers/b2_tensor_damping_controller.js";
+export { /*class*/ b2ParticleGroup as ParticleGroup } from "./particle/b2_particle_group.js";
+export { /*class*/ b2ParticleGroupDef as ParticleGroupDef } from "./particle/b2_particle_group.js";
+export { /*enum*/ b2ParticleGroupFlag as ParticleGroupFlag } from "./particle/b2_particle_group.js";
+export { /*class*/ b2FixtureParticleQueryCallback as FixtureParticleQueryCallback } from "./particle/b2_particle_system.js";
+export { /*class*/ b2GrowableBuffer as GrowableBuffer } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleBodyContact as ParticleBodyContact } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleContact as ParticleContact } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticlePair as ParticlePair } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticlePairSet as ParticlePairSet } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem as ParticleSystem } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_CompositeShape as ParticleSystem_CompositeShape } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_ConnectionFilter as ParticleSystem_ConnectionFilter } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystemDef as ParticleSystemDef } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_DestroyParticlesInShapeCallback as ParticleSystem_DestroyParticlesInShapeCallback } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_FixedSetAllocator as ParticleSystem_FixedSetAllocator } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_FixtureParticle as ParticleSystem_FixtureParticle } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_FixtureParticleSet as ParticleSystem_FixtureParticleSet } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_InsideBoundsEnumerator as ParticleSystem_InsideBoundsEnumerator } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_JoinParticleGroupsFilter as ParticleSystem_JoinParticleGroupsFilter } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_ParticleListNode as ParticleSystem_ParticleListNode } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_ParticlePair as ParticleSystem_ParticlePair } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_Proxy as ParticleSystem_Proxy } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_ReactiveFilter as ParticleSystem_ReactiveFilter } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_SolveCollisionCallback as ParticleSystem_SolveCollisionCallback } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_UpdateBodyContactsCallback as ParticleSystem_UpdateBodyContactsCallback } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleSystem_UserOverridableBuffer as ParticleSystem_UserOverridableBuffer } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleTriad as ParticleTriad } from "./particle/b2_particle_system.js";
+export { /*class*/ b2ParticleDef as ParticleDef } from "./particle/b2_particle.js";
+export { /*class*/ b2ParticleHandle as ParticleHandle } from "./particle/b2_particle.js";
+export { /*enum*/ b2ParticleFlag as ParticleFlag } from "./particle/b2_particle.js";
+export { /*function*/ b2CalculateParticleIterations as CalculateParticleIterations } from "./particle/b2_particle.js";
+export { /*class*/ b2StackQueue as StackQueue } from "./particle/b2_stack_queue.js";
+export { /*class*/ b2VoronoiDiagram as VoronoiDiagram } from "./particle/b2_voronoi_diagram.js";
+export { /*class*/ b2VoronoiDiagram_Generator as VoronoiDiagram_Generator } from "./particle/b2_voronoi_diagram.js";
+export { /*class*/ b2VoronoiDiagram_Task as VoronoiDiagram_Task } from "./particle/b2_voronoi_diagram.js";

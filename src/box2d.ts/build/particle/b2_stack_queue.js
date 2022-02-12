@@ -15,53 +15,42 @@
  * misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
-System.register([], function (exports_1, context_1) {
-    "use strict";
-    var b2StackQueue;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [],
-        execute: function () {
-            // #if B2_ENABLE_PARTICLE
-            // DEBUG: import { b2Assert } from "../common/b2_settings.js";
-            b2StackQueue = class b2StackQueue {
-                constructor(capacity) {
-                    this.m_buffer = [];
-                    this.m_front = 0;
-                    this.m_back = 0;
-                    this.m_buffer.fill(null, 0, capacity);
-                }
-                get m_capacity() { return this.m_buffer.length; }
-                Push(item) {
-                    if (this.m_back >= this.m_capacity) {
-                        for (let i = this.m_front; i < this.m_back; i++) {
-                            this.m_buffer[i - this.m_front] = this.m_buffer[i];
-                        }
-                        this.m_back -= this.m_front;
-                        this.m_front = 0;
-                    }
-                    this.m_buffer[this.m_back] = item;
-                    this.m_back++;
-                }
-                Pop() {
-                    // DEBUG: b2Assert(this.m_front < this.m_back);
-                    this.m_buffer[this.m_front] = null;
-                    this.m_front++;
-                }
-                Empty() {
-                    // DEBUG: b2Assert(this.m_front <= this.m_back);
-                    return this.m_front === this.m_back;
-                }
-                Front() {
-                    const item = this.m_buffer[this.m_front];
-                    if (!item) {
-                        throw new Error();
-                    }
-                    return item;
-                }
-            };
-            exports_1("b2StackQueue", b2StackQueue);
+// #if B2_ENABLE_PARTICLE
+// DEBUG: import { b2Assert } from "../common/b2_settings.js";
+export class b2StackQueue {
+    constructor(capacity) {
+        this.m_buffer = [];
+        this.m_front = 0;
+        this.m_back = 0;
+        this.m_buffer.fill(null, 0, capacity);
+    }
+    get m_capacity() { return this.m_buffer.length; }
+    Push(item) {
+        if (this.m_back >= this.m_capacity) {
+            for (let i = this.m_front; i < this.m_back; i++) {
+                this.m_buffer[i - this.m_front] = this.m_buffer[i];
+            }
+            this.m_back -= this.m_front;
+            this.m_front = 0;
         }
-    };
-});
-//# sourceMappingURL=b2_stack_queue.js.map
+        this.m_buffer[this.m_back] = item;
+        this.m_back++;
+    }
+    Pop() {
+        // DEBUG: b2Assert(this.m_front < this.m_back);
+        this.m_buffer[this.m_front] = null;
+        this.m_front++;
+    }
+    Empty() {
+        // DEBUG: b2Assert(this.m_front <= this.m_back);
+        return this.m_front === this.m_back;
+    }
+    Front() {
+        const item = this.m_buffer[this.m_front];
+        if (!item) {
+            throw new Error();
+        }
+        return item;
+    }
+}
+// #endif

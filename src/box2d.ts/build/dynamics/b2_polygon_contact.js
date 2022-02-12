@@ -15,32 +15,15 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-System.register(["../collision/b2_collide_polygon.js", "./b2_contact.js"], function (exports_1, context_1) {
-    "use strict";
-    var b2_collide_polygon_js_1, b2_contact_js_1, b2PolygonContact;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [
-            function (b2_collide_polygon_js_1_1) {
-                b2_collide_polygon_js_1 = b2_collide_polygon_js_1_1;
-            },
-            function (b2_contact_js_1_1) {
-                b2_contact_js_1 = b2_contact_js_1_1;
-            }
-        ],
-        execute: function () {
-            b2PolygonContact = class b2PolygonContact extends b2_contact_js_1.b2Contact {
-                static Create() {
-                    return new b2PolygonContact();
-                }
-                static Destroy(contact) {
-                }
-                Evaluate(manifold, xfA, xfB) {
-                    b2_collide_polygon_js_1.b2CollidePolygons(manifold, this.GetShapeA(), xfA, this.GetShapeB(), xfB);
-                }
-            };
-            exports_1("b2PolygonContact", b2PolygonContact);
-        }
-    };
-});
-//# sourceMappingURL=b2_polygon_contact.js.map
+import { b2CollidePolygons } from "../collision/b2_collide_polygon.js";
+import { b2Contact } from "./b2_contact.js";
+export class b2PolygonContact extends b2Contact {
+    static Create() {
+        return new b2PolygonContact();
+    }
+    static Destroy(contact) {
+    }
+    Evaluate(manifold, xfA, xfB) {
+        b2CollidePolygons(manifold, this.GetShapeA(), xfA, this.GetShapeB(), xfB);
+    }
+}

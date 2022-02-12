@@ -15,46 +15,31 @@
  * misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
-System.register(["./b2_controller.js", "../common/b2_math.js"], function (exports_1, context_1) {
-    "use strict";
-    var b2_controller_js_1, b2_math_js_1, b2ConstantAccelController;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [
-            function (b2_controller_js_1_1) {
-                b2_controller_js_1 = b2_controller_js_1_1;
-            },
-            function (b2_math_js_1_1) {
-                b2_math_js_1 = b2_math_js_1_1;
+// #if B2_ENABLE_CONTROLLER
+import { b2Controller } from "./b2_controller.js";
+import { b2Vec2 } from "../common/b2_math.js";
+/**
+ * Applies a force every frame
+ */
+export class b2ConstantAccelController extends b2Controller {
+    constructor() {
+        super(...arguments);
+        /**
+         * The acceleration to apply
+         */
+        this.A = new b2Vec2(0, 0);
+    }
+    Step(step) {
+        const dtA = b2Vec2.MulSV(step.dt, this.A, b2ConstantAccelController.Step_s_dtA);
+        for (let i = this.m_bodyList; i; i = i.nextBody) {
+            const body = i.body;
+            if (!body.IsAwake()) {
+                continue;
             }
-        ],
-        execute: function () {
-            /**
-             * Applies a force every frame
-             */
-            b2ConstantAccelController = class b2ConstantAccelController extends b2_controller_js_1.b2Controller {
-                constructor() {
-                    super(...arguments);
-                    /**
-                     * The acceleration to apply
-                     */
-                    this.A = new b2_math_js_1.b2Vec2(0, 0);
-                }
-                Step(step) {
-                    const dtA = b2_math_js_1.b2Vec2.MulSV(step.dt, this.A, b2ConstantAccelController.Step_s_dtA);
-                    for (let i = this.m_bodyList; i; i = i.nextBody) {
-                        const body = i.body;
-                        if (!body.IsAwake()) {
-                            continue;
-                        }
-                        body.SetLinearVelocity(b2_math_js_1.b2Vec2.AddVV(body.GetLinearVelocity(), dtA, b2_math_js_1.b2Vec2.s_t0));
-                    }
-                }
-                Draw(draw) { }
-            };
-            exports_1("b2ConstantAccelController", b2ConstantAccelController);
-            b2ConstantAccelController.Step_s_dtA = new b2_math_js_1.b2Vec2();
+            body.SetLinearVelocity(b2Vec2.AddVV(body.GetLinearVelocity(), dtA, b2Vec2.s_t0));
         }
-    };
-});
-//# sourceMappingURL=b2_constant_accel_controller.js.map
+    }
+    Draw(draw) { }
+}
+b2ConstantAccelController.Step_s_dtA = new b2Vec2();
+// #endif

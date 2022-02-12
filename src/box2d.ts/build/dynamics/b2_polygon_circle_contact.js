@@ -15,32 +15,15 @@
 * misrepresented as being the original software.
 * 3. This notice may not be removed or altered from any source distribution.
 */
-System.register(["../collision/b2_collide_circle.js", "./b2_contact.js"], function (exports_1, context_1) {
-    "use strict";
-    var b2_collide_circle_js_1, b2_contact_js_1, b2PolygonAndCircleContact;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [
-            function (b2_collide_circle_js_1_1) {
-                b2_collide_circle_js_1 = b2_collide_circle_js_1_1;
-            },
-            function (b2_contact_js_1_1) {
-                b2_contact_js_1 = b2_contact_js_1_1;
-            }
-        ],
-        execute: function () {
-            b2PolygonAndCircleContact = class b2PolygonAndCircleContact extends b2_contact_js_1.b2Contact {
-                static Create() {
-                    return new b2PolygonAndCircleContact();
-                }
-                static Destroy(contact) {
-                }
-                Evaluate(manifold, xfA, xfB) {
-                    b2_collide_circle_js_1.b2CollidePolygonAndCircle(manifold, this.GetShapeA(), xfA, this.GetShapeB(), xfB);
-                }
-            };
-            exports_1("b2PolygonAndCircleContact", b2PolygonAndCircleContact);
-        }
-    };
-});
-//# sourceMappingURL=b2_polygon_circle_contact.js.map
+import { b2CollidePolygonAndCircle } from "../collision/b2_collide_circle.js";
+import { b2Contact } from "./b2_contact.js";
+export class b2PolygonAndCircleContact extends b2Contact {
+    static Create() {
+        return new b2PolygonAndCircleContact();
+    }
+    static Destroy(contact) {
+    }
+    Evaluate(manifold, xfA, xfB) {
+        b2CollidePolygonAndCircle(manifold, this.GetShapeA(), xfA, this.GetShapeB(), xfB);
+    }
+}

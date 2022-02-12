@@ -15,44 +15,29 @@
  * misrepresented as being the original software.
  * 3. This notice may not be removed or altered from any source distribution.
  */
-System.register(["./b2_controller.js", "../common/b2_math.js"], function (exports_1, context_1) {
-    "use strict";
-    var b2_controller_js_1, b2_math_js_1, b2ConstantForceController;
-    var __moduleName = context_1 && context_1.id;
-    return {
-        setters: [
-            function (b2_controller_js_1_1) {
-                b2_controller_js_1 = b2_controller_js_1_1;
-            },
-            function (b2_math_js_1_1) {
-                b2_math_js_1 = b2_math_js_1_1;
+// #if B2_ENABLE_CONTROLLER
+import { b2Controller } from "./b2_controller.js";
+import { b2Vec2 } from "../common/b2_math.js";
+/**
+ * Applies a force every frame
+ */
+export class b2ConstantForceController extends b2Controller {
+    constructor() {
+        super(...arguments);
+        /**
+         * The force to apply
+         */
+        this.F = new b2Vec2(0, 0);
+    }
+    Step(step) {
+        for (let i = this.m_bodyList; i; i = i.nextBody) {
+            const body = i.body;
+            if (!body.IsAwake()) {
+                continue;
             }
-        ],
-        execute: function () {
-            /**
-             * Applies a force every frame
-             */
-            b2ConstantForceController = class b2ConstantForceController extends b2_controller_js_1.b2Controller {
-                constructor() {
-                    super(...arguments);
-                    /**
-                     * The force to apply
-                     */
-                    this.F = new b2_math_js_1.b2Vec2(0, 0);
-                }
-                Step(step) {
-                    for (let i = this.m_bodyList; i; i = i.nextBody) {
-                        const body = i.body;
-                        if (!body.IsAwake()) {
-                            continue;
-                        }
-                        body.ApplyForce(this.F, body.GetWorldCenter());
-                    }
-                }
-                Draw(draw) { }
-            };
-            exports_1("b2ConstantForceController", b2ConstantForceController);
+            body.ApplyForce(this.F, body.GetWorldCenter());
         }
-    };
-});
-//# sourceMappingURL=b2_constant_force_controller.js.map
+    }
+    Draw(draw) { }
+}
+// #endif
