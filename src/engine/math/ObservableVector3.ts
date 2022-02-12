@@ -7,7 +7,7 @@ export class ObservableVector3 {
     private _x: number;
     private _y: number;
     private _z: number;
-    private _onChangeCallback: () => void;
+    private _onBeforeChangeCallback: () => void;
     private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0) {
@@ -15,13 +15,13 @@ export class ObservableVector3 {
         this._y = y;
         this._z = z;
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onChangeCallback = () => { };
+        this._onBeforeChangeCallback = () => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onBeforeGetComponentCallback = () => { };
     }
 
-    public onChange(callback: () => void) {
-        this._onChangeCallback = callback;
+    public onBeforeChange(callback: () => void) {
+        this._onBeforeChangeCallback = callback;
     }
 
     public onBeforeGetComponent(callback: () => void) {
@@ -34,8 +34,8 @@ export class ObservableVector3 {
     }
 
     public set x(value: number) {
+        this._onBeforeChangeCallback();
         this._x = value;
-        this._onChangeCallback();
     }
     
     public get y(): number {
@@ -44,8 +44,8 @@ export class ObservableVector3 {
     }
 
     public set y(value: number) {
+        this._onBeforeChangeCallback();
         this._y = value;
-        this._onChangeCallback();
     }
 
     public get z(): number {
@@ -54,8 +54,8 @@ export class ObservableVector3 {
     }
 
     public set z(value: number) {
+        this._onBeforeChangeCallback();
         this._z = value;
-        this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number): ObservableVector3 {
@@ -63,47 +63,47 @@ export class ObservableVector3 {
             this._onBeforeGetComponentCallback();
             z = this._z; // sprite.scale.set(x,y)
         }
+        this._onBeforeChangeCallback();
         this._x = x;
         this._y = y;
         this._z = z;
-        this._onChangeCallback();
         return this;
     }
 
     public setScalar(scalar: number): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = scalar;
         this._y = scalar;
         this._z = scalar;
-        this._onChangeCallback();
         return this;
     }
 
     public setX(x: number): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = x;
-        this._onChangeCallback();
         return this;
     }
 
     public setY(y: number): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._y = y;
-        this._onChangeCallback();
         return this;
     }
 
     public setZ(z: number): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._z = z;
-        this._onChangeCallback();
         return this;
     }
 
     public setComponent(index: number, value: number): ObservableVector3 {
+        this._onBeforeChangeCallback();
         switch (index) {
         case 0: this._x = value; break;
         case 1: this._y = value; break;
         case 2: this._z = value; break;
         default: throw new Error("index is out of range: " + index);
         }
-        this._onChangeCallback();
         return this;
     }
 
@@ -123,10 +123,10 @@ export class ObservableVector3 {
     }
 
     public copy(v: ObservableVector3): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = v.x;
         this._y = v.y;
         this._z = v.z;
-        this._onChangeCallback();
         return this;
     }
 
@@ -136,36 +136,36 @@ export class ObservableVector3 {
             return this.addVectors(v, w);
         }
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x += v.x;
         this._y += v.y;
         this._z += v.z;
-        this._onChangeCallback();
         return this;
     }
 
     public addScalar(s: number): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x += s;
         this._y += s;
         this._z += s;
-        this._onChangeCallback();
         return this;
     }
 
     public addVectors(a: ObservableVector3, b: ObservableVector3): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = a.x + b.x;
         this._y = a.y + b.y;
         this._z = a.z + b.z;
-        this._onChangeCallback();
         return this;
     }
 
     public addScaledVector(v: ObservableVector3, s: number): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x += v.x * s;
         this._y += v.y * s;
         this._z += v.z * s;
-        this._onChangeCallback();
         return this;
     }
 
@@ -175,27 +175,27 @@ export class ObservableVector3 {
             return this.subVectors(v, w);
         }
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x -= v.x;
         this._y -= v.y;
         this._z -= v.z;
-        this._onChangeCallback();
         return this;
     }
 
     public subScalar(s: number): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x -= s;
         this._y -= s;
         this._z -= s;
-        this._onChangeCallback();
         return this;
     }
 
     public subVectors(a: ObservableVector3, b: ObservableVector3): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = a.x - b.x;
         this._y = a.y - b.y;
         this._z = a.z - b.z;
-        this._onChangeCallback();
         return this;
     }
 
@@ -205,27 +205,27 @@ export class ObservableVector3 {
             return this.multiplyVectors(v, w);
         }
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x *= v.x;
         this._y *= v.y;
         this._z *= v.z;
-        this._onChangeCallback();
         return this;
     }
 
     public multiplyScalar(scalar: number): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x *= scalar;
         this._y *= scalar;
         this._z *= scalar;
-        this._onChangeCallback();
         return this;
     }
 
     public multiplyVectors(a: ObservableVector3, b: ObservableVector3): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = a.x * b.x;
         this._y = a.y * b.y;
         this._z = a.z * b.z;
-        this._onChangeCallback();
         return this;
     }
 
@@ -245,10 +245,10 @@ export class ObservableVector3 {
         const x = this._x, y = this._y, z = this._z;
         const e = m.elements;
 
+        this._onBeforeChangeCallback();
         this._x = e[0] * x + e[3] * y + e[6] * z;
         this._y = e[1] * x + e[4] * y + e[7] * z;
         this._z = e[2] * x + e[5] * y + e[8] * z;
-        this._onChangeCallback();
 
         return this;
     }
@@ -264,10 +264,10 @@ export class ObservableVector3 {
 
         const w = 1 / (e[3] * x + e[7] * y + e[11] * z + e[15]);
 
+        this._onBeforeChangeCallback();
         this._x = (e[0] * x + e[4] * y + e[8] * z + e[12]) * w;
         this._y = (e[1] * x + e[5] * y + e[9] * z + e[13]) * w;
         this._z = (e[2] * x + e[6] * y + e[10] * z + e[14]) * w;
-        this._onChangeCallback();
 
         return this;
     }
@@ -283,11 +283,11 @@ export class ObservableVector3 {
         const iz = qw * z + qx * y - qy * x;
         const iw = - qx * x - qy * y - qz * z;
 
+        this._onBeforeChangeCallback();
         // calculate result * inverse quat
         this._x = ix * qw + iw * - qx + iy * - qz - iz * - qy;
         this._y = iy * qw + iw * - qy + iz * - qx - ix * - qz;
         this._z = iz * qw + iw * - qz + ix * - qy - iy * - qx;
-        this._onChangeCallback();
 
         return this;
     }
@@ -307,20 +307,20 @@ export class ObservableVector3 {
         const x = this._x, y = this._y, z = this._z;
         const e = m.elements;
 
+        this._onBeforeChangeCallback();
         this._x = e[0] * x + e[4] * y + e[8] * z;
         this._y = e[1] * x + e[5] * y + e[9] * z;
         this._z = e[2] * x + e[6] * y + e[10] * z;
-        this._onChangeCallback();
 
         return this.normalize();
     }
 
     public divide(v: ObservableVector3): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x /= v.x;
         this._y /= v.y;
         this._z /= v.z;
-        this._onChangeCallback();
         return this;
     }
 
@@ -330,38 +330,38 @@ export class ObservableVector3 {
 
     public min(v: ObservableVector3): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = Math.min(this._x, v.x);
         this._y = Math.min(this._y, v.y);
         this._z = Math.min(this._z, v.z);
-        this._onChangeCallback();
         return this;
     }
 
     public max(v: ObservableVector3): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = Math.max(this._x, v.x);
         this._y = Math.max(this._y, v.y);
         this._z = Math.max(this._z, v.z);
-        this._onChangeCallback();
         return this;
     }
 
     public clamp(min: ObservableVector3, max: ObservableVector3): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         // assumes min < max, componentwise
         this._x = Math.max(min.x, Math.min(max.x, this._x));
         this._y = Math.max(min.y, Math.min(max.y, this._y));
         this._z = Math.max(min.z, Math.min(max.z, this._z));
-        this._onChangeCallback();
         return this;
     }
 
     public clampScalar(minVal: number, maxVal: number): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = Math.max(minVal, Math.min(maxVal, this._x));
         this._y = Math.max(minVal, Math.min(maxVal, this._y));
         this._z = Math.max(minVal, Math.min(maxVal, this._z));
-        this._onChangeCallback();
         return this;
     }
 
@@ -372,46 +372,46 @@ export class ObservableVector3 {
 
     public floor(): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = Math.floor(this._x);
         this._y = Math.floor(this._y);
         this._z = Math.floor(this._z);
-        this._onChangeCallback();
         return this;
     }
 
     public ceil(): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = Math.ceil(this._x);
         this._y = Math.ceil(this._y);
         this._z = Math.ceil(this._z);
-        this._onChangeCallback();
         return this;
     }
 
     public round(): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = Math.round(this._x);
         this._y = Math.round(this._y);
         this._z = Math.round(this._z);
-        this._onChangeCallback();
         return this;
     }
 
     public roundToZero(): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = (this._x < 0) ? Math.ceil(this._x) : Math.floor(this._x);
         this._y = (this._y < 0) ? Math.ceil(this._y) : Math.floor(this._y);
         this._z = (this._z < 0) ? Math.ceil(this._z) : Math.floor(this._z);
-        this._onChangeCallback();
         return this;
     }
 
     public negate(): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x = - this._x;
         this._y = - this._y;
         this._z = - this._z;
-        this._onChangeCallback();
         return this;
     }
 
@@ -447,18 +447,18 @@ export class ObservableVector3 {
 
     public lerp(v: ObservableVector3, alpha: number): ObservableVector3 {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._x += (v.x - this._x) * alpha;
         this._y += (v.y - this._y) * alpha;
         this._z += (v.z - this._z) * alpha;
-        this._onChangeCallback();
         return this;
     }
 
     public lerpVectors(v1: ObservableVector3, v2: ObservableVector3, alpha: number) {
+        this._onBeforeChangeCallback();
         this._x = v1.x + (v2.x - v1.x) * alpha;
         this._y = v1.y + (v2.y - v1.y) * alpha;
         this._z = v1.z + (v2.z - v1.z) * alpha;
-        this._onChangeCallback();
         return this;
     }
 
@@ -474,10 +474,10 @@ export class ObservableVector3 {
         const ax = a.x, ay = a.y, az = a.z;
         const bx = b.x, by = b.y, bz = b.z;
 
+        this._onBeforeChangeCallback();
         this._x = ay * bz - az * by;
         this._y = az * bx - ax * bz;
         this._z = ax * by - ay * bx;
-        this._onChangeCallback();
         return this;
     }
 
@@ -530,10 +530,10 @@ export class ObservableVector3 {
     public setFromSphericalCoords(radius: number, phi: number, theta: number): ObservableVector3 {
         const sinPhiRadius = Math.sin(phi) * radius;
 
+        this._onBeforeChangeCallback();
         this._x = sinPhiRadius * Math.sin(theta);
         this._y = Math.cos(phi) * radius;
         this._z = sinPhiRadius * Math.cos(theta);
-        this._onChangeCallback();
 
         return this;
     }
@@ -543,20 +543,20 @@ export class ObservableVector3 {
     }
 
     public setFromCylindricalCoords(radius: number, theta: number, y: number): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = radius * Math.sin(theta);
         this._y = y;
         this._z = radius * Math.cos(theta);
-        this._onChangeCallback();
         return this;
     }
 
     public setFromMatrixPosition(m: Matrix4): ObservableVector3 {
         const e = m.elements;
 
+        this._onBeforeChangeCallback();
         this._x = e[12];
         this._y = e[13];
         this._z = e[14];
-        this._onChangeCallback();
 
         return this;
     }
@@ -566,10 +566,10 @@ export class ObservableVector3 {
         const sy = this.setFromMatrixColumn(m, 1).length();
         const sz = this.setFromMatrixColumn(m, 2).length();
 
+        this._onBeforeChangeCallback();
         this._x = sx;
         this._y = sy;
         this._z = sz;
-        this._onChangeCallback();
 
         return this;
     }
@@ -588,10 +588,10 @@ export class ObservableVector3 {
     }
 
     public fromArray(array: number[]|ArrayLike<number>, offset = 0): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = array[offset];
         this._y = array[offset + 1];
         this._z = array[offset + 2];
-        this._onChangeCallback();
         return this;
     }
 
@@ -611,18 +611,18 @@ export class ObservableVector3 {
         if (offset !== undefined) {
             console.warn("THREE.Vector3: offset has been removed from .fromBufferAttribute().");
         }
+        this._onBeforeChangeCallback();
         this._x = attribute.getX(index);
         this._y = attribute.getY(index);
         this._z = attribute.getZ(index);
-        this._onChangeCallback();
         return this;
     }
 
     public random(): ObservableVector3 {
+        this._onBeforeChangeCallback();
         this._x = Math.random();
         this._y = Math.random();
         this._z = Math.random();
-        this._onChangeCallback();
         return this;
     }
 
@@ -632,10 +632,10 @@ export class ObservableVector3 {
         const t = Math.random() * Math.PI * 2;
         const f = Math.sqrt(1 - u ** 2);
 
+        this._onBeforeChangeCallback();
         this._x = f * Math.cos(t);
         this._y = f * Math.sin(t);
         this._z = u;
-        this._onChangeCallback();
 
         return this;
     }

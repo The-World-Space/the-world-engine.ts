@@ -14,6 +14,7 @@ export class ObservableEuler {
     private _internal_order: string;
 
     public _onChangeCallback: () => void;
+    private _onBeforeChangeCallback: () => void;
     private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0, order = ObservableEuler.DefaultOrder) {
@@ -25,11 +26,17 @@ export class ObservableEuler {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onChangeCallback = () => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this._onBeforeChangeCallback = () => { };
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onBeforeGetComponentCallback = () => { };
     }
 
     public onBeforeGetComponent(callback: () => void) {
         this._onBeforeGetComponentCallback = callback;
+    }
+
+    public onBeforeChange(callback: () => void) {
+        this._onBeforeChangeCallback = callback;
     }
 
     private get _x(): number { // this can't be private because it's used like public in three.js
@@ -74,6 +81,7 @@ export class ObservableEuler {
     }
 
     public set x(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_x = value;
         this._onChangeCallback();
     }
@@ -84,6 +92,7 @@ export class ObservableEuler {
     }
 
     public set y(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_y = value;
         this._onChangeCallback();
     }
@@ -94,6 +103,7 @@ export class ObservableEuler {
     }
 
     public set z(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_z = value;
         this._onChangeCallback();
     }
@@ -104,11 +114,13 @@ export class ObservableEuler {
     }
 
     public set order(value: string) {
+        this._onBeforeChangeCallback();
         this._internal_order = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, order?: string): ObservableEuler {
+        this._onBeforeChangeCallback();
         this._internal_x = x;
         this._internal_y = y;
         this._internal_z = z;
@@ -125,6 +137,7 @@ export class ObservableEuler {
     }
 
     public copy(euler: ObservableEuler): ObservableEuler {
+        this._onBeforeChangeCallback();
         this._internal_x = euler._x;
         this._internal_y = euler._y;
         this._internal_z = euler._z;
@@ -144,6 +157,7 @@ export class ObservableEuler {
 
         if (!order) order = this._internal_order;
 
+        this._onBeforeChangeCallback();
         switch (order) {
         case "XYZ":
             this._internal_y = Math.asin(clamp(m13, -1, 1));
@@ -241,6 +255,7 @@ export class ObservableEuler {
     }
 
     public fromArray(array: any[]): ObservableEuler {
+        this._onBeforeChangeCallback();
         this._internal_x = array[0];
         this._internal_y = array[1];
         this._internal_z = array[2];

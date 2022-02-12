@@ -9,6 +9,7 @@ export class ObservableQuaternion {
     private _internal_z: number;
     private _internal_w: number;
     public _onChangeCallback: () => void;
+    private _onBeforeChangeCallback: () => void;
     private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0, w = 1) {
@@ -20,11 +21,17 @@ export class ObservableQuaternion {
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onChangeCallback = () => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
+        this._onBeforeChangeCallback = () => { };
+        // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onBeforeGetComponentCallback = () => { };
     }
 
     public onBeforeGetComponent(callback: () => void) {
         this._onBeforeGetComponentCallback = callback;
+    }
+
+    public onBeforeChange(callback: () => void) {
+        this._onBeforeChangeCallback = callback;
     }
 
     public static slerp(qa: ObservableQuaternion, qb: ObservableQuaternion, qm: ObservableQuaternion, t: number): void { //TODO: pr to three-types
@@ -173,6 +180,7 @@ export class ObservableQuaternion {
     }
 
     public set x(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_x = value;
         this._onChangeCallback();
     }
@@ -183,6 +191,7 @@ export class ObservableQuaternion {
     }
 
     public set y(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_y = value;
         this._onChangeCallback();
     }
@@ -193,6 +202,7 @@ export class ObservableQuaternion {
     }
 
     public set z(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_z = value;
         this._onChangeCallback();
     }
@@ -203,11 +213,13 @@ export class ObservableQuaternion {
     }
 
     public set w(value: number) {
+        this._onBeforeChangeCallback();
         this._internal_w = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, w: number): ObservableQuaternion {
+        this._onBeforeChangeCallback();
         this._internal_x = x;
         this._internal_y = y;
         this._internal_z = z;
@@ -222,6 +234,7 @@ export class ObservableQuaternion {
     }
 
     public copy(quaternion: ObservableQuaternion): ObservableQuaternion {
+        this._onBeforeChangeCallback();
         this._internal_x = quaternion.x;
         this._internal_y = quaternion.y;
         this._internal_z = quaternion.z;
@@ -252,6 +265,7 @@ export class ObservableQuaternion {
         const s2 = sin(y / 2);
         const s3 = sin(z / 2);
 
+        this._onBeforeChangeCallback();
         switch (order) {
         case "XYZ":
             this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
@@ -309,6 +323,8 @@ export class ObservableQuaternion {
 
         const halfAngle = angle / 2, s = Math.sin(halfAngle);
 
+        this._onBeforeChangeCallback();
+
         this._internal_x = axis.x * s;
         this._internal_y = axis.y * s;
         this._internal_z = axis.z * s;
@@ -327,6 +343,8 @@ export class ObservableQuaternion {
             m21 = te[1], m22 = te[5], m23 = te[9],
             m31 = te[2], m32 = te[6], m33 = te[10],
             trace = m11 + m22 + m33;
+
+        this._onBeforeChangeCallback();
 
         if (trace > 0) {
             const s = 0.5 / Math.sqrt(trace + 1.0);
@@ -366,6 +384,7 @@ export class ObservableQuaternion {
         // assumes direction vectors vFrom and vTo are normalized
         let r = vFrom.dot(vTo) + 1;
 
+        this._onBeforeChangeCallback();
         if (r < Number.EPSILON) {
             // vFrom and vTo point in opposite directions
             r = 0;
@@ -414,6 +433,7 @@ export class ObservableQuaternion {
 
     public conjugate(): ObservableQuaternion {
         this._onBeforeGetComponentCallback();
+        this._onBeforeChangeCallback();
         this._internal_x *= -1;
         this._internal_y *= -1;
         this._internal_z *= -1;
@@ -441,6 +461,7 @@ export class ObservableQuaternion {
         let l = this.length();
 
         if ( l === 0 ) {
+            this._onBeforeChangeCallback();
             this._internal_x = 0;
             this._internal_y = 0;
             this._internal_z = 0;
@@ -449,6 +470,7 @@ export class ObservableQuaternion {
             l = 1 / l;
 
             this._onBeforeGetComponentCallback();
+            this._onBeforeChangeCallback();
             this._internal_x = this._internal_x * l;
             this._internal_y = this._internal_y * l;
             this._internal_z = this._internal_z * l;
@@ -476,6 +498,8 @@ export class ObservableQuaternion {
         const qax = a._x, qay = a._y, qaz = a._z, qaw = a._w;
         const qbx = b._x, qby = b._y, qbz = b._z, qbw = b._w;
 
+        this._onBeforeChangeCallback();
+
         this._internal_x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
         this._internal_y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
         this._internal_z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
@@ -495,6 +519,7 @@ export class ObservableQuaternion {
         // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
         let cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
 
+        this._onBeforeChangeCallback();
         if (cosHalfTheta < 0) {
             this._internal_w = - qb._w;
             this._internal_x = - qb._x;
@@ -524,7 +549,7 @@ export class ObservableQuaternion {
             this._internal_z = s * z + t * this._internal_z;
 
             this.normalize();
-            this._onChangeCallback();
+            //this._onChangeCallback(); this is unnecessary
             return this;
         }
 
@@ -571,6 +596,8 @@ export class ObservableQuaternion {
     }
 
     public fromArray(array: number[]|ArrayLike<number>, offset = 0 ): ObservableQuaternion {
+        this._onBeforeChangeCallback();
+        
         this._internal_x = array[offset];
         this._internal_y = array[offset + 1];
         this._internal_z = array[offset + 2];
