@@ -53,14 +53,14 @@ export class Transform {
     private _localPositionRotationScaleNeedUpdate = false;
 
     private readonly _onBeforeGetLocalBind = this.onBeforeGetLocal.bind(this);
-    private readonly _onLocalChangeBind = this.onLocalChange.bind(this);
-    private readonly _onLocalEulerRotationChangeBind = this.onLocalEulerRotationChange.bind(this);
-    private readonly _onLocalRotationChangeBind = this.onLocalRotationChange.bind(this);
+    private readonly _onBeforeLocalChangeBind = this.onBeforeLocalChange.bind(this);
+    private readonly _onLocalEulerRotationChangedBind = this.onLocalEulerRotationChanged.bind(this);
+    private readonly _onLocalRotationChangedBind = this.onLocalRotationChanged.bind(this);
 
     private readonly _onBeforeGetWorldBind = this.onBeforeGetWorld.bind(this);
-    private readonly _onWorldChangeBind = this.onWorldChange.bind(this);
-    private readonly _onWorldEulerRotationChangeBind = this.onWorldEulerRotationChange.bind(this);
-    private readonly _onWorldRotationChangeBind = this.onWorldRotationChange.bind(this);
+    private readonly _onBeforeWorldChangeBind = this.onBeforeWorldChange.bind(this);
+    private readonly _onWorldEulerRotationChangedBind = this.onWorldEulerRotationChanged.bind(this);
+    private readonly _onWorldRotationChangedBind = this.onWorldRotationChanged.bind(this);
 
     // #endregion
 
@@ -94,88 +94,98 @@ export class Transform {
         });
 
         const onBeforeGetLocalBind = this._onBeforeGetLocalBind;
-        const onLocalChangeBind = this._onLocalChangeBind;
+        const onLocalChangeBind = this._onBeforeLocalChangeBind;
 
         const observablePosition = new ObservableVector3();
         observablePosition.onBeforeGetComponent(onBeforeGetLocalBind);
-        observablePosition.onChange(onLocalChangeBind);
+        observablePosition.onBeforeChange(onLocalChangeBind);
         (this._object3D.position as any) = observablePosition; //inject observable
 
         const observableRotation = new ObservableEuler();
         observableRotation.onBeforeGetComponent(onBeforeGetLocalBind);
-        observableRotation._onChange(this._onLocalEulerRotationChangeBind);
+        observableRotation.onBeforeChange(onLocalChangeBind);
+        observableRotation._onChange(this._onLocalEulerRotationChangedBind);
         (this._object3D.rotation as any) = observableRotation; //inject observable
 
         const observableQuaternion = new ObservableQuaternion();
         observableQuaternion.onBeforeGetComponent(onBeforeGetLocalBind);
-        observableQuaternion._onChange(this._onLocalRotationChangeBind);
+        observableQuaternion.onBeforeChange(onLocalChangeBind);
+        observableQuaternion._onChange(this._onLocalRotationChangedBind);
         (this._object3D.quaternion as any) = observableQuaternion; //inject observable
 
         const observableScale = new ObservableVector3(1, 1, 1);
         observableScale.onBeforeGetComponent(onBeforeGetLocalBind);
-        observableScale.onChange(onLocalChangeBind);
+        observableScale.onBeforeChange(onLocalChangeBind);
         (this._object3D.scale as any) = observableScale; //inject observable
 
         this._gameObject = gameObject;
 
         const onBeforeGetWorldBind = this._onBeforeGetWorldBind;
-        const onWorldChangeBind = this._onWorldChangeBind;
+        const onWorldChangeBind = this._onBeforeWorldChangeBind;
 
         const observableWorldPosition = new ObservableVector3();
         observableWorldPosition.onBeforeGetComponent(onBeforeGetWorldBind);
-        observableWorldPosition.onChange(onWorldChangeBind);
+        observableWorldPosition.onBeforeChange(onWorldChangeBind);
         this._worldPosition = observableWorldPosition;
         
         const observableWorldRotation = new ObservableEuler();
         observableWorldRotation.onBeforeGetComponent(onBeforeGetWorldBind);
-        observableWorldRotation._onChange(this._onWorldEulerRotationChangeBind);
+        observableWorldRotation.onBeforeChange(onWorldChangeBind);
+        observableWorldRotation._onChange(this._onWorldEulerRotationChangedBind);
         this._worldRotationEuler = observableWorldRotation;
 
         const observableWorldRotationQuaternion = new ObservableQuaternion();
         observableWorldRotationQuaternion.onBeforeGetComponent(onBeforeGetWorldBind);
-        observableWorldRotationQuaternion._onChange(this._onWorldRotationChangeBind);
+        observableWorldRotationQuaternion.onBeforeChange(onWorldChangeBind);
+        observableWorldRotationQuaternion._onChange(this._onWorldRotationChangedBind);
         this._worldRotation = observableWorldRotationQuaternion;
 
         const observableWorldScale = new ObservableVector3(1, 1, 1);
         observableWorldScale.onBeforeGetComponent(onBeforeGetWorldBind);
-        observableWorldScale.onChange(onWorldChangeBind);
+        observableWorldScale.onBeforeChange(onWorldChangeBind);
         this._worldScale = observableWorldScale;
 
-        this.setMatrixNeedUpdateRecursively();// for initialize render objects
+        this.setWorldMatrixNeedUpdateRecursively();// for initialize render objects
     }
 
     // #region observable event
 
+    private _ignoreObservableEvent = false;
+
     // #region local
     
     private onBeforeGetLocal(): void {
+        if (this._ignoreObservableEvent) return;
+
         this.updateLocalPositionRotationScaleFromOthers();
     }
 
-    private onLocalChange(): void {
+    //private counter = 0;
+
+    private onBeforeLocalChange(): void {
+        if (this._ignoreObservableEvent) return;
+
+        //if (this.counter++ === 1 && this._gameObject.name === "sans_fight_room") debugger;
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
         this._localPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
-        this.setMatrixNeedUpdateRecursively();
+        this._localMatrixNeedUpdate = true;
+        this.setWorldMatrixNeedUpdateRecursively();
         this.setWorldPositionRotationScaleNeedUpdateRecursively();
         this.setHasChangedRecursively();
     }
 
-    private onLocalEulerRotationChange() {
+    private onLocalEulerRotationChanged() {
+        if (this._ignoreObservableEvent) return;
+
         //for override Object3D.onRotationChange()
         this._object3D.quaternion.setFromEuler(this._object3D.rotation, false);
-
-        this._localPositionRotationScaleNeedUpdate = false;
-        this.setMatrixNeedUpdateRecursively();
-        this.setWorldPositionRotationScaleNeedUpdateRecursively();
-        this.setHasChangedRecursively();
     }
 
-    private onLocalRotationChange() {
+    private onLocalRotationChanged() {
+        if (this._ignoreObservableEvent) return;
+
         //for override Object3D.onQuaternionChange()
         this._object3D.rotation.setFromQuaternion(this._object3D.quaternion, undefined, false);
-
-        this.setMatrixNeedUpdateRecursively();
-        this.setWorldPositionRotationScaleNeedUpdateRecursively();
-        this.setHasChangedRecursively();
     }
 
     // #endregion
@@ -183,32 +193,32 @@ export class Transform {
     // #region world
 
     private onBeforeGetWorld(): void {
+        if (this._ignoreObservableEvent) return;
+        
         this.updateWorldPositionRotationScaleFromOthers();
     }
 
-    private onWorldChange(): void {
+    private onBeforeWorldChange(): void {
+        if (this._ignoreObservableEvent) return;
+        
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
         this._worldPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
-        this.setMatrixNeedUpdateRecursively();
+        this._localMatrixNeedUpdate = true;
+        this.setWorldMatrixNeedUpdateRecursively();
         this._localPositionRotationScaleNeedUpdate = true;
         this.setHasChangedRecursively();
     }
     
-    private onWorldEulerRotationChange(): void {
+    private onWorldEulerRotationChanged(): void {
+        if (this._ignoreObservableEvent) return;
+        
         this._worldRotation.setFromEuler(this._worldRotationEuler, false);
-
-        this._worldPositionRotationScaleNeedUpdate = false;
-        this.setMatrixNeedUpdateRecursively();
-        this._localPositionRotationScaleNeedUpdate = true;
-        this.setHasChangedRecursively();
     }
 
-    private onWorldRotationChange(): void {
-        this._object3D.quaternion.setFromEuler(this._worldRotationEuler, false);
-
-        this._worldPositionRotationScaleNeedUpdate = false;
-        this.setMatrixNeedUpdateRecursively();
-        this._localPositionRotationScaleNeedUpdate = true;
-        this.setHasChangedRecursively();
+    private onWorldRotationChanged(): void {
+        if (this._ignoreObservableEvent) return;
+        
+        this._worldRotationEuler.setFromQuaternion(this._worldRotation as unknown as Quaternion, undefined, false);
     }
 
     // #endregion
@@ -230,22 +240,19 @@ export class Transform {
         }
     }
 
-    private setMatrixNeedUpdateRecursively(): void {
+    private setWorldMatrixNeedUpdateRecursively(): void {
         this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
-        this.setMatrixNeedUpdateRecursivelyInternal();
+        this.setWorldMatrixNeedUpdateRecursivelyInternal();
     }
 
-    private setMatrixNeedUpdateRecursivelyInternal(): void {
-        if (this._localMatrixNeedUpdate && this._worldMatrixNeedUpdate) {
-            return;
-        }
-        this._localMatrixNeedUpdate = true;
+    private setWorldMatrixNeedUpdateRecursivelyInternal(): void {
+        if (this._worldMatrixNeedUpdate) return;
         this._worldMatrixNeedUpdate = true;
         const children = this._object3D.children;
         for (let i = 0, len = children.length; i < len; i++) {
             const child = children[i];
             if (child.userData instanceof Transform) {
-                child.userData.setMatrixNeedUpdateRecursivelyInternal();
+                child.userData.setWorldMatrixNeedUpdateRecursivelyInternal();
             }
         }
     }
@@ -263,9 +270,6 @@ export class Transform {
 
     // #endregion
 
-    // eslint-disable-next-line @typescript-eslint/no-empty-function
-    private static readonly _emptyFunction = () => { };
-
     private static readonly _matrix4Buffer = new Matrix4();
 
     private updateLocalPositionRotationScaleFromOthers(): void {
@@ -274,11 +278,7 @@ export class Transform {
         if (this._localMatrixNeedUpdate) {
             if (this._worldMatrixNeedUpdate) {
                 //update world matrix from world position, rotation, scale
-                const emptyFunction = Transform._emptyFunction;
-                this._worldPosition.onBeforeGetComponent(emptyFunction);
-                this._worldRotation.onBeforeGetComponent(emptyFunction);
-                this._worldRotationEuler.onBeforeGetComponent(emptyFunction);
-                this._worldScale.onBeforeGetComponent(emptyFunction);
+                this._ignoreObservableEvent = true;
 
                 this._object3D.matrixWorld.compose(
                     (this._worldPosition as unknown as Vector3),
@@ -286,10 +286,7 @@ export class Transform {
                     (this._worldScale as unknown as Vector3)
                 );
 
-                this._worldPosition.onBeforeGetComponent(this._onBeforeGetWorldBind);
-                this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
-                this._worldRotationEuler.onBeforeGetComponent(this._onBeforeGetWorldBind);
-                this._worldScale.onBeforeGetComponent(this._onBeforeGetWorldBind);
+                this._ignoreObservableEvent = false;
 
                 this._worldMatrixNeedUpdate = false;
                 this._gameObject.invokeOnWorldMatrixUpdate();
@@ -306,21 +303,12 @@ export class Transform {
             this._localMatrixNeedUpdate = false;
         }
         //update local position, rotation, scale from local matrix
-        const emptyFunction = Transform._emptyFunction;
-        (this.localPosition as unknown as ObservableVector3).onChange(emptyFunction);
-        (this.localRotation as unknown as ObservableQuaternion)._onChange(emptyFunction);
-        (this.localRotation as unknown as ObservableQuaternion).onBeforeGetComponent(emptyFunction);
-        (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-        (this.localScale as unknown as ObservableVector3).onChange(emptyFunction);
+        this._ignoreObservableEvent = true;
 
         this._object3D.matrix.decompose(this.localPosition, this.localRotation, this.localScale);
 
         this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
-        (this.localPosition as unknown as ObservableVector3).onChange(this._onLocalChangeBind);
-        (this.localRotation as unknown as ObservableQuaternion)._onChange(this._onLocalRotationChangeBind);
-        (this.localRotation as unknown as ObservableQuaternion).onBeforeGetComponent(this._onBeforeGetLocalBind);
-        (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-        (this.localScale as unknown as ObservableVector3).onChange(this._onLocalChangeBind);
+        this._ignoreObservableEvent = false;
         
         this._localPositionRotationScaleNeedUpdate = false;
     }
@@ -331,12 +319,7 @@ export class Transform {
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
 
         //update world position, rotation, scale from world matrix
-        const emptyFunction = Transform._emptyFunction;
-        this._worldPosition.onChange(emptyFunction);
-        this._worldRotation._onChange(emptyFunction);
-        this._worldRotation.onBeforeGetComponent(emptyFunction);
-        this._worldRotationEuler.onBeforeGetComponent(emptyFunction);
-        this._worldScale.onChange(emptyFunction);
+        this._ignoreObservableEvent = true;
 
         this._object3D.matrixWorld.decompose(
             this._worldPosition as unknown as Vector3,
@@ -345,11 +328,7 @@ export class Transform {
         );
 
         this._worldRotationEuler.setFromQuaternion(this._worldRotation as unknown as Quaternion, undefined, false);
-        this._worldPosition.onChange(this._onWorldChangeBind);
-        this._worldRotation._onChange(this._onWorldRotationChangeBind);
-        this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
-        this._worldRotationEuler.onBeforeGetComponent(this._onBeforeGetWorldBind);
-        this._worldScale.onChange(this._onWorldChangeBind);
+        this._ignoreObservableEvent = false;
 
         this._worldPositionRotationScaleNeedUpdate = false;
     }
@@ -362,19 +341,11 @@ export class Transform {
         if (!this._localPositionRotationScaleNeedUpdate) {
             if (this._localMatrixNeedUpdate) {
                 //update local matrix from local position, rotation, scale
-                const emptyFunction = Transform._emptyFunction;
-                (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
-                (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-                (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-                (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
+                this._ignoreObservableEvent = true;
                 
                 localMatrix.compose(this.localPosition, this.localRotation, this.localScale);
                 
-                this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
-                (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
-                (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-                (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-                (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
+                this._ignoreObservableEvent = false;
 
                 this._localMatrixNeedUpdate = false;
             }
@@ -388,11 +359,7 @@ export class Transform {
             }
         } else {
             //update world matrix from world position, rotation, scale
-            const emptyFunction = Transform._emptyFunction;
-            this._worldPosition.onBeforeGetComponent(emptyFunction);
-            this._worldRotation.onBeforeGetComponent(emptyFunction);
-            this._worldRotationEuler.onBeforeGetComponent(emptyFunction);
-            this._worldScale.onBeforeGetComponent(emptyFunction);
+            this._ignoreObservableEvent = true;
 
             this._object3D.matrixWorld.compose(
                 (this._worldPosition as unknown as Vector3),
@@ -400,10 +367,7 @@ export class Transform {
                 (this._worldScale as unknown as Vector3)
             );
 
-            this._worldPosition.onBeforeGetComponent(this._onBeforeGetWorldBind);
-            this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
-            this._worldRotationEuler.onBeforeGetComponent(this._onBeforeGetWorldBind);
-            this._worldScale.onBeforeGetComponent(this._onBeforeGetWorldBind);
+            this._ignoreObservableEvent = false;
         }
         this._worldMatrixNeedUpdate = false;
         this._gameObject.invokeOnWorldMatrixUpdate();
@@ -417,11 +381,7 @@ export class Transform {
         if (!this._worldPositionRotationScaleNeedUpdate) {
             if (this._worldMatrixNeedUpdate) {
                 //update world matrix from world position, rotation, scale
-                const emptyFunction = Transform._emptyFunction;
-                this._worldPosition.onBeforeGetComponent(emptyFunction);
-                this._worldRotation.onBeforeGetComponent(emptyFunction);
-                this._worldRotationEuler.onBeforeGetComponent(emptyFunction);
-                this._worldScale.onBeforeGetComponent(emptyFunction);
+                this._ignoreObservableEvent = true;
 
                 this._object3D.matrixWorld.compose(
                     (this._worldPosition as unknown as Vector3),
@@ -429,16 +389,14 @@ export class Transform {
                     (this._worldScale as unknown as Vector3)
                 );
 
-                this._worldPosition.onBeforeGetComponent(this._onBeforeGetWorldBind);
-                this._worldRotation.onBeforeGetComponent(this._onBeforeGetWorldBind);
-                this._worldRotationEuler.onBeforeGetComponent(this._onBeforeGetWorldBind);
-                this._worldScale.onBeforeGetComponent(this._onBeforeGetWorldBind);
+                this._ignoreObservableEvent = false;
                 
                 this._worldMatrixNeedUpdate = false;
             }
             //update local matrix from world matrix and parent world matrix
             const parent = this.parent;
             if (parent) {
+                parent.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
                 const worldToLocalMatrix = Transform._matrix4Buffer.copy(parent._object3D.matrixWorld).invert();
                 this._object3D.matrix.multiplyMatrices(this._object3D.matrixWorld, worldToLocalMatrix);
             } else {
@@ -446,23 +404,25 @@ export class Transform {
             }
         } else {
             //update local matrix from local position, rotation, scale
-            const emptyFunction = Transform._emptyFunction;
-            (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
-            (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-            (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(emptyFunction);
-            (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(emptyFunction);
+            this._ignoreObservableEvent = true;
             
             localMatrix.compose(this.localPosition, this.localRotation, this.localScale);
-            
-            this.localEulerAngles.setFromQuaternion(this.localRotation, undefined, false);
-            (this.localPosition as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
-            (this.localRotation as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-            (this.localEulerAngles as unknown as ObservableEuler).onBeforeGetComponent(this._onBeforeGetLocalBind);
-            (this.localScale as unknown as ObservableVector3).onBeforeGetComponent(this._onBeforeGetLocalBind);
 
+            this._ignoreObservableEvent = false;
         }
         this._localMatrixNeedUpdate = false;
         this._gameObject.invokeOnWorldMatrixUpdate();
+    }
+
+    private updateChildrenLocalPositionRotationScaleFromOthersRecursively(): void {
+        const children = this._object3D.children;
+        for (let i = 0, l = children.length; i < l; i++) {
+            const child = children[i];
+            if (child.userData instanceof Transform) {
+                (child.userData as Transform).updateLocalPositionRotationScaleFromOthers();
+                (child.userData as Transform).updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+            }
+        }
     }
 
     // #region used by matrix processor 
@@ -542,15 +502,17 @@ export class Transform {
     public set parent(value: Transform | null) {
         if (value) {
             const oldParent = this.parent;
+            this.updateLocalPositionRotationScaleFromOthers();
             this._object3D.removeFromParent();
             value._object3D.add(this._object3D);
-            this.setMatrixNeedUpdateRecursively();
+            this.setWorldMatrixNeedUpdateRecursively();
             this._onParentChanged(oldParent, value);
         } else {
             const oldParent = this.parent;
+            this.updateLocalPositionRotationScaleFromOthers();
             this._object3D.removeFromParent();
             this._engineGlobalObject.scene.add(this._object3D);
-            this.setMatrixNeedUpdateRecursively();
+            this.setWorldMatrixNeedUpdateRecursively();
             this._onParentChanged(oldParent, null);
         }
     }
