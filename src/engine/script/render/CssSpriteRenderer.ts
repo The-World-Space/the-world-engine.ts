@@ -77,7 +77,7 @@ export class CssSpriteRenderer extends Component {
             return;
         }
 
-        if (!path) path = CssSpriteRenderer._defaultImagePath;
+        if (!path) path = GlobalConfig.defaultSpriteSrc;
 
         if (!this._htmlImageElement) {
             this._htmlImageElement = new Image();
