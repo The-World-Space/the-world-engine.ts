@@ -27,13 +27,11 @@ export class CssSpriteAtlasRenderer extends Component {
     
     private _initializeFunction: (() => void)|null = null;
 
-    private static readonly _defaultImagePath: string = GlobalConfig.defaultSpriteSrc;
-
     public start(): void {
         this._started = true;
         this._initializeFunction?.call(this);
         if (!this._htmlImageElement) {
-            this.asyncSetImage(CssSpriteAtlasRenderer._defaultImagePath, 1, 1);
+            this.asyncSetImage(GlobalConfig.defaultSpriteSrc, 1, 1);
         }
         
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));

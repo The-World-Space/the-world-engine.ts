@@ -21,14 +21,12 @@ export class CssSpriteRenderer extends Component {
     private _started = false;
 
     private _initializeFunction: (() => void)|null = null;
-    
-    private static readonly _defaultImagePath: string = GlobalConfig.defaultSpriteSrc;
 
     public start(): void {
         this._started = true;
         this._initializeFunction?.call(this);
         if (!this._htmlImageElement) {
-            this.asyncSetImagePath(CssSpriteRenderer._defaultImagePath);
+            this.asyncSetImagePath(GlobalConfig.defaultSpriteSrc);
         }
         
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
