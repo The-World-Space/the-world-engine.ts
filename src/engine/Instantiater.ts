@@ -1,6 +1,5 @@
 import { Quaternion, Vector3 } from "three";
 import { EngineGlobalObject } from "./EngineGlobalObject";
-import { GameObject } from "./hierarchy_object/GameObject";
 import { GameObjectBuilder } from "./hierarchy_object/GameObjectBuilder";
 import { Prefab } from "./hierarchy_object/Prefab";
 import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
@@ -31,28 +30,6 @@ export class Instantiater {
         const id = this._eventInstanceNextId;
         this._eventInstanceNextId += 1;
         return id;
-    }
-
-    /**
-     * create a new GameObject with the given name
-     * @param name 
-     * @param localPosition
-     * @param localRotation
-     * @param localScale
-     * @returns 
-     */
-    public createGameObject(
-        name: string,
-        localPosition?: Vector3,
-        localRotation?: Quaternion,
-        localScale?: Vector3
-    ): GameObject {
-        const gameObject = new GameObject(this._engineGlobalObject, name);
-        const transform = gameObject.transform;
-        if (localPosition) transform.localPosition.copy(localPosition);
-        if (localRotation) transform.localRotation.copy(localRotation);
-        if (localScale) transform.localScale.copy(localScale);
-        return gameObject;
     }
 
     /**
