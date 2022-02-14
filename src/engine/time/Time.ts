@@ -6,6 +6,7 @@ export class Time {
     private _deltaTime: number;
     private _unscaledDeltaTime: number;
     private _timeScale: number;
+    private _maximumDeltaTime: number = 1 / 3;
 
     public constructor() {
         this._oldTime = 0;
@@ -24,9 +25,13 @@ export class Time {
     /** @internal */
     public update(): void {
         const now = performance.now();
-        this._unscaledDeltaTime = (now - this._oldTime) / 1000;
-        this._unscaledTime += this._unscaledDeltaTime;
-        this._deltaTime = this._unscaledDeltaTime * this._timeScale;
+        let unscaledDeltaTime = (now - this._oldTime) / 1000;
+        if (this._maximumDeltaTime < unscaledDeltaTime) {
+            unscaledDeltaTime = this._maximumDeltaTime;
+        }
+        this._unscaledDeltaTime = unscaledDeltaTime;
+        this._unscaledTime += unscaledDeltaTime;
+        this._deltaTime = unscaledDeltaTime * this._timeScale;
         this._time += this._deltaTime;
         this._oldTime = now;
     }
@@ -71,5 +76,25 @@ export class Time {
      */
     public set timeScale(value: number) {
         this._timeScale = value;
+    }
+
+    /**
+     * The maximum value of Time.deltaTime in any given frame. This is a time in seconds that limits the increase of Time.time between two frames.
+     * The default value is 0.333333, or one third of a second.
+     * 
+     * When a very slow frame happens, maximumDeltaTime limits the value of Time.deltaTime in the following frame to avoid undesirable side-effects from very large deltaTime values.
+     */
+    public get maximumDeltaTime(): number {
+        return this._maximumDeltaTime;
+    }
+
+    /**
+     * The maximum value of Time.deltaTime in any given frame. This is a time in seconds that limits the increase of Time.time between two frames.
+     * The default value is 0.333333, or one third of a second.
+     * 
+     * When a very slow frame happens, maximumDeltaTime limits the value of Time.deltaTime in the following frame to avoid undesirable side-effects from very large deltaTime values.
+     */
+    public set maximumDeltaTime(value: number) {
+        this._maximumDeltaTime = value;
     }
 }
