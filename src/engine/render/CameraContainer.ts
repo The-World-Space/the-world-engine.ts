@@ -1,3 +1,5 @@
+import { Set } from "js-sdsl";
+import { SetType } from "js-sdsl/dist/cjs/Set/Set";
 import * as THREE from "three";
 import { CameraInfo } from "./CameraInfo";
 import { Color } from "./Color";
@@ -7,13 +9,20 @@ import { Color } from "./Color";
  * do not drive this class
  */
 export class CameraContainer {
-    private _camera: THREE.Camera|null = null;
-    private _currentCameraPriority: number = Number.MIN_SAFE_INTEGER;
-    private _cameraList: {camera: THREE.Camera, info: CameraInfo}[] = [];
+    private _currentCameraInfo: {camera: THREE.Camera, info: CameraInfo}|null = null; 
+    private _cameraInfoMap: Map<THREE.Camera, CameraInfo>;
+    private _cameraQueue: SetType<{camera: THREE.Camera, info: CameraInfo}>;
     private _onChangeBackgroundColor: (color: Color) => void;
 
     /** @internal */
     public constructor(onChangeBackgroundColor: (color: Color) => void) {
+        this._cameraInfoMap = new Map();
+        this._cameraQueue = new Set(undefined, (a, b) => {
+            if (a.info.priority === b.info.priority) {
+                return a.camera.id - b.camera.id;
+            }
+            return a.info.priority - b.info.priority;
+        });
         this._onChangeBackgroundColor = onChangeBackgroundColor;
     }
 
@@ -21,7 +30,7 @@ export class CameraContainer {
      * get current render camera
      */
     public get camera(): THREE.Camera|null {
-        return this._camera;
+        return this._currentCameraInfo?.camera ?? null;
     }
 
     /**
@@ -29,7 +38,7 @@ export class CameraContainer {
      * @internal
      */
     public get currentCameraPriority(): number {
-        return this._currentCameraPriority;
+        return this._currentCameraInfo?.info.priority ?? Number.MIN_SAFE_INTEGER;
     }
 
     /**
@@ -40,8 +49,8 @@ export class CameraContainer {
      * @internal
      */
     public addCamera(camera: THREE.Camera, info: CameraInfo): void {
-        this._cameraList.push({camera, info});
-        this._cameraList.sort((a, b) => a.info.priority - b.info.priority);
+        this._cameraInfoMap.set(camera, info);
+        this._cameraQueue.insert({camera, info});
         this.setCamera();
     }
 
@@ -52,7 +61,10 @@ export class CameraContainer {
      * @internal
      */
     public removeCamera(camera: THREE.Camera): void {
-        this._cameraList = this._cameraList.filter(c => c.camera !== camera);
+        const info = this._cameraInfoMap.get(camera);
+        if (!info) return;
+        this._cameraQueue.eraseElementByValue({camera, info});
+        this._cameraInfoMap.delete(camera);
         this.setCamera();
     }
 
@@ -64,12 +76,12 @@ export class CameraContainer {
      * @internal
      */
     public changeCameraPriority(camera: THREE.Camera, priority: number): void {
-        const index = this._cameraList.findIndex(c => c.camera === camera);
-        if (index !== -1) {
-            this._cameraList[index].info.priority = priority;
-            this._cameraList.sort((a, b) => a.info.priority - b.info.priority);
-            this.setCamera();
-        }
+        const info = this._cameraInfoMap.get(camera);
+        if (!info) return;
+        this._cameraQueue.eraseElementByValue({camera, info});
+        info.priority = priority;
+        this._cameraQueue.insert({camera, info});
+        this.setCamera();
     }
 
     /**
@@ -80,24 +92,26 @@ export class CameraContainer {
      * @internal
      */
     public changeCameraBackgroundColor(camera: THREE.Camera, color: Color): void {
-        const index = this._cameraList.findIndex(c => c.camera === camera);
-        if (index !== -1) {
-            this._cameraList[index].info.backgroundColor = color;
-        }
-        if (this._camera === camera) {
+        const info = this._cameraInfoMap.get(camera);
+        if (!info) return;
+        info.backgroundColor = color;
+        if (this._currentCameraInfo?.camera === camera) {
             this._onChangeBackgroundColor(color);
         }
     }
     
     private setCamera(): void {
-        if (this._cameraList.length === 0) {
-            this._camera = null;
+        if (this._cameraQueue.size() === 0) {
+            this._currentCameraInfo = null;
             return;
         }
 
-        const camera = this._cameraList[0].camera;
-        this._camera = camera;
-        this._currentCameraPriority = this._cameraList[0].info.priority;
-        this._onChangeBackgroundColor(this._cameraList[0].info.backgroundColor);
+        const cameraPair = this._cameraQueue.front();
+        if (!cameraPair) {
+            this._currentCameraInfo = null;
+            return;
+        }
+        this._currentCameraInfo = cameraPair;
+        this._onChangeBackgroundColor(this._currentCameraInfo.info.backgroundColor);
     }
 }
