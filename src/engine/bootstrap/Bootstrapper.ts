@@ -1,5 +1,6 @@
 import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
+import { createDefaultGameSetting, GameSetting } from "../GameSetting";
 
 /**
  * make game scene with interop object and scene builder
@@ -9,15 +10,23 @@ export abstract class Bootstrapper<T = any> {
     private _engineGlobalObject: EngineGlobalObject;
     private _interopObject: T|null;
     private _sceneBuilder: SceneBuilder;
+    private _gameSetting: GameSetting;
 
     public constructor(engineGlobalObject: EngineGlobalObject, interopObject?: T) {
         this._engineGlobalObject = engineGlobalObject;
         this._interopObject = interopObject || null;
         this._sceneBuilder = new SceneBuilder(this._engineGlobalObject.sceneProcessor);
+        this._gameSetting = createDefaultGameSetting();
+    }
+
+    /** @internal */
+    public getReadOnlyGameSetting(): Readonly<GameSetting> {
+        Object.freeze(this._gameSetting);
+        return this._gameSetting;
     }
 
     /**
-     * make scene builder
+     * set game setting and make scene
      */
     public abstract run(): SceneBuilder;
 
@@ -40,5 +49,12 @@ export abstract class Bootstrapper<T = any> {
      */
     protected get sceneBuilder(): SceneBuilder {
         return this._sceneBuilder;
+    }
+
+    /**
+     * get game setting, this value will be frozen after run
+     */
+    protected get setting(): GameSetting {
+        return this._gameSetting;
     }
 }

@@ -32,7 +32,7 @@ export class Game {
     private readonly _physics2DProcessor: Physics2DProcessor;
     private readonly _engineGlobalObject: EngineGlobalObject;
     private readonly _container: HTMLElement;
-    private readonly _gameSetting: GameSetting;
+    private _gameSetting: Readonly<GameSetting>|null = null;
     private _animationFrameId: number|null;
     private _isDisposed: boolean;
     private _resizeFrameBufferBind: () => void;
@@ -42,8 +42,7 @@ export class Game {
      * 
      * @param container html element that mount the game view
      */
-    public constructor(container: HTMLElement, setting: GameSetting) {
-        this._gameSetting = setting;
+    public constructor(container: HTMLElement) {
         this._rootScene = new Scene();
         this._gameScreen = new GameScreen(container.clientWidth, container.clientHeight);
         this._container = container;
@@ -74,9 +73,6 @@ export class Game {
         );
         this._animationFrameId = null;
         this._isDisposed = false;
-        if (setting.render.useCss3DRenderer) {
-            container.appendChild(this._css3DRenderer.domElement);
-        }
         this._css3DRenderer.domElement.onscroll = () => { //block scroll to prevent camera bug
             this._css3DRenderer.domElement.scrollLeft = 0;
             this._css3DRenderer.domElement.scrollTop = 0;
@@ -107,7 +103,12 @@ export class Game {
         this._gameState.kind = GameStateKind.Initializing;
         this._time.start();
         const bootstrapper = new bootstrapperCtor(this._engineGlobalObject, interopObject);
-        bootstrapper.run().build();
+        const scene = bootstrapper.run();
+        this._gameSetting = bootstrapper.getReadOnlyGameSetting();
+        if (this._gameSetting.render.useCss3DRenderer) {
+            this._container.appendChild(this._css3DRenderer.domElement);
+        }
+        scene.build();
         //If a camera exists in the bootstrapper,
         //it is certain that the camera exists in the global variable from this point on.
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
@@ -132,7 +133,7 @@ export class Game {
         this._animationFrameId = requestAnimationFrame(this._loopBind);
         this._time.update();
         this._sceneProcessor.startProcessNonSyncedEvent();
-        if (this._gameSetting.physics.usePhysics2D) {
+        if (this._gameSetting!.physics.usePhysics2D) {
             this._physics2DProcessor.update(this._time.deltaTime);
         }
         this._coroutineProcessor.tryCompact();
@@ -140,7 +141,7 @@ export class Game {
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
-        if (this._gameSetting.render.useCss3DRenderer) {
+        if (this._gameSetting!.render.useCss3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
         }
         this._transformMatrixProcessor.flush();
