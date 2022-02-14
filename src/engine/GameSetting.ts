@@ -1,3 +1,4 @@
+//todo: move to bootstrap
 export type GameSetting = {
     render: {
         useCss3DRenderer: boolean;
