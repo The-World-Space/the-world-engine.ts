@@ -40,6 +40,7 @@ export class GameObject {
      * @param gameObjectBuilder 
      */
     public addChildFromBuilder(gameObjectBuilder: GameObjectBuilder): GameObject {
+        this.checkGameObjectIsExist();
         const gameObject = gameObjectBuilder.build(this.transform);
         gameObjectBuilder.processEvent();
         return gameObject;
@@ -67,6 +68,7 @@ export class GameObject {
      * @returns if success, return the component instance
      */
     public addComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T|null {
+        this.checkGameObjectIsExist();
         const component = new componentCtor(this);
         component.engine_internal_constructAfterProcess();
         
@@ -123,6 +125,7 @@ export class GameObject {
      * @returns if success, return the component instance
      */
     public getComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
+        this.checkGameObjectIsExist();
         const components = this._components;
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
@@ -149,6 +152,7 @@ export class GameObject {
      * @returns 
      */
     public getComponents<T extends Component>(componentCtor?: ComponentConstructor<T>): T[] {
+        this.checkGameObjectIsExist();
         if (!componentCtor) return this._components.slice() as T[];
         const components = this._components;
         const result: T[] = [];
@@ -167,6 +171,7 @@ export class GameObject {
      * @returns 
      */
     public getComponentInChildren<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
+        this.checkGameObjectIsExist();
         const components = this.getComponent(componentCtor);
         if (components) return components;
         let findComponent: T | null = null;
@@ -198,6 +203,7 @@ export class GameObject {
      * @returns 
      */
     public getComponentsInChildren<T extends Component>(componentCtor?: ComponentConstructor<T>): T[] {
+        this.checkGameObjectIsExist();
         if (!componentCtor) {
             const components = this.getComponents();
             this._transform.foreachChild(child => {
@@ -239,6 +245,7 @@ export class GameObject {
      * @internal
      */
     public foreachComponent<T extends Component>(callback: (component: T) => void, componentCtor?: ComponentConstructor<T>): void {
+        this.checkGameObjectIsExist();
         const components = this._components;
         if (!componentCtor) {
             for (let i = 0; i < components.length; i++) {
@@ -276,6 +283,7 @@ export class GameObject {
      * @internal
      */
     public foreachComponentInChildren<T extends Component>(callback: (component: T) => void, componentCtor?: ComponentConstructor<T>): void {
+        this.checkGameObjectIsExist();
         if (!componentCtor) {
             this.foreachComponent(callback as (component: Component) => void);
             this._transform.foreachChild(child => {
@@ -305,8 +313,7 @@ export class GameObject {
     //     }
     // }
 
-    /** @internal */
-    public _destroyed = false;
+    private _destroyed = false;
 
     /**
      * destroy the GameObject
@@ -427,9 +434,11 @@ export class GameObject {
      * defines whether the GameObject is active in the Scene
      */
     public set activeSelf(value: boolean) {
+        this.checkGameObjectIsExist();
         if (this._activeSelf === value) return;
 
         this._activeSelf = value;
+
         if (this._transform.parent instanceof Transform) { // if parent is a gameobject
             if (this._transform.parent.gameObject._activeInHierarchy) {
                 this.setActiveInHierarchyWithEvent(this._activeSelf);
@@ -459,6 +468,7 @@ export class GameObject {
      * set name of the GameObject
      */
     public set name(value: string) {
+        this.checkGameObjectIsExist();
         this._transform.unsafeGetObject3D().name = value;
     }
 
@@ -474,5 +484,18 @@ export class GameObject {
      */
     public get initialized(): boolean {
         return this._initialized;
+    }
+
+    /**
+     * does the gameobject exist?
+     */
+    public get exists(): boolean {
+        return !this._destroyed;
+    }
+
+    private checkGameObjectIsExist(): void {
+        if (this._destroyed) {
+            throw new Error("GameObject " + this.name + " is destroyed");
+        }
     }
 }

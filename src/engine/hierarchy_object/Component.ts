@@ -69,6 +69,7 @@ export abstract class Component {
      * @returns corutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
      */
     public startCorutine(coroutineIterator: CoroutineIterator): Coroutine {
+        this.checkComponentIsExist();
         const coroutine = new Coroutine(this, coroutineIterator, () => {
             const index = this._runningCoroutines.indexOf(coroutine);
             if (index >= 0) {
@@ -84,6 +85,7 @@ export abstract class Component {
      * stop all coroutines executed by this component
      */
     public stopAllCoroutines(): void {
+        this.checkComponentIsExist();
         this._runningCoroutines.forEach(coroutine => {
             this.stopCoroutine(coroutine);
         });
@@ -95,6 +97,7 @@ export abstract class Component {
      * @param coroutine coroutine instance
      */
     public stopCoroutine(coroutine: Coroutine): void {
+        this.checkComponentIsExist();
         if ((coroutine as Coroutine).component !== this) {
             throw new Error("Coroutine is not owned by this component");
         }
@@ -116,6 +119,7 @@ export abstract class Component {
      * enabled components are updated, disabled components are not
      */
     public set enabled(value: boolean) {
+        this.checkComponentIsExist();
         if (this._enabled === value) return;
 
         this._enabled = value;
@@ -134,6 +138,12 @@ export abstract class Component {
                 this._engine_internal_componentEventContainer.tryUnregisterUpdate();
                 this.engine.sceneProcessor.tryStartProcessSyncedEvent();
             }
+        }
+    }
+
+    private checkComponentIsExist(): void {
+        if (this._engine_internal_destroyed) {
+            throw new Error("Component " + this.constructor.name + " is destroyed");
         }
     }
 
@@ -170,6 +180,13 @@ export abstract class Component {
      */
     public get initialized(): boolean {
         return this._gameObject.initialized;
+    }
+
+    /**
+     * does the component exist?
+     */
+    public get exists(): boolean {
+        return !this._engine_internal_destroyed;
     }
 
     /**

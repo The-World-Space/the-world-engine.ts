@@ -429,7 +429,7 @@ export class Transform {
 
     /** @internal */
     public tryUpdateWorldMatrixRecursivelyFromThisToChildren(): boolean {
-        if (this._gameObject._destroyed) return false; //todo: check if this is correct
+        if (!this._gameObject.exists) return false; //todo: check if this is correct
         return this.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
     }
 
