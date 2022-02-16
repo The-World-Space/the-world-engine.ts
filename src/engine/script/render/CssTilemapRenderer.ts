@@ -32,7 +32,7 @@ export class TileAtlasItem {
     }
 }
 
-export class CssTilemapRenderer extends Component{
+export class CssTilemapRenderer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
 
     private _columnCount = 10;
