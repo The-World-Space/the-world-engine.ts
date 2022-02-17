@@ -41,9 +41,6 @@ export class CssSpriteAtlasRenderer extends Component {
         if (!this._started) return;
         if (this._sprite) {
             this.transform.unsafeGetObject3D().remove(this._sprite); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-            this._sprite.element.parentElement?.removeChild(this._sprite.element);
-            this._sprite.element.remove();
-            this._sprite = null;
         }
     }
 
