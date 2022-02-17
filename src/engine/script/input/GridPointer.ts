@@ -44,7 +44,7 @@ export class GridPointer extends Component {
                     const cursorElement = document.createElement("div");
                     cursorElement.style.backgroundColor = "white";
                     cursorElement.style.opacity = "0.3";
-                    c.setElement(cursorElement);
+                    c.element = cursorElement;
                 })
                 .getComponent(CssHtmlElementRenderer, pointerRenderer)
                 .getGameObject(pointerObject));
@@ -77,7 +77,7 @@ export class GridPointer extends Component {
     private onPointerDown(event: PointerGridEvent): void {
         this._isMouseDown = true;
         this.updatePointerPosition(event);
-        const container = this._pointerRenderer?.getElementContainer();
+        const container = this._pointerRenderer?.element;
         if (container) container.style.backgroundColor = "#DDDDDD";
         this._onPointerDownDelegates.forEach(delegate => delegate(event));
     }
@@ -85,7 +85,7 @@ export class GridPointer extends Component {
     private onPointerUp(event: PointerGridEvent): void {
         this._isMouseDown = false;
         this.updatePointerPosition(event);
-        const container = this._pointerRenderer?.getElementContainer();
+        const container = this._pointerRenderer?.element;
         if (container) container.style.backgroundColor = "white";
         this._onPointerUpDelegates.forEach(delegate => delegate(event));
     }

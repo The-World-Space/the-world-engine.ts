@@ -33,7 +33,7 @@ export class EditorGridRenderer extends Component {
                     c.elementWidth = this._renderWidth / this._lineWidth;
                     c.elementHeight = this._renderHeight / this._lineWidth;
                     c.pointerEvents = false;
-                    c.setElement(element);
+                    c.element = element;
                 })
                 .getComponent(CssHtmlElementRenderer, cssHtmlRendererRef));
         
@@ -61,7 +61,7 @@ export class EditorGridRenderer extends Component {
         const yRemainder = centerY % scaledGridCellHeight;
 
         if (!position.equals(this._lastPosition)) {
-            this._cssHtmlRenderer!.getElementContainer()!.style.backgroundPosition = 
+            this._cssHtmlRenderer!.element!.style.backgroundPosition = 
                 (-position.x / this._lineWidth + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
                 (position.y / this._lineWidth + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
         }

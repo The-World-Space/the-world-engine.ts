@@ -1,167 +1,150 @@
-import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { Transform } from "../../..";
-import { Component } from "../../hierarchy_object/Component";
-import { ZaxisInitializer } from "./ZaxisInitializer";
+import { Transform } from "../../hierarchy_object/Transform";
+import { CssRenderer } from "./CssRenderer";
 
-export class CssHtmlElementRenderer extends Component {
-    public override readonly disallowMultipleComponent: boolean = true;
-
-    private _css3DObject: CSS3DObject|null = null;
-    private _htmlDivElement: HTMLDivElement|null = null;
-    private readonly _centerOffset: Vector2 = new Vector2(0, 0);
-    private _zindex = 0;
+export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
     private _elementWidth = 16;
     private _elementHeight = 16;
     private _autoSize = false;
-    private _pointerEvents = true;
-
     private _initializeFunction: (() => void)|null = null;
-    private _awaked = false;
 
-    private static readonly _defaultElement: HTMLDivElement = document.createElement("div");
-
-    public awake(): void {
-        this._awaked = true;
+    protected override renderInitialize(): void {
         this._initializeFunction?.call(this);
-        if (!this._htmlDivElement) {
-            this.setElement(CssHtmlElementRenderer._defaultElement);
+        if (!this.htmlElement) this.element = null;
+    }
+
+    protected override updateCenterOffset(updateTransform = true): void {
+        if (!this.css3DObject) return;
+
+        let width: number;
+        let height: number;
+
+        if (this._autoSize) {
+            if (!this.css3DObject.element.parentElement) {
+                const lastDisplayState = this.css3DObject.element.style.display;
+                this.css3DObject.element.style.display = "";
+                const lastTransformState = this.css3DObject.element.style.transform;
+                this.css3DObject.element.style.transform = "translateX(1000000px)";
+                document.body.appendChild(this.css3DObject.element);
+                width = this.css3DObject.element.offsetWidth * this.viewScale;
+                height = this.css3DObject.element.offsetHeight * this.viewScale;
+                console.log(width, height);
+                this.css3DObject.element.style.display = lastDisplayState;
+                this.css3DObject.element.style.transform = lastTransformState;
+                document.body.removeChild(this.css3DObject.element);
+            } else {
+                const lastDisplayState = this.css3DObject.element.style.display;
+                this.css3DObject.element.style.display = "";
+                width = this.css3DObject.element.offsetWidth * this.viewScale;
+                height = this.css3DObject.element.offsetHeight * this.viewScale;
+                this.css3DObject.element.style.display = lastDisplayState;
+            }
+        } else {
+            width = this._elementWidth;
+            height = this._elementHeight;
+        }
+        this.css3DObject.position.set(
+            width * this.centerOffset.x,
+            height * this.centerOffset.y, 0
+        );
+        
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
-    public start(): void {
-        if (this._css3DObject) {
-            if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
-            else this._css3DObject.visible = false;
-        }
-        ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
-    }
+    protected override updateViewScale(updateTransform = true): void {
+        if (!this.css3DObject) return;
+        
+        const value = this.viewScale;
 
-    public onDestroy(): void {
-        if (this._css3DObject) {
-            this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+        if (!this._autoSize) {
+            this.css3DObject.element.style.width = (this._elementWidth / this.viewScale) + "px";
+            this.css3DObject.element.style.height = (this._elementHeight / this.viewScale) + "px";
+            this.css3DObject.scale.set(value, value, value);
+        } else {
+            this.css3DObject.scale.set(value, value, value);
+            this.updateCenterOffset(false);
         }
-    }
 
-    public onEnable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = true;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
-
-    public onDisable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = false;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis;
-        if (this._css3DObject) {
-            this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
-        }
-    }
-    
-    public onWorldMatrixUpdated(): void {
-        if (this._css3DObject) {
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
+    public get element(): HTMLDivElement|null {
+        return this.htmlElement;
     }
 
-    public getElementContainer(): HTMLDivElement|null {
-        return this._htmlDivElement;
-    }
-
-    public setElement(value: HTMLDivElement|null): void {
-        if (!this._awaked) {
-            this._initializeFunction = () => {
-                this.setElement(value);
-            };
+    public set element(value: HTMLDivElement|null) {
+        if (!this.readyToDraw) {
+            this._initializeFunction = () => this.element = value;
             return;
         }
 
-        if (!value) value = CssHtmlElementRenderer._defaultElement;
-
-        if (!this._htmlDivElement) {
-            this._htmlDivElement = document.createElement("div");
-        }
-
-        this._htmlDivElement = value;
+        if (!value) value = document.createElement("div");
+        this.htmlElement = value;
         
-        if (!this._css3DObject) {
-            this._css3DObject = new CSS3DObject(this._htmlDivElement);
-            if (this._elementWidth === 0) this._elementWidth = this._htmlDivElement.offsetWidth;
-            if (this._elementHeight === 0) this._elementHeight = this._htmlDivElement.offsetHeight;
+        if (!this.css3DObject) {
+            this.css3DObject = new CSS3DObject(this.htmlElement);
+
             if (this._autoSize) {
-                this._htmlDivElement.style.width = "auto";
-                this._htmlDivElement.style.height = "auto";
+                this.htmlElement.style.width = "auto";
+                this.htmlElement.style.height = "auto";
             } else {
-                this._htmlDivElement.style.width = this._elementWidth + "px";
-                this._htmlDivElement.style.height = this._elementHeight + "px";
+                this.htmlElement.style.width = this._elementWidth + "px";
+                this.htmlElement.style.height = this._elementHeight + "px";
             }
-            this._htmlDivElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
-            
-            this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
-            this._css3DObject.onAfterRender = () => {
-                this.updateCenterOffset();
-                // eslint-disable-next-line @typescript-eslint/no-empty-function
-                if (this._css3DObject) this._css3DObject.onAfterRender = () => {};
-            };
-            this.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-    
-            if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
-            else this._css3DObject.visible = false;
-
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+            this.initializeBaseComponents();
         }
-    }
-
-    private updateCenterOffset(): void {
-        if (this._css3DObject) {
-            const lastDisplayState = this._css3DObject.element.style.display;
-            this._css3DObject.element.style.display = "";
-            this._css3DObject.position.set(
-                this._htmlDivElement!.offsetWidth * this._centerOffset.x,
-                this._htmlDivElement!.offsetHeight * this._centerOffset.y, 0
-            );
-            this._css3DObject.element.style.display = lastDisplayState;
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
-    
-    public get centerOffset(): Vector2 {
-        return this._centerOffset.clone();
-    }
-
-    public set centerOffset(value: Vector2) {
-        this._centerOffset.copy(value);
-        this.updateCenterOffset();
     }
 
     public get elementWidth(): number {
+        if (this._autoSize) {
+            if (this.htmlElement) {
+                const lastDisplayState = this.htmlElement.style.display;
+                this.htmlElement.style.display = "";
+                const ret = this.htmlElement.offsetWidth;
+                this.htmlElement.style.display = lastDisplayState;
+                return ret;
+            }
+            return 0;
+        }
         return this._elementWidth;
     }
 
     public set elementWidth(value: number) {
+        if (this._autoSize) return;
+
         this._elementWidth = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.width = value + "px";
+        if (this.htmlElement) {
+            this.htmlElement.style.width = value + "px";
         }
         this.updateCenterOffset();
     }
 
     public get elementHeight(): number {
+        if (this._autoSize) {
+            if (this.htmlElement) {
+                const lastDisplayState = this.htmlElement.style.display;
+                this.htmlElement.style.display = "";
+                const ret = this.htmlElement.offsetHeight;
+                this.htmlElement.style.display = lastDisplayState;
+                return ret;
+            }
+            return 0;
+        }
         return this._elementHeight;
     }
 
     public set elementHeight(value: number) {
+        if (this._autoSize) return;
+
         this._elementHeight = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.height = value + "px";
+        if (this.htmlElement) {
+            this.htmlElement.style.height = value + "px";
         }
         this.updateCenterOffset();
     }
@@ -172,25 +155,14 @@ export class CssHtmlElementRenderer extends Component {
 
     public set autoSize(value: boolean) {
         this._autoSize = value;
-        if (this._htmlDivElement) {
+        if (this.htmlElement) {
             if (value) {
-                this._htmlDivElement.style.width = "auto";
-                this._htmlDivElement.style.height = "auto";
+                this.htmlElement.style.width = "auto";
+                this.htmlElement.style.height = "auto";
             } else {
-                this._htmlDivElement.style.width = this._elementWidth + "px";
-                this._htmlDivElement.style.height = this._elementHeight + "px";
+                this.htmlElement.style.width = this._elementWidth + "px";
+                this.htmlElement.style.height = this._elementHeight + "px";
             }
-        }
-    }
-
-    public get pointerEvents(): boolean {
-        return this._pointerEvents;
-    }
-
-    public set pointerEvents(value: boolean) {
-        this._pointerEvents = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.pointerEvents = value ? "auto" : "none";
         }
     }
 }
