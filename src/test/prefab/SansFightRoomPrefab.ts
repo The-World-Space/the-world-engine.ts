@@ -170,7 +170,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.width = 64 * 3;
                         c.height = 36 * 3;
                         c.viewScale = 0.2;
-                        c.iframeCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                     })
                     .withComponent(ZaxisSorter))
 

@@ -79,7 +79,7 @@ export class TestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildGameObject("camera_parent")
                 .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 100))
-                    //.active(false)
+                    .active(false)
                     .withComponent(Camera)
                     .withComponent(EditorCameraController, c => {
                         c.maxViewSize = 500;
@@ -93,7 +93,7 @@ export class TestBootstrapper extends Bootstrapper {
                     .withBackgroundColor(new PrefabRef(new Color(0, 0, 0)))
                     .withViewSize(new PrefabRef(200))
                     .make()
-                    .active(false)
+                    //.active(false)
                     .withComponent(EditorGridRenderer, c => {
                         //c.enabled = false;
                         c.renderWidth = 1000;

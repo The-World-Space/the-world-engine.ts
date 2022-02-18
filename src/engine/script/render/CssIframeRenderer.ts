@@ -1,90 +1,50 @@
-import { Vector2 } from "three";
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
-import { ZaxisInitializer } from "./ZaxisInitializer";
+import { CssRenderer } from "./CssRenderer";
 
-export class CssIframeRenderer extends Component {
-    public override readonly disallowMultipleComponent: boolean = true;
-    
+export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
     private _width = 128;
     private _height = 128;
-    private _viewScale = 1;
-    private _css3DObject: CSS3DObject|null = null;
-    private _htmlIframeElement: HTMLIFrameElement|null = null;
-    private readonly _iframeCenterOffset: Vector2 = new Vector2(0, 0);
     private _iframeSource = "";
-    private _pointerEvents = true;
-    private _zindex = 0;
-    private _started = false;
 
-    public start(): void { 
-        this.drawIframe();
-        ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
-        this._started = true;
+    protected override renderInitialize(): void {
+        this.htmlElement = document.createElement("iframe") as HTMLIFrameElement;
+        this.htmlElement.title = this.gameObject.name + "_iframe";
+        this.htmlElement.width = (this._width / this.viewScale).toString();
+        this.htmlElement.height = (this._height / this.viewScale).toString();
+        this.htmlElement.src = this._iframeSource;
+        this.htmlElement.style.border = "none";
+        const css3DObject = this.initializeBaseComponents(false);
+        css3DObject.scale.set(this.viewScale, this.viewScale, this.viewScale);
+
+        Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
-    public onDestroy(): void {
-        if (!this._started) return;
-        if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-    }
+    protected override updateCenterOffset(updateTransform: boolean): void {
+        if (!this.css3DObject) return;
 
-    public onEnable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = true;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        this.css3DObject.position.set(
+            this._width * this.centerOffset.x,
+            this._height * this.centerOffset.y, 0
+        );
+
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
-    public onDisable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = false;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
+    protected override updateViewScale(updateTransform: boolean): void {
+        if (!this.css3DObject) return;
 
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis;
-        if (this._css3DObject) {
-            this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
-        }
-    }
-    
-    public onWorldMatrixUpdated(): void {
-        if (this._css3DObject) {
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
-
-    private drawIframe(): void {
-        const iframeWidth: number = this._width;
-        const iframeHeight: number = this._height;
-        this._htmlIframeElement = document.createElement("iframe") as HTMLIFrameElement;
-        this._htmlIframeElement.title = this.gameObject.name + "_iframe";
-        this._htmlIframeElement.width = (iframeWidth / this.viewScale).toString();
-        this._htmlIframeElement.height = (iframeHeight / this.viewScale).toString();
-        this._htmlIframeElement.src = this._iframeSource;
-        this._css3DObject = new CSS3DObject(this._htmlIframeElement);
-        this.updateCenterOffset();
-        this._css3DObject.scale.set(this.viewScale, this.viewScale, this.viewScale);
-        this.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-        this._htmlIframeElement.style.border = "none";
-        this._htmlIframeElement.style.zIndex = Math.floor(this._zindex).toString();
-        this._htmlIframeElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
-
-        Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-        this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-    }
-
-    private updateCenterOffset(): void {
-        if (this._css3DObject) {
-            this._css3DObject.position.set(
-                this._width * this._iframeCenterOffset.x,
-                this._height * this._iframeCenterOffset.y, 0
-            );
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        const value = this.viewScale;
+        this.htmlElement!.width = (this._width / this.viewScale).toString();
+        this.htmlElement!.height = (this._height / this.viewScale).toString();
+        this.css3DObject.scale.set(value, value, value);
+        
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
@@ -95,10 +55,10 @@ export class CssIframeRenderer extends Component {
     public set width(value: number) {
         this._width = value;
 
-        if (this._htmlIframeElement) {
-            this._htmlIframeElement.width = value.toString();
+        if (this.htmlElement) {
+            this.htmlElement.width = (value / this.viewScale).toString();
         }
-        this.updateCenterOffset();
+        this.updateCenterOffset(true);
     }
 
     public get height(): number {
@@ -108,26 +68,10 @@ export class CssIframeRenderer extends Component {
     public set height(value: number) {
         this._height = value;
 
-        if (this._htmlIframeElement) {
-            this._htmlIframeElement.height = value.toString();
+        if (this.htmlElement) {
+            this.htmlElement.height = (value / this.viewScale).toString();
         }
-        this.updateCenterOffset();
-    }
-
-    public get viewScale(): number {
-        return this._viewScale;
-    }
-
-    public set viewScale(value: number) {
-        this._viewScale = value;
-        
-        if (this._css3DObject) {
-            this._htmlIframeElement!.width = (this._width / this.viewScale).toString();
-            this._htmlIframeElement!.height = (this._height / this.viewScale).toString();
-            this._css3DObject.scale.set(value, value, value);
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
+        this.updateCenterOffset(true);
     }
 
     public get iframeSource(): string {
@@ -137,33 +81,12 @@ export class CssIframeRenderer extends Component {
     public set iframeSource(value: string) {
         this._iframeSource = value;
 
-        if (this._htmlIframeElement) {
-            this._htmlIframeElement.src = value;
+        if (this.htmlElement) {
+            this.htmlElement.src = value;
         }
     }
 
-    public get pointerEvents(): boolean {
-        return this._pointerEvents;
-    }
-
-    public set pointerEvents(value: boolean) {
-        this._pointerEvents = value;
-        
-        if (this._htmlIframeElement) {
-            this._htmlIframeElement.style.pointerEvents = value ? "auto" : "none";
-        }
-    }
-
-    public get iframeCenterOffset(): Vector2 {
-        return this._iframeCenterOffset.clone();
-    }
-
-    public set iframeCenterOffset(value: Vector2) {
-        this._iframeCenterOffset.copy(value);
-        this.updateCenterOffset();
-    }
-
-    public get htmlIframeElement(): HTMLIFrameElement {
-        return this._htmlIframeElement!;
+    public get element(): HTMLIFrameElement|null {
+        return this.htmlElement;
     }
 }
