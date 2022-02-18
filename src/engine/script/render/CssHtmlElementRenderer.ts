@@ -12,7 +12,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         if (!this.htmlElement) this.element = null;
     }
 
-    protected override updateCenterOffset(updateTransform = true): void {
+    protected override updateCenterOffset(updateTransform: boolean): void {
         if (!this.css3DObject) return;
 
         let width: number;
@@ -27,7 +27,6 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
                 document.body.appendChild(this.css3DObject.element);
                 width = this.css3DObject.element.offsetWidth * this.viewScale;
                 height = this.css3DObject.element.offsetHeight * this.viewScale;
-                console.log(width, height);
                 this.css3DObject.element.style.display = lastDisplayState;
                 this.css3DObject.element.style.transform = lastTransformState;
                 document.body.removeChild(this.css3DObject.element);
@@ -53,7 +52,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
-    protected override updateViewScale(updateTransform = true): void {
+    protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
         
         const value = this.viewScale;
@@ -93,7 +92,9 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
             this.htmlElement.style.height = this._elementHeight + "px";
         }
         
-        this.initializeBaseComponents();
+        const css3DObject = this.initializeBaseComponents(true);
+        Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
     public get elementWidth(): number {
@@ -117,7 +118,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         if (this.htmlElement) {
             this.htmlElement.style.width = value + "px";
         }
-        this.updateCenterOffset();
+        this.updateCenterOffset(true);
     }
 
     public get elementHeight(): number {
@@ -141,7 +142,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         if (this.htmlElement) {
             this.htmlElement.style.height = value + "px";
         }
-        this.updateCenterOffset();
+        this.updateCenterOffset(true);
     }
 
     public get autoSize(): boolean {

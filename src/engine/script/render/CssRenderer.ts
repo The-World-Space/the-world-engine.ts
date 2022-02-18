@@ -62,39 +62,52 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
-    protected initializeBaseComponents(): void {
+    protected initializeBaseComponents(reCreate: boolean): CSS3DObject {
         if (!this.htmlElement) throw new Error("htmlElement is null");
-        
-        if (this.css3DObject) {
-            this.transform.unsafeGetObject3D().remove(this.css3DObject);
+
+        let constructed = false;
+        if (reCreate) {
+            if (this.css3DObject) {
+                this.transform.unsafeGetObject3D().remove(this.css3DObject);
+            }
+            this.css3DObject = new CSS3DObject(this.htmlElement);
+            constructed = true;
+        } else {
+            if (this.css3DObject) {
+                this.css3DObject.element = this.htmlElement;
+            } else {
+                this.css3DObject = new CSS3DObject(this.htmlElement);
+                constructed = true;
+            }
         }
-        this.css3DObject = new CSS3DObject(this.htmlElement);
 
-        //update pointerEvents
-        this.htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
+        if (constructed) {
+            //update pointerEvents
+            this.htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
 
-        //update zindex
-        this.htmlElement.style.zIndex = Math.floor(this._zindex).toString();
+            //update zindex
+            this.htmlElement.style.zIndex = Math.floor(this._zindex).toString();
 
-        //update visibility
-        if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;
-        else this.css3DObject.visible = false;
-
+            //update visibility
+            if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;
+            else this.css3DObject.visible = false;
+        }
+ 
         //update viewScale
         this.updateViewScale(false);
         
         //update centerOffset
-        this.updateCenterOffset(true);
+        this.updateCenterOffset(false);
 
         this.transform.unsafeGetObject3D().add(this.css3DObject);
-        this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
+        return this.css3DObject;
     }
     
-    protected updateCenterOffset(_updateTransform = true): void {
+    protected updateCenterOffset(_updateTransform: boolean): void {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
-    protected updateViewScale(_updateTransform = true): void {
+    protected updateViewScale(_updateTransform: boolean): void {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
@@ -104,7 +117,7 @@ export class CssRenderer<T extends HTMLElement> extends Component {
 
     public set centerOffset(value: ReadOnlyVector2) {
         (this._centerOffset as WritableVector2).copy(value);
-        this.updateCenterOffset();
+        this.updateCenterOffset(true);
     }
 
     public get viewScale(): number {
@@ -113,7 +126,7 @@ export class CssRenderer<T extends HTMLElement> extends Component {
 
     public set viewScale(value: number) {
         this._viewScale = value;
-        this.updateViewScale();
+        this.updateViewScale(true);
     }
 
     public get pointerEvents(): boolean {
