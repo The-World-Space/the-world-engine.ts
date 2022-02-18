@@ -87,7 +87,7 @@ export class SpriteStaticInstancer extends Component {
                     c.asyncSetImagePath(this._imageSource);
                     c.imageWidth = instance.width;
                     c.imageHeight = instance.height;
-                    if (instance.centerOffset) c.imageCenterOffset = instance.centerOffset;
+                    if (instance.centerOffset) c.centerOffset = instance.centerOffset;
                     c.pointerEvents = this._pointerEvents;
                 });
             

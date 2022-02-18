@@ -27,14 +27,12 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(CssHtmlElementRenderer, c => {
                     const element = document.createElement("div");
                     element.style.backgroundColor = "#dddddd";
-                    element.innerHTML = `
-                        hi! i'm a test object!
-                        <br/>
-                        <br/>
-                        you can add html elements on game objects!
-                        <br/>
-                        <br/>
-                    `;
+                    element.appendChild(document.createTextNode("hi! i'm a test object!"));
+                    element.appendChild(document.createElement("br"));
+                    element.appendChild(document.createElement("br"));
+                    element.appendChild(document.createTextNode("you can add html elements on game objects!"));
+                    element.appendChild(document.createElement("br"));
+                    element.appendChild(document.createElement("br"));
                     const button = document.createElement("button");
                     button.innerText = "click me!";
                     const counter = document.createElement("span");
@@ -55,6 +53,12 @@ export class TestBootstrapper extends Bootstrapper {
                     element.appendChild(slider);
 
                     c.element = element;
+                    setTimeout(() => {
+                        const div = document.createElement("div");
+                        div.innerText = "hello world!";
+                        div.style.backgroundColor = "#dddddd";
+                        c.element = div;
+                    }, 10000);
                     c.viewScale = 0.5;
                     c.autoSize = false;
                     c.elementWidth = 100;
@@ -65,7 +69,9 @@ export class TestBootstrapper extends Bootstrapper {
 
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
-                .withComponent(CssSpriteRenderer)
+                .withComponent(CssSpriteRenderer, c => {
+                    c.viewScale = 1;
+                })
                 .withComponent(PlayerGridMovementController, c => {
                     c.setGridInfoFromCollideMap(gridMap.ref!);
                 })

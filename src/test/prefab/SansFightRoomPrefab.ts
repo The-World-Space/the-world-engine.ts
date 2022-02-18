@@ -193,7 +193,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -208,7 +208,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -223,7 +223,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -238,7 +238,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -253,7 +253,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -268,7 +268,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -283,7 +283,7 @@ export class SansFightRoomPrefab extends Prefab {
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
@@ -298,7 +298,7 @@ export class SansFightRoomPrefab extends Prefab {
                     .active(false)
                     .withComponent(CssSpriteRenderer, c => {
                         c.asyncSetImagePath(Pillar);
-                        c.imageCenterOffset = new Vector2(0, 0.5);
+                        c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
                         c.imageWidth = 16 * 3.5;
                         c.imageHeight = 16 * 10;
