@@ -58,7 +58,7 @@ export class TestBootstrapper extends Bootstrapper {
                         div.innerText = "hello world!";
                         div.style.backgroundColor = "#dddddd";
                         c.element = div;
-                    }, 10000);
+                    }, 1000000);
                     c.viewScale = 0.5;
                     c.autoSize = false;
                     c.elementWidth = 100;
@@ -70,8 +70,31 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
-                    c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 2);
-                    c.viewScale = 2;
+                    c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);
+                    c.viewScale = 0.1;
+                    c.imageIndex = 0;
+                    c.pointerEvents = true;
+                    c.imageFlipX = true;
+                    c.imageFlipY = true;
+                    c.imageWidth = 16;
+                    c.imageHeight = 32;
+                    c.centerOffset = new Vector2(-0.5, 0);
+                    //settimeout loop
+                    setTimeout(() => {
+                        c.imageIndex = 1;
+                        setTimeout(() => {
+                            c.imageIndex = 2;
+                            setTimeout(() => {
+                                c.imageIndex = 3;
+                                setTimeout(() => {
+                                    c.imageIndex = 4;
+                                    setTimeout(() => {
+                                        c.imageIndex = 5;
+                                    }, 1000);
+                                }, 1000);
+                            }, 1000);
+                        }, 1000);
+                    }, 1000);
                 })
                 .withComponent(PlayerGridMovementController, c => {
                     c.setGridInfoFromCollideMap(gridMap.ref!);
@@ -80,7 +103,7 @@ export class TestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildGameObject("camera_parent")
                 .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 100))
-                    .active(false)
+                    //.active(false)
                     .withComponent(Camera)
                     .withComponent(EditorCameraController, c => {
                         c.maxViewSize = 500;
@@ -94,7 +117,7 @@ export class TestBootstrapper extends Bootstrapper {
                     .withBackgroundColor(new PrefabRef(new Color(0, 0, 0)))
                     .withViewSize(new PrefabRef(200))
                     .make()
-                    //.active(false)
+                    .active(false)
                     .withComponent(EditorGridRenderer, c => {
                         //c.enabled = false;
                         c.renderWidth = 1000;
