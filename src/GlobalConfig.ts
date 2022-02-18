@@ -1,3 +1,3 @@
 export const GlobalConfig = {
-    defaultSpriteSrc: "https://i.imgur.com/B5T81uM.png"
+    defaultSpriteSrc: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAA8SURBVDhP7dEhCgAxDADB+/k9Lh8rDCtq6yo6JrAhKt9s/k2JEjceNGlPiRI3HjRpT4kS7w81SpQ4PJhZxl3jEH3ZDWcAAAAASUVORK5CYII="
 };
