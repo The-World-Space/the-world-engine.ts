@@ -172,8 +172,8 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
                     this.css3DObject.scale.x *= -1;
                 }
             }
-            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
+            this.updateImageIndex();
+            this.updateCenterOffset(true);
         }
     }
 
@@ -193,8 +193,8 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
                     this.css3DObject.scale.y *= -1;
                 }
             }
-            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
+            this.updateImageIndex();
+            this.updateCenterOffset(true);
         }
     }
 
