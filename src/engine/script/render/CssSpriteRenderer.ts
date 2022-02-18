@@ -36,12 +36,17 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         if (!this.css3DObject) return;
         
         const value = this.viewScale;
+        const image = this.htmlElement!;
 
-        this.css3DObject.element.style.width = (this._imageWidth / this.viewScale) + "px";
-        this.css3DObject.element.style.height = (this._imageHeight / this.viewScale) + "px";
+        image.style.width = (this._imageWidth / this.viewScale) + "px";
+        image.style.height = (this._imageHeight / this.viewScale) + "px";
         const x_scalar = this._imageFlipX ? -1 : 1;
         const y_scalar = this._imageFlipY ? -1 : 1;
-        this.css3DObject.scale.set(value * x_scalar, value * y_scalar, value);
+        this.css3DObject.scale.set(
+            value * x_scalar,
+            value * y_scalar,
+            1
+        );
 
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
@@ -55,9 +60,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
 
     public asyncSetImagePath(path: string, onComplete?: () => void): void {
         if (!this.readyToDraw) {
-            this._initializeFunction = () => {
-                this.asyncSetImagePath(path, onComplete);
-            };
+            this._initializeFunction = () => this.asyncSetImagePath(path, onComplete);
             return;
         }
 
@@ -69,10 +72,10 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
             image.removeEventListener("load", onLoad);
             image.alt = this.gameObject.name + "_sprite_atlas";
             image.style.imageRendering = "pixelated";
-            if (this._imageWidth === 0) this._imageWidth = image.width;
-            if (this._imageHeight === 0) this._imageHeight = image.height;
-            image.style.width = this._imageWidth / this.viewScale + "px";
-            image.style.height = this._imageHeight / this.viewScale + "px";
+            if (this._imageWidth === 0) this._imageWidth = image.naturalWidth;
+            if (this._imageHeight === 0) this._imageHeight = image.naturalHeight;
+            image.style.width = (this._imageWidth / this.viewScale) + "px";
+            image.style.height = (this._imageHeight / this.viewScale) + "px";
             image.style.opacity = this._opacity.toString();
             const css3DObject = this.initializeBaseComponents(false);
             Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
