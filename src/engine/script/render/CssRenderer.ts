@@ -63,8 +63,12 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     }
 
     protected initializeBaseComponents(): void {
-        if (!this.css3DObject) throw new Error("css3DObject is null");
         if (!this.htmlElement) throw new Error("htmlElement is null");
+        
+        if (this.css3DObject) {
+            this.transform.unsafeGetObject3D().remove(this.css3DObject);
+        }
+        this.css3DObject = new CSS3DObject(this.htmlElement);
 
         //update pointerEvents
         this.htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
@@ -81,7 +85,7 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         
         //update centerOffset
         this.updateCenterOffset(true);
-        
+
         this.transform.unsafeGetObject3D().add(this.css3DObject);
         this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
     }

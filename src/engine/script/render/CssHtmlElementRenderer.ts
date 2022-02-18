@@ -1,4 +1,3 @@
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
@@ -84,21 +83,17 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
             return;
         }
 
-        if (!value) value = document.createElement("div");
-        this.htmlElement = value;
+        this.htmlElement = value ?? document.createElement("div");
         
-        if (!this.css3DObject) {
-            this.css3DObject = new CSS3DObject(this.htmlElement);
-
-            if (this._autoSize) {
-                this.htmlElement.style.width = "auto";
-                this.htmlElement.style.height = "auto";
-            } else {
-                this.htmlElement.style.width = this._elementWidth + "px";
-                this.htmlElement.style.height = this._elementHeight + "px";
-            }
-            this.initializeBaseComponents();
+        if (this._autoSize) {
+            this.htmlElement.style.width = "auto";
+            this.htmlElement.style.height = "auto";
+        } else {
+            this.htmlElement.style.width = this._elementWidth + "px";
+            this.htmlElement.style.height = this._elementHeight + "px";
         }
+        
+        this.initializeBaseComponents();
     }
 
     public get elementWidth(): number {
