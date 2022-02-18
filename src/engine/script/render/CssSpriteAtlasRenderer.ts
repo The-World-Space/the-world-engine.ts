@@ -41,10 +41,10 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         if (!this.css3DObject) return;
         
         const value = this.viewScale;
-        const image = this.htmlElement!;
+        //const image = this.htmlElement!;
         
-        image.style.width = (this._croppedImageWidth / value) + "px";
-        image.style.height = (this._croppedImageHeight / value) + "px";
+        //image.style.width = (this._croppedImageWidth / value) + "px";
+        //image.style.height = (this._croppedImageHeight / value) + "px";
         const x_scalar = this._imageFlipX ? -1 : 1;
         const y_scalar = this._imageFlipY ? -1 : 1;
         this.css3DObject.scale.set(
@@ -91,8 +91,8 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth;
             if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight;
             image.alt = this.gameObject.name + "_sprite_atlas";
-            image.style.width = (this._croppedImageWidth / this.viewScale) + "px";
-            image.style.height = (this._croppedImageHeight / this.viewScale) + "px";
+            image.style.width = (this._croppedImageWidth/* / this.viewScale*/) + "px";
+            image.style.height = (this._croppedImageHeight/* / this.viewScale*/) + "px";
             image.style.objectFit = "none";
             image.style.imageRendering = "pixelated";
             image.style.opacity = this._opacity.toString();
@@ -134,7 +134,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     public set imageWidth(value: number) {
         this._imageWidth = value;
         if (this.css3DObject) {
-            this.htmlElement!.style.width = (this._croppedImageWidth / this.viewScale) + "px";
+            //this.htmlElement!.style.width = (this._croppedImageWidth / this.viewScale) + "px";
             this.css3DObject.scale.x = this._imageWidth / this._croppedImageWidth * this.viewScale;
             this.css3DObject.scale.x *= this._imageFlipX ? -1 : 1;
         }
@@ -148,7 +148,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     public set imageHeight(value: number) {
         this._imageHeight = value;
         if (this.css3DObject) {
-            this.htmlElement!.style.height = (this._croppedImageHeight / this.viewScale) + "px";
+            //this.htmlElement!.style.height = (this._croppedImageHeight / this.viewScale) + "px";
             this.css3DObject.scale.y = this._imageHeight / this._croppedImageHeight * this.viewScale;
             this.css3DObject.scale.y *= this._imageFlipY ? -1 : 1;
         }

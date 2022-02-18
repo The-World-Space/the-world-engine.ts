@@ -71,7 +71,7 @@ export class TestBootstrapper extends Bootstrapper {
                 //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 2);
-                    c.viewScale = 0.5;
+                    c.viewScale = 2;
                 })
                 .withComponent(PlayerGridMovementController, c => {
                     c.setGridInfoFromCollideMap(gridMap.ref!);
