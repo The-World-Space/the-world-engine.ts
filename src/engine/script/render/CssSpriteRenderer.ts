@@ -53,7 +53,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         return this.htmlElement?.src || null;
     }
 
-    public asyncSetImagePath(path: string|null, onComplete?: () => void): void {
+    public asyncSetImagePath(path: string, onComplete?: () => void): void {
         if (!this.readyToDraw) {
             this._initializeFunction = () => {
                 this.asyncSetImagePath(path, onComplete);
@@ -62,7 +62,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         }
 
         if (!this.htmlElement) this.htmlElement = new Image();
-        this.htmlElement.src = path ?? GlobalConfig.defaultSpriteSrc;
+        this.htmlElement.src = path;
 
         const onLoad = (e: Event) => {
             const image = e.target as HTMLImageElement;
