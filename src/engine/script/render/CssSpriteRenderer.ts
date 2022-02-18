@@ -3,8 +3,6 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
 export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
-    public override readonly disallowMultipleComponent: boolean = true;
-
     private _imageWidth = 0;
     private _imageHeight = 0;
     private _imageFlipX = false;
@@ -22,7 +20,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
 
     protected override updateCenterOffset(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         this.css3DObject.position.set(
             this._imageWidth * this.centerOffset.x,
             this._imageHeight * this.centerOffset.y, 0
