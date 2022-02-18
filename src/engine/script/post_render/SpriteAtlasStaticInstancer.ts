@@ -98,7 +98,7 @@ export class SpriteAtlasStaticInstancer extends Component {
                     c.imageIndex = instance.atlasIndex;
                     c.asyncSetImage(this._imageSource, this._rowCount, this._columnCount);
                     c.pointerEvents = this._pointerEvents;
-                    if (instance.centerOffset) c.imageCenterOffset = instance.centerOffset;
+                    if (instance.centerOffset) c.centerOffset = instance.centerOffset;
                 });
             
             if (this._useZaxisSorter) {

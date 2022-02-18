@@ -177,7 +177,7 @@ export class SansFightRoomPrefab extends Prefab {
                 .withChild(instantiater.buildGameObject("sans", new Vector3(16 * 39, 16 * -1, 0))
                     .withComponent(CssSpriteAtlasRenderer, c => {
                         c.asyncSetImage(SansBlack, 4, 4);
-                        c.imageCenterOffset = new Vector2(0.5, 0.7);
+                        c.centerOffset = new Vector2(0.5, 0.7);
                         c.pointerEvents = false;
                         c.imageIndex = 12;
                         c.imageWidth = 16;

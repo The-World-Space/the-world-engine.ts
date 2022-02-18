@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteRenderer, EditorCameraController, EditorGridRenderer, GameObject, PlayerGridMovementController, PointerGridInputListener, PrefabRef } from "..";
+import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef } from "..";
 import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { CameraPrefab } from "./prefab/CameraPrefab";
@@ -69,8 +69,9 @@ export class TestBootstrapper extends Bootstrapper {
 
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
-                .withComponent(CssSpriteRenderer, c => {
-                    c.viewScale = 1;
+                .withComponent(CssSpriteAtlasRenderer, c => {
+                    c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 2);
+                    c.viewScale = 0.5;
                 })
                 .withComponent(PlayerGridMovementController, c => {
                     c.setGridInfoFromCollideMap(gridMap.ref!);
