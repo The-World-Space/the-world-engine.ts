@@ -1,4 +1,5 @@
 import { Vector2, Vector3 } from "three";
+import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 import {
     CssCollideTilemapChunkRenderer,
     CssTilemapChunkRenderer,
@@ -182,6 +183,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.imageIndex = 12;
                         c.imageWidth = 16;
                         c.imageHeight = 22;
+                        c.renderMode = CssSpriteAtlasRenderMode.ObjectFit;
                     })
                     .withComponent(GridCollider, c => {
                         c.addCollider(0, 0);

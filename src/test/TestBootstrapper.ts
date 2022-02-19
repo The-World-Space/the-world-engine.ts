@@ -2,6 +2,7 @@ import { Vector2, Vector3 } from "three";
 import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "..";
 import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
+import { Css2DPolygonRenderer } from "../engine/script/render/Css2DPolygonRenderer";
 import { CameraPrefab } from "./prefab/CameraPrefab";
 import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
 import { TimeTest } from "./script/TimeTest";
@@ -25,6 +26,7 @@ export class TestBootstrapper extends Bootstrapper {
                 //.active(false)
                 .withComponent(TimeTest, c => c.enabled = false)
                 .withComponent(CssHtmlElementRenderer, c => {
+                    c.enabled = false;
                     const element = document.createElement("div");
                     element.style.backgroundColor = "#dddddd";
                     element.appendChild(document.createTextNode("hi! i'm a test object!"));
@@ -66,16 +68,21 @@ export class TestBootstrapper extends Bootstrapper {
                     c.centerOffset = new Vector2(0.5, 0.5);
                 })
                 .withComponent(CssTextRenderer, c => {
+                    c.enabled = false;
                     c.autoSize = false;
                     c.textWidth = 64;
                     c.fontFamily = "Sans";
                     c.textAlign = TextAlign.Center;
+                })
+                .withComponent(Css2DPolygonRenderer, c => {
+                    c.enabled = true;
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
+                    c.enabled = false;
                     c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);
                     c.viewScale = 0.1;
                     c.imageIndex = 0;
