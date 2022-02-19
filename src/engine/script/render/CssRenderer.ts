@@ -122,6 +122,12 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         return this._viewScale;
     }
 
+    /**
+     * element viewScale
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * @param value
+     */
     public set viewScale(value: number) {
         this._viewScale = value;
         this.updateViewScale(true);
