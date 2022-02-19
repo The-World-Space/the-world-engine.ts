@@ -1,8 +1,5 @@
-import { Vector2 } from "three";
-import { CSS3DObject } from  "three/examples/jsm/renderers/CSS3DRenderer";
-import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
-import { ZaxisInitializer } from "./ZaxisInitializer";
+import { CssRenderer } from "./CssRenderer";
 
 export enum TextAlign {
     Left = "left",
@@ -15,162 +12,180 @@ export enum FontWeight {
     Bold = "bold",
 }
 
-export class CssTextRenderer extends Component {
-    public override readonly disallowMultipleComponent: boolean = true;
-
-    private _css3DObject: CSS3DObject|null = null;
-    private _htmlDivElement: HTMLDivElement|null = null;
-    private readonly _textCenterOffset: Vector2 = new Vector2(0, 0);
-    private _zindex = 0;
+export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private _textWidth = 32;
     private _textHeight = 16;
+    private _autoSize = false;
     private _fontSize = 8;
     private _fontWeight: FontWeight = FontWeight.Normal;
     private _fontFamily = "Arial";
     private _textalign: TextAlign = TextAlign.Left;
     private _opacity = 1;
-    private _pointerEvents = true;
-    private _awaked = false;
-
+    
     private _initializeFunction: (() => void)|null = null;
 
     private static readonly _defaultText: string = "Text";
 
-    public awake(): void {
-        this._awaked = true;
+    protected override renderInitialize(): void {
         this._initializeFunction?.call(this);
-        if (!this._htmlDivElement) {
-            this.text = CssTextRenderer._defaultText;
+        if (!this.htmlElement) this.text = CssTextRenderer._defaultText;
+    }
+
+    protected override updateCenterOffset(updateTransform: boolean): void {
+        if (!this.css3DObject) return;
+
+        let width: number;
+        let height: number;
+
+        if (this._autoSize) {
+            if (!this.css3DObject.element.parentElement) {
+                const lastDisplayState = this.css3DObject.element.style.display;
+                this.css3DObject.element.style.display = "";
+                const lastTransformState = this.css3DObject.element.style.transform;
+                this.css3DObject.element.style.transform = "translateX(1000000px)";
+                document.body.appendChild(this.css3DObject.element);
+                width = this.css3DObject.element.offsetWidth * this.viewScale;
+                height = this.css3DObject.element.offsetHeight * this.viewScale;
+                this.css3DObject.element.style.display = lastDisplayState;
+                this.css3DObject.element.style.transform = lastTransformState;
+                document.body.removeChild(this.css3DObject.element);
+            } else {
+                const lastDisplayState = this.css3DObject.element.style.display;
+                this.css3DObject.element.style.display = "";
+                width = this.css3DObject.element.offsetWidth * this.viewScale;
+                height = this.css3DObject.element.offsetHeight * this.viewScale;
+                this.css3DObject.element.style.display = lastDisplayState;
+            }
+        } else {
+            width = this._textWidth;
+            height = this._textHeight;
+        }
+        this.css3DObject.position.set(
+            width * this.centerOffset.x,
+            height * this.centerOffset.y, 0
+        );
+        
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
-    public start(): void {
-        if (this._css3DObject) {
-            if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
-            else this._css3DObject.visible = false;
-        }
-        ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
-    }
+    protected override updateViewScale(updateTransform: boolean): void {
+        if (!this.css3DObject) return;
+        
+        const value = this.viewScale;
 
-    public onEnable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = true;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        if (!this._autoSize) {
+            this.css3DObject.element.style.width = (this._textWidth / this.viewScale) + "px";
+            this.css3DObject.element.style.height = (this._textHeight / this.viewScale) + "px";
+            this.css3DObject.scale.set(value, value, value);
+        } else {
+            this.css3DObject.scale.set(value, value, value);
+            this.updateCenterOffset(false);
         }
-    }
 
-    public onDisable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = false;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
-
-    public onDestroy(): void {
-        if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-    }
-
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis;
-        if (this._css3DObject) {
-            this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
-        }
-    }
-    
-    public onWorldMatrixUpdated(): void {
-        if (this._css3DObject) {
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
     public get text(): string|null {
-        return this._htmlDivElement?.textContent || null;
+        return this.htmlElement?.textContent || null;
     }
 
     public set text(value: string|null) {
-        if (!this._awaked) {
-            this._initializeFunction = () => {
-                this.text = value;
-            };
+        if (!this.readyToDraw) {
+            this._initializeFunction = () => this.text = value;
             return;
         }
 
-        if (!value) value = CssTextRenderer._defaultText;
-
-        if (!this._htmlDivElement) {
-            this._htmlDivElement = document.createElement("div");
-        }
-
-        this._htmlDivElement.textContent = value;
+        if (!this.htmlElement) this.htmlElement = document.createElement("div");
+        this.htmlElement.textContent = value ?? "";
         
-        if (!this._css3DObject) {
-            this._css3DObject = new CSS3DObject(this._htmlDivElement);
-            if (this._textWidth === 0) this._textWidth = this._htmlDivElement.offsetWidth;
-            if (this._textHeight === 0) this._textHeight = this._htmlDivElement.offsetHeight;
-            this._htmlDivElement.style.width = this._textWidth + "px";
-            this._htmlDivElement.style.height = this._textHeight + "px";
-            this._htmlDivElement.style.fontSize = this._fontSize + "px";
-            this._htmlDivElement.style.fontWeight = this._fontWeight;
-            this._htmlDivElement.style.fontFamily = this._fontFamily;
-            this._htmlDivElement.style.textAlign = this._textalign;
-            this._htmlDivElement.style.opacity = this._opacity.toString();
-            this._htmlDivElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
-            
-            this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
-            this.updateCenterOffset();
-            this.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-            
-            if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
-            else this._css3DObject.visible = false;
-            
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        if (this._autoSize) {
+            this.htmlElement.style.width = "auto";
+            this.htmlElement.style.height = "auto";
+        } else {
+            this.htmlElement.style.width = this._textWidth + "px";
+            this.htmlElement.style.height = this._textHeight + "px";
         }
-    }
 
-    private updateCenterOffset(): void {
-        if (this._css3DObject) {
-            this._css3DObject.position.set(
-                this._htmlDivElement!.offsetWidth * this._textCenterOffset.x,
-                this._htmlDivElement!.offsetHeight * this._textCenterOffset.y, 0
-            );
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
-    
-    public get textCenterOffset(): Vector2 {
-        return this._textCenterOffset.clone();
-    }
-
-    public set textCenterOffset(value: Vector2) {
-        this._textCenterOffset.copy(value);
-        this.updateCenterOffset();
+        this.htmlElement.style.fontSize = this._fontSize + "px";
+        this.htmlElement.style.fontWeight = this._fontWeight;
+        this.htmlElement.style.fontFamily = this._fontFamily;
+        this.htmlElement.style.textAlign = this._textalign;
+        this.htmlElement.style.opacity = this._opacity.toString();
+        
+        const css3DObject = this.initializeBaseComponents(false);
+        Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
     public get textWidth(): number {
+        if (this._autoSize) {
+            if (this.htmlElement) {
+                const lastDisplayState = this.htmlElement.style.display;
+                this.htmlElement.style.display = "";
+                const ret = this.htmlElement.offsetWidth;
+                this.htmlElement.style.display = lastDisplayState;
+                return ret;
+            }
+            return 0;
+        }
         return this._textWidth;
     }
 
     public set textWidth(value: number) {
+        if (this._autoSize) return;
+
         this._textWidth = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.width = value + "px";
+        if (this.htmlElement) {
+            this.htmlElement.style.width = (value / this.viewScale) + "px";
         }
-        this.updateCenterOffset();
+        this.updateCenterOffset(true);
     }
 
     public get textHeight(): number {
+        if (this._autoSize) {
+            if (this.htmlElement) {
+                const lastDisplayState = this.htmlElement.style.display;
+                this.htmlElement.style.display = "";
+                const ret = this.htmlElement.offsetHeight;
+                this.htmlElement.style.display = lastDisplayState;
+                return ret;
+            }
+            return 0;
+        }
         return this._textHeight;
     }
 
     public set textHeight(value: number) {
+        if (this._autoSize) return;
+
         this._textHeight = value;
-        if (this._css3DObject) {
-            this._css3DObject.element.style.height = value + "px";
+        if (this.htmlElement) {
+            this.htmlElement.style.height = (value / this.viewScale) + "px";
         }
-        this.updateCenterOffset();
+        this.updateCenterOffset(true);
+    }
+
+    public get autoSize(): boolean {
+        return this._autoSize;
+    }
+
+    public set autoSize(value: boolean) {
+        this._autoSize = value;
+        if (this.htmlElement) {
+            if (value) {
+                this.htmlElement.style.width = "auto";
+                this.htmlElement.style.height = "auto";
+            } else {
+                this.htmlElement.style.width = (this._textWidth / this.viewScale) + "px";
+                this.htmlElement.style.height = (this._textHeight / this.viewScale) + "px";
+            }
+        }
     }
 
     public get fontSize(): number {
@@ -179,8 +194,8 @@ export class CssTextRenderer extends Component {
 
     public set fontSize(value: number) {
         this._fontSize = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.fontSize = value + "px";
+        if (this.htmlElement) {
+            this.htmlElement.style.fontSize = value + "px";
         }
     }
 
@@ -190,8 +205,8 @@ export class CssTextRenderer extends Component {
 
     public set fontWeight(value: FontWeight) {
         this._fontWeight = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.fontWeight = value;
+        if (this.htmlElement) {
+            this.htmlElement.style.fontWeight = value;
         }
     }
 
@@ -201,8 +216,8 @@ export class CssTextRenderer extends Component {
 
     public set fontFamily(value: string) {
         this._fontFamily = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.fontFamily = value;
+        if (this.htmlElement) {
+            this.htmlElement.style.fontFamily = value;
         }
     }
 
@@ -212,8 +227,8 @@ export class CssTextRenderer extends Component {
 
     public set textAlign(value: TextAlign) {
         this._textalign = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.textAlign = value;
+        if (this.htmlElement) {
+            this.htmlElement.style.textAlign = value;
         }
     }
 
@@ -223,19 +238,8 @@ export class CssTextRenderer extends Component {
 
     public set opacity(value: number) {
         this._opacity = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.opacity = value.toString();
-        }
-    }
-
-    public get pointerEvents(): boolean {
-        return this._pointerEvents;
-    }
-
-    public set pointerEvents(value: boolean) {
-        this._pointerEvents = value;
-        if (this._htmlDivElement) {
-            this._htmlDivElement.style.pointerEvents = value ? "auto" : "none";
+        if (this.htmlElement) {
+            this.htmlElement.style.opacity = value.toString();
         }
     }
 }
