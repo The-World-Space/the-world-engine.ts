@@ -6,8 +6,6 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export class CssRenderer<T extends HTMLElement> extends Component {
-    public override readonly disallowMultipleComponent: boolean = true;
-
     protected css3DObject: CSS3DObject|null = null;
     protected htmlElement: T|null = null;
 
