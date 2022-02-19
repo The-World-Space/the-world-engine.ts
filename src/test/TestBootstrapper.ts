@@ -68,6 +68,7 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(CssTextRenderer, c => {
                     c.autoSize = false;
                     c.textWidth = 64;
+                    c.fontFamily = "Sans";
                     c.textAlign = TextAlign.Center;
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
