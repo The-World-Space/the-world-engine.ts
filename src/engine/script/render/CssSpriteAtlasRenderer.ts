@@ -28,12 +28,12 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         const rowIndex = Math.floor(this._currentImageIndex / this._columnCount);
 
         const columnScalar = this._imageFlipX 
-            ? -this._imageWidth + columnIndex * this._imageWidth
-            : this._imageWidth - columnIndex * this._imageWidth;
+            ? -(this._imageWidth * this._columnCount / 2 - this._imageWidth / 2) + columnIndex * this._imageWidth
+            : (this._imageWidth * this._columnCount / 2 - this._imageWidth / 2) - columnIndex * this._imageWidth;
 
         const rowScalar = this._imageFlipY
-            ? (this._imageHeight / 2) - rowIndex * this._imageHeight
-            : -(this._imageHeight / 2) + rowIndex * this._imageHeight;
+            ? (this._imageHeight * this._rowCount / 2 - this._imageHeight / 2) - rowIndex * this._imageHeight
+            : -(this._imageHeight * this._rowCount / 2 - this._imageHeight / 2) + rowIndex * this._imageHeight;
 
         this.css3DObject.position.set(
             this._imageWidth * this.centerOffset.x + columnScalar,
