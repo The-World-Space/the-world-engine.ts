@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef } from "..";
+import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "..";
 import { Bootstrapper } from "../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../engine/bootstrap/SceneBuilder";
 import { CameraPrefab } from "./prefab/CameraPrefab";
@@ -65,6 +65,11 @@ export class TestBootstrapper extends Bootstrapper {
                     c.elementHeight = 100;
                     c.centerOffset = new Vector2(0.5, 0.5);
                 })
+                .withComponent(CssTextRenderer, c => {
+                    c.autoSize = false;
+                    c.textWidth = 64;
+                    c.textAlign = TextAlign.Center;
+                })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
             .withChild(instantiater.buildGameObject("track_object")
@@ -78,7 +83,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.imageFlipY = true;
                     c.imageWidth = 16;
                     c.imageHeight = 32;
-                    c.centerOffset = new Vector2(-0.5, 0);
+                    c.centerOffset = new Vector2(0, 0);
                     //settimeout loop
                     setTimeout(() => {
                         c.imageIndex = 1;

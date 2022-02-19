@@ -88,8 +88,8 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
             this.htmlElement.style.width = "auto";
             this.htmlElement.style.height = "auto";
         } else {
-            this.htmlElement.style.width = this._elementWidth + "px";
-            this.htmlElement.style.height = this._elementHeight + "px";
+            this.htmlElement.style.width = (this._elementWidth / this.viewScale) + "px";
+            this.htmlElement.style.height = (this._elementHeight / this.viewScale) + "px";
         }
         
         const css3DObject = this.initializeBaseComponents(true);
@@ -102,7 +102,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
             if (this.htmlElement) {
                 const lastDisplayState = this.htmlElement.style.display;
                 this.htmlElement.style.display = "";
-                const ret = this.htmlElement.offsetWidth;
+                const ret = this.htmlElement.offsetWidth * this.viewScale;
                 this.htmlElement.style.display = lastDisplayState;
                 return ret;
             }
@@ -116,7 +116,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
 
         this._elementWidth = value;
         if (this.htmlElement) {
-            this.htmlElement.style.width = value + "px";
+            this.htmlElement.style.width = (value / this.viewScale) + "px";
         }
         this.updateCenterOffset(true);
     }
@@ -126,7 +126,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
             if (this.htmlElement) {
                 const lastDisplayState = this.htmlElement.style.display;
                 this.htmlElement.style.display = "";
-                const ret = this.htmlElement.offsetHeight;
+                const ret = this.htmlElement.offsetHeight * this.viewScale;
                 this.htmlElement.style.display = lastDisplayState;
                 return ret;
             }
@@ -140,7 +140,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
 
         this._elementHeight = value;
         if (this.htmlElement) {
-            this.htmlElement.style.height = value + "px";
+            this.htmlElement.style.height = (value / this.viewScale) + "px";
         }
         this.updateCenterOffset(true);
     }
@@ -156,8 +156,8 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
                 this.htmlElement.style.width = "auto";
                 this.htmlElement.style.height = "auto";
             } else {
-                this.htmlElement.style.width = this._elementWidth + "px";
-                this.htmlElement.style.height = this._elementHeight + "px";
+                this.htmlElement.style.width = (this._elementWidth / this.viewScale) + "px";
+                this.htmlElement.style.height = (this._elementHeight / this.viewScale) + "px";
             }
         }
     }
