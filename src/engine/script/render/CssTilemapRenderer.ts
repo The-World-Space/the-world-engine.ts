@@ -1,8 +1,6 @@
 import { Vector2 } from "three";
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
-import { ZaxisInitializer } from "./ZaxisInitializer";
+import { CssRenderer } from "./CssRenderer";
 
 export class TileAtlasItem {
     private _htmlImageElement: HTMLImageElement;
@@ -32,90 +30,80 @@ export class TileAtlasItem {
     }
 }
 
-export class CssTilemapRenderer extends Component {
-    public override readonly disallowMultipleComponent: boolean = true;
-
+export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
     private _columnCount = 10;
     private _rowCount = 10;
     private _tileWidth = 16;
     private _tileHeight = 16;
-    private _css3DObject: CSS3DObject|null = null;
-    private _htmlCanvasElement: HTMLCanvasElement|null = null;
     private _imageSources: TileAtlasItem[]|null = null;
-    private _pointerEvents = true;
-    private _zindex = 0;
-    private _started = false;
     
     private _initializeFunctions: ((() => void))[] = [];
 
-    public start(): void {
-        this._started = true;
+    protected override renderInitialize(): void {
         this.drawTileMap();
 
         this._initializeFunctions.forEach(func => func());
         this._initializeFunctions = [];
-        ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
-    public onDestroy(): void {
-        if (!this._started) return;
-        if (this._css3DObject) this.transform.unsafeGetObject3D().remove(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-    }
+    protected override updateCenterOffset(updateTransform: boolean): void {
+        if (!this.css3DObject) return;
+        
+        const tileMapWidth: number = this._columnCount * this._tileWidth;
+        const tileMapHeight: number = this._rowCount * this._tileHeight;
 
-    public onEnable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = true;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        this.css3DObject.position.set(
+            tileMapWidth * this.centerOffset.x,
+            tileMapHeight * this.centerOffset.y, 0
+        );
+
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
-    public onDisable(): void {
-        if (this._css3DObject) {
-            this._css3DObject.visible = false;
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
-        }
-    }
+    protected override updateViewScale(updateTransform: boolean): void {
+        if (!this.css3DObject) return;
 
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis;
-        if (this._css3DObject) {
-            this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
-        }
-    }
+        const value = this.viewScale;
+        const image = this.htmlElement!;
+        
+        const tileMapWidth: number = this._columnCount * this._tileWidth;
+        const tileMapHeight: number = this._rowCount * this._tileHeight;
 
-    public onWorldMatrixUpdated(): void {
-        if (this._css3DObject) {
-            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        image.style.width = (tileMapWidth / value) + "px";
+        image.style.height = (tileMapHeight / value) + "px";
+        this.css3DObject.scale.set(value, value, 1);
+
+        if (updateTransform) {
+            Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
 
     private drawTileMap(): void {
         const tileMapWidth: number = this._columnCount * this._tileWidth;
         const tileMapHeight: number = this._rowCount * this._tileHeight;
-        this._htmlCanvasElement = document.createElement("canvas") as HTMLCanvasElement;
-        this._css3DObject = new CSS3DObject(this._htmlCanvasElement);
-        this.transform.unsafeGetObject3D().add(this._css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
-        this._htmlCanvasElement.style.imageRendering = "pixelated";
-        this._htmlCanvasElement.style.zIndex = Math.floor(this._zindex).toString();
-        this._htmlCanvasElement.width = tileMapWidth;
-        this._htmlCanvasElement.height = tileMapHeight;
-        this._htmlCanvasElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
+        this.htmlElement = document.createElement("canvas") as HTMLCanvasElement;
+        this.htmlElement.width = tileMapWidth;
+        this.htmlElement.height = tileMapHeight;
+        this.htmlElement.style.imageRendering = "pixelated";
+        this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
+        this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
 
-        if (this.enabled && this.gameObject.activeInHierarchy) this._css3DObject.visible = true;
-        else this._css3DObject.visible = false;
-        this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
+        const css3DObject = this.initializeBaseComponents(false);
+        Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
     public drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
-        if (!this._started) {
-            this._initializeFunctions.push(() => {
-                this.drawTile(column, row, imageIndex, atlasIndex);
-            });
+        if (!this.readyToDraw) {
+            this._initializeFunctions.push(() => this.drawTile(column, row, imageIndex, atlasIndex));
             return;
         }
 
-        const context: CanvasRenderingContext2D = this._htmlCanvasElement!.getContext("2d")!;
+        const context: CanvasRenderingContext2D = this.htmlElement!.getContext("2d")!;
         const imageSource: TileAtlasItem = this._imageSources![imageIndex];
         if (imageSource.rowCount === 1 && imageSource.columnCount === 1) {
             context.drawImage(
@@ -141,14 +129,12 @@ export class CssTilemapRenderer extends Component {
 
     //i is imageIndex and a is atlasIndex
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
-        if (!this._started) {
-            this._initializeFunctions.push(() => {
-                this.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset);
-            });
+        if (!this.readyToDraw) {
+            this._initializeFunctions.push(() => this.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset));
             return;
         }
 
-        const context: CanvasRenderingContext2D = this._htmlCanvasElement!.getContext("2d")!;
+        const context: CanvasRenderingContext2D = this.htmlElement!.getContext("2d")!;
         for (let rowIndex = 0; rowIndex < array.length; rowIndex++) {
             const row: ({i: number, a: number}|null)[] = array[rowIndex];
             for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
@@ -180,37 +166,22 @@ export class CssTilemapRenderer extends Component {
     }
 
     public clearTile(column: number, row: number): void {
-        if (!this._started) {
-            this._initializeFunctions.push(() => {
-                this.clearTile(column, row);
-            });
+        if (!this.readyToDraw) {
+            this._initializeFunctions.push(() => this.clearTile(column, row));
             return;
         }
 
-        const context: CanvasRenderingContext2D = this._htmlCanvasElement!.getContext("2d")!;
+        const context: CanvasRenderingContext2D = this.htmlElement!.getContext("2d")!;
         context.clearRect(column * this._tileWidth, row * this._tileHeight, this._tileWidth, this._tileHeight);
     }
 
     public set imageSources(value: TileAtlasItem[]) {
-        if (!this._started) {
-            this._initializeFunctions.push(() => {
-                this.imageSources = value;
-            });
+        if (!this.readyToDraw) {
+            this._initializeFunctions.push(() => this.imageSources = value);
             return;
         }
 
         this._imageSources = value;
-    }
-
-    public get pointerEvents(): boolean {
-        return this._pointerEvents;
-    }
-
-    public set pointerEvents(value: boolean) {
-        this._pointerEvents = value;
-        if (this._htmlCanvasElement) {
-            this._htmlCanvasElement.style.pointerEvents = this._pointerEvents ? "auto" : "none";
-        }
     }
 
     public get columnCount(): number {
@@ -220,8 +191,11 @@ export class CssTilemapRenderer extends Component {
     public set columnCount(value: number) {
         this._columnCount = value;
 
-        if (this._htmlCanvasElement) {
-            this._htmlCanvasElement.width = this._columnCount * this._tileWidth;
+        if (this.htmlElement) {
+            const tileMapWidth: number = this._columnCount * this._tileWidth;
+            this.htmlElement.width = tileMapWidth;
+            this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
+            this.updateCenterOffset(true);
         }
     }
 
@@ -232,8 +206,11 @@ export class CssTilemapRenderer extends Component {
     public set rowCount(value: number) {
         this._rowCount = value;
 
-        if (this._htmlCanvasElement) {
-            this._htmlCanvasElement.height = this._rowCount * this._tileHeight;
+        if (this.htmlElement) {
+            const tileMapHeight: number = this._rowCount * this._tileHeight;
+            this.htmlElement.height = tileMapHeight;
+            this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
+            this.updateCenterOffset(true);
         }
     }
 
@@ -244,8 +221,11 @@ export class CssTilemapRenderer extends Component {
     public set gridCellWidth(value: number) {
         this._tileWidth = value;
 
-        if (this._htmlCanvasElement) {
-            this._htmlCanvasElement.width = this._columnCount * this._tileWidth;
+        if (this.htmlElement) {
+            const tileMapWidth: number = this._columnCount * this._tileWidth;
+            this.htmlElement.width = tileMapWidth;
+            this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
+            this.updateCenterOffset(true);
         }
     }
 
@@ -256,25 +236,25 @@ export class CssTilemapRenderer extends Component {
     public set gridCellHeight(value: number) {
         this._tileHeight = value;
 
-        if (this._htmlCanvasElement) {
-            this._htmlCanvasElement.height = this._rowCount * this._tileHeight;
+        if (this.htmlElement) {
+            const tileMapHeight: number = this._rowCount * this._tileHeight;
+            this.htmlElement.height = tileMapHeight;
+            this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
+            this.updateCenterOffset(true);
         }
     }
     
     public get gridCenter(): Vector2 {
-        const worldPosition = this.transform.position;
         const offsetX = this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2;
         const offsetY = this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2;
-        return new Vector2(worldPosition.x + offsetX, worldPosition.y + offsetY);
+        return new Vector2(this.transform.position.x + offsetX, this.transform.position.y + offsetY);
     }
 
     public get gridCenterX(): number {
-        const worldPosition = this.transform.position;
-        return worldPosition.x + (this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2);
+        return this.transform.position.x + (this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2);
     }
 
     public get gridCenterY(): number {
-        const worldPosition = this.transform.position;
-        return worldPosition.y + (this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2);
+        return this.transform.position.y + (this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2);
     }
 }
