@@ -1,6 +1,7 @@
 import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { ReadOnlyVector2, WritableVector2 } from "../../..";
+import { ReadOnlyVector2 } from "../../../engine/math/ReadOnlyVector2";
+import { WritableVector2 } from "../../../engine/math/WritableVector2";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 import { ZaxisInitializer } from "./ZaxisInitializer";

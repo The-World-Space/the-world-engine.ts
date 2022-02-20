@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import { Transform } from "../../..";
+import { Transform } from "../../../engine/hierarchy_object/Transform";
 import { Component } from "../../hierarchy_object/Component";
 import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";

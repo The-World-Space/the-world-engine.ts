@@ -105,8 +105,10 @@ export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_rend
 //render
 export { CameraType, Camera } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
+export { Css2DPolygonRenderer } from "./engine/script/render/Css2DPolygonRenderer";
 export { CssHtmlElementRenderer } from "./engine/script/render/CssHtmlElementRenderer";
 export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
+export { CssRenderer } from "./engine/script/render/CssRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
 export { CssSpriteRenderer } from "./engine/script/render/CssSpriteRenderer";
 export { TextAlign, FontWeight, CssTextRenderer } from "./engine/script/render/CssTextRenderer";
