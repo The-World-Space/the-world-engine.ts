@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteAtlasRenderMode } from "../../../engine/script/render/CssSpriteAtlasRenderer";
 import {
     CssCollideTilemapChunkRenderer,
     CssTilemapChunkRenderer,
@@ -15,10 +15,10 @@ import {
     PrefabRef,
     GridCollider,
     GridObjectCollideMap
-} from "../../index";
-import SansFightRoomTileAtlas from "../asset/room_sanscorridor.png";
-import SansBlack from "../asset/Sans black.png";
-import Pillar from "../asset/spr_foregroundpillar.png";
+} from "../../../index";
+import SansFightRoomTileAtlas from "../source/room_sanscorridor.png";
+import SansBlack from "../source/Sans black.png";
+import Pillar from "../source/spr_foregroundpillar.png";
 
 /** @internal */
 export class SansFightRoomPrefab extends Prefab {

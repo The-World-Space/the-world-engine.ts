@@ -1,5 +1,5 @@
 import { Quaternion, Vector3 } from "three";
-import { Component } from "../../engine/hierarchy_object/Component";
+import { Component } from "../../../engine/hierarchy_object/Component";
 
 /** @internal */
 export class Rotator extends Component {

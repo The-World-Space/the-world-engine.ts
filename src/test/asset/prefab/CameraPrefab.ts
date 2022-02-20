@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { TrackCameraController, Camera, GameObject, GameObjectBuilder, Prefab, PrefabRef, Color } from "../../index";
+import { TrackCameraController, Camera, GameObject, GameObjectBuilder, Prefab, PrefabRef, Color } from "../../../index";
 
 /** @internal */
 export class CameraPrefab extends Prefab {

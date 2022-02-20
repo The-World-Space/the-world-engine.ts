@@ -43,6 +43,9 @@ module.exports = {
     allowedHosts: [
       "nonamehome.iptime.org",
     ],
+    client: {
+      logging: "none",
+    },
   },
   mode: "development",
 };
