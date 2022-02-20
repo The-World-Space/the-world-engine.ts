@@ -78,6 +78,9 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(Css2DPolygonRenderer, c => {
                     c.enabled = true;
+                    c.viewScale = 0.1;
+                    c.setShapeToRegularPolygon(10, 60);
+                    c.color = new Color(0, 0, 0, 1);
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
@@ -120,7 +123,7 @@ export class TestBootstrapper extends Bootstrapper {
                 .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 100))
                     //.active(false)
                     .withComponent(Camera, c => {
-                        c.viewSize = 170;
+                        c.viewSize = 230;
                     })
                     .withComponent(EditorCameraController, c => {
                         c.maxViewSize = 500;
