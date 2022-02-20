@@ -45,7 +45,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         this.css3DObject.scale.set(
             value * x_scalar,
             value * y_scalar,
-            1
+            value
         );
 
         if (updateTransform) {

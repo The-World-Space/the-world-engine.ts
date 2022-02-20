@@ -74,7 +74,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
 
         image.style.width = (tileMapWidth / value) + "px";
         image.style.height = (tileMapHeight / value) + "px";
-        this.css3DObject.scale.set(value, value, 1);
+        this.css3DObject.scale.set(value, value, value);
 
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
