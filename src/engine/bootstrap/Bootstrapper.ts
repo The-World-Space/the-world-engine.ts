@@ -1,21 +1,22 @@
 import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { GameSetting, GameSettingObject } from "./setting/GameSetting";
+import { Instantiater } from "../Instantiater";
 
 /**
  * make game scene with interop object and scene builder
  * do not drive this class
  */
 export abstract class Bootstrapper<T = any> {
-    private _engineGlobalObject: EngineGlobalObject;
+    private _instantiater: Instantiater;
     private _interopObject: T|null;
     private _sceneBuilder: SceneBuilder;
     private _gameSetting: GameSetting;
 
     public constructor(engineGlobalObject: EngineGlobalObject, interopObject?: T) {
-        this._engineGlobalObject = engineGlobalObject;
+        this._instantiater = engineGlobalObject.instantiater;
         this._interopObject = interopObject || null;
-        this._sceneBuilder = new SceneBuilder(this._engineGlobalObject.sceneProcessor);
+        this._sceneBuilder = new SceneBuilder(engineGlobalObject.sceneProcessor);
         this._gameSetting = new GameSetting();
     }
 
@@ -33,8 +34,8 @@ export abstract class Bootstrapper<T = any> {
     /**
      * get engine global object
      */
-    protected get engine(): EngineGlobalObject {
-        return this._engineGlobalObject;
+    protected get instantiater(): Instantiater {
+        return this._instantiater;
     }
     
     /**

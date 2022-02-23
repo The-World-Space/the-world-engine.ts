@@ -11,11 +11,14 @@ import { TimeTest } from "./script/TimeTest";
 export class TestBootstrapper extends Bootstrapper {
     public run(): SceneBuilder {
 
+        this.setting.render.useCss3DRenderer(true);
+
+        this.setting.physics.usePhysics2D(true);
         this.setting.physics.layerCollisionMatrix<["a"]>({
             a: { a: true },
         });
 
-        const instantiater = this.engine.instantiater;
+        const instantiater = this.instantiater;
 
         const trackObject = new PrefabRef<GameObject>();
         const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
