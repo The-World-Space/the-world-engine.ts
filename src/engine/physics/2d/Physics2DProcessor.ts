@@ -2,6 +2,7 @@ import { Vector2 } from "three";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import * as b2 from "../../../box2d.ts/build/index";
 import { CollisionLayerMask } from "../CollisionLayerMask";
+import { PhysicsSettingObject } from "../../bootstrap/setting/GameSetting";
 
 export class Physics2DProcessor {
     //configuration variables
@@ -24,13 +25,14 @@ export class Physics2DProcessor {
     // private _callbacksOnDisable: boolean = true;
     // private _reuseCollisionCallbacks: boolean = true;
     // private _autoSyncTransforms: boolean = false;
-    private readonly _collisionLayerMask: CollisionLayerMask;
+    private _collisionLayerMask: CollisionLayerMask|null = null;
 
     //engine internal variables
     private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));
 
-    public constructor(collisionLayerMask: CollisionLayerMask) {
-        this._collisionLayerMask = collisionLayerMask;
+    /** @internal */
+    public applyPhysicsSettings(physicSetting: PhysicsSettingObject): void {
+        this._collisionLayerMask = physicSetting.collisionLayerMask;
     }
 
     public update(deltaTime: number): void {
@@ -86,6 +88,6 @@ export class Physics2DProcessor {
     }
     
     public get collisionLayerMask(): CollisionLayerMask {
-        return this._collisionLayerMask;
+        return this._collisionLayerMask!;
     }
 }

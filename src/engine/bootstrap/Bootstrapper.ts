@@ -1,6 +1,6 @@
 import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
-import { GameSetting } from "./setting/GameSetting";
+import { GameSetting, GameSettingObject } from "./setting/GameSetting";
 
 /**
  * make game scene with interop object and scene builder
@@ -20,9 +20,9 @@ export abstract class Bootstrapper<T = any> {
     }
 
     /** @internal */
-    public getReadOnlyGameSetting(): Readonly<GameSetting> {
+    public getGameSettingObject(): GameSettingObject {
         Object.freeze(this._gameSetting);
-        return this._gameSetting;
+        return this._gameSetting.make();
     }
 
     /**

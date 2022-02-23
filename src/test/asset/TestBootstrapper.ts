@@ -10,6 +10,11 @@ import { TimeTest } from "./script/TimeTest";
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
     public run(): SceneBuilder {
+
+        this.setting.physics.layerCollisionMatrix<["a"]>({
+            a: { a: true },
+        });
+
         const instantiater = this.engine.instantiater;
 
         const trackObject = new PrefabRef<GameObject>();

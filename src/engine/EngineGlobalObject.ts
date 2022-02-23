@@ -10,6 +10,7 @@ import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { IPhysics2D } from "..";
+import { GameSettingObject } from "./bootstrap/setting/GameSetting";
 
 /** 
  * do not drive this class
@@ -53,6 +54,11 @@ export class EngineGlobalObject {
         this._physics2DProcessor = physics2DProcessor;
         this._inputHandler = new InputHandler(renderTargetDom);
         this._instantiater = new Instantiater(this);
+    }
+
+    /** @internal */
+    public applyGameSetting(gameSettingObject: GameSettingObject): void {
+        this._physics2DProcessor.applyPhysicsSettings(gameSettingObject.physics);
     }
 
     /** @internal */

@@ -13,8 +13,8 @@ import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { Color } from "./render/Color";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
-import { GameSetting } from "./GameSetting";
-import { Physics2DProcessor } from "./physics2d/Physics2DProcessor";
+import { GameSettingObject } from "./bootstrap/setting/GameSetting";
+import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 
 /**
  * game engine class
@@ -32,7 +32,7 @@ export class Game {
     private readonly _physics2DProcessor: Physics2DProcessor;
     private readonly _engineGlobalObject: EngineGlobalObject;
     private readonly _container: HTMLElement;
-    private _gameSetting: Readonly<GameSetting>|null = null;
+    private _gameSetting: GameSettingObject|null = null;
     private _animationFrameId: number|null;
     private _isDisposed: boolean;
     private _resizeFrameBufferBind: () => void;
@@ -104,7 +104,7 @@ export class Game {
         this._time.start();
         const bootstrapper = new bootstrapperCtor(this._engineGlobalObject, interopObject);
         const scene = bootstrapper.run();
-        this._gameSetting = bootstrapper.getReadOnlyGameSetting();
+        this._gameSetting = bootstrapper.getGameSettingObject();
         if (this._gameSetting.render.useCss3DRenderer) {
             this._container.appendChild(this._css3DRenderer.domElement);
         }
