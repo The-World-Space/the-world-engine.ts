@@ -40,7 +40,7 @@ export type { WritableVector3 } from "./engine/math/WritableVector3";
 export type { WritableVector4 } from "./engine/math/WritableVector4";
 
 //physics2d
-export type { IPhysics2D } from "./engine/physics2d/IPhysics2D";
+export type { IPhysics2D } from "./engine/physics/2d/IPhysics2D";
 
 //render
 export { CameraContainer } from "./engine/render/CameraContainer";
@@ -53,7 +53,7 @@ export { Time } from "./engine/time/Time";
 //engine
 export { EngineGlobalObject } from "./engine/EngineGlobalObject";
 export { Game } from "./engine/Game";
-export type { GameSetting } from "./engine/GameSetting";
+export type { GameSetting } from "./engine/bootstrap/GameSetting";
 export type { IReadOnlyGameState } from "./engine/GameState";
 export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";

@@ -8,7 +8,7 @@ import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
 import { SceneProcessor } from "./SceneProcessor";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
-import { Physics2DProcessor } from "./physics2d/Physics2DProcessor";
+import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { IPhysics2D } from "..";
 
 /** 
