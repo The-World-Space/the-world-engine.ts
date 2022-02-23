@@ -1,6 +1,6 @@
 import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
-import { createDefaultGameSetting, GameSetting } from "../GameSetting";
+import { GameSetting } from "./setting/GameSetting";
 
 /**
  * make game scene with interop object and scene builder
@@ -16,7 +16,7 @@ export abstract class Bootstrapper<T = any> {
         this._engineGlobalObject = engineGlobalObject;
         this._interopObject = interopObject || null;
         this._sceneBuilder = new SceneBuilder(this._engineGlobalObject.sceneProcessor);
-        this._gameSetting = createDefaultGameSetting();
+        this._gameSetting = new GameSetting();
     }
 
     /** @internal */
