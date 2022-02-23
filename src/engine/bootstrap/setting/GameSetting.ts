@@ -1,4 +1,4 @@
-import { CollisionLayer, CollisionLayerMask } from "../../physics/CollisionLayerMask";
+import { CollisionLayer, CollisionLayerMaskConverter } from "../../physics/CollisionLayerMaskConverter";
 
 export class GameSetting {
     private readonly _renderSetting = new RenderSetting();
@@ -46,7 +46,7 @@ type RenderSettingObject = {
 
 export class PhysicsSetting {
     private _usePhysics2D = false;
-    private _collisionLayerMask: CollisionLayerMask = new CollisionLayerMask({
+    private _collisionLayerMaskConverter: CollisionLayerMaskConverter = new CollisionLayerMaskConverter({
         default: { default: true },
     });
 
@@ -1245,20 +1245,20 @@ export class PhysicsSetting {
     
     public layerCollisionMatrix<T extends CollisionLayer>(
         collisionMatrix: { [key in T[number]]: { [key in T[number]]: boolean } }
-    ): CollisionLayerMask {
-        return new CollisionLayerMask(collisionMatrix);
+    ): void {
+        this._collisionLayerMaskConverter = new CollisionLayerMaskConverter(collisionMatrix);
     }
 
     /** @internal */
     public make(): PhysicsSettingObject {
         return {
             usePhysics2D: this._usePhysics2D,
-            collisionLayerMask: this._collisionLayerMask,
+            collisionLayerMask: this._collisionLayerMaskConverter,
         };
     }
 }
 
 export type PhysicsSettingObject = {
     readonly usePhysics2D: boolean,
-    readonly collisionLayerMask: CollisionLayerMask
+    readonly collisionLayerMask: CollisionLayerMaskConverter
 }

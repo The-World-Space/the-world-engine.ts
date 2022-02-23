@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { CollisionLayerMask } from "../CollisionLayerMask";
+import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 
 export interface IPhysics2D {
@@ -63,5 +63,5 @@ export interface IPhysics2D {
     get autoSyncTransforms(): boolean;
     set autoSyncTransforms(value: boolean);
 
-    get collisionLayerMask(): CollisionLayerMask;
+    get collisionLayerMask(): CollisionLayerMaskConverter;
 }

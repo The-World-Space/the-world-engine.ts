@@ -8,7 +8,7 @@ type CollisionLayerParm<T extends CollisionLayer, acc extends boolean[] = [], ou
         ? out
         : out | CollisionLayerParm<T, [...acc, true], T[acc["length"]]>
 
-export class CollisionLayerMask {
+export class CollisionLayerMaskConverter {
     private readonly _strCategory: Map<string, number>; //key: layerName value: layer
     private readonly _numCategory: Map<number, string>; //key: layer value: layerName
     private readonly _layerMasks: Map<number, number>; //key: layer value: layerMask
