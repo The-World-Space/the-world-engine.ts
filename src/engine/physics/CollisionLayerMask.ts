@@ -23,6 +23,15 @@ export class CollisionLayerMask {
             return bKey - aKey;
         });
 
+        //check for duplicate layer names
+        const layerNames = new Set<string>();
+        for (const entry of entries) {
+            if (layerNames.has(entry[0])) {
+                throw new Error(`Duplicate layer name: ${entry[0]}`);
+            }
+            layerNames.add(entry[0]);
+        }
+
         // register layer
         this._strCategory = new Map();
         this._numCategory = new Map();

@@ -6,24 +6,27 @@ import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRen
 import { CameraPrefab } from "./prefab/CameraPrefab";
 import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
 import { TimeTest } from "./script/TimeTest";
+import { TestLayer } from "./TestLayer";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
     public run(): SceneBuilder {
 
+        console.clear();
+
         this.setting.render.useCss3DRenderer(true);
 
         this.setting.physics.usePhysics2D(true);
-        this.setting.physics.layerCollisionMatrix<["a"]>({
-            a: { a: true },
+        this.setting.physics.layerCollisionMatrix<TestLayer>({
+            default: { player: true, level: true, default: true },
+            level: { player: true, level: true },
+            player: { player: true }
         });
 
         const instantiater = this.instantiater;
 
         const trackObject = new PrefabRef<GameObject>();
         const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
-
-        console.clear();
 
         return this.sceneBuilder
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(8, 8, 0))
