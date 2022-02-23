@@ -53,7 +53,7 @@ export { Time } from "./engine/time/Time";
 //engine
 export { EngineGlobalObject } from "./engine/EngineGlobalObject";
 export { Game } from "./engine/Game";
-export type { GameSetting } from "./engine/bootstrap/GameSetting";
+export type { GameSetting } from "./engine/bootstrap/setting/GameSetting";
 export type { IReadOnlyGameState } from "./engine/GameState";
 export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";
