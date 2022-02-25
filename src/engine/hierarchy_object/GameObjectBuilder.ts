@@ -220,7 +220,7 @@ export class GameObjectBuilder {
     }
 
     private registerTransform(parent: Transform|null): void {
-        this._gameObject.transform.parent = parent;
+        this._gameObject.transform.setParent(parent, false);
 
         const children = this._children;
         for (let i = 0; i < children.length; i++) {

@@ -548,20 +548,25 @@ export class Transform {
      * 
      * you can't set parent that in another engine instance
      */
-    public set parent(value: Transform | null) {
-        if (value) {
+    public set parent(value: Transform|null) {
+        this.setParent(value);
+    }
+
+    public setParent(parent: Transform|null, worldPositionStays = true): void {
+        if (parent) {
             const oldParent = this.parent;
 
             this.updateLocalPositionRotationScaleFromOthersRecursively();
             this.setWorldMatrixNeedUpdateRecursively();
             this.setWorldPositionRotationScaleNeedUpdateRecursively();
 
-            const worldToLocal = value.getWorldToLocalMatrix(Transform._matrix4Buffer);
-            this._object3D.matrix.copy(this._object3D.matrixWorld).multiply(worldToLocal);
+            if (worldPositionStays) {
+                parent.getWorldToLocalMatrix(this._object3D.matrix).multiply(this._object3D.matrixWorld);
+            }
 
             this._object3D.removeFromParent();
-            value._object3D.add(this._object3D);
-            this._onParentChanged(oldParent, value);
+            parent._object3D.add(this._object3D);
+            this._onParentChanged(oldParent, parent);
         } else {
             const oldParent = this.parent;
 
@@ -569,7 +574,9 @@ export class Transform {
             this.setWorldMatrixNeedUpdateRecursively();
             this.setWorldPositionRotationScaleNeedUpdateRecursively();
 
-            this._object3D.matrix.copy(this._object3D.matrixWorld);
+            if (worldPositionStays) {
+                this._object3D.matrix.copy(this._object3D.matrixWorld);
+            }
 
             this._object3D.removeFromParent();
             this._engineGlobalObject.scene.add(this._object3D);
