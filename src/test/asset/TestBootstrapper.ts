@@ -32,11 +32,11 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(8, 8, 0))
                 .getColideTilemapChunkRendererRef(gridMap)
                 .make()
-                .active(false)
+                //.active(false)
             )
 
             .withChild(instantiater.buildGameObject("test_object")
-                //.active(false)
+                .active(false)
                 .withComponent(TimeTest, c => c.enabled = false)
                 .withComponent(CssHtmlElementRenderer, c => {
                     c.enabled = false;
@@ -96,7 +96,7 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
             .withChild(instantiater.buildGameObject("track_object")
-                .active(false)
+                //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     c.enabled = false;
                     c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);
@@ -132,7 +132,7 @@ export class TestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildGameObject("camera_parent")
                 .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 100))
-                    //.active(false)
+                    .active(false)
                     .withComponent(Camera, c => {
                         c.viewSize = 230;
                     })
@@ -148,7 +148,7 @@ export class TestBootstrapper extends Bootstrapper {
                     .withBackgroundColor(new PrefabRef(new Color(0, 0, 0)))
                     .withViewSize(new PrefabRef(200))
                     .make()
-                    .active(false)
+                    //.active(false)
                     .withComponent(EditorGridRenderer, c => {
                         //c.enabled = false;
                         c.renderWidth = 1000;

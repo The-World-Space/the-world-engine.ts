@@ -160,11 +160,10 @@ export class Transform {
         this.updateLocalPositionRotationScaleFromOthers();
     }
 
-
     private onBeforeLocalChange(): void {
         if (this._ignoreObservableEvent) return;
 
-        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this.updateChildrenLocalMatrixFromOthersRecursively();
         this._localPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
         this._localMatrixNeedUpdate = true;
         this.setWorldMatrixNeedUpdateRecursively();
@@ -199,7 +198,7 @@ export class Transform {
     private onBeforeWorldChange(): void {
         if (this._ignoreObservableEvent) return;
         
-        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this.updateChildrenLocalMatrixFromOthersRecursively();
         this._worldPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
         this._localMatrixNeedUpdate = true;
         this.setWorldMatrixNeedUpdateRecursively();
@@ -335,7 +334,16 @@ export class Transform {
         
         const localMatrix = this._object3D.matrix;
         
-        if (!this._localPositionRotationScaleNeedUpdate) {
+        if (!this._localMatrixNeedUpdate) {
+            //update world matrix from local matrix and parent world matrix
+            const parent = this.parent;
+            if (parent) {
+                parent.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
+                this._object3D.matrixWorld.multiplyMatrices(parent._object3D.matrixWorld, localMatrix);
+            } else {
+                this._object3D.matrixWorld.copy(localMatrix);
+            }
+        } else if (!this._localPositionRotationScaleNeedUpdate) {
             if (this._localMatrixNeedUpdate) {
                 //update local matrix from local position, rotation, scale
                 this._ignoreObservableEvent = true;
@@ -354,7 +362,7 @@ export class Transform {
             } else {
                 this._object3D.matrixWorld.copy(localMatrix);
             }
-        } else {
+        } else /*if (!this._worldPositionRotationScaleNeedUpdate)*/ {
             //update world matrix from world position, rotation, scale
             this._ignoreObservableEvent = true;
 
@@ -375,7 +383,17 @@ export class Transform {
         
         const localMatrix = this._object3D.matrix;
         
-        if (!this._worldPositionRotationScaleNeedUpdate) {
+        if (!this._worldMatrixNeedUpdate) {
+            //update local matrix from world matrix and parent world matrix
+            const parent = this.parent;
+            if (parent) {
+                parent.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
+                const worldToLocalMatrix = Transform._matrix4Buffer.copy(parent._object3D.matrixWorld).invert();
+                this._object3D.matrix.multiplyMatrices(this._object3D.matrixWorld, worldToLocalMatrix);
+            } else {
+                this._object3D.matrix.copy(this._object3D.matrixWorld);
+            }
+        } else if (!this._worldPositionRotationScaleNeedUpdate) {
             if (this._worldMatrixNeedUpdate) {
                 //update world matrix from world position, rotation, scale
                 this._ignoreObservableEvent = true;
@@ -399,7 +417,7 @@ export class Transform {
             } else {
                 this._object3D.matrix.copy(this._object3D.matrixWorld);
             }
-        } else {
+        } else /*if (!this._localPositionRotationScaleNeedUpdate)*/ {
             //update local matrix from local position, rotation, scale
             this._ignoreObservableEvent = true;
             
@@ -411,13 +429,13 @@ export class Transform {
         this._gameObject.invokeOnWorldMatrixUpdate();
     }
 
-    private updateChildrenLocalPositionRotationScaleFromOthersRecursively(): void {
+    private updateChildrenLocalMatrixFromOthersRecursively(): void {
         const children = this._object3D.children;
         for (let i = 0, l = children.length; i < l; i++) {
             const child = children[i];
             if (child.userData instanceof Transform) {
-                (child.userData as Transform).updateLocalPositionRotationScaleFromOthers();
-                (child.userData as Transform).updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+                (child.userData as Transform).updateLocalMatrixFromOthers();
+                (child.userData as Transform).updateChildrenLocalMatrixFromOthersRecursively();
             }
         }
     }
@@ -454,6 +472,8 @@ export class Transform {
 
     /**
      * foreach children transform
+     * 
+     * you must not change length of children array while iterating
      * @param callback 
      */
     public foreachChild(callback: (transform: Transform) => void): void {
@@ -468,6 +488,8 @@ export class Transform {
     
     /**
      * iterate children transfrom
+     * 
+     * you must not change length of children array while iterating
      * @param callback if return false, stop iteration
      */
     public iterateChild(callback: (transform: Transform) => boolean): void {
@@ -498,14 +520,14 @@ export class Transform {
     public set parent(value: Transform | null) {
         if (value) {
             const oldParent = this.parent;
-            this.updateLocalPositionRotationScaleFromOthers();
+            this.updateLocalMatrixFromOthers();
             this._object3D.removeFromParent();
             value._object3D.add(this._object3D);
             this.setWorldMatrixNeedUpdateRecursively();
             this._onParentChanged(oldParent, value);
         } else {
             const oldParent = this.parent;
-            this.updateLocalPositionRotationScaleFromOthers();
+            this.updateLocalMatrixFromOthers();
             this._object3D.removeFromParent();
             this._engineGlobalObject.scene.add(this._object3D);
             this.setWorldMatrixNeedUpdateRecursively();
