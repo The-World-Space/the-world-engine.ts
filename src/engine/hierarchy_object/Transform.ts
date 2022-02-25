@@ -163,8 +163,8 @@ export class Transform {
     private onBeforeLocalChange(): void {
         if (this._ignoreObservableEvent) return;
 
-        this.updateChildrenLocalMatrixFromOthersRecursively();
-        this._localPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this._localPositionRotationScaleNeedUpdate = false;
         this._localMatrixNeedUpdate = true;
         this.setWorldMatrixNeedUpdateRecursively();
         this.setWorldPositionRotationScaleNeedUpdateRecursively();
@@ -198,11 +198,12 @@ export class Transform {
     private onBeforeWorldChange(): void {
         if (this._ignoreObservableEvent) return;
         
-        this.updateChildrenLocalMatrixFromOthersRecursively();
-        this._worldPositionRotationScaleNeedUpdate = false; //note: it seems to be unnecessary
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this._worldPositionRotationScaleNeedUpdate = false;
+        this._localPositionRotationScaleNeedUpdate = true;
         this._localMatrixNeedUpdate = true;
         this.setWorldMatrixNeedUpdateRecursively();
-        this._localPositionRotationScaleNeedUpdate = true;
+        this.setChildrenWorldPositionRotationScaleNeedUpdateRecursively();
         this.setHasChangedRecursively();
     }
     
@@ -228,6 +229,16 @@ export class Transform {
 
     private setWorldPositionRotationScaleNeedUpdateRecursively(): void {
         this._worldPositionRotationScaleNeedUpdate = true;
+        const children = this._object3D.children;
+        for (let i = 0, len = children.length; i < len; i++) {
+            const child = children[i];
+            if (child.userData instanceof Transform) {
+                child.userData.setWorldPositionRotationScaleNeedUpdateRecursively();
+            }
+        }
+    }
+
+    private setChildrenWorldPositionRotationScaleNeedUpdateRecursively(): void {
         const children = this._object3D.children;
         for (let i = 0, len = children.length; i < len; i++) {
             const child = children[i];
@@ -429,13 +440,35 @@ export class Transform {
         this._localMatrixNeedUpdate = false;
     }
 
-    private updateChildrenLocalMatrixFromOthersRecursively(): void {
+    // private updateLocalMatrixFromOthersRecursively(): void {
+    //     this.updateLocalMatrixFromOthers();
+    //     const children = this._object3D.children;
+    //     for (let i = 0, l = children.length; i < l; i++) {
+    //         const child = children[i];
+    //         if (child.userData instanceof Transform) {
+    //             child.userData.updateLocalMatrixFromOthersRecursively();
+    //         }
+    //     }
+    // }
+
+    private updateLocalPositionRotationScaleFromOthersRecursively(): void {
+        this.updateLocalPositionRotationScaleFromOthers();
         const children = this._object3D.children;
         for (let i = 0, l = children.length; i < l; i++) {
             const child = children[i];
             if (child.userData instanceof Transform) {
-                (child.userData as Transform).updateLocalMatrixFromOthers();
-                (child.userData as Transform).updateChildrenLocalMatrixFromOthersRecursively();
+                child.userData.updateLocalPositionRotationScaleFromOthersRecursively();
+            }
+        }
+    }
+
+    private updateChildrenLocalPositionRotationScaleFromOthersRecursively(): void {
+        const children = this._object3D.children;
+        for (let i = 0, l = children.length; i < l; i++) {
+            const child = children[i];
+            if (child.userData instanceof Transform) {
+                child.userData.updateLocalPositionRotationScaleFromOthers();
+                child.userData.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
             }
         }
     }
@@ -481,7 +514,7 @@ export class Transform {
         for (let i = 0, l = object3D_children.length; i < l; i++) {
             const child = object3D_children[i];
             if (child.userData instanceof Transform) {
-                callback(child.userData as Transform);
+                callback(child.userData);
             }
         }
     }
@@ -497,9 +530,7 @@ export class Transform {
         for (let i = 0, l = object3D_children.length; i < l; i++) {
             const child = object3D_children[i];
             if (child.userData instanceof Transform) {
-                if (!callback(child.userData as Transform)) {
-                    break;
-                }
+                if (!callback(child.userData)) break;
             }
         }
     }
@@ -520,17 +551,23 @@ export class Transform {
     public set parent(value: Transform | null) {
         if (value) {
             const oldParent = this.parent;
-            this.updateLocalMatrixFromOthers();
+
+            this.updateLocalPositionRotationScaleFromOthersRecursively();
+            this.setWorldMatrixNeedUpdateRecursively();
+            this.setWorldPositionRotationScaleNeedUpdateRecursively();
+
             this._object3D.removeFromParent();
             value._object3D.add(this._object3D);
-            this.setWorldMatrixNeedUpdateRecursively();
             this._onParentChanged(oldParent, value);
         } else {
             const oldParent = this.parent;
-            this.updateLocalMatrixFromOthers();
+
+            this.updateLocalPositionRotationScaleFromOthersRecursively();
+            this.setWorldMatrixNeedUpdateRecursively();
+            this.setWorldPositionRotationScaleNeedUpdateRecursively();
+
             this._object3D.removeFromParent();
             this._engineGlobalObject.scene.add(this._object3D);
-            this.setWorldMatrixNeedUpdateRecursively();
             this._onParentChanged(oldParent, null);
         }
     }
@@ -567,15 +604,20 @@ export class Transform {
      * set vector representing the blue axis of the transform in world space.
      */
     public setForward(value: ReadOnlyVector3): void {
+        this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedUpdate = true;
+        this.setChildrenWorldPositionRotationScaleNeedUpdateRecursively();
+        this.setWorldPositionRotationScaleNeedUpdateRecursively();
+        this._worldPositionRotationScaleNeedUpdate = true;
+
         const e = this._object3D.matrixWorld.elements;
         const v = (Transform._vector3Buffer as WritableVector3).copy(value).normalize();
         e[8] = v.x;
         e[9] = v.y;
         e[10] = v.z;
-        this._localMatrixNeedUpdate = true;
-        this._localPositionRotationScaleNeedUpdate = true;
-        this._worldPositionRotationScaleNeedUpdate = true;
     }
 
     /**
@@ -592,15 +634,20 @@ export class Transform {
      * set vector representing the red axis of the transform in world space.
      */
     public setRight(value: ReadOnlyVector3): void {
+        this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedUpdate = true;
+        this.setChildrenWorldPositionRotationScaleNeedUpdateRecursively();
+        this.setWorldPositionRotationScaleNeedUpdateRecursively();
+        this._worldPositionRotationScaleNeedUpdate = true;
+
         const e = this._object3D.matrixWorld.elements;
         const v = (Transform._vector3Buffer as WritableVector3).copy(value).normalize();
         e[0] = v.x;
         e[1] = v.y;
         e[2] = v.z;
-        this._localMatrixNeedUpdate = true;
-        this._localPositionRotationScaleNeedUpdate = true;
-        this._worldPositionRotationScaleNeedUpdate = true;
     }
 
     /**
@@ -617,15 +664,20 @@ export class Transform {
      * set vector representing the green axis of the transform in world space.
      */
     public setUp(value: ReadOnlyVector3): void {
+        this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
+        this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedUpdate = true;
+        this.setChildrenWorldPositionRotationScaleNeedUpdateRecursively();
+        this.setWorldPositionRotationScaleNeedUpdateRecursively();
+        this._worldPositionRotationScaleNeedUpdate = true;
+
         const e = this._object3D.matrixWorld.elements;
         const v = (Transform._vector3Buffer as WritableVector3).copy(value).normalize();
         e[4] = v.x;
         e[5] = v.y;
         e[6] = v.z;
-        this._localMatrixNeedUpdate = true;
-        this._localPositionRotationScaleNeedUpdate = true;
-        this._worldPositionRotationScaleNeedUpdate = true;
     }
 
     /**
