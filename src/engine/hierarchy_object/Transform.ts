@@ -407,6 +407,7 @@ export class Transform {
                 this._ignoreObservableEvent = false;
                 
                 this._worldMatrixNeedUpdate = false;
+                this._gameObject.invokeOnWorldMatrixUpdate();
             }
             //update local matrix from world matrix and parent world matrix
             const parent = this.parent;
@@ -426,7 +427,6 @@ export class Transform {
             this._ignoreObservableEvent = false;
         }
         this._localMatrixNeedUpdate = false;
-        this._gameObject.invokeOnWorldMatrixUpdate();
     }
 
     private updateChildrenLocalMatrixFromOthersRecursively(): void {
