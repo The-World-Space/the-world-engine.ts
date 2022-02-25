@@ -556,6 +556,9 @@ export class Transform {
             this.setWorldMatrixNeedUpdateRecursively();
             this.setWorldPositionRotationScaleNeedUpdateRecursively();
 
+            const worldToLocal = value.getWorldToLocalMatrix(Transform._matrix4Buffer);
+            this._object3D.matrix.copy(this._object3D.matrixWorld).multiply(worldToLocal);
+
             this._object3D.removeFromParent();
             value._object3D.add(this._object3D);
             this._onParentChanged(oldParent, value);
@@ -565,6 +568,8 @@ export class Transform {
             this.updateLocalPositionRotationScaleFromOthersRecursively();
             this.setWorldMatrixNeedUpdateRecursively();
             this.setWorldPositionRotationScaleNeedUpdateRecursively();
+
+            this._object3D.matrix.copy(this._object3D.matrixWorld);
 
             this._object3D.removeFromParent();
             this._engineGlobalObject.scene.add(this._object3D);
