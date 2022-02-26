@@ -1,5 +1,6 @@
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
+import { Color } from "../../render/Color";
 
 export enum TextAlign {
     Left = "left",
@@ -20,7 +21,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private _fontWeight: FontWeight = FontWeight.Normal;
     private _fontFamily = "Arial";
     private _textalign: TextAlign = TextAlign.Left;
-    private _opacity = 1;
+    private _textColor: Color = new Color(1, 1, 1, 1);
     
     private _initializeFunction: (() => void)|null = null;
 
@@ -116,7 +117,8 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this.htmlElement.style.fontWeight = this._fontWeight;
         this.htmlElement.style.fontFamily = this._fontFamily;
         this.htmlElement.style.textAlign = this._textalign;
-        this.htmlElement.style.opacity = this._opacity.toString();
+        this.htmlElement.style.color = this._textColor.toHex();
+        this.htmlElement.style.opacity = this._textColor.a.toString();
         
         const css3DObject = this.initializeBaseComponents(false);
         Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
@@ -232,14 +234,15 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
-    public get opacity(): number {
-        return this._opacity;
+    public get textColor(): Color {
+        return this._textColor;
     }
 
-    public set opacity(value: number) {
-        this._opacity = value;
+    public set textColor(value: Color) {
+        this._textColor = value;
         if (this.htmlElement) {
-            this.htmlElement.style.opacity = value.toString();
+            this.htmlElement.style.color = value.toHex();
+            this.htmlElement.style.opacity = value.a.toString();
         }
     }
 }
