@@ -55,7 +55,22 @@ export class Color {
      * @returns 
      */
     public toHex(): string {
-        return "#" + (Math.round(this._r * 255)).toString(16) + (Math.round(this._g * 255)).toString(16) + (Math.round(this._b * 255)).toString(16); 
+        return "#" +
+            (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
+            (Math.round(this._g * 255)).toString(16).padStart(2, "0") +
+            (Math.round(this._b * 255)).toString(16).padStart(2, "0");
+    }
+
+    /**
+     * get the color as a hex string with the format #rrggbbaa
+     * @returns 
+     */
+    public toHexWithAlpha(): string {
+        return "#" +
+            (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
+            (Math.round(this._g * 255)).toString(16).padStart(2, "0") +
+            (Math.round(this._b * 255)).toString(16).padStart(2, "0") +
+            (Math.round(this._a * 255)).toString(16).padStart(2, "0");
     }
 
     /**

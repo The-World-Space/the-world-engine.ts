@@ -96,7 +96,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.color = new Color(0, 0, 0, 1);
                     setTimeout(() => {
                         c.color = new Color(1, 0, 0, 1);
-                    }, 1000);
+                    }, 5000);
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 

@@ -40,7 +40,7 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
             // svgElement.appendChild(defs);
 
             const svgPolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-            svgPolygon.style.fill = this._color.toString();
+            svgPolygon.style.fill = this._color.toHexWithAlpha();
             // svgPolygon.style.filter = "url(#blur)";
             svgElement.appendChild(svgPolygon);
             this.htmlElement.appendChild(svgElement);
@@ -143,7 +143,7 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     public set color(value: Color) {
         this._color = value;
         if (this.htmlElement) {
-            this._svgElement!.style.fill = value.toString();
+            this._svgElement!.style.fill = value.toHexWithAlpha();
         }
     }
 }
