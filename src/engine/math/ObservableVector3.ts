@@ -34,6 +34,7 @@ export class ObservableVector3 {
     }
 
     public set x(value: number) {
+        if (this._x === value) return;
         this._onBeforeChangeCallback();
         this._x = value;
     }
@@ -44,6 +45,7 @@ export class ObservableVector3 {
     }
 
     public set y(value: number) {
+        if (this._y === value) return;
         this._onBeforeChangeCallback();
         this._y = value;
     }
@@ -54,15 +56,17 @@ export class ObservableVector3 {
     }
 
     public set z(value: number) {
+        if (this._z === value) return;
         this._onBeforeChangeCallback();
         this._z = value;
     }
 
-    public set(x: number, y: number, z: number): ObservableVector3 {
+    public set(x: number, y: number, z?: number): ObservableVector3 {
         if (z === undefined) {
             this._onBeforeGetComponentCallback();
             z = this._z; // sprite.scale.set(x,y)
         }
+        if (this._x === x && this._y === y && this._z === z) return this;
         this._onBeforeChangeCallback();
         this._x = x;
         this._y = y;
@@ -71,6 +75,7 @@ export class ObservableVector3 {
     }
 
     public setScalar(scalar: number): ObservableVector3 {
+        if (this._x === scalar && this._y === scalar && this._z === scalar) return this;
         this._onBeforeChangeCallback();
         this._x = scalar;
         this._y = scalar;
@@ -79,29 +84,43 @@ export class ObservableVector3 {
     }
 
     public setX(x: number): ObservableVector3 {
+        if (this._x === x) return this;
         this._onBeforeChangeCallback();
         this._x = x;
         return this;
     }
 
     public setY(y: number): ObservableVector3 {
+        if (this._y === y) return this;
         this._onBeforeChangeCallback();
         this._y = y;
         return this;
     }
 
     public setZ(z: number): ObservableVector3 {
+        if (this._z === z) return this;
         this._onBeforeChangeCallback();
         this._z = z;
         return this;
     }
 
     public setComponent(index: number, value: number): ObservableVector3 {
-        this._onBeforeChangeCallback();
         switch (index) {
-        case 0: this._x = value; break;
-        case 1: this._y = value; break;
-        case 2: this._z = value; break;
+        case 0:
+            if (this._x === value) return this; 
+            this._onBeforeChangeCallback();
+            this._x = value;
+            break;
+        case 1:
+            if (this._y === value) return this;
+            this._onBeforeChangeCallback();
+            this._y = value;
+            break;
+        case 2:
+            if (this._z === value) return this;
+            this._onBeforeChangeCallback();
+            this._z = value;
+            break;
         default: throw new Error("index is out of range: " + index);
         }
         return this;
@@ -123,6 +142,7 @@ export class ObservableVector3 {
     }
 
     public copy(v: ObservableVector3): ObservableVector3 {
+        if (this._x === v.x && this._y === v.y && this._z === v.z) return this;
         this._onBeforeChangeCallback();
         this._x = v.x;
         this._y = v.y;
@@ -135,6 +155,7 @@ export class ObservableVector3 {
             console.warn( "THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead." );
             return this.addVectors(v, w);
         }
+        if (v.x === 0 && v.y === 0 && v.z === 0) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x += v.x;
@@ -144,6 +165,7 @@ export class ObservableVector3 {
     }
 
     public addScalar(s: number): ObservableVector3 {
+        if (s === 0) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x += s;
@@ -174,6 +196,7 @@ export class ObservableVector3 {
             console.warn( "THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead." );
             return this.subVectors(v, w);
         }
+        if (v.x === 0 && v.y === 0 && v.z === 0) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x -= v.x;
@@ -183,6 +206,7 @@ export class ObservableVector3 {
     }
 
     public subScalar(s: number): ObservableVector3 {
+        if (s === 0) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x -= s;
@@ -204,6 +228,7 @@ export class ObservableVector3 {
             console.warn( "THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead." );
             return this.multiplyVectors(v, w);
         }
+        if (v.x === 1 && v.y === 1 && v.z === 1) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x *= v.x;
@@ -213,6 +238,7 @@ export class ObservableVector3 {
     }
 
     public multiplyScalar(scalar: number): ObservableVector3 {
+        if (scalar === 1) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x *= scalar;
@@ -316,6 +342,7 @@ export class ObservableVector3 {
     }
 
     public divide(v: ObservableVector3): ObservableVector3 {
+        if (v.x === 1 && v.y === 1 && v.z === 1) return this;
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
         this._x /= v.x;
@@ -588,6 +615,7 @@ export class ObservableVector3 {
     }
 
     public fromArray(array: number[]|ArrayLike<number>, offset = 0): ObservableVector3 {
+        if (this._x === array[offset] && this._y === array[offset + 1] && this._z === array[offset + 2]) return this;
         this._onBeforeChangeCallback();
         this._x = array[offset];
         this._y = array[offset + 1];

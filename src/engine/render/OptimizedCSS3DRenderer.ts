@@ -21,7 +21,7 @@ export class OptimizedCSS3DRenderer {
             fov: 0,
             style: ""
         },
-        objects: new WeakMap()
+        //objects: new WeakMap()
     };
     private _cameraElement: HTMLElement;
 
@@ -79,7 +79,7 @@ export class OptimizedCSS3DRenderer {
         }
 
         for (const object of renderObjects) {
-            this.renderObject(object, scene, camera, cameraCSSMatrix);
+            this.renderObject(object, scene, camera);
         }
     }
 
@@ -117,7 +117,7 @@ export class OptimizedCSS3DRenderer {
         return "translate(-50%,-50%)" + matrix3d;
     }
 
-    private renderObject(object: any, scene: THREE.Scene, camera: THREE.Camera, cameraCSSMatrix: string): void {
+    private renderObject(object: any, scene: THREE.Scene, camera: THREE.Camera): void {
         if (object.isCSS3DObject) {
             object.onBeforeRender(this, scene, camera);
             let style;
@@ -142,15 +142,19 @@ export class OptimizedCSS3DRenderer {
             }
 
             const element = object.element;
-            const cachedObject = this._cache.objects.get(object);
+            //const cachedObject = this._cache.objects.get(object);
 
-            if (cachedObject === undefined || cachedObject.style !== style) {
-                element.style.transform = style;
-                const objectData = {
-                    style: style
-                };
-                this._cache.objects.set(object, objectData);
-            }
+            element.style.transform = style;
+
+            //remove cached object for optimization
+            
+            // if (cachedObject === undefined || cachedObject.style !== style) {
+            //     element.style.transform = style;
+            //     const objectData = {
+            //         style: style
+            //     };
+            //     this._cache.objects.set(object, objectData);
+            // }
 
             element.style.display = object.visible ? "" : "none";
 
@@ -160,8 +164,10 @@ export class OptimizedCSS3DRenderer {
             object.onAfterRender(this, scene, camera);
         }
 
-        for (let i = 0, l = object.children.length; i < l; ++i) {
-            this.renderObject(object.children[i], scene, camera, cameraCSSMatrix);
-        }
+        //recursion is not needed, because updated data is iterated in renderObjects
+
+        // for (let i = 0, l = object.children.length; i < l; ++i) {
+        //     this.renderObject(object.children[i], scene, camera);
+        // }
     }
 }

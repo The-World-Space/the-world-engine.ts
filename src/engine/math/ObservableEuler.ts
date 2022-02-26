@@ -81,6 +81,7 @@ export class ObservableEuler {
     }
 
     public set x(value: number) {
+        if (this._internal_x === value) return;
         this._onBeforeChangeCallback();
         this._internal_x = value;
         this._onChangeCallback();
@@ -92,6 +93,7 @@ export class ObservableEuler {
     }
 
     public set y(value: number) {
+        if (this._internal_y === value) return;
         this._onBeforeChangeCallback();
         this._internal_y = value;
         this._onChangeCallback();
@@ -103,6 +105,7 @@ export class ObservableEuler {
     }
 
     public set z(value: number) {
+        if (this._internal_z === value) return;
         this._onBeforeChangeCallback();
         this._internal_z = value;
         this._onChangeCallback();
@@ -114,12 +117,14 @@ export class ObservableEuler {
     }
 
     public set order(value: string) {
+        if (this._internal_order === value) return;
         this._onBeforeChangeCallback();
         this._internal_order = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, order?: string): ObservableEuler {
+        if (x === this._internal_x && y === this._internal_y && z === this._internal_z && order === this._internal_order) return this;
         this._onBeforeChangeCallback();
         this._internal_x = x;
         this._internal_y = y;
@@ -137,6 +142,7 @@ export class ObservableEuler {
     }
 
     public copy(euler: ObservableEuler): ObservableEuler {
+        if (this._internal_x === euler._internal_x && this._internal_y === euler._internal_y && this._internal_z === euler._internal_z && this._internal_order === euler._internal_order) return this;
         this._onBeforeChangeCallback();
         this._internal_x = euler._x;
         this._internal_y = euler._y;
@@ -255,6 +261,7 @@ export class ObservableEuler {
     }
 
     public fromArray(array: any[]): ObservableEuler {
+        if(this._internal_x === array[0] && this._internal_y === array[1] && this._internal_z === array[2] && this._internal_order === array[3]) return this;
         this._onBeforeChangeCallback();
         this._internal_x = array[0];
         this._internal_y = array[1];
