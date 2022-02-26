@@ -6,6 +6,7 @@ import { CssRenderer } from "./CssRenderer";
 import { DEG2RAD } from "three/src/math/MathUtils";
 
 export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
+    private _svgElement: SVGPolygonElement|null = null;
     private _points: Vector2[] = [
         new Vector2(-64, -64),
         new Vector2(64, -64),
@@ -19,10 +20,31 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     protected override renderInitialize(): void {
         if (!this.htmlElement) {
             this.htmlElement = document.createElement("div");
-            this.htmlElement.style.backgroundColor = this._color.toHex();
-            this.htmlElement.style.opacity = this._color.a.toString();
-            //this.updateCssSize();
-            //this.htmlElement.style.clipPath = this.createPolygonCss();
+            const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+            svgElement.setAttribute("width", "100%");
+            svgElement.setAttribute("height", "100%");
+            
+            //blur test code
+            // const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
+            // const filter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
+            // filter.setAttribute("id", "blur");
+            // filter.setAttribute("x", "-50%");
+            // filter.setAttribute("y", "-50%");
+            // filter.setAttribute("width", "200%");
+            // filter.setAttribute("height", "200%");
+            // const feGaussianBlur = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
+            // feGaussianBlur.setAttribute("in", "SourceGraphic");
+            // feGaussianBlur.setAttribute("stdDeviation", "100");
+            // filter.appendChild(feGaussianBlur);
+            // defs.appendChild(filter);
+            // svgElement.appendChild(defs);
+
+            const svgPolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
+            svgPolygon.style.fill = this._color.toString();
+            // svgPolygon.style.filter = "url(#blur)";
+            svgElement.appendChild(svgPolygon);
+            this.htmlElement.appendChild(svgElement);
+            this._svgElement = svgPolygon;
             this.initializeBaseComponents(false);
         }
     }
@@ -46,7 +68,7 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         
         const value = this.viewScale;
         this.updateCssSize();
-        this.htmlElement!.style.clipPath = this.createPolygonCss();
+        this._svgElement!.setAttribute("points", this.createPolygonPoints());
         this.css3DObject.scale.set(value, value, value);
 
         if (updateTransform) {
@@ -69,21 +91,20 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         this.htmlElement!.style.height = (this._height / this.viewScale) + "px";
     }
 
-    private createPolygonCss(): string {
-        let clipPathCss = "polygon(";
+    private createPolygonPoints(): string {
+        let points = "";
         for (let i = 0; i < this._points.length; i++) {
             const rawPoint = this._points[i];
 
             const pointX = (rawPoint.x + (this._width / 2)) / this.viewScale;
             const pointY = (this._height - (rawPoint.y + (this._height / 2))) / this.viewScale;
             
-            clipPathCss += " " + pointX + "px " + pointY + "px";
+            points += pointX + "," + pointY;
             if (i < this._points.length - 1) {
-                clipPathCss += ",";
+                points += " ";
             }
         }
-        clipPathCss += ")";
-        return clipPathCss;
+        return points;
     }
 
     public get points(): readonly ReadOnlyVector2[] {
@@ -98,22 +119,19 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
 
         if (this.htmlElement) {
             this.updateCssSize();
-            this.htmlElement.style.clipPath = this.createPolygonCss();
+            this._svgElement!.setAttribute("points", this.createPolygonPoints());
             this.updateCenterOffset(true);
         }
     }
 
     public setShapeToRegularPolygon(sides: number, radius: number): void {
         const points = [];
-        for (let i = 0; i < 360; i++) {
-            if (i % (360 / sides) === 0) {
-                points.push(
-                    new Vector2(
-                        Math.cos(i * DEG2RAD + Math.PI / 2) * radius,
-                        Math.sin(i * DEG2RAD + Math.PI / 2) * radius
-                    )
-                );
-            }
+        const angle = DEG2RAD * 360 / sides;
+        for (let i = 0; i < sides; i++) {
+            points.push(new Vector2(
+                radius * Math.cos(angle * i + Math.PI / 2),
+                radius * Math.sin(angle * i + Math.PI / 2)
+            ));
         }
         this.points = points;
     }
@@ -125,8 +143,7 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     public set color(value: Color) {
         this._color = value;
         if (this.htmlElement) {
-            this.htmlElement.style.backgroundColor = value.toHex();
-            this.htmlElement.style.opacity = value.a.toString();
+            this._svgElement!.style.fill = value.toString();
         }
     }
 }
