@@ -35,6 +35,7 @@ export class Game {
     private _gameSetting: GameSettingObject|null = null;
     private _animationFrameId: number|null;
     private _isDisposed: boolean;
+    private _autoResize: boolean;
     private _resizeFrameBufferBind: () => void;
     private _loopBind: () => void;
 
@@ -42,23 +43,32 @@ export class Game {
      * 
      * @param container html element that mount the game view
      */
-    public constructor(container: HTMLElement) {
+    public constructor(container: HTMLElement, autoResize = true) {
         this._rootScene = new Scene();
         this._gameScreen = new GameScreen(container.clientWidth, container.clientHeight);
         this._container = container;
+        
         this._css3DRenderer = new OptimizedCSS3DRenderer();
         this._css3DRenderer.setSize(container.clientWidth, container.clientHeight);
         this._css3DRenderer.domElement.style.width = "100%";
         this._css3DRenderer.domElement.style.height = "100%";
+        this._css3DRenderer.domElement.onscroll = () => { //block scroll to prevent camera bug
+            this._css3DRenderer.domElement.scrollLeft = 0;
+            this._css3DRenderer.domElement.scrollTop = 0;
+        };
+
         this._cameraContainer = new CameraContainer((color: Color) => {
             this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
         });
+        
         this._time = new Time();
         this._gameState = new GameState(GameStateKind.WaitingForStart);
+        
         this._sceneProcessor = new SceneProcessor();
         this._coroutineProcessor = new CoroutineProcessor(this._time);
         this._transformMatrixProcessor = new TransformMatrixProcessor();
         this._physics2DProcessor = new Physics2DProcessor();
+        
         this._engineGlobalObject = new EngineGlobalObject(
             this._rootScene,
             this._cameraContainer,
@@ -71,18 +81,16 @@ export class Game {
             this._physics2DProcessor,
             this._css3DRenderer.domElement
         );
+        
         this._animationFrameId = null;
         this._isDisposed = false;
-        this._css3DRenderer.domElement.onscroll = () => { //block scroll to prevent camera bug
-            this._css3DRenderer.domElement.scrollLeft = 0;
-            this._css3DRenderer.domElement.scrollTop = 0;
-        };
+        this._autoResize = autoResize;
         this._resizeFrameBufferBind = this.resizeFramebuffer.bind(this);
-        window.addEventListener("resize", this._resizeFrameBufferBind);
+        if (autoResize) window.addEventListener("resize", this._resizeFrameBufferBind);
         this._loopBind = this.loop.bind(this);
     }
 
-    private resizeFramebuffer(): void {
+    public resizeFramebuffer(): void {
         const width = this._container.clientWidth;
         const height = this._container.clientHeight;
         if (width === this._gameScreen.width && height === this._gameScreen.height) return;
@@ -100,8 +108,10 @@ export class Game {
     public run<T, U extends Bootstrapper<T> = Bootstrapper<T>>(bootstrapperCtor: BootstrapperConstructor<T, U>, interopObject?: T): void {
         if (this._isDisposed) throw new Error("Game is disposed.");
         if (this._gameState.kind !== GameStateKind.WaitingForStart) throw new Error("Game is already running.");
+
         this._gameState.kind = GameStateKind.Initializing;
         this._time.start();
+        
         const bootstrapper = new bootstrapperCtor(this._engineGlobalObject, interopObject);
         const scene = bootstrapper.run();
         this._gameSetting = bootstrapper.getGameSettingObject();
@@ -109,6 +119,7 @@ export class Game {
             this._container.appendChild(this._css3DRenderer.domElement);
         }
         scene.build();
+        
         //If a camera exists in the bootstrapper,
         //it is certain that the camera exists in the global variable from this point on.
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
@@ -126,7 +137,7 @@ export class Game {
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
-        this.loop();
+        this._animationFrameId = requestAnimationFrame(this._loopBind);
     }
 
     private loop(): void {
@@ -174,14 +185,17 @@ export class Game {
      */
     public dispose(): void {
         if (this._isDisposed) return;
+        
         this._gameState.kind = GameStateKind.Finalizing;
         if (this._animationFrameId) cancelAnimationFrame(this._animationFrameId);
         this._engineGlobalObject.dispose();
         this._rootScene.children.slice().forEach(child => {
             if (child instanceof Transform) child.gameObject.destroy();
         });
+        
+        if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
         this._container.removeChild(this._css3DRenderer.domElement);
-        window.removeEventListener("resize", this._resizeFrameBufferBind);
+        
         this._isDisposed = true;
         this._gameState.kind = GameStateKind.Finalized;
     }
