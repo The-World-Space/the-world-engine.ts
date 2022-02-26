@@ -36,7 +36,7 @@ export class SansFightRoomPrefab extends Prefab {
     }
 
     public make(): GameObjectBuilder {
-        const instantiater = this.engine.instantiater;
+        const instantiater = this.instantiater;
 
         return this.gameObjectBuilder
             .withChild(instantiater.buildGameObject("tilemap")
