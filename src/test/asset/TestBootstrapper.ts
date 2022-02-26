@@ -8,6 +8,7 @@ import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
 import { TimeTest } from "./script/TimeTest";
 import { ChangeParentTest } from "./script/ChangeParentTest";
 import { Rotator2 } from "./script/Rotator2";
+import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
 
 /** @internal */
@@ -167,7 +168,14 @@ export class TestBootstrapper extends Bootstrapper {
                     .withComponent(EditorGridRenderer, c => {
                         c.renderWidth = 1000;
                         c.renderHeight = 1000;
-                    }))
+                    })
+                    .withChild(instantiater.buildGameObject("fps_counter")
+                        .withComponent(CssTextRenderer, c => {
+                            c.autoSize = true;
+                            c.centerOffset = new Vector2(-2, 2);
+                        })
+                        .withComponent(FpsCounter)))
+
                 .withChild(instantiater.buildPrefab("track_camera", CameraPrefab)
                     .withTrackTarget(trackObject)
                     .withBackgroundColor(new PrefabRef(new Color(0, 0, 0)))
