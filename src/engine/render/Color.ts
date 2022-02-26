@@ -55,7 +55,7 @@ export class Color {
      * @returns 
      */
     public toHex(): string {
-        return "#" + this._r.toString(16) + this._g.toString(16) + this._b.toString(16);
+        return "#" + (Math.round(this._r * 255)).toString(16) + (Math.round(this._g * 255)).toString(16) + (Math.round(this._b * 255)).toString(16); 
     }
 
     /**
