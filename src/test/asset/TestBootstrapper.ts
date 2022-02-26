@@ -1,13 +1,11 @@
 import { Vector2, Vector3 } from "three";
-import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssSpriteRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
+import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRenderer";
 import { CameraPrefab } from "./prefab/CameraPrefab";
 import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
 import { TimeTest } from "./script/TimeTest";
-import { ChangeParentTest } from "./script/ChangeParentTest";
-import { Rotator2 } from "./script/Rotator2";
 import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
 
@@ -31,8 +29,6 @@ export class TestBootstrapper extends Bootstrapper {
         const trackObject = new PrefabRef<GameObject>();
         const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
 
-        const parent1 = new PrefabRef<GameObject>();
-        const parent2 = new PrefabRef<GameObject>();
 
         return this.sceneBuilder
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(8, 8, 0))
@@ -101,26 +97,6 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
-            .withChild(instantiater.buildGameObject("parent1", new Vector3(16 * 1, 0, 0))
-                //.active(false)
-                .withComponent(CssSpriteRenderer)
-                .withComponent(Rotator2)
-                .getGameObject(parent1))
-                
-            .withChild(instantiater.buildGameObject("parent2", new Vector3(16 * -1, 0, 0))
-                //.active(false)
-                .withComponent(CssSpriteRenderer)
-                .withComponent(Rotator2)
-                .getGameObject(parent2))
-
-            .withChild(instantiater.buildGameObject("child", new Vector3(0, 0, 0))
-                //.active(false)
-                .withComponent(CssSpriteRenderer)
-                .withComponent(ChangeParentTest, c => {
-                    c.parent1 = parent1.ref!;
-                    c.parent2 = parent2.ref!;
-                }))
-
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
@@ -161,6 +137,7 @@ export class TestBootstrapper extends Bootstrapper {
                     //.active(false)
                     .withComponent(Camera, c => {
                         c.viewSize = 230;
+                        c.backgroundColor = new Color(0, 0, 0);
                     })
                     .withComponent(EditorCameraController, c => {
                         c.maxViewSize = 500;
@@ -173,6 +150,7 @@ export class TestBootstrapper extends Bootstrapper {
                         .withComponent(CssTextRenderer, c => {
                             c.autoSize = true;
                             c.centerOffset = new Vector2(-2, 2);
+                            c.textColor = new Color(1, 1, 1);
                         })
                         .withComponent(FpsCounter)))
 
