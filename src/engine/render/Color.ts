@@ -55,10 +55,15 @@ export class Color {
      * @returns 
      */
     public toHex(): string {
-        return "#" +
-            (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
-            (Math.round(this._g * 255)).toString(16).padStart(2, "0") +
-            (Math.round(this._b * 255)).toString(16).padStart(2, "0");
+        return "#" + (
+            (Math.round(this._r * 255) << 8*2) +
+            (Math.round(this._g * 255) << 8*1) +
+            (Math.round(this._b * 255) << 8*0)
+        ).toString(16).padStart(6, "0");
+        // return "#" +
+        //     (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
+        //     (Math.round(this._g * 255)).toString(16).padStart(2, "0") +
+        //     (Math.round(this._b * 255)).toString(16).padStart(2, "0");
     }
 
     /**
@@ -66,11 +71,17 @@ export class Color {
      * @returns 
      */
     public toHexWithAlpha(): string {
-        return "#" +
-            (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
-            (Math.round(this._g * 255)).toString(16).padStart(2, "0") +
-            (Math.round(this._b * 255)).toString(16).padStart(2, "0") +
+        return "#" + (
+            (Math.round(this._r * 255) << 8*2) +
+            (Math.round(this._g * 255) << 8*1) +
+            (Math.round(this._b * 255) << 8*0)
+        ).toString(16).padStart(6, "0") +
             (Math.round(this._a * 255)).toString(16).padStart(2, "0");
+        // return "#" +
+        //     (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
+        //     (Math.round(this._g * 255)).toString(16).padStart(2, "0") +
+        //     (Math.round(this._b * 255)).toString(16).padStart(2, "0") +
+        //     (Math.round(this._a * 255)).toString(16).padStart(2, "0");
     }
 
     /**
