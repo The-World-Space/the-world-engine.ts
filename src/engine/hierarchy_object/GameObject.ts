@@ -3,7 +3,7 @@ import { ComponentConstructor } from "./ComponentConstructor";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { Transform } from "./Transform";
 import { GameObjectBuilder } from "./GameObjectBuilder";
-import { isOnWorldMatrixUpdatedableComponent, OnWorldMatrixUpdatedableComponent } from "./ComponentEventContainer";
+import { GameObjectEventContainer } from "./GameObjectEventContainer";
 
 /**
  * base class for all entities in scenes
@@ -14,13 +14,14 @@ export class GameObject {
     private readonly _instanceId: number;
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
+    private readonly _transform: Transform;
+    
     /** @internal */
     public _initialized: boolean;
     /** @internal */
-    public readonly _components: Component[];
-    private readonly _matrixUpdateComponents: OnWorldMatrixUpdatedableComponent[];
+    public readonly components: Component[];
     /** @internal */
-    public readonly _transform: Transform;
+    public readonly gameObjectEventContainer: GameObjectEventContainer;
 
     /** @internal */
     public constructor(engineGlobalObject: EngineGlobalObject, name: string) {
@@ -29,8 +30,8 @@ export class GameObject {
         this._activeInHierarchy = true;
         this._activeSelf = true;
         this._initialized = false;
-        this._components = [];
-        this._matrixUpdateComponents = [];
+        this.components = [];
+        this.gameObjectEventContainer = new GameObjectEventContainer(engineGlobalObject.instantiater);
         this._transform = new Transform(this, engineGlobalObject, this.onChangeParent.bind(this));
         this._transform.unsafeGetObject3D().name = name;
     }
@@ -88,8 +89,8 @@ export class GameObject {
                 return null;
             }
         }
-        this._components.push(component);
-        this.tryAddMatrixUpdateComponent(component);
+        this.components.push(component);
+        this.gameObjectEventContainer.registerComponent(component);
 
         if (this._activeInHierarchy) {
             if (component.enabled) {
@@ -103,20 +104,6 @@ export class GameObject {
         return component;
     }
 
-    /** @internal */
-    public tryAddMatrixUpdateComponent(component: Component): void {
-        if (isOnWorldMatrixUpdatedableComponent(component)) {
-            this._matrixUpdateComponents.push(component);
-        }
-    }
-
-    /** @internal */
-    public invokeOnWorldMatrixUpdate() {
-        for (let i = 0; i < this._matrixUpdateComponents.length; i++) {
-            this._matrixUpdateComponents[i].onWorldMatrixUpdated();
-        }
-    }
-
     // #region getComponent
 
     /**
@@ -126,7 +113,7 @@ export class GameObject {
      */
     public getComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
         this.checkGameObjectIsExist();
-        const components = this._components;
+        const components = this.components;
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
             if (component instanceof componentCtor) return component;
@@ -153,8 +140,8 @@ export class GameObject {
      */
     public getComponents<T extends Component>(componentCtor?: ComponentConstructor<T>): T[] {
         this.checkGameObjectIsExist();
-        if (!componentCtor) return this._components.slice() as T[];
-        const components = this._components;
+        if (!componentCtor) return this.components.slice() as T[];
+        const components = this.components;
         const result: T[] = [];
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
@@ -246,7 +233,7 @@ export class GameObject {
      */
     public foreachComponent<T extends Component>(callback: (component: T) => void, componentCtor?: ComponentConstructor<T>): void {
         this.checkGameObjectIsExist();
-        const components = this._components;
+        const components = this.components;
         if (!componentCtor) {
             for (let i = 0; i < components.length; i++) {
                 callback(components[i] as T);
@@ -327,7 +314,7 @@ export class GameObject {
     }
 
     private destroyEventProcess(): void {
-        const components = this._components;
+        const components = this.components;
 
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
@@ -354,10 +341,11 @@ export class GameObject {
 
     /** @internal */
     public removeComponent(component: Component) {
-        const index = this._components.indexOf(component);
+        const index = this.components.indexOf(component);
         if (index >= 0) {
-            this._components.splice(index, 1);
+            this.components.splice(index, 1);
         }
+        this.gameObjectEventContainer.unregisterComponent(component);
     }
 
     /**
@@ -380,7 +368,7 @@ export class GameObject {
         this._activeInHierarchy = value;
 
         if (this._initialized) {
-            const components = this._components;
+            const components = this.components;
             if (this._activeInHierarchy) {
                 //enable components
                 for (let i = 0; i < components.length; i++) {

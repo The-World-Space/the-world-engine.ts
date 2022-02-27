@@ -173,8 +173,8 @@ export class GameObjectBuilder {
                 return this;
             }
         }
-        this._gameObject._components.push(component);
-        this._gameObject.tryAddMatrixUpdateComponent(component);
+        this._gameObject.components.push(component);
+        this._gameObject.gameObjectEventContainer.registerComponent(component);
         
         if (componentInitializeFunc) {
             this._componentInitializeFuncList.push(() => componentInitializeFunc(component));
@@ -194,7 +194,7 @@ export class GameObjectBuilder {
 
     private checkComponentRequirements(gameObject: GameObject): void {
         let componentRemoved = false;
-        const components: Component[] = gameObject._components;
+        const components: Component[] = gameObject.components;
         for (let i = 0; i < components.length; i++) {
             const component = components[i];
             const requiredComponents = component.requiredComponents;

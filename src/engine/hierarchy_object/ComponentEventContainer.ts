@@ -46,17 +46,6 @@ function isOnDestroyableComponent(component: Component): component is OnDestroya
 }
 
 /**
- * called when world matrix is changed
- * @internal
- */
-export type OnWorldMatrixUpdatedableComponent = Component & { onWorldMatrixUpdated(): void; };
-
-/** @intenral */
-export function isOnWorldMatrixUpdatedableComponent(component: Component): component is OnWorldMatrixUpdatedableComponent {
-    return (component as OnWorldMatrixUpdatedableComponent).onWorldMatrixUpdated !== undefined;
-}
-
-/**
  * start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
  * https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html
  */
@@ -85,7 +74,6 @@ export class ComponentEventContainer {
 
     private readonly _awake: ComponentEvent|null = null;
     private readonly _onDestroy: ComponentEvent|null = null;
-    private readonly _onWorldMatrixUpdated: (() => void)|null = null;
 
     private readonly _start: ComponentEvent|null = null;
     private readonly _update: ComponentEvent|null = null;
@@ -109,10 +97,6 @@ export class ComponentEventContainer {
                 component.onDestroy.bind(component),
                 component.executionOrder
             );
-        }
-        
-        if (isOnWorldMatrixUpdatedableComponent(component)) {
-            this._onWorldMatrixUpdated = component.onWorldMatrixUpdated.bind(component);
         }
         
 
@@ -173,10 +157,6 @@ export class ComponentEventContainer {
     public tryRegisterOnDestroy(): void {
         if (!this._onDestroy) return; //if onDestroy is not defined, do nothing
         this._sceneProcessor.addEventToSyncedCollection(this._onDestroy);
-    }
-
-    public tryCallOnWorldMatrixUpdated(): void {
-        this._onWorldMatrixUpdated?.();
     }
 
 

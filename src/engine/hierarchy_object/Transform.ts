@@ -296,7 +296,7 @@ export class Transform {
                 this._ignoreObservableEvent = false;
 
                 this._worldMatrixNeedUpdate = false;
-                this._gameObject.invokeOnWorldMatrixUpdate();
+                this._gameObject.gameObjectEventContainer.invokeOnWorldMatrixUpdated();
             }
             //update local matrix from world matrix and parent world matrix
             const parent = this.parent;
@@ -386,7 +386,7 @@ export class Transform {
             this._ignoreObservableEvent = false;
         }
         this._worldMatrixNeedUpdate = false;
-        this._gameObject.invokeOnWorldMatrixUpdate();
+        this._gameObject.gameObjectEventContainer.invokeOnWorldMatrixUpdated();
     }
 
     private updateLocalMatrixFromOthers(): void {
@@ -418,7 +418,7 @@ export class Transform {
                 this._ignoreObservableEvent = false;
                 
                 this._worldMatrixNeedUpdate = false;
-                this._gameObject.invokeOnWorldMatrixUpdate();
+                this._gameObject.gameObjectEventContainer.invokeOnWorldMatrixUpdated();
             }
             //update local matrix from world matrix and parent world matrix
             const parent = this.parent;
