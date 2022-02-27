@@ -18,19 +18,21 @@ export class Physics2DProcessor {
     // private _queriesStartInColliders: boolean = true;
     // private _callbacksOnDisable: boolean = true;
     // private _reuseCollisionCallbacks: boolean = true;
-    private _collisionLayerMaskConverter: CollisionLayerMaskConverter|null = null;
+    private _collisionLayerMaskConverter = new CollisionLayerMaskConverter({
+        default: { default: true },
+    })
 
     //engine internal variables
     private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));
 
     /** @internal */
     public applyPhysicsSettings(physicSetting: PhysicsSettingObject): void {
-        this._world.SetGravity(physicSetting.gravity);
-        this._defaultMaterial = physicSetting.defaultMaterial;
-        this._velocityIterations = physicSetting.velocityIterations;
-        this._positionIterations = physicSetting.positionIterations;
+        if (physicSetting.gravity) this._world.SetGravity(physicSetting.gravity);
+        if (physicSetting.defaultMaterial) this._defaultMaterial = physicSetting.defaultMaterial;
+        if (physicSetting.velocityIterations) this._velocityIterations = physicSetting.velocityIterations;
+        if (physicSetting.positionIterations) this._positionIterations = physicSetting.positionIterations;
         // this._velocityThreshold = physicSetting.velocityThreshold;
-        this._timeToSleep = physicSetting.timeToSleep;
+        if (physicSetting.timeToSleep) this._timeToSleep = physicSetting.timeToSleep;
         // this._linearSleepTolerance = physicSetting.linearSleepTolerance;
         // this._angularSleepTolerance = physicSetting.angularSleepTolerance;
         // this._defaultContactOffset = physicSetting.defaultContactOffset;
@@ -38,7 +40,7 @@ export class Physics2DProcessor {
         // this._queriesStartInColliders = physicSetting.queriesStartInColliders;
         // this._callbacksOnDisable = physicSetting.callbacksOnDisable;
         // this._reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
-        this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
+        if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
     }
 
     public update(deltaTime: number): void {
@@ -126,6 +128,6 @@ export class Physics2DProcessor {
     }
     
     public get collisionLayerMask(): CollisionLayerMaskConverter {
-        return this._collisionLayerMaskConverter!;
+        return this._collisionLayerMaskConverter;
     }
 }

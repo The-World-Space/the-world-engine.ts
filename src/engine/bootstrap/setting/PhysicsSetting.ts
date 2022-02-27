@@ -4,20 +4,20 @@ import { CollisionLayer, CollisionLayerMaskConverter } from "../../physics/Colli
 
 export type PhysicsSettingObject = {
     usePhysics2D: boolean,
-    gravity: Vector2,
-    defaultMaterial: PhysicsMaterial2D|null,
-    velocityIterations: number,
-    positionIterations: number,
-    //velocityThreshold: number,
-    timeToSleep: number,
-    //linearSleepTolerance: number,
-    //angularSleepTolerance: number,
-    //defaultContactOffset: number,
-    //queriesHitTriggers: boolean,
-    //queriesStartInColliders: boolean,
-    //callbacksOnDisable: boolean,
-    //reuseCollisionCallbacks: boolean,
-    collisionLayerMaskConverter: CollisionLayerMaskConverter
+    gravity?: Vector2,
+    defaultMaterial?: PhysicsMaterial2D,
+    velocityIterations?: number,
+    positionIterations?: number,
+    //velocityThreshold?: number,
+    timeToSleep?: number,
+    //linearSleepTolerance?: number,
+    //angularSleepTolerance?: number,
+    //defaultContactOffset?: number,
+    //queriesHitTriggers?: boolean,
+    //queriesStartInColliders?: boolean,
+    //callbacksOnDisable?: boolean,
+    //reuseCollisionCallbacks?: boolean,
+    collisionLayerMaskConverter?: CollisionLayerMaskConverter
 }
 
 export class PhysicsSetting {
@@ -29,23 +29,7 @@ export class PhysicsSetting {
 
     public static createDefaultObject(): PhysicsSettingObject {
         return {
-            usePhysics2D: true,
-            gravity: new Vector2(0, -9.81),
-            defaultMaterial: null,
-            velocityIterations: 8,
-            positionIterations: 3,
-            //velocityThreshold: 1,
-            timeToSleep: 0.5,
-            //linearSleepTolerance: 0.01,
-            //angularSleepTolerance: 0.01,
-            //defaultContactOffset: 0.01,
-            //queriesHitTriggers: true,
-            //queriesStartInColliders: true,
-            //callbacksOnDisable: true,
-            //reuseCollisionCallbacks: true,
-            collisionLayerMaskConverter: new CollisionLayerMaskConverter({
-                default: { default: true },
-            })
+            usePhysics2D: true
         };
     }
 
@@ -53,6 +37,71 @@ export class PhysicsSetting {
         this._physicsSettingObject.usePhysics2D = value;
         return this;
     }
+
+    public gravity(value: Vector2): this {
+        this._physicsSettingObject.gravity = value;
+        return this;
+    }
+
+    public defaultMaterial(value: PhysicsMaterial2D): this {
+        this._physicsSettingObject.defaultMaterial = value;
+        return this;
+    }
+
+    public velocityIterations(value: number): this {
+        this._physicsSettingObject.velocityIterations = value;
+        return this;
+    }
+
+    public positionIterations(value: number): this {
+        this._physicsSettingObject.positionIterations = value;
+        return this;
+    }
+
+    //public velocityThreshold(value: number): this {
+    //    this._physicsSettingObject.velocityThreshold = value;
+    //    return this;
+    //}
+
+    public timeToSleep(value: number): this {
+        this._physicsSettingObject.timeToSleep = value;
+        return this;
+    }
+
+    //public linearSleepTolerance(value: number): this {
+    //    this._physicsSettingObject.linearSleepTolerance = value;
+    //    return this;
+    //}
+
+    //public angularSleepTolerance(value: number): this {
+    //    this._physicsSettingObject.angularSleepTolerance = value;
+    //    return this;
+    //}
+
+    //public defaultContactOffset(value: number): this {
+    //    this._physicsSettingObject.defaultContactOffset = value;
+    //    return this;
+    //}
+
+    //public queriesHitTriggers(value: boolean): this {
+    //    this._physicsSettingObject.queriesHitTriggers = value;
+    //    return this;
+    //}
+
+    //public queriesStartInColliders(value: boolean): this {
+    //    this._physicsSettingObject.queriesStartInColliders = value;
+    //    return this;
+    //}
+
+    //public callbacksOnDisable(value: boolean): this {
+    //    this._physicsSettingObject.callbacksOnDisable = value;
+    //    return this;
+    //}
+
+    //public reuseCollisionCallbacks(value: boolean): this {
+    //    this._physicsSettingObject.reuseCollisionCallbacks = value;
+    //    return this;
+    //}
     
     // #region CollisionLayer Collision Matrix Overloads
 
