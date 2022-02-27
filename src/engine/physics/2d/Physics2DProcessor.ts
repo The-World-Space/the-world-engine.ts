@@ -20,7 +20,7 @@ export class Physics2DProcessor {
     // private _reuseCollisionCallbacks: boolean = true;
     private _collisionLayerMaskConverter = new CollisionLayerMaskConverter({
         default: { default: true },
-    })
+    });
 
     //engine internal variables
     private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));

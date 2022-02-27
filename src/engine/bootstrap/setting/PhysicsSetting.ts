@@ -29,7 +29,7 @@ export class PhysicsSetting {
 
     public static createDefaultObject(): PhysicsSettingObject {
         return {
-            usePhysics2D: true
+            usePhysics2D: false
         };
     }
 

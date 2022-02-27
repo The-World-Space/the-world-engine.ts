@@ -15,14 +15,16 @@ export class TestBootstrapper extends Bootstrapper {
 
         console.clear();
 
-        this.setting.render.useCss3DRenderer(true);
+        this.setting.render
+            .useCss3DRenderer(true);
 
-        this.setting.physics.usePhysics2D(true);
-        this.setting.physics.layerCollisionMatrix<TestLayer>({
-            default: { player: true, level: true, default: true },
-            level: { player: true, level: true },
-            player: { player: true }
-        });
+        this.setting.physics
+            .usePhysics2D(true)
+            .layerCollisionMatrix<TestLayer>({
+                default: { player: true, level: true, default: true },
+                level: { player: true, level: true },
+                player: { player: true }
+            });
 
         const instantiater = this.instantiater;
 
