@@ -1,8 +1,8 @@
 import { Vector2 } from "three";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
-import * as b2 from "../../../box2d.ts/build/index";
 import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
-import { PhysicsSettingObject } from "../../bootstrap/setting/GameSetting";
+import { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
+import * as b2 from "../../../box2d.ts/build/index";
 
 export class Physics2DProcessor {
     //configuration variables
@@ -10,7 +10,7 @@ export class Physics2DProcessor {
     private _velocityIterations = 8;
     private _positionIterations = 3;
     // private _velocityThreshold: number = 1;
-    // private _timeToSleep: number = 0.5;
+    private _timeToSleep = 0.5;
     // private _linearSleepTolerance: number = 0.01;
     // private _angularSleepTolerance: number = 0.01;
     // private _defaultContactOffset: number = 0.01;
@@ -25,7 +25,20 @@ export class Physics2DProcessor {
 
     /** @internal */
     public applyPhysicsSettings(physicSetting: PhysicsSettingObject): void {
-        this._collisionLayerMaskConverter = physicSetting.collisionLayerMask;
+        this._world.SetGravity(physicSetting.gravity);
+        this._defaultMaterial = physicSetting.defaultMaterial;
+        this._velocityIterations = physicSetting.velocityIterations;
+        this._positionIterations = physicSetting.positionIterations;
+        // this._velocityThreshold = physicSetting.velocityThreshold;
+        this._timeToSleep = physicSetting.timeToSleep;
+        // this._linearSleepTolerance = physicSetting.linearSleepTolerance;
+        // this._angularSleepTolerance = physicSetting.angularSleepTolerance;
+        // this._defaultContactOffset = physicSetting.defaultContactOffset;
+        // this._queriesHitTriggers = physicSetting.queriesHitTriggers;
+        // this._queriesStartInColliders = physicSetting.queriesStartInColliders;
+        // this._callbacksOnDisable = physicSetting.callbacksOnDisable;
+        // this._reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
+        this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
     }
 
     public update(deltaTime: number): void {
@@ -58,10 +71,6 @@ export class Physics2DProcessor {
 
     public get defaultMaterial(): PhysicsMaterial2D|null {
         return this._defaultMaterial;
-    }
-
-    public set defaultMaterial(value: PhysicsMaterial2D|null) {
-        this._defaultMaterial = value;
     }
 
     public get velocityIterations(): number {
@@ -110,6 +119,10 @@ export class Physics2DProcessor {
 
     public get baumgarteTimeOfImpactScale(): number {
         return b2.toiBaumgarte;
+    }
+
+    public get timeToSleep(): number {
+        return this._timeToSleep;
     }
     
     public get collisionLayerMask(): CollisionLayerMaskConverter {

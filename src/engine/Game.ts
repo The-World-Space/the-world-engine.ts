@@ -15,6 +15,7 @@ import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
 import { GameSettingObject } from "./bootstrap/setting/GameSetting";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
+import { DeepReadonly } from "./type/DeepReadonly";
 
 /**
  * game engine class
@@ -32,7 +33,7 @@ export class Game {
     private readonly _physics2DProcessor: Physics2DProcessor;
     private readonly _engineGlobalObject: EngineGlobalObject;
     private readonly _container: HTMLElement;
-    private _gameSetting: GameSettingObject|null = null;
+    private _gameSetting: DeepReadonly<GameSettingObject>|null = null;
     private _animationFrameId: number|null;
     private _isDisposed: boolean;
     private _autoResize: boolean;

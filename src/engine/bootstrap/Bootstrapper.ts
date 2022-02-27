@@ -2,6 +2,7 @@ import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { GameSetting, GameSettingObject } from "./setting/GameSetting";
 import { Instantiater } from "../Instantiater";
+import { DeepReadonly } from "../type/DeepReadonly";
 
 /**
  * make game scene with interop object and scene builder
@@ -17,11 +18,11 @@ export abstract class Bootstrapper<T = any> {
         this._instantiater = engineGlobalObject.instantiater;
         this._interopObject = interopObject || null;
         this._sceneBuilder = new SceneBuilder(engineGlobalObject.sceneProcessor);
-        this._gameSetting = new GameSetting();
+        this._gameSetting = new GameSetting(GameSetting.createDefaultObject());
     }
 
     /** @internal */
-    public getGameSettingObject(): GameSettingObject {
+    public getGameSettingObject(): DeepReadonly<GameSettingObject> {
         Object.freeze(this._gameSetting);
         return this._gameSetting.make();
     }
