@@ -10,12 +10,6 @@ export class Physics2DProcessor {
     private _velocityIterations = 8;
     private _positionIterations = 3;
     // private _velocityThreshold: number = 1;
-    // private _maxLinearCorrection: number = 0.2;
-    // private _maxAngularCorrection: number = 8;
-    // private _maxTranslationSpeed: number = 100;
-    // private _maxRotationSpeed: number = 360;
-    // private _baumgarteScale: number = 0.2;
-    // private _baumgarteTimeOfImpactScale: number = 0.75;
     // private _timeToSleep: number = 0.5;
     // private _linearSleepTolerance: number = 0.01;
     // private _angularSleepTolerance: number = 0.01;
@@ -24,7 +18,6 @@ export class Physics2DProcessor {
     // private _queriesStartInColliders: boolean = true;
     // private _callbacksOnDisable: boolean = true;
     // private _reuseCollisionCallbacks: boolean = true;
-    // private _autoSyncTransforms: boolean = false;
     private _collisionLayerMaskConverter: CollisionLayerMaskConverter|null = null;
 
     //engine internal variables
@@ -85,6 +78,38 @@ export class Physics2DProcessor {
 
     public set positionIterations(value: number) {
         this._positionIterations = value;
+    }
+
+    public get velocityThreshold(): number {
+        throw new Error("Method not implemented.");
+    }
+
+    public set velocityThreshold(_value: number) {
+        throw new Error("Method not implemented.");
+    }
+
+    public get maxLinearCorrection(): number {
+        return b2.maxLinearCorrection;
+    }
+
+    public get maxAngularCorrection(): number {
+        return b2.maxAngularCorrection;
+    }
+
+    public get maxTranslationSpeed(): number {
+        return b2.maxTranslation;
+    }
+
+    public get maxRotationSpeed(): number {
+        return b2.maxRotation;
+    }
+
+    public get baumgarteScale(): number {
+        return b2.baumgarte;
+    }
+
+    public get baumgarteTimeOfImpactScale(): number {
+        return b2.toiBaumgarte;
     }
     
     public get collisionLayerMask(): CollisionLayerMaskConverter {

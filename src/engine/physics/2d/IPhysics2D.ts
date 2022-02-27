@@ -19,22 +19,16 @@ export interface IPhysics2D {
     set velocityThreshold(value: number);
 
     get maxLinearCorrection(): number;
-    set maxLinearCorrection(value: number);
 
     get maxAngularCorrection(): number;
-    set maxAngularCorrection(value: number);
 
     get maxTranslationSpeed(): number;
-    set maxTranslationSpeed(value: number);
 
     get maxRotationSpeed(): number;
-    set maxRotationSpeed(value: number);
 
     get baumgarteScale(): number;
-    set baumgarteScale(value: number);
 
     get baumgarteTimeOfImpactScale(): number;
-    set baumgarteTimeOfImpactScale(value: number);
 
     get timeToSleep(): number;
     set timeToSleep(value: number);
@@ -59,9 +53,6 @@ export interface IPhysics2D {
 
     get reuseCollisionCallbacks(): boolean;
     set reuseCollisionCallbacks(value: boolean);
-    
-    get autoSyncTransforms(): boolean;
-    set autoSyncTransforms(value: boolean);
 
     get collisionLayerMask(): CollisionLayerMaskConverter;
 }
