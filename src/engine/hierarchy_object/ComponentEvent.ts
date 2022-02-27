@@ -1,6 +1,6 @@
 import { Instantiater } from "../Instantiater";
 
-enum EventPriority { // lower number means higher priority
+const enum EventPriority { // lower number means higher priority
     awake = 0, // called once
     start = 2, // called once
     update = 3, // called every frame

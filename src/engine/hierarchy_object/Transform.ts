@@ -46,7 +46,7 @@ export class Transform {
     private readonly _worldScale: ObservableVector3;
 
     private _hasChanged = false;
-
+    
     private _localMatrixNeedUpdate = false;
     private _worldMatrixNeedUpdate = false;
     private _worldPositionRotationScaleNeedUpdate = false;
