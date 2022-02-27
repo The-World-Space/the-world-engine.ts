@@ -1,7 +1,7 @@
 import { Time } from "./time/Time";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
-import { IReadOnlyGameState } from "./GameState";
+import { IReadonlyGameState } from "./GameState";
 import { Scene } from "./hierarchy_object/Scene";
 import { CameraContainer } from "./render/CameraContainer";
 import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
@@ -21,7 +21,7 @@ export class EngineGlobalObject {
     private readonly _time: Time;
     private readonly _inputHandler: InputHandler;
     private readonly _instantiater: Instantiater;
-    private readonly _gameState: IReadOnlyGameState;
+    private readonly _gameState: IReadonlyGameState;
     private readonly _screen: IReadonlyGameScreen;
     private readonly _physics2DProcessor: Physics2DProcessor;
     
@@ -35,7 +35,7 @@ export class EngineGlobalObject {
         scene: Scene,
         cameraContainer: CameraContainer,
         time: Time,
-        gameState: IReadOnlyGameState,
+        gameState: IReadonlyGameState,
         gameScreen: IReadonlyGameScreen,
         sceneProcessor: SceneProcessor,
         coroutineProcessor: CoroutineProcessor,
@@ -90,7 +90,7 @@ export class EngineGlobalObject {
         throw new Error("not implemented");
     }
 
-    public get gameState(): IReadOnlyGameState {
+    public get gameState(): IReadonlyGameState {
         return this._gameState;
     }
 

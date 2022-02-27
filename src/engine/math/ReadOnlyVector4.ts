@@ -1,6 +1,6 @@
 import { Vector4, Vector4Tuple } from "three";
 
-export type ReadOnlyVector4 = {
+export type ReadonlyVector4 = {
     /**
      * @default 0
      */
@@ -35,7 +35,7 @@ export type ReadOnlyVector4 = {
     /**
      * Computes dot product of this vector and v.
      */
-    dot(v: ReadOnlyVector4): number;
+    dot(v: ReadonlyVector4): number;
 
     /**
      * Computes squared length of this vector.
@@ -57,7 +57,7 @@ export type ReadOnlyVector4 = {
     /**
      * Checks for strict equality of this vector and v.
      */
-    equals(v: ReadOnlyVector4): boolean;
+    equals(v: ReadonlyVector4): boolean;
 
     /**
      * Returns an array [x, y, z, w], or copies x, y, z and w into the provided array.

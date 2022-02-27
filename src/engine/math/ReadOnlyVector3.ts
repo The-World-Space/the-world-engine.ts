@@ -1,6 +1,6 @@
 import { Vector3, Vector3Tuple } from "three";
 
-export type ReadOnlyVector3 = {
+export type ReadonlyVector3 = {
     /**
      * @default 0
      */
@@ -27,7 +27,7 @@ export type ReadOnlyVector3 = {
     /**
      * Computes dot product of this vector and v.
      */
-    dot(v: ReadOnlyVector3): number;
+    dot(v: ReadonlyVector3): number;
 
     /**
      * Computes squared length of this vector.
@@ -53,22 +53,22 @@ export type ReadOnlyVector3 = {
      */
     manhattanDistanceTo(v: Vector3): number;
 
-    angleTo(v: ReadOnlyVector3): number;
+    angleTo(v: ReadonlyVector3): number;
 
     /**
      * Computes distance of this vector to v.
      */
-    distanceTo(v: ReadOnlyVector3): number;
+    distanceTo(v: ReadonlyVector3): number;
 
     /**
      * Computes squared distance of this vector to v.
      */
-    distanceToSquared(v: ReadOnlyVector3): number;
+    distanceToSquared(v: ReadonlyVector3): number;
 
     /**
      * Checks for strict equality of this vector and v.
      */
-    equals(v: ReadOnlyVector3): boolean;
+    equals(v: ReadonlyVector3): boolean;
 
     /**
      * Returns an array [x, y, z], or copies x, y and z into the provided array.

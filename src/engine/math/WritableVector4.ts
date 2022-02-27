@@ -1,7 +1,7 @@
 import { BufferAttribute, Vector4, Vector4Tuple } from "three";
-import { ReadOnlyMatrix4 } from "./ReadOnlyMatrix4";
-import { ReadOnlyQuaternion } from "./ReadOnlyQuaternion";
-import { ReadOnlyVector4 } from "./ReadOnlyVector4";
+import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import { ReadonlyVector4 } from "./ReadonlyVector4";
 
 export type WritableVector4 = {
     /**
@@ -70,41 +70,41 @@ export type WritableVector4 = {
     /**
      * Copies value of v to this vector.
      */
-    copy(v: ReadOnlyVector4): WritableVector4;
+    copy(v: ReadonlyVector4): WritableVector4;
 
     /**
      * Adds v to this vector.
      */
-    add(v: ReadOnlyVector4): WritableVector4;
+    add(v: ReadonlyVector4): WritableVector4;
 
     addScalar(scalar: number): WritableVector4;
 
     /**
      * Sets this vector to a + b.
      */
-    addVectors(a: ReadOnlyVector4, b: ReadOnlyVector4): WritableVector4;
+    addVectors(a: ReadonlyVector4, b: ReadonlyVector4): WritableVector4;
 
-    addScaledVector(v: ReadOnlyVector4, s: number): WritableVector4;
+    addScaledVector(v: ReadonlyVector4, s: number): WritableVector4;
     /**
      * Subtracts v from this vector.
      */
-    sub(v: ReadOnlyVector4): WritableVector4;
+    sub(v: ReadonlyVector4): WritableVector4;
 
     subScalar(s: number): WritableVector4;
 
     /**
      * Sets this vector to a - b.
      */
-    subVectors(a: ReadOnlyVector4, b: ReadOnlyVector4): WritableVector4;
+    subVectors(a: ReadonlyVector4, b: ReadonlyVector4): WritableVector4;
 
-    multiply(v: ReadOnlyVector4): WritableVector4;
+    multiply(v: ReadonlyVector4): WritableVector4;
 
     /**
      * Multiplies this vector by scalar s.
      */
     multiplyScalar(s: number): WritableVector4;
 
-    applyMatrix4(m: ReadOnlyMatrix4): WritableVector4;
+    applyMatrix4(m: ReadonlyMatrix4): WritableVector4;
 
     /**
      * Divides this vector by scalar s.
@@ -116,17 +116,17 @@ export type WritableVector4 = {
      * http://www.euclideanspace.com/maths/geometry/rotations/conversions/quaternionToAngle/index.htm
      * @param q is assumed to be normalized
      */
-    setAxisAngleFromQuaternion(q: ReadOnlyQuaternion): WritableVector4;
+    setAxisAngleFromQuaternion(q: ReadonlyQuaternion): WritableVector4;
 
     /**
      * http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToAngle/index.htm
      * @param m assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
      */
-    setAxisAngleFromRotationMatrix(m: ReadOnlyMatrix4): WritableVector4;
+    setAxisAngleFromRotationMatrix(m: ReadonlyMatrix4): WritableVector4;
 
-    min(v: ReadOnlyMatrix4): WritableVector4;
-    max(v: ReadOnlyMatrix4): WritableVector4;
-    clamp(min: ReadOnlyMatrix4, max: ReadOnlyMatrix4): WritableVector4;
+    min(v: ReadonlyMatrix4): WritableVector4;
+    max(v: ReadonlyMatrix4): WritableVector4;
+    clamp(min: ReadonlyMatrix4, max: ReadonlyMatrix4): WritableVector4;
     clampScalar(min: number, max: number): WritableVector4;
     floor(): WritableVector4;
     ceil(): WritableVector4;
@@ -141,7 +141,7 @@ export type WritableVector4 = {
     /**
      * Computes dot product of this vector and v.
      */
-    dot(v: ReadOnlyMatrix4): number;
+    dot(v: ReadonlyMatrix4): number;
 
     /**
      * Computes squared length of this vector.
@@ -172,14 +172,14 @@ export type WritableVector4 = {
     /**
      * Linearly interpolate between this vector and v with alpha factor.
      */
-    lerp(v: ReadOnlyMatrix4, alpha: number): WritableVector4;
+    lerp(v: ReadonlyMatrix4, alpha: number): WritableVector4;
 
-    lerpVectors(v1: ReadOnlyMatrix4, v2: ReadOnlyMatrix4, alpha: number): WritableVector4;
+    lerpVectors(v1: ReadonlyMatrix4, v2: ReadonlyMatrix4, alpha: number): WritableVector4;
 
     /**
      * Checks for strict equality of this vector and v.
      */
-    equals(v: ReadOnlyMatrix4): boolean;
+    equals(v: ReadonlyMatrix4): boolean;
 
     /**
      * Sets this vector's x, y, z and w value from the provided array or array-like.

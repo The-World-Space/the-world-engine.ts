@@ -1,9 +1,9 @@
 import { BufferAttribute, Camera, Cylindrical, InterleavedBufferAttribute, Spherical, Vector3, Vector3Tuple } from "three";
-import { ReadOnlyEuler } from "./ReadOnlyEuler";
-import { ReadOnlyMatrix3 } from "./ReadOnlyMatrix3";
-import { ReadOnlyMatrix4 } from "./ReadOnlyMatrix4";
-import { ReadOnlyQuaternion } from "./ReadOnlyQuaternion";
-import { ReadOnlyVector3 } from "./ReadOnlyVector3";
+import { ReadonlyEuler } from "./ReadonlyEuler";
+import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableVector3 = {
     /**
@@ -59,62 +59,62 @@ export type WritableVector3 = {
     /**
      * Copies value of v to this vector.
      */
-    copy(v: ReadOnlyVector3): WritableVector3;
+    copy(v: ReadonlyVector3): WritableVector3;
 
     /**
      * Adds v to this vector.
      */
-    add(v: ReadOnlyVector3): WritableVector3;
+    add(v: ReadonlyVector3): WritableVector3;
 
     addScalar(s: number): WritableVector3;
 
-    addScaledVector(v: ReadOnlyVector3, s: number): WritableVector3;
+    addScaledVector(v: ReadonlyVector3, s: number): WritableVector3;
 
     /**
      * Sets this vector to a + b.
      */
-    addVectors(a: ReadOnlyVector3, b: ReadOnlyVector3): WritableVector3;
+    addVectors(a: ReadonlyVector3, b: ReadonlyVector3): WritableVector3;
 
     /**
      * Subtracts v from this vector.
      */
-    sub(a: ReadOnlyVector3): WritableVector3;
+    sub(a: ReadonlyVector3): WritableVector3;
 
     subScalar(s: number): WritableVector3;
 
     /**
      * Sets this vector to a - b.
      */
-    subVectors(a: ReadOnlyVector3, b: ReadOnlyVector3): WritableVector3;
+    subVectors(a: ReadonlyVector3, b: ReadonlyVector3): WritableVector3;
 
-    multiply(v: ReadOnlyVector3): WritableVector3;
+    multiply(v: ReadonlyVector3): WritableVector3;
 
     /**
      * Multiplies this vector by scalar s.
      */
     multiplyScalar(s: number): WritableVector3;
 
-    multiplyVectors(a: ReadOnlyVector3, b: ReadOnlyVector3): WritableVector3;
+    multiplyVectors(a: ReadonlyVector3, b: ReadonlyVector3): WritableVector3;
 
-    applyEuler(euler: ReadOnlyEuler): WritableVector3;
+    applyEuler(euler: ReadonlyEuler): WritableVector3;
 
-    applyAxisAngle(axis: ReadOnlyVector3, angle: number): WritableVector3;
+    applyAxisAngle(axis: ReadonlyVector3, angle: number): WritableVector3;
 
-    applyMatrix3(m: ReadOnlyMatrix3): WritableVector3;
+    applyMatrix3(m: ReadonlyMatrix3): WritableVector3;
 
-    applyNormalMatrix(m: ReadOnlyMatrix3): WritableVector3;
+    applyNormalMatrix(m: ReadonlyMatrix3): WritableVector3;
 
-    applyMatrix4(m: ReadOnlyMatrix4): WritableVector3;
+    applyMatrix4(m: ReadonlyMatrix4): WritableVector3;
 
-    applyQuaternion(q: ReadOnlyQuaternion): WritableVector3;
+    applyQuaternion(q: ReadonlyQuaternion): WritableVector3;
 
     project(camera: Camera): WritableVector3;
 
     unproject(camera: Camera): WritableVector3;
 
-    transformDirection(m: ReadOnlyMatrix4): WritableVector3;
+    transformDirection(m: ReadonlyMatrix4): WritableVector3;
 
-    divide(v: ReadOnlyVector3): WritableVector3;
+    divide(v: ReadonlyVector3): WritableVector3;
 
     /**
      * Divides this vector by scalar s.
@@ -122,11 +122,11 @@ export type WritableVector3 = {
      */
     divideScalar(s: number): WritableVector3;
 
-    min(v: ReadOnlyVector3): WritableVector3;
+    min(v: ReadonlyVector3): WritableVector3;
 
-    max(v: ReadOnlyVector3): WritableVector3;
+    max(v: ReadonlyVector3): WritableVector3;
 
-    clamp(min: ReadOnlyVector3, max: ReadOnlyVector3): WritableVector3;
+    clamp(min: ReadonlyVector3, max: ReadonlyVector3): WritableVector3;
 
     clampScalar(min: number, max: number): WritableVector3;
 
@@ -148,7 +148,7 @@ export type WritableVector3 = {
     /**
      * Computes dot product of this vector and v.
      */
-    dot(v: ReadOnlyVector3): number;
+    dot(v: ReadonlyVector3): number;
 
     /**
      * Computes squared length of this vector.
@@ -172,7 +172,7 @@ export type WritableVector3 = {
      *
      * see {@link http://en.wikipedia.org/wiki/Taxicab_geometry|Wikipedia: Taxicab Geometry}
      */
-    manhattanDistanceTo(v: ReadOnlyVector3): number;
+    manhattanDistanceTo(v: ReadonlyVector3): number;
 
     /**
      * Normalizes this vector.
@@ -183,47 +183,47 @@ export type WritableVector3 = {
      * Normalizes this vector and multiplies it by l.
      */
     setLength(l: number): WritableVector3;
-    lerp(v: ReadOnlyVector3, alpha: number): WritableVector3;
+    lerp(v: ReadonlyVector3, alpha: number): WritableVector3;
 
-    lerpVectors(v1: ReadOnlyVector3, v2: ReadOnlyVector3, alpha: number): WritableVector3;
+    lerpVectors(v1: ReadonlyVector3, v2: ReadonlyVector3, alpha: number): WritableVector3;
 
     /**
      * Sets this vector to cross product of itself and v.
      */
-    cross(a: ReadOnlyVector3): WritableVector3;
+    cross(a: ReadonlyVector3): WritableVector3;
 
     /**
      * Sets this vector to cross product of a and b.
      */
-    crossVectors(a: ReadOnlyVector3, b: ReadOnlyVector3): WritableVector3;
-    projectOnVector(v: ReadOnlyVector3): WritableVector3;
-    projectOnPlane(planeNormal: ReadOnlyVector3): WritableVector3;
-    reflect(vector: ReadOnlyVector3): WritableVector3;
-    angleTo(v: ReadOnlyVector3): number;
+    crossVectors(a: ReadonlyVector3, b: ReadonlyVector3): WritableVector3;
+    projectOnVector(v: ReadonlyVector3): WritableVector3;
+    projectOnPlane(planeNormal: ReadonlyVector3): WritableVector3;
+    reflect(vector: ReadonlyVector3): WritableVector3;
+    angleTo(v: ReadonlyVector3): number;
 
     /**
      * Computes distance of this vector to v.
      */
-    distanceTo(v: ReadOnlyVector3): number;
+    distanceTo(v: ReadonlyVector3): number;
 
     /**
      * Computes squared distance of this vector to v.
      */
-    distanceToSquared(v: ReadOnlyVector3): number;
+    distanceToSquared(v: ReadonlyVector3): number;
 
     setFromSpherical(s: Spherical): WritableVector3;
     setFromSphericalCoords(r: number, phi: number, theta: number): WritableVector3;
     setFromCylindrical(s: Cylindrical): WritableVector3;
     setFromCylindricalCoords(radius: number, theta: number, y: number): WritableVector3;
-    setFromMatrixPosition(m: ReadOnlyMatrix4): WritableVector3;
-    setFromMatrixScale(m: ReadOnlyMatrix4): WritableVector3;
-    setFromMatrixColumn(matrix: ReadOnlyMatrix4, index: number): WritableVector3;
-    setFromMatrix3Column(matrix: ReadOnlyMatrix3, index: number): WritableVector3;
+    setFromMatrixPosition(m: ReadonlyMatrix4): WritableVector3;
+    setFromMatrixScale(m: ReadonlyMatrix4): WritableVector3;
+    setFromMatrixColumn(matrix: ReadonlyMatrix4, index: number): WritableVector3;
+    setFromMatrix3Column(matrix: ReadonlyMatrix3, index: number): WritableVector3;
 
     /**
      * Checks for strict equality of this vector and v.
      */
-    equals(v: ReadOnlyVector3): boolean;
+    equals(v: ReadonlyVector3): boolean;
 
     /**
      * Sets this vector's x, y and z value from the provided array or array-like.

@@ -1,6 +1,6 @@
 import { Quaternion } from "three";
 
-export type ReadOnlyQuaternion = {
+export type ReadonlyQuaternion = {
     /**
      * @default 0
      */
@@ -27,8 +27,8 @@ export type ReadOnlyQuaternion = {
      */
     clone(): Quaternion;
 
-    angleTo(q: ReadOnlyQuaternion): number;
-    dot(v: ReadOnlyQuaternion): number;
+    angleTo(q: ReadonlyQuaternion): number;
+    dot(v: ReadonlyQuaternion): number;
     lengthSq(): number;
 
     /**
@@ -36,7 +36,7 @@ export type ReadOnlyQuaternion = {
      */
     length(): number;
 
-    equals(v: ReadOnlyQuaternion): boolean;
+    equals(v: ReadonlyQuaternion): boolean;
 
     /**
      * Returns an array [x, y, z, w], or copies x, y, z and w into the provided array.

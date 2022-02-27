@@ -24,13 +24,13 @@ export type { IInputEventHandleable } from "./engine/input/IInputEventHandleable
 export { InputHandler } from "./engine/input/InputHandler";
 
 //math
-export type { ReadOnlyEuler } from "./engine/math/ReadOnlyEuler";
-export type { ReadOnlyMatrix3 } from "./engine/math/ReadOnlyMatrix3";
-export type { ReadOnlyMatrix4 } from "./engine/math/ReadOnlyMatrix4";
-export type { ReadOnlyQuaternion } from "./engine/math/ReadOnlyQuaternion";
-export type { ReadOnlyVector2 } from "./engine/math/ReadOnlyVector2";
-export type { ReadOnlyVector3 } from "./engine/math/ReadOnlyVector3";
-export type { ReadOnlyVector4 } from "./engine/math/ReadOnlyVector4";
+export type { ReadonlyEuler } from "./engine/math/ReadonlyEuler";
+export type { ReadonlyMatrix3 } from "./engine/math/ReadonlyMatrix3";
+export type { ReadonlyMatrix4 } from "./engine/math/ReadonlyMatrix4";
+export type { ReadonlyQuaternion } from "./engine/math/ReadonlyQuaternion";
+export type { ReadonlyVector2 } from "./engine/math/ReadonlyVector2";
+export type { ReadonlyVector3 } from "./engine/math/ReadonlyVector3";
+export type { ReadonlyVector4 } from "./engine/math/ReadonlyVector4";
 export type { WritableEuler } from "./engine/math/WritableEuler";
 export type { WritableMatrix3 } from "./engine/math/WritableMatrix3";
 export type { WritableMatrix4 } from "./engine/math/WritableMatrix4";
@@ -54,7 +54,7 @@ export { Time } from "./engine/time/Time";
 export { EngineGlobalObject } from "./engine/EngineGlobalObject";
 export { Game } from "./engine/Game";
 export type { GameSetting } from "./engine/bootstrap/setting/GameSetting";
-export type { IReadOnlyGameState } from "./engine/GameState";
+export type { IReadonlyGameState } from "./engine/GameState";
 export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";
 

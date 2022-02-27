@@ -1,5 +1,5 @@
 import { Vector2 } from "three";
-import { ReadOnlyVector2 } from "../../math/ReadOnlyVector2";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Color } from "../../render/Color";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
@@ -107,11 +107,11 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         return points;
     }
 
-    public get points(): readonly ReadOnlyVector2[] {
+    public get points(): readonly ReadonlyVector2[] {
         return this._points;
     }
 
-    public set points(value: readonly ReadOnlyVector2[]) {
+    public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
         for (let i = 0; i < value.length; i++) {
             this._points.push(value[i].clone());

@@ -1,6 +1,6 @@
 import { Vector2, Vector2Tuple } from "three";
 
-export type ReadOnlyVector2 = {
+export type ReadonlyVector2 = {
     /**
      * @default 0
      */
@@ -27,12 +27,12 @@ export type ReadOnlyVector2 = {
     /**
      * Computes dot product of this vector and v.
      */
-    dot(v: ReadOnlyVector2): number;
+    dot(v: ReadonlyVector2): number;
 
     /**
      * Computes cross product of this vector and v.
      */
-    cross(v: ReadOnlyVector2): number;
+    cross(v: ReadonlyVector2): number;
 
     /**
      * Computes squared length of this vector.
@@ -59,24 +59,24 @@ export type ReadOnlyVector2 = {
     /**
      * Computes distance of this vector to v.
      */
-    distanceTo(v: ReadOnlyVector2): number;
+    distanceTo(v: ReadonlyVector2): number;
 
     /**
      * Computes squared distance of this vector to v.
      */
-    distanceToSquared(v: ReadOnlyVector2): number;
+    distanceToSquared(v: ReadonlyVector2): number;
 
     /**
      * Computes the Manhattan length (distance) from this vector to the given vector v
      *
      * see {@link http://en.wikipedia.org/wiki/Taxicab_geometry|Wikipedia: Taxicab Geometry}
      */
-    manhattanDistanceTo(v: ReadOnlyVector2): number;
+    manhattanDistanceTo(v: ReadonlyVector2): number;
 
     /**
      * Checks for strict equality of this vector and v.
      */
-    equals(v: ReadOnlyVector2): boolean;
+    equals(v: ReadonlyVector2): boolean;
 
     /**
      * Returns an array [x, y], or copies x and y into the provided array.

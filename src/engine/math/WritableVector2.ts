@@ -1,6 +1,6 @@
 import { BufferAttribute, Vector2, Vector2Tuple } from "three";
-import { ReadOnlyMatrix3 } from "./ReadOnlyMatrix3";
-import { ReadOnlyVector2 } from "./ReadOnlyVector2";
+import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import { ReadonlyVector2 } from "./ReadonlyVector2";
 
 export type WritableVector2 = {
     /**
@@ -54,12 +54,12 @@ export type WritableVector2 = {
     /**
      * Copies value of v to this vector.
      */
-    copy(v: ReadOnlyVector2): WritableVector2;
+    copy(v: ReadonlyVector2): WritableVector2;
 
     /**
      * Adds v to this vector.
      */
-    add(v: ReadOnlyVector2, w?: ReadOnlyVector2): WritableVector2;
+    add(v: ReadonlyVector2, w?: ReadonlyVector2): WritableVector2;
 
     /**
      * Adds the scalar value s to this vector's x and y values.
@@ -69,17 +69,17 @@ export type WritableVector2 = {
     /**
      * Sets this vector to a + b.
      */
-    addVectors(a: ReadOnlyVector2, b: ReadOnlyVector2): WritableVector2;
+    addVectors(a: ReadonlyVector2, b: ReadonlyVector2): WritableVector2;
 
     /**
      * Adds the multiple of v and s to this vector.
      */
-    addScaledVector(v: ReadOnlyVector2, s: number): WritableVector2;
+    addScaledVector(v: ReadonlyVector2, s: number): WritableVector2;
 
     /**
      * Subtracts v from this vector.
      */
-    sub(v: ReadOnlyVector2): WritableVector2;
+    sub(v: ReadonlyVector2): WritableVector2;
 
     /**
      * Subtracts s from this vector's x and y components.
@@ -89,12 +89,12 @@ export type WritableVector2 = {
     /**
      * Sets this vector to a - b.
      */
-    subVectors(a: ReadOnlyVector2, b: ReadOnlyVector2): WritableVector2;
+    subVectors(a: ReadonlyVector2, b: ReadonlyVector2): WritableVector2;
 
     /**
      * Multiplies this vector by v.
      */
-    multiply(v: ReadOnlyVector2): WritableVector2;
+    multiply(v: ReadonlyVector2): WritableVector2;
 
     /**
      * Multiplies this vector by scalar s.
@@ -104,7 +104,7 @@ export type WritableVector2 = {
     /**
      * Divides this vector by v.
      */
-    divide(v: ReadOnlyVector2): WritableVector2;
+    divide(v: ReadonlyVector2): WritableVector2;
 
     /**
      * Divides this vector by scalar s.
@@ -115,17 +115,17 @@ export type WritableVector2 = {
     /**
      * Multiplies this vector (with an implicit 1 as the 3rd component) by m.
      */
-    applyMatrix3(m: ReadOnlyMatrix3): WritableVector2;
+    applyMatrix3(m: ReadonlyMatrix3): WritableVector2;
 
     /**
      * If this vector's x or y value is greater than v's x or y value, replace that value with the corresponding min value.
      */
-    min(v: ReadOnlyVector2): WritableVector2;
+    min(v: ReadonlyVector2): WritableVector2;
 
     /**
      * If this vector's x or y value is less than v's x or y value, replace that value with the corresponding max value.
      */
-    max(v: ReadOnlyVector2): WritableVector2;
+    max(v: ReadonlyVector2): WritableVector2;
 
     /**
      * If this vector's x or y value is greater than the max vector's x or y value, it is replaced by the corresponding value.
@@ -133,7 +133,7 @@ export type WritableVector2 = {
      * @param min the minimum x and y values.
      * @param max the maximum x and y values in the desired range.
      */
-    clamp(min: ReadOnlyVector2, max: ReadOnlyVector2): WritableVector2;
+    clamp(min: ReadonlyVector2, max: ReadonlyVector2): WritableVector2;
 
     /**
      * If this vector's x or y values are greater than the max value, they are replaced by the max value.
@@ -179,12 +179,12 @@ export type WritableVector2 = {
     /**
      * Computes dot product of this vector and v.
      */
-    dot(v: ReadOnlyVector2): number;
+    dot(v: ReadonlyVector2): number;
 
     /**
      * Computes cross product of this vector and v.
      */
-    cross(v: ReadOnlyVector2): number;
+    cross(v: ReadonlyVector2): number;
 
     /**
      * Computes squared length of this vector.
@@ -221,24 +221,24 @@ export type WritableVector2 = {
     /**
      * Computes distance of this vector to v.
      */
-    distanceTo(v: ReadOnlyVector2): number;
+    distanceTo(v: ReadonlyVector2): number;
 
     /**
      * Computes squared distance of this vector to v.
      */
-    distanceToSquared(v: ReadOnlyVector2): number;
+    distanceToSquared(v: ReadonlyVector2): number;
 
     /**
      * @deprecated Use {@link Vector2#manhattanDistanceTo .manhattanDistanceTo()} instead.
      */
-    distanceToManhattan(v: ReadOnlyVector2): number;
+    distanceToManhattan(v: ReadonlyVector2): number;
 
     /**
      * Computes the Manhattan length (distance) from this vector to the given vector v
      *
      * see {@link http://en.wikipedia.org/wiki/Taxicab_geometry|Wikipedia: Taxicab Geometry}
      */
-    manhattanDistanceTo(v: ReadOnlyVector2): number;
+    manhattanDistanceTo(v: ReadonlyVector2): number;
 
     /**
      * Normalizes this vector and multiplies it by l.
@@ -250,7 +250,7 @@ export type WritableVector2 = {
      * @param v vector to interpolate towards.
      * @param alpha interpolation factor in the closed interval [0, 1].
      */
-    lerp(v: ReadOnlyVector2, alpha: number): WritableVector2;
+    lerp(v: ReadonlyVector2, alpha: number): WritableVector2;
 
     /**
      * Sets this vector to be the vector linearly interpolated between v1 and v2 where alpha is the distance along the line connecting the two vectors - alpha = 0 will be v1, and alpha = 1 will be v2.
@@ -258,12 +258,12 @@ export type WritableVector2 = {
      * @param v2 vector to interpolate towards.
      * @param alpha interpolation factor in the closed interval [0, 1].
      */
-    lerpVectors(v1: ReadOnlyVector2, v2: ReadOnlyVector2, alpha: number): WritableVector2;
+    lerpVectors(v1: ReadonlyVector2, v2: ReadonlyVector2, alpha: number): WritableVector2;
 
     /**
      * Checks for strict equality of this vector and v.
      */
-    equals(v: ReadOnlyVector2): boolean;
+    equals(v: ReadonlyVector2): boolean;
 
     /**
      * Sets this vector's x and y value from the provided array or array-like.
@@ -301,7 +301,7 @@ export type WritableVector2 = {
      * @param center the point around which to rotate.
      * @param angle the angle to rotate, in radians.
      */
-    rotateAround(center: ReadOnlyVector2, angle: number): WritableVector2;
+    rotateAround(center: ReadonlyVector2, angle: number): WritableVector2;
 
     /**
      * Sets this vector's x and y from Math.random

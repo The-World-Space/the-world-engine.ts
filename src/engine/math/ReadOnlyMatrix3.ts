@@ -1,6 +1,6 @@
 import { Matrix3, Matrix3Tuple, Vector3 } from "three";
 
-export type ReadOnlyMatrix3 = {
+export type ReadonlyMatrix3 = {
     /**
      * Array with matrix values.
      * @default [1, 0, 0, 0, 1, 0, 0, 0, 1]
@@ -10,7 +10,7 @@ export type ReadOnlyMatrix3 = {
     clone(): Matrix3;
     extractBasis(xAxis: Vector3, yAxis: Vector3, zAxis: Vector3): Matrix3;
     determinant(): number;
-    equals(matrix: ReadOnlyMatrix3): boolean;
+    equals(matrix: ReadonlyMatrix3): boolean;
     
     /**
      * Returns an array with the values of this matrix, or copies them into the provided array.

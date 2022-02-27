@@ -1,6 +1,6 @@
 import { Matrix3, Matrix3Tuple, Matrix4, Vector3 } from "three";
-import { ReadOnlyMatrix3 } from "./ReadOnlyMatrix3";
-import { ReadOnlyMatrix4 } from "./ReadOnlyMatrix4";
+import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
 
 export type WritableMatrix3 = {
     /**
@@ -22,9 +22,9 @@ export type WritableMatrix3 = {
     ): WritableMatrix3;
     identity(): WritableMatrix3;
     clone(): Matrix3;
-    copy(m: ReadOnlyMatrix3): WritableMatrix3;
+    copy(m: ReadonlyMatrix3): WritableMatrix3;
     extractBasis(xAxis: Vector3, yAxis: Vector3, zAxis: Vector3): WritableMatrix3;
-    setFromMatrix4(m: ReadOnlyMatrix4): WritableMatrix3;
+    setFromMatrix4(m: ReadonlyMatrix4): WritableMatrix3;
     multiplyScalar(s: number): WritableMatrix3;
     determinant(): number;
 
@@ -52,7 +52,7 @@ export type WritableMatrix3 = {
 
     translate(tx: number, ty: number): WritableMatrix3;
 
-    equals(matrix: ReadOnlyMatrix3): boolean;
+    equals(matrix: ReadonlyMatrix3): boolean;
 
     /**
      * Sets the values of this matrix from the provided array or array-like.
@@ -81,12 +81,12 @@ export type WritableMatrix3 = {
     /**
      * Multiplies this matrix by m.
      */
-    multiply(m: ReadOnlyMatrix3): WritableMatrix3;
+    multiply(m: ReadonlyMatrix3): WritableMatrix3;
 
-    premultiply(m: ReadOnlyMatrix3): WritableMatrix3;
+    premultiply(m: ReadonlyMatrix3): WritableMatrix3;
 
     /**
      * Sets this matrix to a x b.
      */
-    multiplyMatrices(a: ReadOnlyMatrix3, b: ReadOnlyMatrix3): WritableMatrix3;
+    multiplyMatrices(a: ReadonlyMatrix3, b: ReadonlyMatrix3): WritableMatrix3;
 };

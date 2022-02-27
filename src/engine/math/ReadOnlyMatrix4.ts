@@ -1,6 +1,6 @@
 import { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from "three";
 
-export type ReadOnlyMatrix4 = {
+export type ReadonlyMatrix4 = {
     /**
      * Array with matrix values.
      * @default [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1]
@@ -27,7 +27,7 @@ export type ReadOnlyMatrix4 = {
      */
     decompose(translation: Vector3, rotation: Quaternion, scale: Vector3): Matrix4;
 
-    equals(matrix: ReadOnlyMatrix4): boolean;
+    equals(matrix: ReadonlyMatrix4): boolean;
 
     /**
      * Returns an array with the values of this matrix, or copies them into the provided array.

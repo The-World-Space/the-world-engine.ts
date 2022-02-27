@@ -1,9 +1,9 @@
 import { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from "three";
-import { ReadOnlyEuler } from "./ReadOnlyEuler";
-import { ReadOnlyMatrix3 } from "./ReadOnlyMatrix3";
-import { ReadOnlyMatrix4 } from "./ReadOnlyMatrix4";
-import { ReadOnlyQuaternion } from "./ReadOnlyQuaternion";
-import { ReadOnlyVector3 } from "./ReadOnlyVector3";
+import { ReadonlyEuler } from "./ReadonlyEuler";
+import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableMatrix4 = {
     /**
@@ -42,30 +42,30 @@ export type WritableMatrix4 = {
     copy(m: Matrix4): WritableMatrix4;
     copyPosition(m: Matrix4): WritableMatrix4;
     extractBasis(xAxis: Vector3, yAxis: Vector3, zAxis: Vector3): WritableMatrix4;
-    makeBasis(xAxis: ReadOnlyVector3, yAxis: ReadOnlyVector3, zAxis: ReadOnlyVector3): WritableMatrix4;
+    makeBasis(xAxis: ReadonlyVector3, yAxis: ReadonlyVector3, zAxis: ReadonlyVector3): WritableMatrix4;
 
     /**
      * Copies the rotation component of the supplied matrix m into this matrix rotation component.
      */
     extractRotation(m: Matrix4): WritableMatrix4;
-    makeRotationFromEuler(euler: ReadOnlyEuler): WritableMatrix4;
-    makeRotationFromQuaternion(q: ReadOnlyQuaternion): WritableMatrix4;
+    makeRotationFromEuler(euler: ReadonlyEuler): WritableMatrix4;
+    makeRotationFromQuaternion(q: ReadonlyQuaternion): WritableMatrix4;
     /**
      * Constructs a rotation matrix, looking from eye towards center with defined up vector.
      */
-    lookAt(eye: ReadOnlyVector3, target: ReadOnlyVector3, up: ReadOnlyVector3): WritableMatrix4;
+    lookAt(eye: ReadonlyVector3, target: ReadonlyVector3, up: ReadonlyVector3): WritableMatrix4;
 
     /**
      * Multiplies this matrix by m.
      */
-    multiply(m: ReadOnlyMatrix4): WritableMatrix4;
+    multiply(m: ReadonlyMatrix4): WritableMatrix4;
 
-    premultiply(m: ReadOnlyMatrix4): WritableMatrix4;
+    premultiply(m: ReadonlyMatrix4): WritableMatrix4;
 
     /**
      * Sets this matrix to a x b.
      */
-    multiplyMatrices(a: ReadOnlyMatrix4, b: ReadOnlyMatrix4): WritableMatrix4;
+    multiplyMatrices(a: ReadonlyMatrix4, b: ReadonlyMatrix4): WritableMatrix4;
 
     /**
      * Multiplies this matrix by s.
@@ -86,7 +86,7 @@ export type WritableMatrix4 = {
     /**
      * Sets the position component for this matrix from vector v.
      */
-    setPosition(v: ReadOnlyVector3 | number, y?: number, z?: number): WritableMatrix4;
+    setPosition(v: ReadonlyVector3 | number, y?: number, z?: number): WritableMatrix4;
 
     /**
      * Inverts this matrix.
@@ -96,7 +96,7 @@ export type WritableMatrix4 = {
     /**
      * Multiplies the columns of this matrix by vector v.
      */
-    scale(v: ReadOnlyVector3): WritableMatrix4;
+    scale(v: ReadonlyVector3): WritableMatrix4;
 
     getMaxScaleOnAxis(): number;
     /**
@@ -132,7 +132,7 @@ export type WritableMatrix4 = {
      * @param axis Rotation axis.
      * @param theta Rotation angle in radians.
      */
-    makeRotationAxis(axis: ReadOnlyVector3, angle: number): WritableMatrix4;
+    makeRotationAxis(axis: ReadonlyVector3, angle: number): WritableMatrix4;
 
     /**
      * Sets this matrix as scale transform.
@@ -147,7 +147,7 @@ export type WritableMatrix4 = {
     /**
      * Sets this matrix to the transformation composed of translation, rotation and scale.
      */
-    compose(translation: ReadOnlyVector3, rotation: ReadOnlyQuaternion, scale: ReadOnlyVector3): WritableMatrix4;
+    compose(translation: ReadonlyVector3, rotation: ReadonlyQuaternion, scale: ReadonlyVector3): WritableMatrix4;
 
     /**
      * Decomposes this matrix into it's position, quaternion and scale components.
@@ -168,7 +168,7 @@ export type WritableMatrix4 = {
      * Creates an orthographic projection matrix.
      */
     makeOrthographic(left: number, right: number, top: number, bottom: number, near: number, far: number): WritableMatrix4;
-    equals(matrix: ReadOnlyMatrix4): boolean;
+    equals(matrix: ReadonlyMatrix4): boolean;
 
     /**
      * Sets the values of this matrix from the provided array or array-like.
@@ -197,5 +197,5 @@ export type WritableMatrix4 = {
     /**
      * Set the upper 3x3 elements of this matrix to the values of the Matrix3 m.
      */
-    setFromMatrix3(m: ReadOnlyMatrix3): WritableMatrix4;
+    setFromMatrix3(m: ReadonlyMatrix3): WritableMatrix4;
 };

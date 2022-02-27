@@ -1,8 +1,8 @@
 import { Euler, Vector3 } from "three";
-import { ReadOnlyEuler } from "./ReadOnlyEuler";
-import { ReadOnlyMatrix4 } from "./ReadOnlyMatrix4";
-import { ReadOnlyQuaternion } from "./ReadOnlyQuaternion";
-import { ReadOnlyVector3 } from "./ReadOnlyVector3";
+import { ReadonlyEuler } from "./ReadonlyEuler";
+import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableEuler = {
     /**
@@ -30,12 +30,12 @@ export type WritableEuler = {
 
     set(x: number, y: number, z: number, order?: string): WritableEuler;
     clone(): Euler;
-    copy(euler: ReadOnlyEuler): WritableEuler;
-    setFromRotationMatrix(m: ReadOnlyMatrix4, order?: string, update?: boolean): WritableEuler;
-    setFromQuaternion(q: ReadOnlyQuaternion, order?: string, update?: boolean): WritableEuler;
-    setFromVector3(v: ReadOnlyVector3, order?: string): WritableEuler;
+    copy(euler: ReadonlyEuler): WritableEuler;
+    setFromRotationMatrix(m: ReadonlyMatrix4, order?: string, update?: boolean): WritableEuler;
+    setFromQuaternion(q: ReadonlyQuaternion, order?: string, update?: boolean): WritableEuler;
+    setFromVector3(v: ReadonlyVector3, order?: string): WritableEuler;
     reorder(newOrder: string): WritableEuler;
-    equals(euler: ReadOnlyEuler): boolean;
+    equals(euler: ReadonlyEuler): boolean;
     fromArray(xyzo: any[]): WritableEuler;
     toArray(array?: any[], offset?: number): any[];
     toVector3(optionalResult?: Vector3): Vector3;

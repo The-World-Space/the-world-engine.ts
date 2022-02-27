@@ -1,8 +1,8 @@
 import { Quaternion } from "three";
-import { ReadOnlyEuler } from "./ReadOnlyEuler";
-import { ReadOnlyMatrix4 } from "./ReadOnlyMatrix4";
-import { ReadOnlyQuaternion } from "./ReadOnlyQuaternion";
-import { ReadOnlyVector3 } from "./ReadOnlyVector3";
+import { ReadonlyEuler } from "./ReadonlyEuler";
+import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableQuaternion = {
     /**
@@ -39,27 +39,27 @@ export type WritableQuaternion = {
     /**
      * Copies values of q to this quaternion.
      */
-    copy(q: ReadOnlyQuaternion): WritableQuaternion;
+    copy(q: ReadonlyQuaternion): WritableQuaternion;
 
     /**
      * Sets this quaternion from rotation specified by Euler angles.
      */
-    setFromEuler(euler: ReadOnlyEuler, update?: boolean): WritableQuaternion;
+    setFromEuler(euler: ReadonlyEuler, update?: boolean): WritableQuaternion;
 
     /**
      * Sets this quaternion from rotation specified by axis and angle.
      * Adapted from http://www.euclideanspace.com/maths/geometry/rotations/conversions/angleToQuaternion/index.htm.
      * Axis have to be normalized, angle is in radians.
      */
-    setFromAxisAngle(axis: ReadOnlyVector3, angle: number): WritableQuaternion;
+    setFromAxisAngle(axis: ReadonlyVector3, angle: number): WritableQuaternion;
 
     /**
      * Sets this quaternion from rotation component of m. Adapted from http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm.
      */
-    setFromRotationMatrix(m: ReadOnlyMatrix4): WritableQuaternion;
-    setFromUnitVectors(vFrom: ReadOnlyVector3, vTo: ReadOnlyVector3): WritableQuaternion;
-    angleTo(q: ReadOnlyQuaternion): number;
-    rotateTowards(q: ReadOnlyQuaternion, step: number): WritableQuaternion;
+    setFromRotationMatrix(m: ReadonlyMatrix4): WritableQuaternion;
+    setFromUnitVectors(vFrom: ReadonlyVector3, vTo: ReadonlyVector3): WritableQuaternion;
+    angleTo(q: ReadonlyQuaternion): number;
+    rotateTowards(q: ReadonlyQuaternion, step: number): WritableQuaternion;
 
     identity(): WritableQuaternion;
 
@@ -69,7 +69,7 @@ export type WritableQuaternion = {
     invert(): WritableQuaternion;
 
     conjugate(): WritableQuaternion;
-    dot(v: ReadOnlyQuaternion): number;
+    dot(v: ReadonlyQuaternion): number;
     lengthSq(): number;
 
     /**
@@ -85,18 +85,18 @@ export type WritableQuaternion = {
     /**
      * Multiplies this quaternion by b.
      */
-    multiply(q: ReadOnlyQuaternion): WritableQuaternion;
-    premultiply(q: ReadOnlyQuaternion): WritableQuaternion;
+    multiply(q: ReadonlyQuaternion): WritableQuaternion;
+    premultiply(q: ReadonlyQuaternion): WritableQuaternion;
 
     /**
      * Sets this quaternion to a x b
      * Adapted from http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/code/index.htm.
      */
-    multiplyQuaternions(a: ReadOnlyQuaternion, b: ReadOnlyQuaternion): WritableQuaternion;
+    multiplyQuaternions(a: ReadonlyQuaternion, b: ReadonlyQuaternion): WritableQuaternion;
 
-    slerp(qb: ReadOnlyQuaternion, t: number): WritableQuaternion;
-    slerpQuaternions(qa: ReadOnlyQuaternion, qb: ReadOnlyQuaternion, t: number): WritableQuaternion;
-    equals(v: ReadOnlyQuaternion): boolean;
+    slerp(qb: ReadonlyQuaternion, t: number): WritableQuaternion;
+    slerpQuaternions(qa: ReadonlyQuaternion, qb: ReadonlyQuaternion, t: number): WritableQuaternion;
+    equals(v: ReadonlyQuaternion): boolean;
 
     /**
      * Sets this quaternion's x, y, z and w value from the provided array or array-like.

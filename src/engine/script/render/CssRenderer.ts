@@ -1,6 +1,6 @@
 import { Vector2 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { ReadOnlyVector2 } from "../../../engine/math/ReadOnlyVector2";
+import { ReadonlyVector2 } from "../../../engine/math/ReadonlyVector2";
 import { WritableVector2 } from "../../../engine/math/WritableVector2";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
@@ -110,11 +110,11 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
-    public get centerOffset(): ReadOnlyVector2 {
+    public get centerOffset(): ReadonlyVector2 {
         return this._centerOffset;
     }
 
-    public set centerOffset(value: ReadOnlyVector2) {
+    public set centerOffset(value: ReadonlyVector2) {
         (this._centerOffset as WritableVector2).copy(value);
         this.updateCenterOffset(true);
     }

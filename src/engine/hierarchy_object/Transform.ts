@@ -4,7 +4,7 @@ import { Scene } from "./Scene";
 import { ObservableVector3 } from "../math/ObservableVector3";
 import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
-import { ReadOnlyVector3 } from "../math/ReadOnlyVector3";
+import { ReadonlyVector3 } from "../math/ReadonlyVector3";
 import { WritableVector3 } from "../math/WritableVector3";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 
@@ -615,7 +615,7 @@ export class Transform {
     /**
      * set vector representing the blue axis of the transform in world space.
      */
-    public setForward(value: ReadOnlyVector3): void {
+    public setForward(value: ReadonlyVector3): void {
         this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
         this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
@@ -645,7 +645,7 @@ export class Transform {
     /**
      * set vector representing the red axis of the transform in world space.
      */
-    public setRight(value: ReadOnlyVector3): void {
+    public setRight(value: ReadonlyVector3): void {
         this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
         this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
@@ -675,7 +675,7 @@ export class Transform {
     /**
      * set vector representing the green axis of the transform in world space.
      */
-    public setUp(value: ReadOnlyVector3): void {
+    public setUp(value: ReadonlyVector3): void {
         this._engineGlobalObject.transformMatrixProcessor.enqueueTransformToUpdate(this);
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
         this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
@@ -748,7 +748,7 @@ export class Transform {
     /**
      * Object's world scale.
      */
-    public get lossyScale(): ReadOnlyVector3 {
+    public get lossyScale(): ReadonlyVector3 {
         return this._worldScale as unknown as Vector3;
     }
 
