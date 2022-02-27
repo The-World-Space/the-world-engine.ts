@@ -31,15 +31,15 @@ export class Physics2DProcessor {
         if (physicSetting.defaultMaterial) this._defaultMaterial = physicSetting.defaultMaterial;
         if (physicSetting.velocityIterations) this._velocityIterations = physicSetting.velocityIterations;
         if (physicSetting.positionIterations) this._positionIterations = physicSetting.positionIterations;
-        // this._velocityThreshold = physicSetting.velocityThreshold;
+        // if (physicSetting.velocityThreshold) this._velocityThreshold = physicSetting.velocityThreshold;
         if (physicSetting.timeToSleep) this._timeToSleep = physicSetting.timeToSleep;
-        // this._linearSleepTolerance = physicSetting.linearSleepTolerance;
-        // this._angularSleepTolerance = physicSetting.angularSleepTolerance;
-        // this._defaultContactOffset = physicSetting.defaultContactOffset;
-        // this._queriesHitTriggers = physicSetting.queriesHitTriggers;
-        // this._queriesStartInColliders = physicSetting.queriesStartInColliders;
-        // this._callbacksOnDisable = physicSetting.callbacksOnDisable;
-        // this._reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
+        // if (physicSetting.linearSleepTolerance) this._linearSleepTolerance = physicSetting.linearSleepTolerance;
+        // if (physicSetting.angularSleepTolerance) this._angularSleepTolerance = physicSetting.angularSleepTolerance;
+        // if (physicSetting.defaultContactOffset) this._defaultContactOffset = physicSetting.defaultContactOffset;
+        // if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
+        // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
+        // if (physicSetting.callbacksOnDisable) this._callbacksOnDisable = physicSetting.callbacksOnDisable;
+        // if (physicSetting.reuseCollisionCallbacks) this._reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
         if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
     }
 
