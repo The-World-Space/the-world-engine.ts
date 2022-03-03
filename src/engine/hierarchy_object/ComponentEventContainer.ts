@@ -3,6 +3,8 @@ import { Component } from "./Component";
 import { ComponentEvent } from "./ComponentEvent";
 import { ComponentEventState } from "./ComponentEventState";
 import { Instantiater } from "../Instantiater";
+import { Collision2D } from "../physics/2d/Collision2D";
+import { Collider2D } from "../script/physics2d/collider/Collider2D";
 
 /**
  * awake is called when the script instance is being loaded.
@@ -45,6 +47,68 @@ function isOnDestroyableComponent(component: Component): component is OnDestroya
     return (component as OnDestroyableComponent).onDestroy !== undefined;
 }
 
+
+/**
+ * called when an incoming collider makes contact with this object's collider (2D physics only)
+ */
+ type OnCollisionEnter2DableComponent = Component & { onCollisionEnter2D(collision: Collision2D): void; };
+
+ /** @internal */
+ function isOnCollisionEnter2DableComponent(component: Component): component is OnCollisionEnter2DableComponent {
+     return (component as OnCollisionEnter2DableComponent).onCollisionEnter2D !== undefined;
+ }
+ 
+ /**
+  * called every frame where an incoming collider stays in contact with this object's collider (2D physics only)
+  */
+ type OnCollisionStay2DableComponent = Component & { onCollisionStay2D(collision: Collision2D): void; };
+ 
+ /** @internal */
+ function isOnCollisionStay2DableComponent(component: Component): component is OnCollisionStay2DableComponent {
+     return (component as OnCollisionStay2DableComponent).onCollisionStay2D !== undefined;
+ }
+ 
+ /**
+  * called when a collider on another object stops touching this object's collider (2D physics only)
+  */
+ type OnCollisionExit2DableComponent = Component & { onCollisionExit2D(collision: Collision2D): void; };
+ 
+ /** @internal */
+ function isOnCollisionExit2DableComponent(component: Component): component is OnCollisionExit2DableComponent {
+     return (component as OnCollisionExit2DableComponent).onCollisionExit2D !== undefined;
+ }
+ 
+ /**
+  * called when another object enters a trigger collider attached to this object (2D physics only)
+  */
+ type OnTriggerEnter2DableComponent = Component & { onTriggerEnter2D(collider: Collision2D): void; };
+ 
+ /** @internal */
+ function isOnTriggerEnter2DableComponent(component: Component): component is OnTriggerEnter2DableComponent {
+     return (component as OnTriggerEnter2DableComponent).onTriggerEnter2D !== undefined;
+ }
+ 
+ /**
+  * called every frame where another object stays in a trigger collider attached to this object (2D physics only)
+  */
+ type OnTriggerStay2DableComponent = Component & { onTriggerStay2D(collider: Collision2D): void; };
+ 
+ /** @internal */
+ function isOnTriggerStay2DableComponent(component: Component): component is OnTriggerStay2DableComponent {
+     return (component as OnTriggerStay2DableComponent).onTriggerStay2D !== undefined;
+ }
+ 
+ /**
+  * called when another object leaves a trigger collider attached to this object (2D physics only)
+  */
+ type OnTriggerExit2DableComponent = Component & { onTriggerExit2D(collider: Collision2D): void; };
+ 
+ /** @internal */
+ function isOnTriggerExit2DableComponent(component: Component): component is OnTriggerExit2DableComponent {
+     return (component as OnTriggerExit2DableComponent).onTriggerExit2D !== undefined;
+ }
+
+
 /**
  * start is called on the frame when a script is enabled just before any of the Update methods are called the first time.
  * https://docs.unity3d.com/ScriptReference/MonoBehaviour.Start.html
@@ -75,6 +139,13 @@ export class ComponentEventContainer {
     private readonly _awake: ComponentEvent|null = null;
     private readonly _onDestroy: ComponentEvent|null = null;
 
+    private readonly _onCollisionEnter2D: ComponentEvent<(collision: Collision2D) => void>|null = null;
+    private readonly _onCollisionStay2D: ComponentEvent<(collision: Collision2D) => void>|null = null;
+    private readonly _onCollisionExit2D: ComponentEvent<(collision: Collision2D) => void>|null = null;
+    private readonly _onTriggerEnter2D: ComponentEvent<(other: Collider2D) => void>|null = null;
+    private readonly _onTriggerStay2D: ComponentEvent<(other: Collider2D) => void>|null = null;
+    private readonly _onTriggerExit2D: ComponentEvent<(other: Collider2D) => void>|null = null;
+
     private readonly _start: ComponentEvent|null = null;
     private readonly _update: ComponentEvent|null = null;
 
@@ -98,7 +169,94 @@ export class ComponentEventContainer {
                 component.executionOrder
             );
         }
-        
+
+        { // 2D physics events
+            const physicsProcessor = component.engine.physics2DProcessor;
+
+            if (isOnCollisionEnter2DableComponent(component)) {
+                this._onCollisionEnter2D = ComponentEvent.createOnCollisionEnter2DEvent(
+                    this._instantiater,
+                    collision => {
+                        if (physicsProcessor.callbacksOnDisable) {
+                            component.onCollisionEnter2D(collision);
+                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
+                            component.onCollisionEnter2D(collision);
+                        }
+                    },
+                    component.executionOrder
+                );      
+            }
+
+            if (isOnCollisionStay2DableComponent(component)) {
+                this._onCollisionStay2D = ComponentEvent.createOnCollisionStay2DEvent(
+                    this._instantiater,
+                    collision => {
+                        if (physicsProcessor.callbacksOnDisable) {
+                            component.onCollisionStay2D(collision);
+                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
+                            component.onCollisionStay2D(collision);
+                        }
+                    },
+                    component.executionOrder
+                );
+            }
+
+            if (isOnCollisionExit2DableComponent(component)) {
+                this._onCollisionExit2D = ComponentEvent.createOnCollisionExit2DEvent(
+                    this._instantiater,
+                    collision => {
+                        if (physicsProcessor.callbacksOnDisable) {
+                            component.onCollisionExit2D(collision);
+                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
+                            component.onCollisionExit2D(collision);
+                        }
+                    },
+                    component.executionOrder
+                );
+            }
+
+            if (isOnTriggerEnter2DableComponent(component)) {
+                this._onTriggerEnter2D = ComponentEvent.createOnTriggerEnter2DEvent(
+                    this._instantiater,
+                    other => {
+                        if (physicsProcessor.callbacksOnDisable) {
+                            component.onTriggerEnter2D(other);
+                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
+                            component.onTriggerEnter2D(other);
+                        }
+                    },
+                    component.executionOrder
+                );
+            }
+
+            if (isOnTriggerStay2DableComponent(component)) {
+                this._onTriggerStay2D = ComponentEvent.createOnTriggerStay2DEvent(
+                    this._instantiater,
+                    other => {
+                        if (physicsProcessor.callbacksOnDisable) {
+                            component.onTriggerStay2D(other);
+                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
+                            component.onTriggerStay2D(other);
+                        }
+                    },
+                    component.executionOrder
+                );
+            }
+
+            if (isOnTriggerExit2DableComponent(component)) {
+                this._onTriggerExit2D = ComponentEvent.createOnTriggerExit2DEvent(
+                    this._instantiater,
+                    other => {
+                        if (physicsProcessor.callbacksOnDisable) {
+                            component.onTriggerExit2D(other);
+                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
+                            component.onTriggerExit2D(other);
+                        }
+                    },
+                    component.executionOrder
+                );
+            }
+        }
 
         if (isStartableComponent(component)) {
             this._start = ComponentEvent.createStartEvent(
@@ -189,5 +347,29 @@ export class ComponentEventContainer {
         if (!this._eventState.updateRegistered) return;
         this._eventState.updateRegistered = false;
         this._sceneProcessor.removeEventFromNonSyncedCollection(this._update);
+    }
+
+    public get onCollisionEnter2D(): ComponentEvent<(collision: Collision2D) => void>|null {
+        return this._onCollisionEnter2D;
+    }
+
+    public get onCollisionStay2D(): ComponentEvent<(collision: Collision2D) => void>|null {
+        return this._onCollisionStay2D;
+    }
+
+    public get onCollisionExit2D(): ComponentEvent<(collision: Collision2D) => void>|null {
+        return this._onCollisionExit2D;
+    }
+
+    public get onTriggerEnter2D(): ComponentEvent<(other: Collider2D) => void>|null {
+        return this._onTriggerEnter2D;
+    }
+
+    public get onTriggerStay2D(): ComponentEvent<(other: Collider2D) => void>|null {
+        return this._onTriggerStay2D;
+    }
+
+    public get onTriggerExit2D(): ComponentEvent<(other: Collider2D) => void>|null {
+        return this._onTriggerExit2D;
     }
 }

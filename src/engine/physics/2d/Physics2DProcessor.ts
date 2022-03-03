@@ -16,7 +16,7 @@ export class Physics2DProcessor {
     // private _defaultContactOffset: number = 0.01;
     // private _queriesHitTriggers: boolean = true;
     // private _queriesStartInColliders: boolean = true;
-    // private _callbacksOnDisable: boolean = true;
+    // private _callbacksOnDisable = true;
     // private _reuseCollisionCallbacks: boolean = true;
     private _collisionLayerMaskConverter = new CollisionLayerMaskConverter({
         default: { default: true },
@@ -38,7 +38,7 @@ export class Physics2DProcessor {
         // if (physicSetting.defaultContactOffset) this._defaultContactOffset = physicSetting.defaultContactOffset;
         // if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
         // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
-        // if (physicSetting.callbacksOnDisable) this._callbacksOnDisable = physicSetting.callbacksOnDisable;
+        if (physicSetting.callbacksOnDisable) this.callbacksOnDisable = physicSetting.callbacksOnDisable;
         // if (physicSetting.reuseCollisionCallbacks) this._reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
         if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
     }
@@ -126,6 +126,18 @@ export class Physics2DProcessor {
     public get timeToSleep(): number {
         return this._timeToSleep;
     }
+
+    // for performance reasons, we don't use this get set method
+
+    // public get callbacksOnDisable(): boolean {
+    //     return this._callbacksOnDisable;
+    // }
+
+    // public set callbacksOnDisable(value: boolean) {
+    //     this._callbacksOnDisable = value;
+    // }
+
+    public callbacksOnDisable = true;
     
     public get collisionLayerMask(): CollisionLayerMaskConverter {
         return this._collisionLayerMaskConverter;

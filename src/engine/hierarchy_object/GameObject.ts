@@ -31,7 +31,7 @@ export class GameObject {
         this._activeSelf = true;
         this._initialized = false;
         this.components = [];
-        this.gameObjectEventContainer = new GameObjectEventContainer(engineGlobalObject.instantiater);
+        this.gameObjectEventContainer = new GameObjectEventContainer();
         this._transform = new Transform(this, engineGlobalObject, this.onChangeParent.bind(this));
         this._transform.unsafeGetObject3D().name = name;
     }

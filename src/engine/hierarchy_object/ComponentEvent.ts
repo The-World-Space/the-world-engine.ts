@@ -142,7 +142,9 @@ export class ComponentEvent<T extends (...params: any[]) => void = () => void> {
         return this._eventFunc;
     }
 
-    public static comparator(a: ComponentEvent, b: ComponentEvent): number {
+    public static comparator<T extends (...params: any[]) => void, U extends (...params: any[]) => void>(
+        a: ComponentEvent<T>, b: ComponentEvent<U>
+    ): number {
         if (a._priority === b._priority) {
             if (a._componentExecutionOrder === b._componentExecutionOrder) {
                 return a._eventId - b._eventId;
