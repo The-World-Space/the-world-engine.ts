@@ -51,62 +51,62 @@ function isOnDestroyableComponent(component: Component): component is OnDestroya
 /**
  * called when an incoming collider makes contact with this object's collider (2D physics only)
  */
- type OnCollisionEnter2DableComponent = Component & { onCollisionEnter2D(collision: Collision2D): void; };
+type OnCollisionEnter2DableComponent = Component & { onCollisionEnter2D(collision: Collision2D): void; };
 
- /** @internal */
- function isOnCollisionEnter2DableComponent(component: Component): component is OnCollisionEnter2DableComponent {
-     return (component as OnCollisionEnter2DableComponent).onCollisionEnter2D !== undefined;
- }
+/** @internal */
+function isOnCollisionEnter2DableComponent(component: Component): component is OnCollisionEnter2DableComponent {
+    return (component as OnCollisionEnter2DableComponent).onCollisionEnter2D !== undefined;
+}
  
- /**
-  * called every frame where an incoming collider stays in contact with this object's collider (2D physics only)
-  */
- type OnCollisionStay2DableComponent = Component & { onCollisionStay2D(collision: Collision2D): void; };
+/**
+ * called every frame where an incoming collider stays in contact with this object's collider (2D physics only)
+ */
+type OnCollisionStay2DableComponent = Component & { onCollisionStay2D(collision: Collision2D): void; };
+
+/** @internal */
+function isOnCollisionStay2DableComponent(component: Component): component is OnCollisionStay2DableComponent {
+    return (component as OnCollisionStay2DableComponent).onCollisionStay2D !== undefined;
+}
  
- /** @internal */
- function isOnCollisionStay2DableComponent(component: Component): component is OnCollisionStay2DableComponent {
-     return (component as OnCollisionStay2DableComponent).onCollisionStay2D !== undefined;
- }
+/**
+ * called when a collider on another object stops touching this object's collider (2D physics only)
+ */
+type OnCollisionExit2DableComponent = Component & { onCollisionExit2D(collision: Collision2D): void; };
+
+/** @internal */
+function isOnCollisionExit2DableComponent(component: Component): component is OnCollisionExit2DableComponent {
+    return (component as OnCollisionExit2DableComponent).onCollisionExit2D !== undefined;
+}
  
- /**
-  * called when a collider on another object stops touching this object's collider (2D physics only)
-  */
- type OnCollisionExit2DableComponent = Component & { onCollisionExit2D(collision: Collision2D): void; };
+/**
+ * called when another object enters a trigger collider attached to this object (2D physics only)
+ */
+type OnTriggerEnter2DableComponent = Component & { onTriggerEnter2D(collider: Collision2D): void; };
+
+/** @internal */
+function isOnTriggerEnter2DableComponent(component: Component): component is OnTriggerEnter2DableComponent {
+    return (component as OnTriggerEnter2DableComponent).onTriggerEnter2D !== undefined;
+}
  
- /** @internal */
- function isOnCollisionExit2DableComponent(component: Component): component is OnCollisionExit2DableComponent {
-     return (component as OnCollisionExit2DableComponent).onCollisionExit2D !== undefined;
- }
+/**
+ * called every frame where another object stays in a trigger collider attached to this object (2D physics only)
+ */
+type OnTriggerStay2DableComponent = Component & { onTriggerStay2D(collider: Collision2D): void; };
+
+/** @internal */
+function isOnTriggerStay2DableComponent(component: Component): component is OnTriggerStay2DableComponent {
+    return (component as OnTriggerStay2DableComponent).onTriggerStay2D !== undefined;
+}
  
- /**
-  * called when another object enters a trigger collider attached to this object (2D physics only)
-  */
- type OnTriggerEnter2DableComponent = Component & { onTriggerEnter2D(collider: Collision2D): void; };
- 
- /** @internal */
- function isOnTriggerEnter2DableComponent(component: Component): component is OnTriggerEnter2DableComponent {
-     return (component as OnTriggerEnter2DableComponent).onTriggerEnter2D !== undefined;
- }
- 
- /**
-  * called every frame where another object stays in a trigger collider attached to this object (2D physics only)
-  */
- type OnTriggerStay2DableComponent = Component & { onTriggerStay2D(collider: Collision2D): void; };
- 
- /** @internal */
- function isOnTriggerStay2DableComponent(component: Component): component is OnTriggerStay2DableComponent {
-     return (component as OnTriggerStay2DableComponent).onTriggerStay2D !== undefined;
- }
- 
- /**
-  * called when another object leaves a trigger collider attached to this object (2D physics only)
-  */
- type OnTriggerExit2DableComponent = Component & { onTriggerExit2D(collider: Collision2D): void; };
- 
- /** @internal */
- function isOnTriggerExit2DableComponent(component: Component): component is OnTriggerExit2DableComponent {
-     return (component as OnTriggerExit2DableComponent).onTriggerExit2D !== undefined;
- }
+/**
+ * called when another object leaves a trigger collider attached to this object (2D physics only)
+ */
+type OnTriggerExit2DableComponent = Component & { onTriggerExit2D(collider: Collision2D): void; };
+
+/** @internal */
+function isOnTriggerExit2DableComponent(component: Component): component is OnTriggerExit2DableComponent {
+    return (component as OnTriggerExit2DableComponent).onTriggerExit2D !== undefined;
+}
 
 
 /**

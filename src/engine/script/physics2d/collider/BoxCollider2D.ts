@@ -9,7 +9,7 @@ import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 export class BoxCollider2D extends Collider2D {
     public override readonly requiredComponents = [RigidBody2D];
 
-    private _size: Vector2 = new Vector2();
+    private _size: Vector2 = new Vector2(16, 16);
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;
 
@@ -43,9 +43,9 @@ export class BoxCollider2D extends Collider2D {
     protected override createShape(): b2.Shape {
         const shape = new b2.PolygonShape();
         shape.SetAsBox(
-            this._size.x / 2 * PhysicsProcessor.unitScalar,
-            this._size.y / 2 * PhysicsProcessor.unitScalar,
-            this._b2Vector.Copy(this.offset).SelfMul(PhysicsProcessor.unitScalar)
+            this._size.x / 2,// * Physics2DProcessor.unitScalar,
+            this._size.y / 2,// * Physics2DProcessor.unitScalar,
+            this._b2Vector.Copy(this.offset)//.SelfMul(Physics2DProcessor.unitScalar)
         );
         return shape;
     }

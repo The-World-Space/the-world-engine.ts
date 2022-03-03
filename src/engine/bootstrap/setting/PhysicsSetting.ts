@@ -94,8 +94,8 @@ export class PhysicsSetting {
     //}
 
     public callbacksOnDisable(value: boolean): this {
-       this._physicsSettingObject.callbacksOnDisable = value;
-       return this;
+        this._physicsSettingObject.callbacksOnDisable = value;
+        return this;
     }
 
     //public reuseCollisionCallbacks(value: boolean): this {

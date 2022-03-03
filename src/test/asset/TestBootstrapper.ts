@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
+import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssSpriteRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRenderer";
@@ -8,6 +8,8 @@ import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
 import { TimeTest } from "./script/TimeTest";
 import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
+import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
+import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -38,6 +40,26 @@ export class TestBootstrapper extends Bootstrapper {
                 .make()
                 //.active(false)
             )
+
+            .withChild(instantiater.buildGameObject("ground", new Vector3(0, -32, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Static;
+                })
+                .withComponent(BoxCollider2D, c => {
+                    c.size = new Vector2(176, 16);
+                }))
+
+            .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Dynamic;
+                })
+                .withComponent(BoxCollider2D, c => {
+                    c.size = new Vector2(16, 16);
+                })
+                .withComponent(CssSpriteRenderer, c => {
+                    c.imageWidth = 16;
+                    c.imageHeight = 16;
+                }))
 
             .withChild(instantiater.buildGameObject("test_object")
                 .active(false)

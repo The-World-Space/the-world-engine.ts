@@ -3,6 +3,7 @@ import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
 import * as b2 from "../../../box2d.ts/build/index";
+import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 
 export class Physics2DProcessor {
     //configuration variables
@@ -26,6 +27,27 @@ export class Physics2DProcessor {
     private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));
 
     /** @internal */
+    public constructor() {
+        this._world.SetContactListener(
+            new class extends b2.ContactListener {
+                public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
+                    console.log(
+                        "BeginContact",
+                        (contact.GetFixtureA().GetBody().GetUserData() as RigidBody2D).gameObject.name,
+                        (contact.GetFixtureB().GetBody().GetUserData() as RigidBody2D).gameObject.name);
+                }
+
+                public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
+                    console.log(
+                        "EndContact",
+                        (contact.GetFixtureA().GetBody().GetUserData() as RigidBody2D).gameObject.name,
+                        (contact.GetFixtureB().GetBody().GetUserData() as RigidBody2D).gameObject.name);
+                }
+            }
+        );
+    }
+
+    /** @internal */
     public applyPhysicsSettings(physicSetting: PhysicsSettingObject): void {
         if (physicSetting.gravity) this._world.SetGravity(physicSetting.gravity);
         if (physicSetting.defaultMaterial) this._defaultMaterial = physicSetting.defaultMaterial;
@@ -43,6 +65,7 @@ export class Physics2DProcessor {
         if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
     }
 
+    /** @internal */
     public update(deltaTime: number): void {
         this._world.Step(deltaTime, this._velocityIterations, this._positionIterations);
         this._world.ClearForces();
@@ -50,16 +73,26 @@ export class Physics2DProcessor {
         let body = this._world.GetBodyList();
 
         while (body) {
-            const entity = body.GetUserData();
+            const entity = body.GetUserData() as RigidBody2D;
 
             if (entity) {
-                entity.transform.position.x = body.GetPosition().x;
-                entity.transform.position.y = body.GetPosition().y;
-                entity.transform.rotation = body.GetAngle();
+                entity.transform.position.x = body.GetPosition().x;// / Physics2DProcessor.unitScalar;
+                entity.transform.position.y = body.GetPosition().y;// / Physics2DProcessor.unitScalar;
+                entity.transform.rotation.z = body.GetAngle();
             }
 
             body = body.GetNext();
         }
+    }
+
+    /** @internal */
+    public addRigidBody(bodyDef: b2.BodyDef): b2.Body {
+        return this._world.CreateBody(bodyDef);
+    }
+
+    /** @internal */
+    public removeRigidBody(body: b2.Body) {
+        this._world.DestroyBody(body);
     }
 
     public get gravity(): Vector2 {
