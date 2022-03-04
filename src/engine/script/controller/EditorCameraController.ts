@@ -115,8 +115,10 @@ export class EditorCameraController extends Component {
     }
 
     private onResize(): void {
-        const aspect = this.engine.screen.width / this.engine.screen.height;
-        this._camera!.viewSize = this._currentViewSize / aspect;
+        if (this._camera) {
+            const aspect = this.engine.screen.width / this.engine.screen.height;
+            this._camera.viewSize = this._currentViewSize / aspect;
+        }
     }
 
     /**
