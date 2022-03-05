@@ -78,7 +78,7 @@ export class Physics2DProcessor {
             if (entity) {
                 entity.transform.position.x = body.GetPosition().x;// / Physics2DProcessor.unitScalar;
                 entity.transform.position.y = body.GetPosition().y;// / Physics2DProcessor.unitScalar;
-                entity.transform.rotation.z = body.GetAngle();
+                entity.transform.eulerAngles.z = body.GetAngle();
             }
 
             body = body.GetNext();
