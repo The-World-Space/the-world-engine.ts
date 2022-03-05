@@ -15,7 +15,7 @@ export class TrackCameraController extends Component {
 
     private _trackTarget: GameObject|null = null;
     private readonly _targetOffset: Vector2 = new Vector2();
-    private _cameraDistanceOffset = 200;
+    private _cameraDistanceOffset = 20;
     private _pixelPerfectUnit = 1;
     private _pixelPerfect = false;
     private _lerpTrack = false;

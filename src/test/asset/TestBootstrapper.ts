@@ -159,7 +159,7 @@ export class TestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildGameObject("camera_parent")
                 .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 10))
-                    //.active(false)
+                    .active(false)
                     .withComponent(Camera, c => {
                         c.viewSize = 10;
                         c.backgroundColor = new Color(0, 0, 0);
@@ -184,13 +184,13 @@ export class TestBootstrapper extends Bootstrapper {
                 .withChild(instantiater.buildPrefab("track_camera", CameraPrefab)
                     .withTrackTarget(trackObject)
                     .withBackgroundColor(new PrefabRef(new Color(0, 0, 0)))
-                    .withViewSize(new PrefabRef(200))
+                    .withViewSize(new PrefabRef(10))
                     .make()
-                    .active(false)
+                    //.active(false)
                     .withComponent(EditorGridRenderer, c => {
                         //c.enabled = false;
-                        c.renderWidth = 1000;
-                        c.renderHeight = 1000;
+                        c.renderWidth = 100;
+                        c.renderHeight = 100;
                     })))
         ;
     }
