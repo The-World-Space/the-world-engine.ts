@@ -35,6 +35,8 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
     private _rowCount = 10;
     private _tileWidth = 1;
     private _tileHeight = 1;
+    private _tileResolutionX = 16;
+    private _tileResolutionY = 16;
     private _imageSources: TileAtlasItem[]|null = null;
     
     private _initializeFunctions: ((() => void))[] = [];
@@ -85,9 +87,12 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
     private drawTileMap(): void {
         const tileMapWidth: number = this._columnCount * this._tileWidth;
         const tileMapHeight: number = this._rowCount * this._tileHeight;
+        const tileMapResolutionX: number = this._columnCount * this._tileResolutionX;
+        const tileMapResolutionY: number = this._rowCount * this._tileResolutionY;
+
         this.htmlElement = document.createElement("canvas") as HTMLCanvasElement;
-        this.htmlElement.width = tileMapWidth;
-        this.htmlElement.height = tileMapHeight;
+        this.htmlElement.width = tileMapResolutionX;
+        this.htmlElement.height = tileMapResolutionY;
         this.htmlElement.style.imageRendering = "pixelated";
         this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
         this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
@@ -108,9 +113,9 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         if (imageSource.rowCount === 1 && imageSource.columnCount === 1) {
             context.drawImage(
                 imageSource.htmlImageElement, 
-                0, 0, this._tileWidth, this._tileHeight, 
-                column * this._tileWidth, row * this._tileHeight,
-                this._tileWidth, this._tileHeight);
+                0, 0, this._tileResolutionX, this._tileResolutionY, 
+                column * this._tileResolutionX, row * this._tileResolutionY,
+                this._tileResolutionX, this._tileResolutionY);
         } else if (atlasIndex !== undefined) {   
             const rowIndex: number = Math.floor(atlasIndex / imageSource.columnCount);
             const columnIndex: number = atlasIndex % imageSource.columnCount;
@@ -120,8 +125,8 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
                 imageSource.htmlImageElement, 
                 columnIndex * imageWidth, rowIndex * imageHeight, 
                 imageWidth, imageHeight, 
-                column * this._tileWidth, row * this._tileHeight,
-                this._tileWidth, this._tileHeight);
+                column * this._tileResolutionX, row * this._tileResolutionY,
+                this._tileResolutionX, this._tileResolutionY);
         } else {
             throw new Error("Atlas index is required.");
         }
@@ -144,9 +149,9 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
                 if (imageSource.rowCount === 1 && imageSource.columnCount === 1) {
                     context.drawImage(
                         imageSource.htmlImageElement, 
-                        0, 0, this._tileWidth, this._tileHeight, 
-                        columnIndex * this._tileWidth + columnOffset * this._tileWidth, rowIndex * this._tileHeight + rowOffset * this._tileHeight,
-                        this._tileWidth, this._tileHeight);
+                        0, 0, this._tileResolutionX, this._tileResolutionY, 
+                        columnIndex * this._tileResolutionX + columnOffset * this._tileResolutionX, rowIndex * this._tileResolutionY + rowOffset * this._tileResolutionY,
+                        this._tileResolutionX, this._tileResolutionY);
                 } else if (tile.a !== undefined) {
                     const atlasColumnIndex: number = tile.a % imageSource.columnCount;
                     const atlasRowIndex: number = Math.floor(tile.a / imageSource.columnCount);
@@ -156,8 +161,8 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
                         imageSource.htmlImageElement,
                         atlasColumnIndex * imageWidth, atlasRowIndex * imageHeight,
                         imageWidth, imageHeight,
-                        columnIndex * this._tileWidth + columnOffset * this._tileWidth, rowIndex * this._tileHeight + rowOffset * this._tileHeight,
-                        this._tileWidth, this._tileHeight);
+                        columnIndex * this._tileResolutionX + columnOffset * this._tileResolutionX, rowIndex * this._tileResolutionY + rowOffset * this._tileResolutionY,
+                        this._tileResolutionX, this._tileResolutionY);
                 } else {
                     throw new Error("Atlas index is required.");
                 }
@@ -172,7 +177,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
 
         const context: CanvasRenderingContext2D = this.htmlElement!.getContext("2d")!;
-        context.clearRect(column * this._tileWidth, row * this._tileHeight, this._tileWidth, this._tileHeight);
+        context.clearRect(column * this._tileResolutionX, row * this._tileResolutionY, this._tileResolutionX, this._tileResolutionY);
     }
 
     public set imageSources(value: TileAtlasItem[]) {
@@ -193,7 +198,8 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
 
         if (this.htmlElement) {
             const tileMapWidth: number = this._columnCount * this._tileWidth;
-            this.htmlElement.width = tileMapWidth;
+            const tileMapResolutionX: number = this._columnCount * this._tileResolutionX;
+            this.htmlElement.width = tileMapResolutionX;
             this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
             this.updateCenterOffset(true);
         }
@@ -208,7 +214,8 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
 
         if (this.htmlElement) {
             const tileMapHeight: number = this._rowCount * this._tileHeight;
-            this.htmlElement.height = tileMapHeight;
+            const tileMapResolutionY: number = this._rowCount * this._tileResolutionY;
+            this.htmlElement.height = tileMapResolutionY;
             this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
             this.updateCenterOffset(true);
         }
@@ -223,7 +230,6 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
 
         if (this.htmlElement) {
             const tileMapWidth: number = this._columnCount * this._tileWidth;
-            this.htmlElement.width = tileMapWidth;
             this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
             this.updateCenterOffset(true);
         }
@@ -238,9 +244,34 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
 
         if (this.htmlElement) {
             const tileMapHeight: number = this._rowCount * this._tileHeight;
-            this.htmlElement.height = tileMapHeight;
             this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
             this.updateCenterOffset(true);
+        }
+    }
+
+    public get tileResolutionX(): number {
+        return this._tileResolutionX;
+    }
+
+    public set tileResolutionX(value: number) {
+        this._tileResolutionX = value;
+
+        if (this.htmlElement) {
+            const tileMapResolutionX: number = this._columnCount * this._tileResolutionX;
+            this.htmlElement.width = tileMapResolutionX;
+        }
+    }
+
+    public get tileResolutionY(): number {
+        return this._tileResolutionY;
+    }
+
+    public set tileResolutionY(value: number) {
+        this._tileResolutionY = value;
+
+        if (this.htmlElement) {
+            const tileMapResolutionY: number = this._rowCount * this._tileResolutionY;
+            this.htmlElement.height = tileMapResolutionY;
         }
     }
     

@@ -10,6 +10,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     private _chunkSize = 16;
     private _tileWidth = 1;
     private _tileHeight = 1;
+    private _tileResolutionX = 16;
+    private _tileResolutionY = 16;
     private _imageSources: TileAtlasItem[]|null = null;
     private _pointerEvents = true;
     private _collideEnabled = false;
@@ -73,6 +75,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
                         if (this._imageSources) c.imageSources = this._imageSources;
                         c.gridCellWidth = this._tileWidth;
                         c.gridCellHeight = this._tileHeight;
+                        c.tileResolutionX = this._tileResolutionX;
+                        c.tileResolutionY = this._tileResolutionY;
                         c.rowCount = this._chunkSize;
                         c.columnCount = this._chunkSize;
                         c.pointerEvents = this._pointerEvents;
@@ -230,6 +234,30 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         this.updateTilemapPosition();
         this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.gridCellHeight = this._tileHeight;
+        });
+    }
+
+    public get tileResolutionX(): number {
+        return this._tileResolutionX;
+    }
+
+    public set tileResolutionX(value: number) {
+        if (this._tileResolutionX === value) return;
+        this._tileResolutionX = value;
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
+            renderer.tileResolutionX = this._tileResolutionX;
+        });
+    }
+
+    public get tileResolutionY(): number {
+        return this._tileResolutionY;
+    }
+
+    public set tileResolutionY(value: number) {
+        if (this._tileResolutionY === value) return;
+        this._tileResolutionY = value;
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
+            renderer.tileResolutionY = this._tileResolutionY;
         });
     }
 
