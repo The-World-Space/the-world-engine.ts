@@ -20,12 +20,14 @@ export class BoxCollider2D extends Collider2D {
                 this.engine.instantiater.buildGameObject("debug_box", new Vector3(this.offset.x, this.offset.y, 200))
                     .withComponent(CssHtmlElementRenderer, c => {
                         const div = document.createElement("div");
-                        div.style.border = "1px solid rgba(255, 255, 0, 0.3)";
+                        div.style.border = "2px solid rgba(255, 255, 0, 0.3)";
+                        div.style.margin = "0";
+                        div.style.padding = "0";
                         div.style.backgroundColor = "rgba(0, 0, 0, 0)";
                         c.element = div;
                         c.elementHeight = this._size.y;
                         c.elementWidth = this._size.x;
-                        c.viewScale = 0.05;
+                        c.viewScale = 0.025;
                     })
             );
         }
