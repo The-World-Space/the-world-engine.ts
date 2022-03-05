@@ -14,8 +14,8 @@ export enum FontWeight {
 }
 
 export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
-    private _textWidth = 32;
-    private _textHeight = 16;
+    private _textWidth = 2;
+    private _textHeight = 1;
     private _autoSize = false;
     private _fontSize = 8;
     private _fontWeight: FontWeight = FontWeight.Normal;

@@ -15,10 +15,10 @@ export class EditorCameraController extends Component {
     private _camera: Camera|null = null;
     private _mouseMiddleDown = false;
     private readonly _lastOffset: Vector2 = new Vector2();
-    private _minViewSize = 30;
-    private _maxViewSize = 100;
-    private _defaultViewSize = 200;
-    private _currentViewSize = 200;
+    private _minViewSize = 1;
+    private _maxViewSize = 10;
+    private _defaultViewSize = 5;
+    private _currentViewSize = 5;
     private readonly _defaultPosition = new Vector3();
     private _onKeyDownBind = this.onKeyDown.bind(this);
     private _onWheelBind = this.onWheel.bind(this);
@@ -68,7 +68,7 @@ export class EditorCameraController extends Component {
     }
 
     private onWheel(event: WheelEvent): void {
-        this._currentViewSize += event.deltaY * 0.1;
+        this._currentViewSize += event.deltaY * 0.01;
         if (this._currentViewSize < this._minViewSize) {
             this._currentViewSize = this._minViewSize;
         } else if (this._currentViewSize > this._maxViewSize) {
@@ -108,8 +108,8 @@ export class EditorCameraController extends Component {
 
         const aspect = this.engine.screen.width / this.engine.screen.height;
 
-        this.transform.localPosition.x -= clientXdiff * this._camera!.viewSize * aspect;
-        this.transform.localPosition.y += clientYdiff * this._camera!.viewSize;
+        this.transform.localPosition.x -= clientXdiff * this._camera!.viewSize * 2 * aspect;
+        this.transform.localPosition.y += clientYdiff * this._camera!.viewSize * 2;
 
         this._lastOffset.set(clientOffsetX, clientOffsetY);
     }

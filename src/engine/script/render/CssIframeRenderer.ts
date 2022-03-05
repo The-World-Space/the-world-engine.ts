@@ -2,8 +2,8 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
 export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
-    private _width = 128;
-    private _height = 128;
+    private _width = 4;
+    private _height = 4;
     private _iframeSource = "";
 
     protected override renderInitialize(): void {

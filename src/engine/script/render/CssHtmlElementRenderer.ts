@@ -2,8 +2,8 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
 export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
-    private _elementWidth = 16;
-    private _elementHeight = 16;
+    private _elementWidth = 1;
+    private _elementHeight = 1;
     private _autoSize = false;
     private _initializeFunction: (() => void)|null = null;
 

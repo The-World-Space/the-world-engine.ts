@@ -1,6 +1,6 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
-import { CssRenderer } from "./CssRenderer";
+import { CssRenderer, CssRendererConst } from "./CssRenderer";
 
 export enum CssSpriteAtlasRenderMode {
     ObjectFit,
@@ -154,12 +154,12 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             image.style.opacity = this._opacity.toString();
             if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
                 if (this.viewScale !== 1) {
-                    console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit");
+                    console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit, for supressing this warning set viewScale to 1.");
                 }
                 this._croppedImageWidth = image.naturalWidth / this._columnCount;
                 this._croppedImageHeight = image.naturalHeight / this._rowCount;
-                if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth;
-                if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight;
+                if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth / CssRendererConst.LengthUnitScalar;
+                if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight / CssRendererConst.LengthUnitScalar;
                 image.style.width = (this._croppedImageWidth/* / this.viewScale*/) + "px";
                 image.style.height = (this._croppedImageHeight/* / this.viewScale*/) + "px";
                 image.style.objectFit = "none";

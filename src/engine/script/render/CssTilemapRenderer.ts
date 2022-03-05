@@ -33,8 +33,8 @@ export class TileAtlasItem {
 export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
     private _columnCount = 10;
     private _rowCount = 10;
-    private _tileWidth = 16;
-    private _tileHeight = 16;
+    private _tileWidth = 1;
+    private _tileHeight = 1;
     private _imageSources: TileAtlasItem[]|null = null;
     
     private _initializeFunctions: ((() => void))[] = [];

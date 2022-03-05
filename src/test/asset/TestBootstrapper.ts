@@ -1,5 +1,5 @@
 import { Vector2, Vector3 } from "three";
-import { Camera, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssSpriteRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
+import { Camera, CameraType, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssSpriteRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRenderer";
@@ -10,6 +10,7 @@ import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
+import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -21,7 +22,7 @@ export class TestBootstrapper extends Bootstrapper {
             .useCss3DRenderer(true);
 
         this.setting.physics
-            .usePhysics2D(true)
+            //.usePhysics2D(true)
             .layerCollisionMatrix<TestLayer>({
                 default: { player: true, level: true, default: true },
                 level: { player: true, level: true },
@@ -33,20 +34,13 @@ export class TestBootstrapper extends Bootstrapper {
         const trackObject = new PrefabRef<GameObject>();
         const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
 
-
         return this.sceneBuilder
-            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(8, 8, 0))
-                .getColideTilemapChunkRendererRef(gridMap)
-                .make()
-                //.active(false)
-            )
-
-            .withChild(instantiater.buildGameObject("ground", new Vector3(0, -32, 0))
+            .withChild(instantiater.buildGameObject("ground", new Vector3(0, -2, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Static;
                 })
                 .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(176, 16);
+                    c.size = new Vector2(16, 1);
                 }))
 
             .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0))
@@ -54,12 +48,18 @@ export class TestBootstrapper extends Bootstrapper {
                     c.bodyType = RigidbodyType2D.Dynamic;
                 })
                 .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(16, 16);
+                    c.size = new Vector2(1, 1);
                 })
                 .withComponent(CssSpriteRenderer, c => {
-                    c.imageWidth = 16;
-                    c.imageHeight = 16;
+                    c.imageWidth = 1;
+                    c.imageHeight = 1;
                 }))
+
+            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(0.5, 0.5, 0))
+                .getColideTilemapChunkRendererRef(gridMap)
+                .make()
+                //.active(false)
+            )
 
             .withChild(instantiater.buildGameObject("test_object")
                 .active(false)
@@ -124,16 +124,17 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
-                    c.enabled = false;
+                    //c.enabled = false;
                     c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);
-                    c.viewScale = 0.1;
+                    c.viewScale = 1;
                     c.imageIndex = 0;
                     c.pointerEvents = true;
                     c.imageFlipX = true;
                     c.imageFlipY = true;
-                    c.imageWidth = 16;
-                    c.imageHeight = 32;
+                    c.imageWidth = 1;
+                    c.imageHeight = 2;
                     c.centerOffset = new Vector2(0, 0);
+                    c.renderMode = CssSpriteAtlasRenderMode.ObjectFit;
                     //settimeout loop
                     setTimeout(() => {
                         c.imageIndex = 1;
@@ -157,23 +158,25 @@ export class TestBootstrapper extends Bootstrapper {
                 .getGameObject(trackObject))
             
             .withChild(instantiater.buildGameObject("camera_parent")
-                .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 100))
+                .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 10))
                     //.active(false)
                     .withComponent(Camera, c => {
-                        c.viewSize = 230;
+                        c.viewSize = 10;
                         c.backgroundColor = new Color(0, 0, 0);
+                        c.cameraType = CameraType.Orthographic;
                     })
                     .withComponent(EditorCameraController, c => {
-                        c.maxViewSize = 500;
+                        c.maxViewSize = 10;
                     })
                     .withComponent(EditorGridRenderer, c => {
-                        c.renderWidth = 1000;
-                        c.renderHeight = 1000;
+                        //c.enabled = false;
+                        c.renderWidth = 100;
+                        c.renderHeight = 100;
                     })
                     .withChild(instantiater.buildGameObject("fps_counter")
                         .withComponent(CssTextRenderer, c => {
                             c.autoSize = true;
-                            c.centerOffset = new Vector2(-2, 2);
+                            c.centerOffset = new Vector2(-1.8, 1.8);
                             c.textColor = new Color(1, 1, 1);
                         })
                         .withComponent(FpsCounter)))

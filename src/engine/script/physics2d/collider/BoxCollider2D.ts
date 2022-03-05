@@ -25,6 +25,7 @@ export class BoxCollider2D extends Collider2D {
                         c.element = div;
                         c.elementHeight = this._size.y;
                         c.elementWidth = this._size.x;
+                        c.viewScale = 0.05;
                     })
             );
         }

@@ -5,6 +5,7 @@ import { GameObject } from "../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 import { Camera } from "../render/Camera";
 import { CssHtmlElementRenderer } from "../render/CssHtmlElementRenderer";
+import { CssRendererConst } from "../render/CssRenderer";
 
 export class EditorGridRenderer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
@@ -12,10 +13,10 @@ export class EditorGridRenderer extends Component {
     
     private _cssHtmlRenderer: CssHtmlElementRenderer|null = null;
     private _cssHtmlRendererObject: GameObject|null = null;
-    private _gridCellWidth = 16;
-    private _gridCellHeight = 16;
-    private _renderWidth = 180;
-    private _renderHeight = 100;
+    private _gridCellWidth = 1;
+    private _gridCellHeight = 1;
+    private _renderWidth = 18;
+    private _renderHeight = 10;
     private _lineWidth = 0.2;
 
     public awake(): void {
@@ -29,7 +30,9 @@ export class EditorGridRenderer extends Component {
                     element.style.backgroundImage = "\
                         repeating-linear-gradient(#999 0 1px, transparent 1px 100%),\
                         repeating-linear-gradient(90deg, #999 0 1px, transparent 1px 100%)";
-                    element.style.backgroundSize = (this.gridCellWidth / this._lineWidth) + "px " + (this.gridCellHeight / this._lineWidth) + "px";
+                    element.style.backgroundSize =
+                        (this._gridCellWidth / this._lineWidth / CssRendererConst.LengthUnitScalar) + "px " +
+                        (this._gridCellHeight / this._lineWidth / CssRendererConst.LengthUnitScalar) + "px";
                     c.elementWidth = this._renderWidth / this._lineWidth;
                     c.elementHeight = this._renderHeight / this._lineWidth;
                     c.pointerEvents = false;
@@ -55,15 +58,15 @@ export class EditorGridRenderer extends Component {
 
         const centerX = this._renderWidth / this._lineWidth / 2;
         const centerY = this._renderHeight / this._lineWidth / 2;
-        const scaledGridCellWidth = this._gridCellWidth / this._lineWidth;
-        const scaledGridCellHeight = this._gridCellHeight / this._lineWidth;
+        const scaledGridCellWidth = this._gridCellWidth / this._lineWidth / CssRendererConst.LengthUnitScalar;
+        const scaledGridCellHeight = this._gridCellHeight / this._lineWidth / CssRendererConst.LengthUnitScalar;
         const xRemainder = centerX % scaledGridCellWidth;
         const yRemainder = centerY % scaledGridCellHeight;
 
         if (!position.equals(this._lastPosition)) {
             this._cssHtmlRenderer!.element!.style.backgroundPosition = 
-                (-position.x / this._lineWidth + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
-                (position.y / this._lineWidth + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
+                (-position.x / CssRendererConst.LengthUnitScalar / this._lineWidth + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
+                (position.y / CssRendererConst.LengthUnitScalar / this._lineWidth + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
         }
     }
 

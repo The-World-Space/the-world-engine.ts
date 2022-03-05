@@ -6,12 +6,16 @@ import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
+export const enum CssRendererConst {
+    LengthUnitScalar = 0.1
+}
+
 export class CssRenderer<T extends HTMLElement> extends Component {
     protected css3DObject: CSS3DObject|null = null;
     protected htmlElement: T|null = null;
 
     private readonly _centerOffset = new Vector2();
-    private _viewScale = 1;
+    private _viewScale = CssRendererConst.LengthUnitScalar;
     private _pointerEvents = true;
 
     private _zindex = 0;
@@ -44,7 +48,7 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     }
 
     public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis;
+        this._zindex = zaxis * 10;
         if (this.css3DObject) {
             this.css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
         }

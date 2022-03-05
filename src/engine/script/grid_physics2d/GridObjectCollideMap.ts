@@ -8,8 +8,8 @@ import { IGridCollidable } from "./IGridCollidable";
 
 export class GridObjectCollideMap extends Component implements IGridCollidable {
     private readonly _collideMap: Map<`${number}_${number}`, number> = new Map();
-    private _gridCellWidth = 16;
-    private _gridCellHeight = 16;
+    private _gridCellWidth = 1;
+    private _gridCellHeight = 1;
     private _showCollider = false;
     private _colliderIsShowing = false;
     private _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();

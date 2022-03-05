@@ -13,7 +13,7 @@ export class Camera extends Component {
     private _camera: THREE.Camera|null = null;
     private _cameraType: CameraType = CameraType.Orthographic;
     private _fov = 75;
-    private _viewSize = 300;
+    private _viewSize = 5;
     private _near = 0.1;
     private _far = 1000;
     private _priority = 0;
@@ -58,7 +58,7 @@ export class Camera extends Component {
                 this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
             } else {
                 if (this._camera instanceof THREE.OrthographicCamera) {
-                    const viewSizeScalar = this._viewSize * 0.5;
+                    const viewSizeScalar = this._viewSize;
                     this._camera.left = -viewSizeScalar * aspectRatio;
                     this._camera.right = viewSizeScalar * aspectRatio;
                     this._camera.top = viewSizeScalar;
@@ -93,7 +93,7 @@ export class Camera extends Component {
 
     private createNewOrthographicCamera(): THREE.OrthographicCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
-        const viewSizeScalar = this._viewSize * 0.5;
+        const viewSizeScalar = this._viewSize;
         const camera = new THREE.OrthographicCamera(
             -viewSizeScalar * aspectRatio,
             viewSizeScalar * aspectRatio,
@@ -120,7 +120,7 @@ export class Camera extends Component {
             this._camera.aspect = aspectRatio;
             this._camera.updateProjectionMatrix();
         } else if (this._camera instanceof THREE.OrthographicCamera) {
-            const viewSizeScalar = this._viewSize * 0.5;
+            const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
             this._camera.right = viewSizeScalar * aspectRatio;
             this._camera.top = viewSizeScalar;
@@ -163,7 +163,7 @@ export class Camera extends Component {
         this._viewSize = value;
         if (this._camera instanceof THREE.OrthographicCamera) {
             const aspectRatio = this.engine.screen.width / this.engine.screen.height;
-            const viewSizeScalar = this._viewSize * 0.5;
+            const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
             this._camera.right = viewSizeScalar * aspectRatio;
             this._camera.top = viewSizeScalar;

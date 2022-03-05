@@ -8,13 +8,13 @@ import { DEG2RAD } from "three/src/math/MathUtils";
 export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolygonElement|null = null;
     private _points: Vector2[] = [
-        new Vector2(-64, -64),
-        new Vector2(64, -64),
-        new Vector2(64, 64),
-        new Vector2(-64, 64),
+        new Vector2(-2, -2),
+        new Vector2(2, -2),
+        new Vector2(2, 2),
+        new Vector2(-2, 2),
     ];
-    private _width = 128;
-    private _height = 128;
+    private _width = 4;
+    private _height = 4;
     private _color = Color.fromHex("#39C5BB");
 
     protected override renderInitialize(): void {

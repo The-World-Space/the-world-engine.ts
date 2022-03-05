@@ -5,6 +5,8 @@ import { PointerGridEvent } from "../input/PointerGridInputListener";
 import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 import { Direction, Directionable } from "../helper/Directionable";
 import { IGridPositionable } from "../helper/IGridPositionable";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import { WritableVector2 } from "../../math/WritableVector2";
 
 /**
  * make gameobject moves on grid coordinates
@@ -15,9 +17,9 @@ export class PlayerGridMovementController extends Directionable
     implements IGridPositionable {
     public override readonly disallowMultipleComponent: boolean = true;
 
-    private _speed = 80;
-    private _gridCellHeight = 16;
-    private _gridCellWidth = 16;
+    private _speed = 8;
+    private _gridCellHeight = 1;
+    private _gridCellWidth = 1;
     private _collideMaps: IGridCollidable[] = [];
     private readonly _collideSize: number = 8;
     private readonly _gridCenter: Vector2 = new Vector2();
@@ -35,7 +37,7 @@ export class PlayerGridMovementController extends Directionable
     private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
 
-    private readonly _tempVector2: Vector2 = new Vector2();
+    private readonly _tempVector2 = new Vector2();
 
     public start(): void {
         this._pathfinder = new Pathfinder(this._collideMaps);
@@ -201,14 +203,16 @@ export class PlayerGridMovementController extends Directionable
             }
         }
 
-        if (distance > 0.1) {
-            const direction = this._targetGridPosition.clone().sub(vector2Pos).normalize();
+        if (distance > 0.01) {
+            const direction = this._tempVector2.copy(this._targetGridPosition).sub(vector2Pos).normalize();
             direction.multiplyScalar(Math.min(this._speed * this.engine.time.deltaTime, distance));
             transform.localPosition.x += direction.x;
             transform.localPosition.y += direction.y;
         } else {
             this.isMoving = false;
             this._currentGridPosition.copy(this._targetGridPosition);
+            transform.localPosition.x = this._currentGridPosition.x;
+            transform.localPosition.y = this._currentGridPosition.y;
             this.invokeOnMovedToTarget(this._targetGridPosition);
         }
     }
@@ -320,15 +324,15 @@ export class PlayerGridMovementController extends Directionable
     /**
      * grid center position
      */
-    public get gridCenter(): Vector2 {
-        return this._gridCenter.clone();
+    public get gridCenter(): ReadonlyVector2 {
+        return this._gridCenter;
     }
 
     /**
      * grid center position
      */
-    public set gridCenter(value: Vector2) {
-        this._gridCenter.copy(value);
+    public set gridCenter(value: ReadonlyVector2) {
+        (this._gridCenter as WritableVector2).copy(value);
     }
 
     /**

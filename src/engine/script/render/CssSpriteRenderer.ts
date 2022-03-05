@@ -1,6 +1,6 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
-import { CssRenderer } from "./CssRenderer";
+import { CssRenderer, CssRendererConst } from "./CssRenderer";
 
 export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageWidth = 0;
@@ -72,8 +72,8 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
             image.removeEventListener("load", onLoad);
             image.alt = this.gameObject.name + "_sprite_atlas";
             image.style.imageRendering = "pixelated";
-            if (this._imageWidth === 0) this._imageWidth = image.naturalWidth;
-            if (this._imageHeight === 0) this._imageHeight = image.naturalHeight;
+            if (this._imageWidth === 0) this._imageWidth = image.naturalWidth * CssRendererConst.LengthUnitScalar;
+            if (this._imageHeight === 0) this._imageHeight = image.naturalHeight * CssRendererConst.LengthUnitScalar;
             image.style.width = (this._imageWidth / this.viewScale) + "px";
             image.style.height = (this._imageHeight / this.viewScale) + "px";
             image.style.opacity = this._opacity.toString();

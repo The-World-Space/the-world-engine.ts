@@ -8,8 +8,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssCollideTilemapRenderer> = new Map();
     //key is chunk position in string format "x_y"
     private _chunkSize = 16;
-    private _tileWidth = 16;
-    private _tileHeight = 16;
+    private _tileWidth = 1;
+    private _tileHeight = 1;
     private _imageSources: TileAtlasItem[]|null = null;
     private _pointerEvents = true;
     private _collideEnabled = false;
