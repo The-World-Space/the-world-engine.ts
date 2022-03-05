@@ -367,8 +367,8 @@ export class PlayerGridMovementController extends Directionable
      * initial grid position
      * this option is valid only when evaluated before PlayerGridMovementController.start()
      */
-    public set initPosition(value: Vector2) {
-        this._initPosition.copy(value);
+    public set initPosition(value: ReadonlyVector2) {
+        (this._initPosition as WritableVector2).copy(value);
     }
 
     /**
