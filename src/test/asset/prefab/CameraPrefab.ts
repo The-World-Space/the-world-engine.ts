@@ -1,4 +1,5 @@
 import { Vector2 } from "three";
+import { CameraType } from "../../../engine/script/render/Camera";
 import { TrackCameraController, Camera, GameObject, GameObjectBuilder, Prefab, PrefabRef, Color } from "../../../index";
 
 /** @internal */
@@ -32,6 +33,8 @@ export class CameraPrefab extends Prefab {
                 if (this._viewSize.ref) {
                     c.viewSize = this._viewSize.ref;
                 }
+
+                c.cameraType = CameraType.Orthographic;
             })
             .withComponent(TrackCameraController, c => {
                 c.setTrackTarget(this._trackTarget.ref!);
