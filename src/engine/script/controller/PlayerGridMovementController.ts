@@ -21,7 +21,7 @@ export class PlayerGridMovementController extends Directionable
     private _gridCellHeight = 1;
     private _gridCellWidth = 1;
     private _collideMaps: IGridCollidable[] = [];
-    private readonly _collideSize: number = 8;
+    private readonly _collideSize: number = 0.5;
     private readonly _gridCenter: Vector2 = new Vector2();
     private readonly _currentGridPosition: Vector2 = new Vector2();
     private readonly _targetGridPosition: Vector2 = new Vector2();
@@ -122,7 +122,7 @@ export class PlayerGridMovementController extends Directionable
 
     private invokeOnMoveToTarget(_vector2: Vector2): void {
         this._onMoveToTargetDelegates.forEach(
-            (delegate) => delegate(
+            delegate => delegate(
                 Math.floor(this._targetGridPosition.x / this._gridCellWidth),
                 Math.floor(this._targetGridPosition.y / this._gridCellHeight)
             )
@@ -131,7 +131,7 @@ export class PlayerGridMovementController extends Directionable
 
     private invokeOnMovedToTarget(_vector2: Vector2): void {
         this._onMovedToTargetDelegates.forEach(
-            (delegate) => delegate(
+            delegate => delegate(
                 Math.floor(this._currentGridPosition.x / this._gridCellWidth),
                 Math.floor(this._currentGridPosition.y / this._gridCellHeight)
             )
