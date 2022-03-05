@@ -4,6 +4,9 @@ import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 import { GlobalConfig } from "../../../GlobalConfig";
+import { ReadonlyVector3 } from "../../math/ReadonlyVector3";
+import { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 
 export class SpriteAtlasInstance {
     private _width: number;
@@ -44,20 +47,20 @@ export class SpriteAtlasInstance {
         return this._atlasIndex;
     }
 
-    public get position(): Vector3 {
-        return this._position.clone();
+    public get position(): ReadonlyVector3 {
+        return this._position;
     }
 
-    public get rotation(): Quaternion|undefined {
-        return this._rotation?.clone();
+    public get rotation(): ReadonlyQuaternion|undefined {
+        return this._rotation;
     }
 
-    public get scale(): Vector3|undefined {
-        return this._scale?.clone();
+    public get scale(): ReadonlyVector3|undefined {
+        return this._scale;
     }
 
-    public get centerOffset(): Vector2|undefined {
-        return this._centerOffset?.clone();
+    public get centerOffset(): ReadonlyVector2|undefined {
+        return this._centerOffset;
     }
 }
 

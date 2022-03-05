@@ -1,6 +1,7 @@
-import { Quaternion, Vector3 } from "three";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { Instantiater } from "../Instantiater";
+import { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
+import { ReadonlyVector3 } from "../math/ReadonlyVector3";
 import { GameObjectBuilder } from "./GameObjectBuilder";
 
 /**
@@ -11,7 +12,12 @@ export abstract class Prefab {
     protected _instantiater: Instantiater;
     protected _gameObjectBuilder: GameObjectBuilder;
 
-    public constructor(engineGlobalObject: EngineGlobalObject, name: string, localPosition?: Vector3, localRotation?: Quaternion, localScale?: Vector3) {
+    public constructor(
+        engineGlobalObject: EngineGlobalObject,
+        name: string,
+        localPosition?: ReadonlyVector3,
+        localRotation?: ReadonlyQuaternion,
+        localScale?: ReadonlyVector3) {
         this._instantiater = engineGlobalObject.instantiater;
         this._gameObjectBuilder = new GameObjectBuilder(engineGlobalObject, name, localPosition, localRotation, localScale);
     }

@@ -1,8 +1,9 @@
-import { Quaternion, Vector3 } from "three";
 import { EngineGlobalObject } from "./EngineGlobalObject";
 import { GameObjectBuilder } from "./hierarchy_object/GameObjectBuilder";
 import { Prefab } from "./hierarchy_object/Prefab";
 import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
+import { ReadonlyQuaternion } from "./math/ReadonlyQuaternion";
+import { ReadonlyVector3 } from "./math/ReadonlyVector3";
 
 /**
  * instantiate a game object
@@ -42,9 +43,9 @@ export class Instantiater {
      */
     public buildGameObject(
         name: string,
-        localPosition?: Vector3,
-        localRotation?: Quaternion,
-        localScale?: Vector3
+        localPosition?: ReadonlyVector3,
+        localRotation?: ReadonlyQuaternion,
+        localScale?: ReadonlyVector3
     ): GameObjectBuilder {
         return new GameObjectBuilder(this._engineGlobalObject, name, localPosition, localRotation, localScale);
     }
@@ -60,9 +61,9 @@ export class Instantiater {
     public buildPrefab<T extends Prefab>(
         name: string,
         prefabCtor: PrefabConstructor<T>,
-        localPosition?: Vector3,
-        localRotation?: Quaternion,
-        localScale?: Vector3
+        localPosition?: ReadonlyVector3,
+        localRotation?: ReadonlyQuaternion,
+        localScale?: ReadonlyVector3
     ): T {
         return new prefabCtor(this._engineGlobalObject, name, localPosition, localRotation, localScale);
     }

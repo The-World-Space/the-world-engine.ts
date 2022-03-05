@@ -2,6 +2,8 @@ import { Vector2, Vector3 } from "three";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import { WritableVector2 } from "../../math/WritableVector2";
 import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 
 export class PointerGridEvent {
@@ -258,12 +260,12 @@ export class PointerGridInputListener extends Component {
         if (index !== -1) this._onPointerMoveDelegates.splice(index, 1);
     }
 
-    public get gridCenter(): Vector2 {
-        return this._gridCenter.clone();
+    public get gridCenter(): ReadonlyVector2 {
+        return this._gridCenter;
     }
 
-    public set gridCenter(value: Vector2) {
-        this._gridCenter.copy(value);
+    public set gridCenter(value: ReadonlyVector2) {
+        (this._gridCenter as WritableVector2).copy(value);
     }
     
     public get gridCellWidth(): number {

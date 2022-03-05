@@ -1,4 +1,3 @@
-import { Quaternion, Vector3 } from "three";
 import { PrefabRef } from "./PrefabRef";
 import { EngineGlobalObject } from "../EngineGlobalObject";
 import { GameObject } from "./GameObject";
@@ -6,6 +5,10 @@ import { Component } from "./Component";
 import { ComponentConstructor } from "./ComponentConstructor";
 import { SceneProcessor } from "../SceneProcessor";
 import { Transform } from "./Transform";
+import { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
+import { ReadonlyVector3 } from "../math/ReadonlyVector3";
+import { WritableVector3 } from "../math/WritableVector3";
+import { WritableQuaternion } from "../math/WritableQuaternion";
 
 /**
  * builder for GameObject
@@ -16,12 +19,18 @@ export class GameObjectBuilder {
     private readonly _componentInitializeFuncList: (() => void)[];
 
     /** @internal */
-    public constructor(engineGlobalObject: EngineGlobalObject, name: string, localPosition?: Vector3, localRotation?: Quaternion, localScale?: Vector3) {
+    public constructor(
+        engineGlobalObject: EngineGlobalObject,
+        name: string,
+        localPosition?: ReadonlyVector3,
+        localRotation?: ReadonlyQuaternion,
+        localScale?: ReadonlyVector3
+    ) {
         this._gameObject = new GameObject(engineGlobalObject, name);
         const transform = this._gameObject.transform;
-        if (localPosition) transform.localPosition.copy(localPosition);
-        if (localRotation) transform.localRotation.copy(localRotation);
-        if (localScale) transform.localScale.copy(localScale);
+        if (localPosition) (transform.localPosition as WritableVector3).copy(localPosition);
+        if (localRotation) (transform.localRotation as WritableQuaternion).copy(localRotation);
+        if (localScale) (transform.localScale as WritableVector3).copy(localScale);
         this._children = [];
         this._componentInitializeFuncList = [];
     }
