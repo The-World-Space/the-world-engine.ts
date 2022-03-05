@@ -40,7 +40,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.bodyType = RigidbodyType2D.Static;
                 })
                 .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(16, 1);
+                    c.size = new Vector2(17, 1);
                 }))
 
             .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0))
@@ -58,7 +58,7 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(0.5, 0.5, 0))
                 .getColideTilemapChunkRendererRef(gridMap)
                 .make()
-                //.active(false)
+                .active(false)
             )
 
             .withChild(instantiater.buildGameObject("test_object")
@@ -122,7 +122,7 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
             .withChild(instantiater.buildGameObject("track_object")
-                //.active(false)
+                .active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     //c.enabled = false;
                     c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);
@@ -160,7 +160,7 @@ export class TestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildGameObject("camera_parent")
                 .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 10))
-                    .active(false)
+                    //.active(false)
                     .withComponent(Camera, c => {
                         c.viewSize = 10;
                         c.backgroundColor = new Color(0, 0, 0);
@@ -170,7 +170,7 @@ export class TestBootstrapper extends Bootstrapper {
                         c.maxViewSize = 10;
                     })
                     .withComponent(EditorGridRenderer, c => {
-                        //c.enabled = false;
+                        c.enabled = false;
                         c.renderWidth = 100;
                         c.renderHeight = 100;
                     })
@@ -187,7 +187,7 @@ export class TestBootstrapper extends Bootstrapper {
                     .withBackgroundColor(new PrefabRef(new Color(0, 0, 0)))
                     .withViewSize(new PrefabRef(10))
                     .make()
-                    //.active(false)
+                    .active(false)
                     .withComponent(EditorGridRenderer, c => {
                         //c.enabled = false;
                         c.renderWidth = 100;
