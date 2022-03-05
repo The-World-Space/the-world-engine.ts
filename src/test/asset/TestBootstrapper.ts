@@ -22,7 +22,7 @@ export class TestBootstrapper extends Bootstrapper {
             .useCss3DRenderer(true);
 
         this.setting.physics
-            //.usePhysics2D(true)
+            .usePhysics2D(true)
             .layerCollisionMatrix<TestLayer>({
                 default: { player: true, level: true, default: true },
                 level: { player: true, level: true },
@@ -154,6 +154,7 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(PlayerGridMovementController, c => {
                     c.setGridInfoFromCollideMap(gridMap.ref!);
+                    c.addCollideMap(gridMap.ref!);
                 })
                 .getGameObject(trackObject))
             
