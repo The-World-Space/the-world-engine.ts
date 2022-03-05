@@ -158,14 +158,14 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
                 }
                 this._croppedImageWidth = image.naturalWidth / this._columnCount;
                 this._croppedImageHeight = image.naturalHeight / this._rowCount;
-                if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth / CssRendererConst.LengthUnitScalar;
-                if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight / CssRendererConst.LengthUnitScalar;
+                if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth * CssRendererConst.LengthUnitScalar;
+                if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight * CssRendererConst.LengthUnitScalar;
                 image.style.width = (this._croppedImageWidth/* / this.viewScale*/) + "px";
                 image.style.height = (this._croppedImageHeight/* / this.viewScale*/) + "px";
                 image.style.objectFit = "none";
             } else /* if (this._renderMode === CssSpriteAtlasRenderMode.ClipPath) */ {
-                if (this._imageWidth === 0) this._imageWidth = image.naturalWidth / this._columnCount;
-                if (this._imageHeight === 0) this._imageHeight = image.naturalHeight / this._rowCount;
+                if (this._imageWidth === 0) this._imageWidth = image.naturalWidth / this._columnCount * CssRendererConst.LengthUnitScalar;
+                if (this._imageHeight === 0) this._imageHeight = image.naturalHeight / this._rowCount * CssRendererConst.LengthUnitScalar;
                 image.style.width = (this._imageWidth * this._columnCount / this.viewScale) + "px";
                 image.style.height = (this._imageHeight * this._rowCount / this.viewScale) + "px";
             }
