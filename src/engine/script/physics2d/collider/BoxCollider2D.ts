@@ -9,7 +9,7 @@ import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 export class BoxCollider2D extends Collider2D {
     public override readonly requiredComponents = [RigidBody2D];
 
-    private _size: Vector2 = new Vector2(16, 16);
+    private _size: Vector2 = new Vector2(1, 1);
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;
 

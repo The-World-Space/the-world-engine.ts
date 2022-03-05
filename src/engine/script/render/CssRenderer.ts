@@ -48,7 +48,7 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     }
 
     public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis * 10;
+        this._zindex = zaxis / CssRendererConst.LengthUnitScalar;
         if (this.css3DObject) {
             this.css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
         }
