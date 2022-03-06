@@ -1,12 +1,4 @@
-export type CollisionLayer<l extends number = 32, acc extends string[] = ["default"]> =
-    acc["length"] extends l
-        ? acc
-        : acc | CollisionLayer<l, [...acc, string]>;
-
-type CollisionLayerParm<T extends CollisionLayer, acc extends boolean[] = [], out extends string = never> =
-    acc["length"] extends T["length"]
-        ? out
-        : out | CollisionLayerParm<T, [...acc, true], T[acc["length"]]>
+import { CollisionLayer, CollisionLayerParm } from "./CollisionLayer";
 
 export class CollisionLayerMaskConverter {
     private readonly _strCategory: Map<string, number>; //key: layerName value: layer

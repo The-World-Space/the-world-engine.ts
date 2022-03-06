@@ -5,6 +5,8 @@ import { Vector2 } from "three";
 import * as b2 from "../../../../box2d.ts/build/index";
 import { WritableVector2 } from "../../../math/WritableVector2";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
+import { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
+import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 
 export class Collider2D extends Component {
     public override readonly requiredComponents = [RigidBody2D];
@@ -15,6 +17,7 @@ export class Collider2D extends Component {
     private _material: PhysicsMaterial2D|null = null;
     private _isTrigger = false;
     private _offset: Vector2 = new Vector2();
+    private _collisionLayer: string = CollisionLayerConst.DefaultLayerName;
 
     private _fixtureCreated = false;
 
@@ -132,6 +135,15 @@ export class Collider2D extends Component {
 
     public set offset(value: ReadonlyVector2) {
         (this._offset as WritableVector2).copy(value);
+        this.updateFixture();
+    }
+
+    public getCollisionLayer<T extends CollisionLayer>(): CollisionLayerParm<T> {
+        return this._collisionLayer as CollisionLayerParm<T>;
+    }
+
+    public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>) {
+        this._collisionLayer = value as string;
         this.updateFixture();
     }
 }

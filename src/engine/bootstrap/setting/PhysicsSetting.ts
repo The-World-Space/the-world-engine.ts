@@ -1,6 +1,8 @@
 import { Vector2 } from "three";
 import { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
-import { CollisionLayer, CollisionLayerMaskConverter } from "../../physics/CollisionLayerMaskConverter";
+import { CollisionLayerMaskConverter } from "../../physics/CollisionLayerMaskConverter";
+import { CollisionLayer } from "../../physics/CollisionLayer";
+import * as CollisionLayerConstType from "../../physics/CollisionLayerConstType";
 
 export type PhysicsSettingObject = {
     usePhysics2D: boolean,
@@ -87,13 +89,13 @@ export class PhysicsSetting {
     
     // #region CollisionLayer Collision Matrix Overloads
 
-    public layerCollisionMatrix<T extends ["default"] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[0]]: boolean }
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -101,7 +103,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -111,7 +113,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -123,7 +125,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -137,7 +139,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -153,7 +155,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -171,7 +173,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -191,7 +193,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -213,7 +215,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -237,7 +239,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -263,7 +265,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -291,7 +293,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -321,7 +323,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -353,7 +355,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -387,7 +389,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -423,7 +425,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -461,7 +463,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -501,7 +503,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -543,7 +545,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -587,7 +589,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -633,7 +635,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -681,7 +683,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -731,7 +733,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -783,7 +785,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -837,7 +839,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -893,7 +895,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[26]]: boolean } & { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -951,7 +953,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[27]]: boolean } & { [key in T[26]]: boolean } & { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -1011,7 +1013,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[28]]: boolean } & { [key in T[27]]: boolean } & { [key in T[26]]: boolean } & { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -1073,7 +1075,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[29]]: boolean } & { [key in T[28]]: boolean } & { [key in T[27]]: boolean } & { [key in T[26]]: boolean } & { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -1137,7 +1139,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[30]]: boolean } & { [key in T[29]]: boolean } & { [key in T[28]]: boolean } & { [key in T[27]]: boolean } & { [key in T[26]]: boolean } & { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
@@ -1203,7 +1205,7 @@ export class PhysicsSetting {
         }
     ): void;
 
-    public layerCollisionMatrix<T extends ["default", string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
+    public layerCollisionMatrix<T extends [CollisionLayerConstType.DefaultLayerName, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string, string] = never>(
         collisionMatrix: T extends never ? never : object & {
             [key in T[0]]: { [key in T[31]]: boolean } & { [key in T[30]]: boolean } & { [key in T[29]]: boolean } & { [key in T[28]]: boolean } & { [key in T[27]]: boolean } & { [key in T[26]]: boolean } & { [key in T[25]]: boolean } & { [key in T[24]]: boolean } & { [key in T[23]]: boolean } & { [key in T[22]]: boolean } & { [key in T[21]]: boolean } & { [key in T[20]]: boolean } & { [key in T[19]]: boolean } & { [key in T[18]]: boolean } & { [key in T[17]]: boolean } & { [key in T[16]]: boolean } & { [key in T[15]]: boolean } & { [key in T[14]]: boolean } & { [key in T[13]]: boolean } & { [key in T[12]]: boolean } & { [key in T[11]]: boolean } & { [key in T[10]]: boolean } & { [key in T[9]]: boolean } & { [key in T[8]]: boolean } & { [key in T[7]]: boolean } & { [key in T[6]]: boolean } & { [key in T[5]]: boolean } & { [key in T[4]]: boolean } & { [key in T[3]]: boolean } & { [key in T[2]]: boolean } & { [key in T[1]]: boolean } & { [key in T[0]]: boolean }
         } & {
