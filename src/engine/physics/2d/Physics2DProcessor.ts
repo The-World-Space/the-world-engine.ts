@@ -11,9 +11,6 @@ export class Physics2DProcessor {
     private _velocityIterations = 8;
     private _positionIterations = 3;
     // private _velocityThreshold: number = 1;
-    private _timeToSleep = 0.5;
-    // private _linearSleepTolerance: number = 0.01;
-    // private _angularSleepTolerance: number = 0.01;
     // private _defaultContactOffset: number = 0.01;
     // private _queriesHitTriggers: boolean = true;
     // private _queriesStartInColliders: boolean = true;
@@ -54,9 +51,6 @@ export class Physics2DProcessor {
         if (physicSetting.velocityIterations) this._velocityIterations = physicSetting.velocityIterations;
         if (physicSetting.positionIterations) this._positionIterations = physicSetting.positionIterations;
         // if (physicSetting.velocityThreshold) this._velocityThreshold = physicSetting.velocityThreshold;
-        if (physicSetting.timeToSleep) this._timeToSleep = physicSetting.timeToSleep;
-        // if (physicSetting.linearSleepTolerance) this._linearSleepTolerance = physicSetting.linearSleepTolerance;
-        // if (physicSetting.angularSleepTolerance) this._angularSleepTolerance = physicSetting.angularSleepTolerance;
         // if (physicSetting.defaultContactOffset) this._defaultContactOffset = physicSetting.defaultContactOffset;
         // if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
         // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
@@ -73,15 +67,13 @@ export class Physics2DProcessor {
         let body = this._world.GetBodyList();
 
         while (body) {
-            const entity = body.GetUserData() as RigidBody2D;
-
-            if (entity) {
-                entity.transform.position.x = body.GetPosition().x;// / Physics2DProcessor.unitScalar;
-                entity.transform.position.y = body.GetPosition().y;// / Physics2DProcessor.unitScalar;
-                entity.transform.eulerAngles.z = body.GetAngle();
-            }
-
+            const currentBody = body;
             body = body.GetNext();
+
+            const entity = currentBody.GetUserData() as RigidBody2D;
+            entity.transform.position.x = currentBody.GetPosition().x;// / Physics2DProcessor.unitScalar;
+            entity.transform.position.y = currentBody.GetPosition().y;// / Physics2DProcessor.unitScalar;
+            entity.transform.eulerAngles.z = currentBody.GetAngle();
         }
     }
 
@@ -157,7 +149,15 @@ export class Physics2DProcessor {
     }
 
     public get timeToSleep(): number {
-        return this._timeToSleep;
+        return b2.timeToSleep;
+    }
+
+    public get linearSleepTolerance(): number {
+        return b2.linearSleepTolerance;
+    }
+
+    public get angularSleepTolerance(): number {
+        return b2.angularSleepTolerance;
     }
 
     // for performance reasons, we don't use this get set method

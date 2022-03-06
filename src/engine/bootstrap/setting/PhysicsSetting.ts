@@ -9,9 +9,6 @@ export type PhysicsSettingObject = {
     velocityIterations?: number,
     positionIterations?: number,
     //velocityThreshold?: number,
-    timeToSleep?: number,
-    //linearSleepTolerance?: number,
-    //angularSleepTolerance?: number,
     //defaultContactOffset?: number,
     //queriesHitTriggers?: boolean,
     //queriesStartInColliders?: boolean,
@@ -60,21 +57,6 @@ export class PhysicsSetting {
 
     //public velocityThreshold(value: number): this {
     //    this._physicsSettingObject.velocityThreshold = value;
-    //    return this;
-    //}
-
-    public timeToSleep(value: number): this {
-        this._physicsSettingObject.timeToSleep = value;
-        return this;
-    }
-
-    //public linearSleepTolerance(value: number): this {
-    //    this._physicsSettingObject.linearSleepTolerance = value;
-    //    return this;
-    //}
-
-    //public angularSleepTolerance(value: number): this {
-    //    this._physicsSettingObject.angularSleepTolerance = value;
     //    return this;
     //}
 
