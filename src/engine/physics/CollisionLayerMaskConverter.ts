@@ -104,4 +104,30 @@ export class CollisionLayerMaskConverter {
         if (mask === undefined) throw new Error("Mask not found");
         return mask;
     }
+
+    /** @internal */
+    public copy(other: CollisionLayerMaskConverter): void {
+        this._strCategory.clear();
+        this._numCategory.clear();
+        this._layerMasks.clear();
+
+        for (const [key, value] of other._strCategory) {
+            this._strCategory.set(key, value);
+        }
+
+        for (const [key, value] of other._numCategory) {
+            this._numCategory.set(key, value);
+        }
+
+        for (const [key, value] of other._layerMasks) {
+            this._layerMasks.set(key, value);
+        }
+    }
+    
+    /** @internal */
+    public clone(): CollisionLayerMaskConverter {
+        const result = new CollisionLayerMaskConverter({});
+        result.copy(this);
+        return result;
+    }
 }

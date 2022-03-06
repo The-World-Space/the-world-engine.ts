@@ -116,6 +116,7 @@ export class Game {
         const bootstrapper = new bootstrapperCtor(this._engineGlobalObject, interopObject);
         const scene = bootstrapper.run();
         this._gameSetting = bootstrapper.getGameSettingObject();
+        this._engineGlobalObject.applyGameSetting(this._gameSetting);
         if (this._gameSetting.render.useCss3DRenderer) {
             this._container.appendChild(this._css3DRenderer.domElement);
         }

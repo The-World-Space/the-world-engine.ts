@@ -43,4 +43,13 @@ export class PhysicsMaterial2D {
         const index = this._onChangedDelegates.indexOf(delegate);
         if (index >= 0) this._onChangedDelegates.splice(index, 1);
     }
+
+    public copy(other: PhysicsMaterial2D): void {
+        this.friction = other.friction;
+        this.bounciness = other.bounciness;
+    }
+
+    public clone(): PhysicsMaterial2D {
+        return new PhysicsMaterial2D(this.friction, this.bounciness);
+    }
 }

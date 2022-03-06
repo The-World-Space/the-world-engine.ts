@@ -5,6 +5,7 @@ import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
 import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { IPhysics2D } from "./IPhysics2D";
+import { DeepReadonly } from "../../type/DeepReadonly";
 
 export class Physics2DProcessor implements IPhysics2D {
     //configuration variables
@@ -46,9 +47,9 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     /** @internal */
-    public applyPhysicsSettings(physicSetting: PhysicsSettingObject): void {
+    public applyPhysicsSettings(physicSetting: DeepReadonly<PhysicsSettingObject>): void {
         if (physicSetting.gravity) this._world.SetGravity(physicSetting.gravity);
-        if (physicSetting.defaultMaterial) this._defaultMaterial = physicSetting.defaultMaterial;
+        if (physicSetting.defaultMaterial) this._defaultMaterial = physicSetting.defaultMaterial.clone();
         if (physicSetting.velocityIterations) this._velocityIterations = physicSetting.velocityIterations;
         if (physicSetting.positionIterations) this._positionIterations = physicSetting.positionIterations;
         // if (physicSetting.velocityThreshold) this._velocityThreshold = physicSetting.velocityThreshold;
@@ -57,7 +58,7 @@ export class Physics2DProcessor implements IPhysics2D {
         // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
         if (physicSetting.callbacksOnDisable) this.callbacksOnDisable = physicSetting.callbacksOnDisable;
         if (physicSetting.reuseCollisionCallbacks) this.reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
-        if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
+        if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter.clone();
     }
 
     /** @internal */

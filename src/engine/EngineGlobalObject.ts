@@ -11,6 +11,7 @@ import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { IPhysics2D } from "..";
 import { GameSettingObject } from "./bootstrap/setting/GameSetting";
+import { DeepReadonly } from "./type/DeepReadonly";
 
 /** 
  * do not drive this class
@@ -57,7 +58,7 @@ export class EngineGlobalObject {
     }
 
     /** @internal */
-    public applyGameSetting(gameSettingObject: GameSettingObject): void {
+    public applyGameSetting(gameSettingObject: DeepReadonly<GameSettingObject>): void {
         this._physics2DProcessor.applyPhysicsSettings(gameSettingObject.physics);
     }
 

@@ -41,6 +41,7 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(17, 1);
+                    c.setCollisionLayer<TestLayer>("level");
                 }))
 
             .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0))
@@ -49,6 +50,7 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(1, 1);
+                    c.setCollisionLayer<TestLayer>("player");
                 })
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;

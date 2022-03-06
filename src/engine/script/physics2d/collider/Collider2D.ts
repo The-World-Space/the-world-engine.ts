@@ -37,8 +37,6 @@ export class Collider2D extends Component {
         this._material?.removeOnChangedEventListener(this.updateFixtureMaterialInfo);
     }
 
-    public readonly filter = new b2.Filter();
-
     /** @internal */
     public createFixture(rigidBody?: RigidBody2D): void {
         if (this._fixtureCreated) return;
@@ -49,7 +47,12 @@ export class Collider2D extends Component {
         fixtureDef.restitution = physicsMaterial.bounciness;
         fixtureDef.isSensor = this._isTrigger;
         fixtureDef.shape = this.createShape();
-        fixtureDef.filter.Copy(this.filter);
+
+        const layer = this.engine.physics.collisionLayerMask.nameToLayer(this._collisionLayer as any);
+        fixtureDef.filter.categoryBits = layer;
+        fixtureDef.filter.maskBits = this.engine.physics.collisionLayerMask.getMaskFromLayer(layer);
+        //fixtureDef.filter.groupIndex
+
         this._fixture = rigidBody!.addFixture(fixtureDef, this);
         this._fixtureCreated = true;
     }
