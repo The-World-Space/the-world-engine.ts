@@ -48,7 +48,8 @@ export class RigidBody2D extends Component {
     private readonly _centerOfMass = new Vector2(NaN, NaN);
     private readonly _worldCenterOfMass = new Vector2(NaN, NaN);
     private _inertia = NaN;
-    private readonly _velocity = new Vector2();
+    private readonly _linearVelocity = new Vector2();
+    private _angularVelocity = 0;
     //private _useFullKinematicContacts = false;
 
     private readonly _attachedColliders: Collider2D[] = [];
@@ -69,7 +70,9 @@ export class RigidBody2D extends Component {
         bodyDef.position
             .Set(this.transform.position.x, this.transform.position.y);
         bodyDef.angle = this.transform.eulerAngles.z;
-        this._body = this.engine.physics2DProcessor.addRigidBody(bodyDef);
+        bodyDef.linearVelocity.Copy(this._linearVelocity);
+        bodyDef.angularVelocity = this._angularVelocity;
+        this._body = this.engine.physics2DProcessor.observeBody(this.gameObject, bodyDef);
         const colliderList = this.gameObject.getComponents(Collider2D);
         for (let i = 0; i < colliderList.length; i++) {
             colliderList[i].createFixture(this);
@@ -87,7 +90,7 @@ export class RigidBody2D extends Component {
     }
 
     public onDestroy(): void {
-        this.engine.physics2DProcessor.removeRigidBody(this._body!);
+        this.engine.physics2DProcessor.unObserveBody(this.gameObject);
         this._body = null;
         this._material?.removeOnChangedEventListener(this._updateMaterialInfo);
     }
@@ -297,29 +300,29 @@ export class RigidBody2D extends Component {
     public get velocity(): ReadonlyVector2 {
         if (this._body) {
             const velocity = this._body.GetLinearVelocity();
-            this._velocity.set(velocity.x, velocity.y);
+            this._linearVelocity.set(velocity.x, velocity.y);
         }
-        return this._velocity;
+        return this._linearVelocity;
     }
 
     public set velocity(value: ReadonlyVector2) {
-        (this._velocity as WritableVector2).copy(value);
+        (this._linearVelocity as WritableVector2).copy(value);
         if (this._body) {
             this._body.SetLinearVelocity(value);
-        } else {
-            throw new Error("Cannot set velocity when body is not created");
         }
     }
 
     public get angularVelocity(): number {
-        return this._body?.GetAngularVelocity() ?? 0;
+        if (this._body) {
+            this._angularVelocity = this._body.GetAngularVelocity();
+        }
+        return this._angularVelocity;
     }
 
     public set angularVelocity(value: number) {
+        this._angularVelocity = value;
         if (this._body) {
             this._body.SetAngularVelocity(value);
-        } else {
-            throw new Error("Cannot set angular velocity when body is not created");
         }
     }
 
