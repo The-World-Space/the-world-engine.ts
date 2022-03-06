@@ -61,19 +61,47 @@ export class Physics2DProcessor {
 
     /** @internal */
     public update(deltaTime: number): void {
+        { //synchronize physics world with game world
+            let body = this._world.GetBodyList();
+
+            while (body) {
+                const currentBody = body;
+                body = body.GetNext();
+
+                const entity = currentBody.GetUserData() as RigidBody2D;
+                const transform = entity.transform;
+                const gamePosition = transform.position;
+                const gameRotation = transform.eulerAngles;
+
+                const b2Position = currentBody.GetPosition();
+                const b2Rotation = currentBody.GetAngle();
+
+                if (gamePosition.x !== b2Position.x || gamePosition.y !== b2Position.y) {
+                    currentBody.SetPositionXY(gamePosition.x, gamePosition.y);
+                    currentBody.SetAwake(true);
+                }
+
+                if (gameRotation.z !== b2Rotation) {
+                    currentBody.SetAngle(gameRotation.z);
+                    currentBody.SetAwake(true);
+                }
+            }
+        }
+
         this._world.Step(deltaTime, this._velocityIterations, this._positionIterations);
-        this._world.ClearForces();
 
-        let body = this._world.GetBodyList();
+        { //synchronize game world with physics world
+            let body = this._world.GetBodyList();
 
-        while (body) {
-            const currentBody = body;
-            body = body.GetNext();
+            while (body) {
+                const currentBody = body;
+                body = body.GetNext();
 
-            const entity = currentBody.GetUserData() as RigidBody2D;
-            entity.transform.position.x = currentBody.GetPosition().x;
-            entity.transform.position.y = currentBody.GetPosition().y;
-            entity.transform.eulerAngles.z = currentBody.GetAngle();
+                const entity = currentBody.GetUserData() as RigidBody2D;
+                entity.transform.position.x = currentBody.GetPosition().x;
+                entity.transform.position.y = currentBody.GetPosition().y;
+                entity.transform.eulerAngles.z = currentBody.GetAngle();
+            }
         }
     }
 
