@@ -68,7 +68,6 @@ export class RigidBody2D extends Component {
         bodyDef.fixedRotation = this._freezeRotation;
         bodyDef.position
             .Set(this.transform.position.x, this.transform.position.y);
-        //.SelfMul(Physics2DProcessor.unitScalar);
         bodyDef.angle = this.transform.eulerAngles.z;
         this._body = this.engine.physics2DProcessor.addRigidBody(bodyDef);
         const colliderList = this.gameObject.getComponents(Collider2D);
@@ -129,7 +128,7 @@ export class RigidBody2D extends Component {
         const massData = this._massData;
         this._body.GetMassData(massData);
         if (!this._useAutoMass) massData.mass = this._mass;
-        massData.center.Copy(this._centerOfMass);//.SelfMul(Physics2DProcessor.unitScalar);
+        massData.center.Copy(this._centerOfMass);
         massData.I = this._inertia;
         this._body.SetMassData(massData);
     }
@@ -279,7 +278,6 @@ export class RigidBody2D extends Component {
             const center = this._body.GetWorldCenter();
             this._worldCenterOfMass
                 .set(center.x, center.y);
-            //.divideScalar(Physics2DProcessor.unitScalar);
         }
         if (isNaN(this._worldCenterOfMass.x)) {
             throw new Error("Cannot get world center of mass when body is not created");
@@ -347,7 +345,6 @@ export class RigidBody2D extends Component {
         if (this._body) {
             const pos = this._vec2Buffer
                 .Copy(position);
-                //.SelfMul(Physics2DProcessor.unitScalar);
             if (mode === ForceMode2D.Impulse) {
                 this._body.ApplyLinearImpulse(force, pos, true);
             } else {
@@ -388,7 +385,6 @@ export class RigidBody2D extends Component {
         if (this._body) {
             const pos = this._vec2Buffer
                 .Copy(point);
-                //.SelfMul(Physics2DProcessor.unitScalar);
             return this._body.GetLocalPoint(pos, buffer);
         } else {
             throw new Error("Cannot get point when body is not created");
@@ -400,7 +396,6 @@ export class RigidBody2D extends Component {
         if (this._body) {
             const pos = this._vec2Buffer
                 .Copy(point);
-                //.SelfMul(Physics2DProcessor.unitScalar);
             return this._body.GetLinearVelocityFromWorldPoint(pos, buffer);
         } else {
             throw new Error("Cannot get point velocity when body is not created");
@@ -412,7 +407,6 @@ export class RigidBody2D extends Component {
         if (this._body) {
             const pos = this._vec2Buffer
                 .Copy(relativePoint);
-                //.SelfMul(Physics2DProcessor.unitScalar);
             return this._body.GetWorldPoint(pos, buffer);
         } else {
             throw new Error("Cannot get relative point when body is not created");
@@ -424,7 +418,6 @@ export class RigidBody2D extends Component {
         if (this._body) {
             const pos = this._vec2Buffer
                 .Copy(relativePoint);
-                //.SelfMul(Physics2DProcessor.unitScalar);
             return this._body.GetLinearVelocityFromWorldPoint(pos, buffer);
         } else {
             throw new Error("Cannot get relative point velocity when body is not created");

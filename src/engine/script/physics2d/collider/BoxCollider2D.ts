@@ -46,9 +46,9 @@ export class BoxCollider2D extends Collider2D {
     protected override createShape(): b2.Shape {
         const shape = new b2.PolygonShape();
         shape.SetAsBox(
-            this._size.x / 2,// * Physics2DProcessor.unitScalar,
-            this._size.y / 2,// * Physics2DProcessor.unitScalar,
-            this._b2Vector.Copy(this.offset)//.SelfMul(Physics2DProcessor.unitScalar)
+            this._size.x / 2,
+            this._size.y / 2,
+            this._b2Vector.Copy(this.offset)
         );
         return shape;
     }

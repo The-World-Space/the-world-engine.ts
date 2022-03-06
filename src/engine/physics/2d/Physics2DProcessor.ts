@@ -71,8 +71,8 @@ export class Physics2DProcessor {
             body = body.GetNext();
 
             const entity = currentBody.GetUserData() as RigidBody2D;
-            entity.transform.position.x = currentBody.GetPosition().x;// / Physics2DProcessor.unitScalar;
-            entity.transform.position.y = currentBody.GetPosition().y;// / Physics2DProcessor.unitScalar;
+            entity.transform.position.x = currentBody.GetPosition().x;
+            entity.transform.position.y = currentBody.GetPosition().y;
             entity.transform.eulerAngles.z = currentBody.GetAngle();
         }
     }
