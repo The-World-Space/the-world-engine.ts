@@ -13,7 +13,7 @@ export type PhysicsSettingObject = {
     //queriesHitTriggers?: boolean,
     //queriesStartInColliders?: boolean,
     callbacksOnDisable?: boolean,
-    //reuseCollisionCallbacks?: boolean,
+    reuseCollisionCallbacks?: boolean,
     collisionLayerMaskConverter?: CollisionLayerMaskConverter
 }
 
@@ -80,10 +80,10 @@ export class PhysicsSetting {
         return this;
     }
 
-    //public reuseCollisionCallbacks(value: boolean): this {
-    //    this._physicsSettingObject.reuseCollisionCallbacks = value;
-    //    return this;
-    //}
+    public reuseCollisionCallbacks(value: boolean): this {
+        this._physicsSettingObject.reuseCollisionCallbacks = value;
+        return this;
+    }
     
     // #region CollisionLayer Collision Matrix Overloads
 

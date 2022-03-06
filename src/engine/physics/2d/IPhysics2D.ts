@@ -7,7 +7,6 @@ export interface IPhysics2D {
     set gravity(value: Vector2);
 
     get defaultMaterial(): PhysicsMaterial2D|null;
-    set defaultMaterial(value: PhysicsMaterial2D|null);
 
     get velocityIterations(): number;
     set velocityIterations(value: number);
@@ -15,8 +14,8 @@ export interface IPhysics2D {
     get positionIterations(): number;
     set positionIterations(value: number);
 
-    get velocityThreshold(): number;
-    set velocityThreshold(value: number);
+    // get velocityThreshold(): number;
+    // set velocityThreshold(value: number);
 
     get maxLinearCorrection(): number;
 
@@ -31,22 +30,19 @@ export interface IPhysics2D {
     get baumgarteTimeOfImpactScale(): number;
 
     get timeToSleep(): number;
-    set timeToSleep(value: number);
 
     get linearSleepTolerance(): number;
-    set linearSleepTolerance(value: number);
 
     get angularSleepTolerance(): number;
-    set angularSleepTolerance(value: number);
 
-    get defaultContactOffset(): number;
-    set defaultContactOffset(value: number);
+    // get defaultContactOffset(): number;
+    // set defaultContactOffset(value: number);
 
-    get queriesHitTriggers(): boolean;
-    set queriesHitTriggers(value: boolean);
+    // get queriesHitTriggers(): boolean;
+    // set queriesHitTriggers(value: boolean);
 
-    get queriesStartInColliders(): boolean;
-    set queriesStartInColliders(value: boolean);
+    // get queriesStartInColliders(): boolean;
+    // set queriesStartInColliders(value: boolean);
 
     get callbacksOnDisable(): boolean;
     set callbacksOnDisable(value: boolean);

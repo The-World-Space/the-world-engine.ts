@@ -1,11 +1,12 @@
+import * as b2 from "../../../box2d.ts/build/index";
 import { Vector2 } from "three";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
-import * as b2 from "../../../box2d.ts/build/index";
 import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
+import { IPhysics2D } from "./IPhysics2D";
 
-export class Physics2DProcessor {
+export class Physics2DProcessor implements IPhysics2D {
     //configuration variables
     private _defaultMaterial: PhysicsMaterial2D|null = null;
     private _velocityIterations = 8;
@@ -15,7 +16,7 @@ export class Physics2DProcessor {
     // private _queriesHitTriggers: boolean = true;
     // private _queriesStartInColliders: boolean = true;
     // private _callbacksOnDisable = true;
-    // private _reuseCollisionCallbacks: boolean = true;
+    // private _reuseCollisionCallbacks = true;
     private _collisionLayerMaskConverter = new CollisionLayerMaskConverter({
         default: { default: true },
     });
@@ -55,7 +56,7 @@ export class Physics2DProcessor {
         // if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
         // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
         if (physicSetting.callbacksOnDisable) this.callbacksOnDisable = physicSetting.callbacksOnDisable;
-        // if (physicSetting.reuseCollisionCallbacks) this._reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
+        if (physicSetting.reuseCollisionCallbacks) this.reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
         if (physicSetting.collisionLayerMaskConverter) this._collisionLayerMaskConverter = physicSetting.collisionLayerMaskConverter;
     }
 
@@ -144,13 +145,13 @@ export class Physics2DProcessor {
         this._positionIterations = value;
     }
 
-    public get velocityThreshold(): number {
-        throw new Error("Method not implemented.");
-    }
+    // public get velocityThreshold(): number {
+    //     throw new Error("Method not implemented.");
+    // }
 
-    public set velocityThreshold(_value: number) {
-        throw new Error("Method not implemented.");
-    }
+    // public set velocityThreshold(_value: number) {
+    //     throw new Error("Method not implemented.");
+    // }
 
     public get maxLinearCorrection(): number {
         return b2.maxLinearCorrection;
@@ -199,6 +200,18 @@ export class Physics2DProcessor {
     // }
 
     public callbacksOnDisable = true;
+
+    // for performance reasons, we don't use this get set method
+
+    // public get reuseCollisionCallbacks(): boolean {
+    //     return this._reuseCollisionCallbacks;
+    // }
+
+    // public set reuseCollisionCallbacks(value: boolean) {
+    //     this._reuseCollisionCallbacks = value;
+    // }
+
+    public reuseCollisionCallbacks = true;
     
     public get collisionLayerMask(): CollisionLayerMaskConverter {
         return this._collisionLayerMaskConverter;

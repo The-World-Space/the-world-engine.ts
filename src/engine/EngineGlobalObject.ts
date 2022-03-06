@@ -87,7 +87,7 @@ export class EngineGlobalObject {
     }
 
     public get physics(): IPhysics2D {
-        throw new Error("not implemented");
+        return this._physics2DProcessor;
     }
 
     public get gameState(): IReadonlyGameState {
