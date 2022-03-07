@@ -1,8 +1,8 @@
+import * as b2 from "../../../../box2d.ts/build/index";
+import { Vector2 } from "three";
 import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import { Component } from "../../../hierarchy_object/Component";
 import { RigidBody2D } from "../RigidBody2D";
-import { Vector2 } from "three";
-import * as b2 from "../../../../box2d.ts/build/index";
 import { WritableVector2 } from "../../../math/WritableVector2";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
 import { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
@@ -40,7 +40,7 @@ export class Collider2D extends Component {
     /** @internal */
     public createFixture(rigidBody?: RigidBody2D): void {
         if (this._fixtureCreated) return;
-        const physicsMaterial = this.getPhysicsMaterial(rigidBody || this._rigidBody!);
+        const physicsMaterial = this.getPhysicsMaterial(rigidBody ?? this._rigidBody!);
         const fixtureDef = new b2.FixtureDef();
         fixtureDef.density = this._density;
         fixtureDef.friction = physicsMaterial.friction;
