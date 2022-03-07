@@ -6,6 +6,9 @@ import { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
 import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { IPhysics2D } from "./IPhysics2D";
 import { DeepReadonly } from "../../type/DeepReadonly";
+import { GameObject } from "../../hierarchy_object/GameObject";
+import { PhysicsObject2D } from "./PhysicsObject2D";
+import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 
 export class Physics2DProcessor implements IPhysics2D {
     //configuration variables
@@ -24,6 +27,7 @@ export class Physics2DProcessor implements IPhysics2D {
 
     //engine internal variables
     private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));
+    private readonly _gameObjectToBodyMap = new Map<GameObject, PhysicsObject2D>();
 
     /** @internal */
     public constructor() {
@@ -79,7 +83,7 @@ export class Physics2DProcessor implements IPhysics2D {
                 const b2Rotation = currentBody.GetAngle();
 
                 if (gamePosition.x !== b2Position.x || gamePosition.y !== b2Position.y) {
-                    currentBody.SetPositionXY(gamePosition.x, gamePosition.y);
+                    currentBody.SetPosition(gamePosition);
                     currentBody.SetAwake(true);
                 }
 
@@ -108,13 +112,71 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     /** @internal */
-    public addRigidBody(bodyDef: b2.BodyDef): b2.Body {
-        return this._world.CreateBody(bodyDef);
+    public addRigidBody(gameObject: GameObject, rigidBody: RigidBody2D, bodyDef: b2.BodyDef): b2.Body {
+        let physicsObject = this._gameObjectToBodyMap.get(gameObject);
+        if (!physicsObject) {
+            physicsObject = new PhysicsObject2D(
+                gameObject,
+                this._world.CreateBody(bodyDef),
+                () => this._gameObjectToBodyMap.delete(gameObject)
+            );
+            this._gameObjectToBodyMap.set(gameObject, physicsObject);
+            return physicsObject.addRigidBody(rigidBody);
+        } else {
+            const body = physicsObject.addRigidBody(rigidBody);
+            body.SetType(bodyDef.type);
+            body.SetPosition(bodyDef.position);
+            body.SetAngle(bodyDef.angle);
+            body.SetLinearVelocity(bodyDef.linearVelocity);
+            body.SetAngularVelocity(bodyDef.angularVelocity);
+            body.SetLinearDamping(bodyDef.linearDamping);
+            body.SetAngularDamping(bodyDef.angularDamping);
+            body.SetSleepingAllowed(bodyDef.allowSleep);
+            body.SetAwake(bodyDef.awake);
+            body.SetFixedRotation(bodyDef.fixedRotation);
+            body.SetBullet(bodyDef.bullet);
+            body.SetEnabled(bodyDef.enabled);
+            body.SetUserData(bodyDef.userData);
+            body.SetGravityScale(bodyDef.gravityScale);
+            return body;
+        }
     }
 
     /** @internal */
-    public removeRigidBody(body: b2.Body) {
-        this._world.DestroyBody(body);
+    public removeRigidBody(gameObject: GameObject): void {
+        const physicsObject = this._gameObjectToBodyMap.get(gameObject);
+        if (!physicsObject) throw new Error("PhysicsObject2D not found"); 
+        physicsObject.removeRigidBody();
+    }
+
+    private createColliderDefaultBodyDef(gameObject: GameObject): b2.BodyDef {
+        const bodyDef = new b2.BodyDef();
+        bodyDef.type = b2.BodyType.b2_kinematicBody;
+        bodyDef.position.x = gameObject.transform.position.x;
+        bodyDef.position.y = gameObject.transform.position.y;
+        bodyDef.angle = gameObject.transform.eulerAngles.z;
+        return bodyDef;
+    }
+
+    /** @internal */
+    public addCollider(gameObject: GameObject, collider: Collider2D, fixturedef: b2.FixtureDef): b2.Fixture {
+        let physicsObject = this._gameObjectToBodyMap.get(gameObject);
+        if (!physicsObject) {
+            physicsObject = new PhysicsObject2D(
+                gameObject,
+                this._world.CreateBody(this.createColliderDefaultBodyDef(gameObject)),
+                () => this._gameObjectToBodyMap.delete(gameObject)
+            );
+        }
+        this._gameObjectToBodyMap.set(gameObject, physicsObject);
+        return physicsObject.addCollider(collider, fixturedef);
+    }
+
+    /** @internal */
+    public removeCollider(gameObject: GameObject, collider: Collider2D, fixture: b2.Fixture): void {
+        const physicsObject = this._gameObjectToBodyMap.get(gameObject);
+        if (!physicsObject) throw new Error("PhysicsObject2D not found");
+        physicsObject.removeCollider(collider, fixture);
     }
 
     public get gravity(): Vector2 {
