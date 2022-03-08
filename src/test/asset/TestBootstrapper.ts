@@ -37,6 +37,10 @@ export class TestBootstrapper extends Bootstrapper {
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("ground", new Vector3(0, -2, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Static;
+                    c.simulated = false;
+                })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(17, 1);
                     c.setCollisionLayer<TestLayer>("level");
