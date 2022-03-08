@@ -92,6 +92,16 @@ export class RigidBody2D extends Component {
         this.engine.physics2DProcessor.removeRigidBody(this.gameObject);
     }
 
+    public onEnable(): void {
+        this._simulated = true;
+        this.getB2Body().SetEnabled(true);
+    }
+
+    public onDisable(): void {
+        this._simulated = false;
+        this._body?.SetEnabled(false);
+    }
+
     private getPhysicsObject(): IPhysicsObject2D {
         if (!this._physicsObject) this.awake();
         return this._physicsObject!;
@@ -153,8 +163,7 @@ export class RigidBody2D extends Component {
     }
 
     public set simulated(value: boolean) {
-        this._simulated = value;
-        this._body?.SetEnabled(value);
+        this.enabled = value;
     }
 
     public get useAutoMass(): boolean {

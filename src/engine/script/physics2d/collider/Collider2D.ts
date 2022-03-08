@@ -76,7 +76,7 @@ export class Collider2D extends Component {
                 if (rigidBodyMaterial) material = rigidBodyMaterial;
             }
             if (!material) material = new PhysicsMaterial2D();
-
+            
             this._fixture.SetFriction(material.friction);
             this._fixture.SetRestitution(material.bounciness);
         }

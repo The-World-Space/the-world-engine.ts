@@ -1,5 +1,4 @@
 import * as b2 from "../../../../box2d.ts/build/index";
-import { RigidBody2D } from "../RigidBody2D";
 import { Vector2, Vector3 } from "three";
 import { Collider2D } from "./Collider2D";
 import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
@@ -7,8 +6,6 @@ import { GameObject } from "../../../hierarchy_object/GameObject";
 import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 
 export class BoxCollider2D extends Collider2D {
-    public override readonly requiredComponents = [RigidBody2D];
-
     private _size: Vector2 = new Vector2(1, 1);
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;
