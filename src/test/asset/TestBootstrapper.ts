@@ -11,6 +11,7 @@ import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
 import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
+import { CollisionEventTest } from "./script/CollisionEventTset";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -49,6 +50,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.size = new Vector2(1, 1);
                     c.setCollisionLayer<TestLayer>("player");
                 })
+                .withComponent(CollisionEventTest)
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;
                     c.imageHeight = 1;

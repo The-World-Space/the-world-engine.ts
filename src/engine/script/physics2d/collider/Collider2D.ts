@@ -33,6 +33,7 @@ export class Collider2D extends Component {
     private createFixture(): void {
         if (this._fixtureCreated) return;
         const fixtureDef = new b2.FixtureDef();
+        fixtureDef.userData = this;
         fixtureDef.density = this._density;
         fixtureDef.isSensor = this._isTrigger;
         fixtureDef.shape = this.createShape();

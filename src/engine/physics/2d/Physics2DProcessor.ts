@@ -34,17 +34,17 @@ export class Physics2DProcessor implements IPhysics2D {
         this._world.SetContactListener(
             new class extends b2.ContactListener {
                 public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
-                    console.log(
-                        "BeginContact",
-                        (contact.GetFixtureA().GetBody().GetUserData() as RigidBody2D).gameObject.name,
-                        (contact.GetFixtureB().GetBody().GetUserData() as RigidBody2D).gameObject.name);
+                    const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+                    const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+                    collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB);
+                    collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA);
                 }
 
                 public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
-                    console.log(
-                        "EndContact",
-                        (contact.GetFixtureA().GetBody().GetUserData() as RigidBody2D).gameObject.name,
-                        (contact.GetFixtureB().GetBody().GetUserData() as RigidBody2D).gameObject.name);
+                    const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+                    const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+                    collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB);
+                    collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA);
                 }
             }
         );
