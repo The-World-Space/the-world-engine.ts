@@ -15,6 +15,7 @@ export interface IPhysicsObject2D {
 export class PhysicsObject2D implements IPhysicsObject2D {
     public readonly gameObject: GameObject;
     public readonly body: b2.Body;
+    public destroyed = false; //is public for performance reasons
     private _onDestroy: () => void;
     private _sharedMaterial: PhysicsMaterial2D|null = null;
     private _rigidBody: RigidBody2D|null = null;
@@ -56,7 +57,7 @@ export class PhysicsObject2D implements IPhysicsObject2D {
 
     private checkDestroy(): void {
         if (this._colliders.length === 0 && this._rigidBody === null) {
-            this.body.GetWorld().DestroyBody(this.body);
+            this.destroyed = true;
             this._onDestroy();
         }
     }

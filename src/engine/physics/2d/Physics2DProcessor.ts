@@ -75,6 +75,11 @@ export class Physics2DProcessor implements IPhysics2D {
                 body = body.GetNext();
 
                 const entity = currentBody.GetUserData() as PhysicsObject2D;
+                if (entity.destroyed) {
+                    this._world.DestroyBody(currentBody);
+                    continue;
+                }
+
                 const transform = entity.gameObject.transform;
                 const gamePosition = transform.position;
                 const gameRotation = transform.eulerAngles;
@@ -104,6 +109,11 @@ export class Physics2DProcessor implements IPhysics2D {
                 body = body.GetNext();
 
                 const entity = currentBody.GetUserData() as PhysicsObject2D;
+                if (entity.destroyed) {
+                    this._world.DestroyBody(currentBody);
+                    continue;
+                }
+
                 const transform = entity.gameObject.transform;
                 transform.position.x = currentBody.GetPosition().x;
                 transform.position.y = currentBody.GetPosition().y;

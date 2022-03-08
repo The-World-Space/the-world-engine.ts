@@ -90,6 +90,8 @@ export class RigidBody2D extends Component {
     public onDestroy(): void {
         this._physicsObject?.setSharedPhysicsMaterial(null);
         this.engine.physics2DProcessor.removeRigidBody(this.gameObject);
+        this._physicsObject = null;
+        this._body = null;
     }
 
     public onEnable(): void {
