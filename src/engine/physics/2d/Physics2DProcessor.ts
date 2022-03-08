@@ -10,6 +10,51 @@ import { GameObject } from "../../hierarchy_object/GameObject";
 import { IPhysicsObject2D, PhysicsObject2D } from "./PhysicsObject2D";
 import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 
+export class ContactListener extends b2.ContactListener {
+    private _physics2DProcessor: Physics2DProcessor;
+
+    public constructor(physics2DProcessor: Physics2DProcessor) {
+        super();
+        this._physics2DProcessor = physics2DProcessor;
+    }
+
+    public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
+        const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+        const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+        const gameObjectA = collider2dA.gameObject;
+        const gameObjectB = collider2dB.gameObject;
+
+        if (this._physics2DProcessor.callbacksOnDisable) {
+            gameObjectA.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB);
+            gameObjectB.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA);
+        } else {
+            if (collider2dA.enabled && gameObjectA.activeInHierarchy &&
+                collider2dB.enabled && gameObjectB.activeInHierarchy) {
+                gameObjectA.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB);
+                gameObjectB.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA);
+            }
+        }
+    }
+
+    public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
+        const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+        const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+        const gameObjectA = collider2dA.gameObject;
+        const gameObjectB = collider2dB.gameObject;
+
+        if (this._physics2DProcessor.callbacksOnDisable) {
+            gameObjectA.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB);
+            gameObjectB.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA);
+        } else {
+            if (collider2dA.enabled && gameObjectA.activeInHierarchy &&
+                collider2dB.enabled && gameObjectB.activeInHierarchy) {
+                gameObjectA.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB);
+                gameObjectB.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA);
+            }
+        }
+    }
+}
+
 export class Physics2DProcessor implements IPhysics2D {
     //configuration variables
     private _defaultMaterial: PhysicsMaterial2D|null = null;
@@ -31,23 +76,7 @@ export class Physics2DProcessor implements IPhysics2D {
 
     /** @internal */
     public constructor() {
-        this._world.SetContactListener(
-            new class extends b2.ContactListener {
-                public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
-                    const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
-                    const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-                    collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB);
-                    collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA);
-                }
-
-                public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
-                    const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
-                    const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-                    collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB);
-                    collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA);
-                }
-            }
-        );
+        this._world.SetContactListener(new ContactListener(this));
     }
 
     /** @internal */
