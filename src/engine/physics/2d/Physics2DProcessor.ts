@@ -7,7 +7,7 @@ import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { IPhysics2D } from "./IPhysics2D";
 import { DeepReadonly } from "../../type/DeepReadonly";
 import { GameObject } from "../../hierarchy_object/GameObject";
-import { PhysicsObject2D } from "./PhysicsObject2D";
+import { IPhysicsObject2D, PhysicsObject2D } from "./PhysicsObject2D";
 import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 
 export class Physics2DProcessor implements IPhysics2D {
@@ -74,8 +74,8 @@ export class Physics2DProcessor implements IPhysics2D {
                 const currentBody = body;
                 body = body.GetNext();
 
-                const entity = currentBody.GetUserData() as RigidBody2D;
-                const transform = entity.transform;
+                const entity = currentBody.GetUserData() as PhysicsObject2D;
+                const transform = entity.gameObject.transform;
                 const gamePosition = transform.position;
                 const gameRotation = transform.eulerAngles;
 
@@ -103,16 +103,20 @@ export class Physics2DProcessor implements IPhysics2D {
                 const currentBody = body;
                 body = body.GetNext();
 
-                const entity = currentBody.GetUserData() as RigidBody2D;
-                entity.transform.position.x = currentBody.GetPosition().x;
-                entity.transform.position.y = currentBody.GetPosition().y;
-                entity.transform.eulerAngles.z = currentBody.GetAngle();
+                const entity = currentBody.GetUserData() as PhysicsObject2D;
+                const transform = entity.gameObject.transform;
+                transform.position.x = currentBody.GetPosition().x;
+                transform.position.y = currentBody.GetPosition().y;
+                transform.eulerAngles.z = currentBody.GetAngle();
             }
         }
     }
 
-    /** @internal */
-    public addRigidBody(gameObject: GameObject, rigidBody: RigidBody2D, bodyDef: b2.BodyDef): b2.Body {
+    /**
+     * bodyDef.userData must not be set.
+     * @internal
+     */
+    public addRigidBody(gameObject: GameObject, rigidBody: RigidBody2D, bodyDef: b2.BodyDef): IPhysicsObject2D {
         let physicsObject = this._gameObjectToBodyMap.get(gameObject);
         if (!physicsObject) {
             physicsObject = new PhysicsObject2D(
@@ -123,7 +127,8 @@ export class Physics2DProcessor implements IPhysics2D {
             this._gameObjectToBodyMap.set(gameObject, physicsObject);
             return physicsObject.addRigidBody(rigidBody);
         } else {
-            const body = physicsObject.addRigidBody(rigidBody);
+            const physicsBody = physicsObject.addRigidBody(rigidBody);
+            const body = physicsBody.body;
             body.SetType(bodyDef.type);
             body.SetPosition(bodyDef.position);
             body.SetAngle(bodyDef.angle);
@@ -138,7 +143,7 @@ export class Physics2DProcessor implements IPhysics2D {
             body.SetEnabled(bodyDef.enabled);
             body.SetUserData(bodyDef.userData);
             body.SetGravityScale(bodyDef.gravityScale);
-            return body;
+            return physicsBody;
         }
     }
 

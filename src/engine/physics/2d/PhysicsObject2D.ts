@@ -2,50 +2,81 @@ import * as b2 from "../../../box2d.ts/build/index";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
+import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 
-export class PhysicsObject2D {
+export interface IPhysicsObject2D {
+    readonly body: b2.Body;
+    get rigidBody(): RigidBody2D|null;
+    get colliders(): readonly Collider2D[];
+    get sharedMaterial(): PhysicsMaterial2D|null;
+    setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void;
+}
+
+export class PhysicsObject2D implements IPhysicsObject2D {
     public readonly gameObject: GameObject;
-    private _rigidBody: RigidBody2D|null = null;
-    private _colliders: Collider2D[];
+    public readonly body: b2.Body;
     private _onDestroy: () => void;
-    public readonly _body: b2.Body;
+    private _sharedMaterial: PhysicsMaterial2D|null = null;
+    private _rigidBody: RigidBody2D|null = null;
+    private _colliders: Collider2D[] = [];
 
     public constructor(gameObject: GameObject, body: b2.Body, onDestroy: () => void) {
         this.gameObject = gameObject;
-        this._colliders = [];
-        this._body = body;
+        this.body = body;
         this._onDestroy = onDestroy;
         body.SetUserData(this);
     }
 
-    public addRigidBody(rigidBody: RigidBody2D): b2.Body {
+    public addRigidBody(rigidBody: RigidBody2D): IPhysicsObject2D {
         if (this._rigidBody) throw new Error("RigidBody already exists");
         this._rigidBody = rigidBody;
-        return this._body;
+        return this;
     }
 
     public removeRigidBody(): void {
         this._rigidBody = null;
+        this.body.SetType(b2.BodyType.b2_kinematicBody);
+        this.body.SetBullet(false);
+        this.body.SetEnabled(true);
         this.checkDestroy();
     }
 
     public addCollider(collider: Collider2D, fixtureDef: b2.FixtureDef): b2.Fixture {
         this._colliders.push(collider);
-        return this._body.CreateFixture(fixtureDef);
+        return this.body.CreateFixture(fixtureDef);
     }
 
     public removeCollider(collider: Collider2D, fixture: b2.Fixture): void {
         const index = this._colliders.indexOf(collider);
         if (index === -1) throw new Error("Collider not found");
         this._colliders.splice(index, 1);
-        this._body.DestroyFixture(fixture);
+        this.body.DestroyFixture(fixture);
         this.checkDestroy();
     }
 
     private checkDestroy(): void {
         if (this._colliders.length === 0 && this._rigidBody === null) {
-            this._body.GetWorld().DestroyBody(this._body);
+            this.body.GetWorld().DestroyBody(this.body);
             this._onDestroy();
         }
+    }
+
+    public setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void {
+        this._sharedMaterial = material;
+        for (let i = 0; i < this._colliders.length; i++) {
+            this._colliders[i].updateFixtureMaterialInfo();
+        }
+    }
+
+    public get sharedMaterial(): PhysicsMaterial2D|null {
+        return this._sharedMaterial;
+    }
+
+    public get rigidBody(): RigidBody2D|null {
+        return this._rigidBody;
+    }
+
+    public get colliders(): readonly Collider2D[] {
+        return this._colliders;
     }
 }

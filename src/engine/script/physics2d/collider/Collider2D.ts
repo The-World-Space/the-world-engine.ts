@@ -2,16 +2,13 @@ import * as b2 from "../../../../box2d.ts/build/index";
 import { Vector2 } from "three";
 import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import { Component } from "../../../hierarchy_object/Component";
-import { RigidBody2D } from "../RigidBody2D";
 import { WritableVector2 } from "../../../math/WritableVector2";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
 import { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
 import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
+import { IPhysicsObject2D } from "../../../physics/2d/PhysicsObject2D";
 
 export class Collider2D extends Component {
-    public override readonly requiredComponents = [RigidBody2D];
-
-    private _rigidBody: RigidBody2D|null = null;
     private _fixture: b2.Fixture|null = null;
     private _density = 1;
     private _material: PhysicsMaterial2D|null = null;
@@ -20,10 +17,6 @@ export class Collider2D extends Component {
     private _collisionLayer: string = CollisionLayerConst.DefaultLayerName;
 
     private _fixtureCreated = false;
-
-    public awake(): void {
-        this._rigidBody = this.gameObject.getComponent(RigidBody2D);
-    }
 
     public onEnable(): void {
         this.createFixture();
@@ -37,14 +30,10 @@ export class Collider2D extends Component {
         this._material?.removeOnChangedEventListener(this.updateFixtureMaterialInfo);
     }
 
-    /** @internal */
-    public createFixture(rigidBody?: RigidBody2D): void {
+    private createFixture(): void {
         if (this._fixtureCreated) return;
-        const physicsMaterial = this.getPhysicsMaterial(rigidBody ?? this._rigidBody!);
         const fixtureDef = new b2.FixtureDef();
         fixtureDef.density = this._density;
-        fixtureDef.friction = physicsMaterial.friction;
-        fixtureDef.restitution = physicsMaterial.bounciness;
         fixtureDef.isSensor = this._isTrigger;
         fixtureDef.shape = this.createShape();
 
@@ -53,21 +42,22 @@ export class Collider2D extends Component {
         fixtureDef.filter.maskBits = this.engine.physics.collisionLayerMask.getMaskFromLayer(layer);
         //fixtureDef.filter.groupIndex
 
-        this._fixture = rigidBody!.addFixture(fixtureDef, this);
+        this._fixture = this.engine.physics2DProcessor.addCollider(this.gameObject, this, fixtureDef);
+        this.updateFixtureMaterialInfo();
+
         this._fixtureCreated = true;
     }
 
     private destroyFixture(): void {
         if (this._fixture) {
             if (!this._fixtureCreated) return;
-            this._rigidBody!.removeFixture(this._fixture, this);
+            this.engine.physics2DProcessor.removeCollider(this.gameObject, this, this._fixture);
             this._fixture = null;
             this._fixtureCreated = false;
         }
     }
 
-    /** @internal */
-    public updateFixture(): void {
+    protected updateFixture(): void {
         if (this._fixture) {
             this.destroyFixture();
             this.createFixture();
@@ -77,7 +67,16 @@ export class Collider2D extends Component {
     /** @internal */
     public readonly updateFixtureMaterialInfo = () => {
         if (this._fixture) {
-            const material = this.getPhysicsMaterial(this._rigidBody!);
+            let material: PhysicsMaterial2D|null = null;
+            if (this._material) {
+                material = this._material;
+            } else if (this._fixture) {
+                const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
+                const rigidBodyMaterial = physicsObject.sharedMaterial;
+                if (rigidBodyMaterial) material = rigidBodyMaterial;
+            }
+            if (!material) material = new PhysicsMaterial2D();
+
             this._fixture.SetFriction(material.friction);
             this._fixture.SetRestitution(material.bounciness);
         }
@@ -86,23 +85,17 @@ export class Collider2D extends Component {
     protected createShape(): b2.Shape {
         throw new Error("You should not use Collider2D directly but one of its subclasses. e.g. BoxCollider2D");
     }
-
-    private getPhysicsMaterial(rigidBody: RigidBody2D): PhysicsMaterial2D {
-        if (this._material) return this._material;
-
-        const rigidBodyMaterial = rigidBody.material;
-        if (rigidBodyMaterial) return rigidBodyMaterial;
-
-        return new PhysicsMaterial2D();
-    }
-
+    
     public get density(): number {
         return this._density;
     }
 
     public set density(value: number) {
-        if (this._rigidBody && !this._rigidBody.useAutoMass) {
-            throw new Error("You cannot change the density of a collider when the rigid body is not using auto mass.");
+        if (this._fixture) {
+            const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
+            if (physicsObject && physicsObject.rigidBody && !physicsObject.rigidBody.useAutoMass) {
+                throw new Error("You cannot change the density of a collider when the rigid body is not using auto mass.");
+            }
         }
         this._density = value;
         if (this._fixture) {

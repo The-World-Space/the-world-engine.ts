@@ -1,10 +1,10 @@
 import * as b2 from "../../../box2d.ts/build/index";
-import { Collider2D } from "./collider/Collider2D";
 import { Vector2 } from "three";
 import { Component } from "../../hierarchy_object/Component";
 import { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
+import { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
 
 export enum RigidbodyType2D {
     Dynamic,
@@ -31,6 +31,7 @@ export enum ForceMode2D {
 export class RigidBody2D extends Component {
     public override readonly disallowMultipleComponent = true;
 
+    private _physicsObject: IPhysicsObject2D|null = null;
     private _body: b2.Body|null = null;
 
     private _bodyType: b2.BodyType = b2.BodyType.b2_dynamicBody; // Body Type
@@ -52,9 +53,9 @@ export class RigidBody2D extends Component {
     private _angularVelocity = 0;
     //private _useFullKinematicContacts = false;
 
-    private readonly _attachedColliders: Collider2D[] = [];
-
     public awake(): void {
+        if (this._physicsObject) return;
+
         const bodyDef = new b2.BodyDef();
         bodyDef.userData = this;
         bodyDef.type = this._bodyType;
@@ -72,11 +73,8 @@ export class RigidBody2D extends Component {
         bodyDef.angle = this.transform.eulerAngles.z;
         bodyDef.linearVelocity.Copy(this._linearVelocity);
         bodyDef.angularVelocity = this._angularVelocity;
-        this._body = this.engine.physics2DProcessor.observeBody(this.gameObject, bodyDef);
-        const colliderList = this.gameObject.getComponents(Collider2D);
-        for (let i = 0; i < colliderList.length; i++) {
-            colliderList[i].createFixture(this);
-        }
+        this._physicsObject = this.engine.physics2DProcessor.addRigidBody(this.gameObject, this, bodyDef);
+        this._body = this._physicsObject.body;
 
         if (isNaN(this._centerOfMass.x)) {
             const centerOfMass = this._body.GetLocalCenter();
@@ -90,35 +88,23 @@ export class RigidBody2D extends Component {
     }
 
     public onDestroy(): void {
-        this.engine.physics2DProcessor.unObserveBody(this.gameObject);
+        this.engine.physics2DProcessor.removeRigidBody(this.gameObject);
         this._body = null;
         this._material?.removeOnChangedEventListener(this._updateMaterialInfo);
     }
-    
-    /** @internal */
-    public addFixture(fixtureDef: b2.FixtureDef, collider: Collider2D): b2.Fixture {
-        const fixture = this._body!.CreateFixture(fixtureDef);
-        this._attachedColliders.push(collider);
 
-        //update center of mass
-        const centerOfMass = this._body!.GetLocalCenter();
-        this._centerOfMass.set(centerOfMass.x, centerOfMass.y);
-
-
-        return fixture;
+    private getPhysicsObject(): IPhysicsObject2D {
+        if (!this._physicsObject) this.awake();
+        return this._physicsObject!;
     }
 
-    /** @internal */
-    public removeFixture(fixture: b2.Fixture, collider: Collider2D): void {
-        const index = this._attachedColliders.findIndex(c => c.instanceId === collider.instanceId);
-        if (index >= 0) {
-            this._attachedColliders.splice(index, 1);
-        }
-        this._body!.DestroyFixture(fixture);
+    private getB2Body(): b2.Body {
+        if (!this._body) this.awake();
+        return this._body!;
     }
 
     private readonly _updateMaterialInfo = () => {
-        const colliderList = this._attachedColliders;
+        const colliderList = this.getPhysicsObject().colliders;
         for (let i = 0; i < colliderList.length; i++) {
             colliderList[i].updateFixtureMaterialInfo();
         }
@@ -196,8 +182,7 @@ export class RigidBody2D extends Component {
 
     public get mass(): number {
         if (this._useAutoMass) {
-            if (this._body) return this._body.GetMass();
-            throw new Error("Cannot get mass when body is not created");
+            return this.getB2Body().GetMass();
         }
         return this._mass;
     }
@@ -265,9 +250,8 @@ export class RigidBody2D extends Component {
     }
 
     public get centerOfMass(): ReadonlyVector2 {
-        if (isNaN(this._centerOfMass.x)) {
-            throw new Error("Cannot get center of mass when body is not created");
-        }
+        const localCenter = this.getB2Body().GetLocalCenter();
+        this._centerOfMass.set(localCenter.x, localCenter.y);
         return this._centerOfMass;
     }
 
@@ -277,14 +261,9 @@ export class RigidBody2D extends Component {
     }
 
     public get worldCenterOfMass(): ReadonlyVector2 {
-        if (this._body) {
-            const center = this._body.GetWorldCenter();
-            this._worldCenterOfMass
-                .set(center.x, center.y);
-        }
-        if (isNaN(this._worldCenterOfMass.x)) {
-            throw new Error("Cannot get world center of mass when body is not created");
-        }
+        const center = this.getB2Body().GetWorldCenter();
+        this._worldCenterOfMass
+            .set(center.x, center.y);
         return this._worldCenterOfMass;
     }
 
@@ -327,122 +306,83 @@ export class RigidBody2D extends Component {
     }
 
     public get attachedColliderCount(): number {
-        return this._attachedColliders.length;
+        return this.getPhysicsObject().colliders.length;
     }
 
     private readonly _vec2Buffer = new b2.Vec2();
 
     public addForce(force: ReadonlyVector2, mode: ForceMode2D = ForceMode2D.Force): void {
-        if (this._body) {
-            if (mode === ForceMode2D.Impulse) {
-                this._body.ApplyLinearImpulse(force, this._body.GetWorldCenter(), true);
-            } else {
-                this._body.ApplyForce(force, this._body.GetWorldCenter(), true);
-            }
+        const body = this.getB2Body();
+        if (mode === ForceMode2D.Impulse) {
+            body.ApplyLinearImpulse(force, body.GetWorldCenter(), true);
         } else {
-            throw new Error("Cannot add force when body is not created");
+            body.ApplyForce(force, body.GetWorldCenter(), true);
         }
     }
 
     public addForceAtPosition(force: ReadonlyVector2, position: ReadonlyVector2, mode: ForceMode2D = ForceMode2D.Force): void {
-        if (this._body) {
-            const pos = this._vec2Buffer
-                .Copy(position);
-            if (mode === ForceMode2D.Impulse) {
-                this._body.ApplyLinearImpulse(force, pos, true);
-            } else {
-                this._body.ApplyForce(force, pos, true);
-            }
+        const body = this.getB2Body();
+        const pos = this._vec2Buffer
+            .Copy(position);
+        if (mode === ForceMode2D.Impulse) {
+            body.ApplyLinearImpulse(force, pos, true);
         } else {
-            throw new Error("Cannot add force when body is not created");
+            body.ApplyForce(force, pos, true);
         }
     }
 
     public addRelativeForce(relativeForce: ReadonlyVector2, mode: ForceMode2D = ForceMode2D.Force): void {
-        if (this._body) {
-            const f = this._body.GetWorldVector(relativeForce, this._vec2Buffer);
-            if (mode === ForceMode2D.Impulse) {
-                this._body.ApplyLinearImpulse(f, this._body.GetWorldCenter(), true);
-            } else {
-                this._body.ApplyForce(f, this._body.GetWorldCenter(), true);
-            }
+        const body = this.getB2Body();
+        const f = body.GetWorldVector(relativeForce, this._vec2Buffer);
+        if (mode === ForceMode2D.Impulse) {
+            body.ApplyLinearImpulse(f, body.GetWorldCenter(), true);
         } else {
-            throw new Error("Cannot add force when body is not created");
+            body.ApplyForce(f, body.GetWorldCenter(), true);
         }
     }
 
     public addTorque(torque: number, mode: ForceMode2D = ForceMode2D.Force): void {
-        if (this._body) {
-            if (mode === ForceMode2D.Impulse) {
-                this._body.ApplyAngularImpulse(torque, true);
-            } else {
-                this._body.ApplyTorque(torque, true);
-            }
+        const body = this.getB2Body();
+        if (mode === ForceMode2D.Impulse) {
+            body.ApplyAngularImpulse(torque, true);
         } else {
-            throw new Error("Cannot add force when body is not created");
+            body.ApplyTorque(torque, true);
         }
     }
 
     public getPoint(point: ReadonlyVector2, out?: Vector2): Vector2 {
         const buffer = out ?? new Vector2();
-        if (this._body) {
-            const pos = this._vec2Buffer
-                .Copy(point);
-            return this._body.GetLocalPoint(pos, buffer);
-        } else {
-            throw new Error("Cannot get point when body is not created");
-        }
+        const pos = this._vec2Buffer.Copy(point);
+        return this.getB2Body().GetLocalPoint(pos, buffer);
     }
 
     public getPointVelocity(point: ReadonlyVector2, out?: Vector2): Vector2 {
         const buffer = out ?? new Vector2();
-        if (this._body) {
-            const pos = this._vec2Buffer
-                .Copy(point);
-            return this._body.GetLinearVelocityFromWorldPoint(pos, buffer);
-        } else {
-            throw new Error("Cannot get point velocity when body is not created");
-        }
+        const pos = this._vec2Buffer.Copy(point);
+        return this.getB2Body().GetLinearVelocityFromWorldPoint(pos, buffer);
     }
 
     public getRelativePoint(relativePoint: ReadonlyVector2, out?: Vector2): Vector2 {
         const buffer = out ?? new Vector2();
-        if (this._body) {
-            const pos = this._vec2Buffer
-                .Copy(relativePoint);
-            return this._body.GetWorldPoint(pos, buffer);
-        } else {
-            throw new Error("Cannot get relative point when body is not created");
-        }
+        const pos = this._vec2Buffer.Copy(relativePoint);
+        return this.getB2Body().GetWorldPoint(pos, buffer);
     }
 
     public getRelativePointVelocity(relativePoint: ReadonlyVector2, out?: Vector2): Vector2 {
         const buffer = out ?? new Vector2();
-        if (this._body) {
-            const pos = this._vec2Buffer
-                .Copy(relativePoint);
-            return this._body.GetLinearVelocityFromWorldPoint(pos, buffer);
-        } else {
-            throw new Error("Cannot get relative point velocity when body is not created");
-        }
+        const pos = this._vec2Buffer
+            .Copy(relativePoint);
+        return this.getB2Body().GetLinearVelocityFromWorldPoint(pos, buffer);
     }
 
     public getRelativeVector(relativeVector: ReadonlyVector2, out?: Vector2): Vector2 {
         const buffer = out ?? new Vector2();
-        if (this._body) {
-            return this._body.GetWorldVector(relativeVector, buffer);
-        } else {
-            throw new Error("Cannot get relative vector when body is not created");
-        }
+        return this.getB2Body().GetWorldVector(relativeVector, buffer);
     }
 
     public getVector(vector: ReadonlyVector2, out?: Vector2): Vector2 {
         const buffer = out ?? new Vector2();
-        if (this._body) {
-            return this._body.GetLocalVector(vector, buffer);
-        } else {
-            throw new Error("Cannot get vector when body is not created");
-        }
+        return this.getB2Body().GetLocalVector(vector, buffer);
     }
 
     // Cast    All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D.
@@ -457,34 +397,18 @@ export class RigidBody2D extends Component {
     // OverlapPoint    Check if any of the Rigidbody2D colliders overlap a point in space.
     
     public isSleeping(): boolean {
-        if (this._body) {
-            return !this._body.IsAwake();
-        } else {
-            throw new Error("Cannot check if body is sleeping when body is not created");
-        }
+        return !this.getB2Body().IsAwake();
     }
 
     public sleep(): void {
-        if (this._body) {
-            this._body.SetAwake(false);
-        } else {
-            throw new Error("Cannot sleep when body is not created");
-        }
+        this.getB2Body().SetAwake(false);
     }
 
     public isAwake(): boolean {
-        if (this._body) {
-            return this._body.IsAwake();
-        } else {
-            throw new Error("Cannot check if body is awake when body is not created");
-        }
+        return this.getB2Body().IsAwake();
     }
 
     public wakeUp(): void {
-        if (this._body) {
-            this._body.SetAwake(true);
-        } else {
-            throw new Error("Cannot wake up body when body is not created");
-        }
+        this.getB2Body().SetAwake(true);
     }
 }
