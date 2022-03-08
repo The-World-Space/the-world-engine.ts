@@ -5,6 +5,7 @@ import { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
 import { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
+import { Collider2D } from "./collider/Collider2D";
 
 export enum RigidbodyType2D {
     Dynamic,
@@ -388,7 +389,18 @@ export class RigidBody2D extends Component {
     // Cast    All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D.
     // ClosestPoint    Returns a point on the perimeter of all enabled Colliders attached to this Rigidbody that is closest to the specified position.
     // Distance    Calculates the minimum distance of this collider against all Collider2D attached to this Rigidbody2D.
-    // GetAttachedColliders    Returns all Collider2D that are attached to this Rigidbody2D.
+    
+    public getAttachedColliders(out: Collider2D[]): number {
+        const colliders = this.getPhysicsObject().colliders;
+        if (out.length < colliders.length) {
+            out.length = colliders.length;
+        }
+        for (let i = 0; i < colliders.length; i++) {
+            out[i] = colliders[i];
+        }
+        return colliders.length;
+    }
+    
     // GetContacts    Retrieves all contact points for all of the Collider(s) attached to this Rigidbody.
     // GetShapes    Gets all the PhysicsShape2D used by all Collider2D attached to the Rigidbody2D.
     // IsTouching    Checks whether the collider is touching any of the collider(s) attached to this rigidbody or not.
