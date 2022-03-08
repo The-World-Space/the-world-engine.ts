@@ -47,6 +47,7 @@ export class PhysicsMaterial2D {
     public copy(other: PhysicsMaterial2D): void {
         this.friction = other.friction;
         this.bounciness = other.bounciness;
+        this.notifyOnChangedEventListeners();
     }
 
     public clone(): PhysicsMaterial2D {

@@ -108,10 +108,18 @@ export class Collider2D extends Component {
     }
 
     public set material(value: PhysicsMaterial2D|null) {
-        this._material?.removeOnChangedEventListener(this.updateFixtureMaterialInfo);
-        this._material = value;
+        if (value) {
+            if (!this._material) {
+                this._material = new PhysicsMaterial2D(value.friction, value.bounciness);
+                this._material.addOnChangedEventListener(this.updateFixtureMaterialInfo);
+            } else {
+                this._material.copy(value);
+            }
+        } else {
+            this._material?.removeOnChangedEventListener(this.updateFixtureMaterialInfo);
+            this._material = null;
+        }
         this.updateFixtureMaterialInfo();
-        this._material?.addOnChangedEventListener(this.updateFixtureMaterialInfo);
     }
 
     public get isTrigger(): boolean {

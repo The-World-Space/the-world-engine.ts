@@ -35,7 +35,7 @@ export class RigidBody2D extends Component {
     private _body: b2.Body|null = null;
 
     private _bodyType: b2.BodyType = b2.BodyType.b2_dynamicBody; // Body Type
-    private _material: PhysicsMaterial2D|null = null; // Material
+    // Material
     private _simulated = true; // Simulated
     private _useAutoMass = false; // https://stackoverflow.com/questions/14004179/box2d-set-mass-on-a-figure
     private _mass = 1; // Mass
@@ -88,9 +88,8 @@ export class RigidBody2D extends Component {
     }
 
     public onDestroy(): void {
+        this._physicsObject?.setSharedPhysicsMaterial(null);
         this.engine.physics2DProcessor.removeRigidBody(this.gameObject);
-        this._body = null;
-        this._material?.removeOnChangedEventListener(this._updateMaterialInfo);
     }
 
     private getPhysicsObject(): IPhysicsObject2D {
@@ -102,13 +101,6 @@ export class RigidBody2D extends Component {
         if (!this._body) this.awake();
         return this._body!;
     }
-
-    private readonly _updateMaterialInfo = () => {
-        const colliderList = this.getPhysicsObject().colliders;
-        for (let i = 0; i < colliderList.length; i++) {
-            colliderList[i].updateFixtureMaterialInfo();
-        }
-    };
     
     private readonly _massData: b2.MassData = new b2.MassData();
 
@@ -149,14 +141,11 @@ export class RigidBody2D extends Component {
     }
 
     public get material(): PhysicsMaterial2D|null {
-        return this._material;
+        return this.getPhysicsObject().sharedMaterial;
     }
 
     public set material(value: PhysicsMaterial2D|null) {
-        this._material?.removeOnChangedEventListener(this._updateMaterialInfo);
-        this._material = value;
-        this._updateMaterialInfo();
-        this._material?.addOnChangedEventListener(this._updateMaterialInfo);
+        this.getPhysicsObject().setSharedPhysicsMaterial(value);
     }
 
     public get simulated(): boolean {

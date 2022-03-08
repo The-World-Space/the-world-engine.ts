@@ -62,11 +62,26 @@ export class PhysicsObject2D implements IPhysicsObject2D {
     }
 
     public setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void {
-        this._sharedMaterial = material;
+        if (material) {
+            if (!this._sharedMaterial) {
+                this._sharedMaterial = new PhysicsMaterial2D(material.friction, material.bounciness);
+                this._sharedMaterial.addOnChangedEventListener(this.updateMaterialInfo);
+            } else {
+                this._sharedMaterial.copy(material);
+            }
+        } else {
+            this._sharedMaterial?.removeOnChangedEventListener(this.updateMaterialInfo);
+            this._sharedMaterial = null;
+        }
+        
+        this.updateMaterialInfo();
+    }
+
+    private updateMaterialInfo = () => {
         for (let i = 0; i < this._colliders.length; i++) {
             this._colliders[i].updateFixtureMaterialInfo();
         }
-    }
+    };
 
     public get sharedMaterial(): PhysicsMaterial2D|null {
         return this._sharedMaterial;
