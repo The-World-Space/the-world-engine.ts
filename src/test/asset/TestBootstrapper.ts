@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "three";
+import { Quaternion, Vector2, Vector3 } from "three";
 import { Camera, CameraType, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssSpriteRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
@@ -50,13 +50,14 @@ export class TestBootstrapper extends Bootstrapper {
                     c.size = new Vector2(17, 1);
                 }))
 
-            .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0))
+            .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 5))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Dynamic;
                     c.setCollisionLayer<TestLayer>("player");
                 })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(1, 1);
+                    c.edgeRadius = 1;
                 })
                 .withComponent(CollisionEventTest)
                 .withComponent(CssSpriteRenderer, c => {
