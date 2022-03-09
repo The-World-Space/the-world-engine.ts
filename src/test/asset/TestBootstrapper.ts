@@ -12,6 +12,8 @@ import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/Rigi
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
 import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 import { CollisionEventTest } from "./script/CollisionEventTset";
+import { Spawner } from "./script/Spawner";
+import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -36,23 +38,25 @@ export class TestBootstrapper extends Bootstrapper {
         const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
 
         return this.sceneBuilder
+            .withChild(instantiater.buildGameObject("spawner")
+                .withComponent(Spawner, c => c.prefabCtor = DynamicBoxPrefab))
+
             .withChild(instantiater.buildGameObject("ground", new Vector3(0, -2, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Static;
-                    c.simulated = false;
+                    c.setCollisionLayer<TestLayer>("level");
                 })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(17, 1);
-                    c.setCollisionLayer<TestLayer>("level");
                 }))
 
             .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Dynamic;
+                    c.setCollisionLayer<TestLayer>("player");
                 })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(1, 1);
-                    c.setCollisionLayer<TestLayer>("player");
                 })
                 .withComponent(CollisionEventTest)
                 .withComponent(CssSpriteRenderer, c => {
