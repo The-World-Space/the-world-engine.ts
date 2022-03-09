@@ -412,7 +412,7 @@ export class RigidBody2D extends Component {
     }
 
     // Cast    All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D.
-    // ClosestPoint    Returns a point on the perimeter of all enabled Colliders attached to this Rigidbody that is closest to the specified position.
+    // ClosestPoint    Returns a point on the perimeter of all enabled Colliders attached to this Rigidbody that is closest to the specified position. https://rotatingcanvas.com/calculate-closest-point-of-box2d-body-in-libgdx/
     // Distance    Calculates the minimum distance of this collider against all Collider2D attached to this Rigidbody2D.
     
     public getAttachedColliders(out: Collider2D[]): number {
@@ -427,12 +427,22 @@ export class RigidBody2D extends Component {
     }
     
     // GetContacts    Retrieves all contact points for all of the Collider(s) attached to this Rigidbody.
-    // GetShapes    Gets all the PhysicsShape2D used by all Collider2D attached to the Rigidbody2D.
     // IsTouching    Checks whether the collider is touching any of the collider(s) attached to this rigidbody or not.
     // IsTouchingLayers    Checks whether any of the collider(s) attached to this rigidbody are touching any colliders on the specified layerMask or not.
     // OverlapCollider    Get a list of all Colliders that overlap all Colliders attached to this Rigidbody2D.
-    // OverlapPoint    Check if any of the Rigidbody2D colliders overlap a point in space.
     
+    public overlapPoint(point: ReadonlyVector2): boolean {
+        const pos = this._vec2Buffer.Copy(point);
+        let fixture = this.getB2Body().GetFixtureList();
+        while (fixture) {
+            if (fixture.TestPoint(pos)) {
+                return true;
+            }
+            fixture = fixture.GetNext();
+        }
+        return false;
+    }
+
     public isSleeping(): boolean {
         return !this.getB2Body().IsAwake();
     }
