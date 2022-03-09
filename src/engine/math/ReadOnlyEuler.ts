@@ -1,4 +1,4 @@
-import { Euler, Vector3 } from "three";
+import { Euler } from "three";
 
 export type ReadonlyEuler = {
     /**
@@ -25,5 +25,4 @@ export type ReadonlyEuler = {
     clone(): Euler;
     equals(euler: ReadonlyEuler): boolean;
     toArray(array?: any[], offset?: number): any[];
-    toVector3(optionalResult?: Vector3): Vector3;
 };

@@ -1,6 +1,6 @@
 {
     "name": "the-world-engine",
-    "version": "0.3.0",
+    "version": "0.3.1",
     "description": "three.js based, unity like game engine for browser",
     "main": "dist/index.js",
     "scripts": {
@@ -19,8 +19,8 @@
     },
     "homepage": "https://github.com/noname0310/the-world-engine.ts#readme",
     "peerDependencies": {
-        "@types/three": "^0.137.0",
-        "three": "^0.137.5"
+        "@types/three": "^0.138.0",
+        "three": "^0.138.3"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.8.1",

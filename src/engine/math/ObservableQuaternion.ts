@@ -34,7 +34,7 @@ export class ObservableQuaternion {
         this._onBeforeChangeCallback = callback;
     }
 
-    public static slerp(qa: ObservableQuaternion, qb: ObservableQuaternion, qm: ObservableQuaternion, t: number): void { //TODO: pr to three-types
+    public static slerp(qa: ObservableQuaternion, qb: ObservableQuaternion, qm: ObservableQuaternion, t: number): ObservableQuaternion {
         console.warn("THREE.Quaternion: Static .slerp() has been deprecated. Use qm.slerpQuaternions( qa, qb, t ) instead.");
         return qm.slerpQuaternions(qa, qb, t);
     }
@@ -579,8 +579,8 @@ export class ObservableQuaternion {
         return this;
     }
 
-    public slerpQuaternions(qa: ObservableQuaternion, qb: ObservableQuaternion, t: number): void { //TODO: pr to three-types
-        this.copy(qa).slerp(qb, t);
+    public slerpQuaternions(qa: ObservableQuaternion, qb: ObservableQuaternion, t: number): ObservableQuaternion {
+        return this.copy(qa).slerp(qb, t);
     }
 
     public random(): ObservableQuaternion {

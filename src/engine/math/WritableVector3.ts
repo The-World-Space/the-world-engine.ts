@@ -221,6 +221,11 @@ export type WritableVector3 = {
     setFromMatrix3Column(matrix: ReadonlyMatrix3, index: number): WritableVector3;
 
     /**
+     * Sets this vector's {@link x}, {@link y} and {@link z} components from the x, y, and z components of the specified {@link Euler Euler Angle}.
+     */
+    setFromEuler(e: ReadonlyEuler): WritableVector3;
+
+    /**
      * Checks for strict equality of this vector and v.
      */
     equals(v: ReadonlyVector3): boolean;

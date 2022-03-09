@@ -281,15 +281,6 @@ export class ObservableEuler {
         return array;
     }
 
-    public toVector3(optionalResult?: Vector3): Vector3 {
-        this._onBeforeGetComponentCallback();
-        if (optionalResult) {
-            return optionalResult.set(this._internal_x, this._internal_y, this._internal_z);
-        } else {
-            return new Vector3(this._internal_x, this._internal_y, this._internal_z);
-        }
-    }
-
     public _onChange(callback: () => void): ObservableEuler {
         this._onChangeCallback = callback;
         return this;

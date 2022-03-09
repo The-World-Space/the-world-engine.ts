@@ -609,6 +609,14 @@ export class ObservableVector3 {
         return this.fromArray(m.elements, index * 3);
     }
 
+    public setFromEuler(e: Euler): ObservableVector3 {
+        this.x = (e as any)._x;
+        this.y = (e as any)._y;
+        this.z = (e as any)._z;
+
+        return this;
+    }
+
     public equals(v: ObservableVector3): boolean {
         this._onBeforeGetComponentCallback();
         return ((v.x === this._x) && (v.y === this._y) && (v.z === this._z));
