@@ -14,15 +14,16 @@ export class ContactListener extends b2.ContactListener {
     public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB);
-        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA);
+        //todo: pooling collision data
+        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB as any);
+        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA as any);
     }
 
     public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB);
-        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA);
+        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB as any);
+        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA as any);
     }
 }
 
@@ -31,8 +32,10 @@ export class Physics2DProcessor implements IPhysics2D {
     private _defaultMaterial: PhysicsMaterial2D|null = null;
     private _velocityIterations = 8;
     private _positionIterations = 3;
+    
     // private _velocityThreshold: number = 1;
     // private _defaultContactOffset: number = 0.01;
+
     // private _queriesHitTriggers: boolean = true;
     // private _queriesStartInColliders: boolean = true;
     // private _reuseCollisionCallbacks = true;
