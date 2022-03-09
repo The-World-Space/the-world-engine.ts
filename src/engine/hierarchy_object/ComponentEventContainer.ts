@@ -81,7 +81,7 @@ function isOnCollisionExit2DableComponent(component: Component): component is On
 /**
  * called when another object enters a trigger collider attached to this object (2D physics only)
  */
-type OnTriggerEnter2DableComponent = Component & { onTriggerEnter2D(collider: Collision2D): void; };
+type OnTriggerEnter2DableComponent = Component & { onTriggerEnter2D(collider: Collider2D): void; };
 
 /** @internal */
 function isOnTriggerEnter2DableComponent(component: Component): component is OnTriggerEnter2DableComponent {
@@ -91,7 +91,7 @@ function isOnTriggerEnter2DableComponent(component: Component): component is OnT
 /**
  * called every frame where another object stays in a trigger collider attached to this object (2D physics only)
  */
-type OnTriggerStay2DableComponent = Component & { onTriggerStay2D(collider: Collision2D): void; };
+type OnTriggerStay2DableComponent = Component & { onTriggerStay2D(collider: Collider2D): void; };
 
 /** @internal */
 function isOnTriggerStay2DableComponent(component: Component): component is OnTriggerStay2DableComponent {
@@ -101,7 +101,7 @@ function isOnTriggerStay2DableComponent(component: Component): component is OnTr
 /**
  * called when another object leaves a trigger collider attached to this object (2D physics only)
  */
-type OnTriggerExit2DableComponent = Component & { onTriggerExit2D(collider: Collision2D): void; };
+type OnTriggerExit2DableComponent = Component & { onTriggerExit2D(collider: Collider2D): void; };
 
 /** @internal */
 function isOnTriggerExit2DableComponent(component: Component): component is OnTriggerExit2DableComponent {
