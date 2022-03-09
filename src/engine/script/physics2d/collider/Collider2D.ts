@@ -5,8 +5,8 @@ import { Component } from "../../../hierarchy_object/Component";
 import { WritableVector2 } from "../../../math/WritableVector2";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
 import { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
-import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 import { IPhysicsObject2D } from "../../../physics/2d/PhysicsObject2D";
+import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 
 export class Collider2D extends Component {
     private _fixture: b2.Fixture|null = null;
@@ -14,15 +14,17 @@ export class Collider2D extends Component {
     private _material: PhysicsMaterial2D|null = null;
     private _isTrigger = false;
     private _offset: Vector2 = new Vector2();
-    private _collisionLayer: string = CollisionLayerConst.DefaultLayerName;
+    private _collisionLayer: string|null = null;
 
     private _fixtureCreated = false;
 
     public onEnable(): void {
         this.createFixture();
+        this._fixture!.GetBody().SetAwake(true);
     }
 
     public onDisable(): void {
+        this._fixture?.GetBody().SetAwake(true);
         this.destroyFixture();
     }
 
@@ -38,13 +40,9 @@ export class Collider2D extends Component {
         fixtureDef.isSensor = this._isTrigger;
         fixtureDef.shape = this.createShape();
 
-        const layer = this.engine.physics.collisionLayerMask.nameToLayer(this._collisionLayer as any);
-        fixtureDef.filter.categoryBits = layer;
-        fixtureDef.filter.maskBits = this.engine.physics.collisionLayerMask.getMaskFromLayer(layer);
-        //fixtureDef.filter.groupIndex
-
         this._fixture = this.engine.physics2DProcessor.addCollider(this.gameObject, this, fixtureDef);
         this.updateFixtureMaterialInfo();
+        this.updateFixtureFilter();
 
         this._fixtureCreated = true;
     }
@@ -62,7 +60,39 @@ export class Collider2D extends Component {
         if (this._fixture) {
             this.destroyFixture();
             this.createFixture();
+            this._fixture!.GetBody().SetAwake(true);
         }
+    }
+
+    private static readonly _filterBuffer = new b2.Filter();
+
+    public updateFixtureFilter(): void {
+        if (!this._fixture) return;
+
+        const filter = Collider2D._filterBuffer;
+        const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
+        const rigidBody = physicsObject.rigidBody;
+
+        let layer: number;
+        if (this._collisionLayer) {
+            layer = this.engine.physics.collisionLayerMask.nameToLayer(this._collisionLayer as any);
+        } else {
+            if (rigidBody) {
+                layer = this.engine.physics.collisionLayerMask.nameToLayer(rigidBody.getCollisionLayer() as any);
+            } else {
+                layer = this.engine.physics.collisionLayerMask.nameToLayer(CollisionLayerConst.DefaultLayerName);
+            }
+        }
+        filter.categoryBits = layer;
+
+        if (rigidBody && !rigidBody.simulated) {
+            filter.maskBits = 0x0000;
+        } else {
+            filter.maskBits = this.engine.physics.collisionLayerMask.getMaskFromLayer(layer);
+        }
+        //filter.groupIndex
+
+        this._fixture.SetFilterData(filter);
     }
 
     /** @internal */
@@ -143,12 +173,12 @@ export class Collider2D extends Component {
         this.updateFixture();
     }
 
-    public getCollisionLayer<T extends CollisionLayer>(): CollisionLayerParm<T> {
-        return this._collisionLayer as CollisionLayerParm<T>;
+    public getCollisionLayer<T extends CollisionLayer>(): CollisionLayerParm<T>|null {
+        return this._collisionLayer as CollisionLayerParm<T>|null;
     }
 
-    public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>) {
-        this._collisionLayer = value as string;
-        this.updateFixture();
+    public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>|null) {
+        this._collisionLayer = value as string|null;
+        this.updateFixtureFilter();
     }
 }

@@ -6,6 +6,8 @@ import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
 import { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
 import { Collider2D } from "./collider/Collider2D";
+import { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer";
+import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
 
 export enum RigidbodyType2D {
     Dynamic,
@@ -46,6 +48,7 @@ export class RigidBody2D extends Component {
     private _collisionDetection: CollisionDetectionMode2D = CollisionDetectionMode2D.Discrete; // Collision Detection
     private _sleepMode: RigidbodySleepMode2D = RigidbodySleepMode2D.StartAwake; // Sleeping Mode
     private _freezeRotation = false; // Freeze Rotation
+    private _collisionLayer: string = CollisionLayerConst.DefaultLayerName;
 
     private readonly _centerOfMass = new Vector2(NaN, NaN);
     private readonly _worldCenterOfMass = new Vector2(NaN, NaN);
@@ -75,6 +78,8 @@ export class RigidBody2D extends Component {
         bodyDef.linearVelocity.Copy(this._linearVelocity);
         bodyDef.angularVelocity = this._angularVelocity;
         this._physicsObject = this.engine.physics2DProcessor.addRigidBody(this.gameObject, this, bodyDef);
+        this.updateSimulatedToCollider();
+
         this._body = this._physicsObject.body;
 
         if (isNaN(this._centerOfMass.x)) {
@@ -93,16 +98,28 @@ export class RigidBody2D extends Component {
         this.engine.physics2DProcessor.removeRigidBody(this.gameObject);
         this._physicsObject = null;
         this._body = null;
+        this.updateSimulatedToCollider();
     }
 
     public onEnable(): void {
         this._simulated = true;
         this.getB2Body().SetEnabled(true);
+        this.updateSimulatedToCollider();
     }
 
     public onDisable(): void {
         this._simulated = false;
         this._body?.SetEnabled(false);
+        this.updateSimulatedToCollider();
+    }
+
+    public updateSimulatedToCollider(): void {
+        if (!this._physicsObject) return;
+        const colliders = this._physicsObject.colliders;
+        for (let i = 0, l = colliders.length; i < l; i++) {
+            const collider = colliders[i];
+            collider.updateFixtureFilter();
+        }
     }
 
     private getPhysicsObject(): IPhysicsObject2D {
@@ -250,6 +267,14 @@ export class RigidBody2D extends Component {
         this._body?.SetFixedRotation(value);
     }
 
+    public getCollisionLayer<T extends CollisionLayer>(): CollisionLayerParm<T> {
+        return this._collisionLayer as CollisionLayerParm<T>;
+    }
+
+    public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>) {
+        this._collisionLayer = value as string;
+    }
+    
     public get centerOfMass(): ReadonlyVector2 {
         const localCenter = this.getB2Body().GetLocalCenter();
         this._centerOfMass.set(localCenter.x, localCenter.y);
