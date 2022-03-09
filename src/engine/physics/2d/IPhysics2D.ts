@@ -44,9 +44,6 @@ export interface IPhysics2D {
     // get queriesStartInColliders(): boolean;
     // set queriesStartInColliders(value: boolean);
 
-    get callbacksOnDisable(): boolean;
-    set callbacksOnDisable(value: boolean);
-
     get reuseCollisionCallbacks(): boolean;
     set reuseCollisionCallbacks(value: boolean);
 

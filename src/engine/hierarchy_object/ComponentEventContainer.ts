@@ -171,18 +171,10 @@ export class ComponentEventContainer {
         }
 
         { // 2D physics events
-            const physicsProcessor = component.engine.physics2DProcessor;
-
             if (isOnCollisionEnter2DableComponent(component)) {
                 this._onCollisionEnter2D = ComponentEvent.createOnCollisionEnter2DEvent(
                     this._instantiater,
-                    collision => {
-                        if (physicsProcessor.callbacksOnDisable) {
-                            component.onCollisionEnter2D(collision);
-                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
-                            component.onCollisionEnter2D(collision);
-                        }
-                    },
+                    collision => component.onCollisionEnter2D(collision),
                     component.executionOrder
                 );      
             }
@@ -190,13 +182,7 @@ export class ComponentEventContainer {
             if (isOnCollisionStay2DableComponent(component)) {
                 this._onCollisionStay2D = ComponentEvent.createOnCollisionStay2DEvent(
                     this._instantiater,
-                    collision => {
-                        if (physicsProcessor.callbacksOnDisable) {
-                            component.onCollisionStay2D(collision);
-                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
-                            component.onCollisionStay2D(collision);
-                        }
-                    },
+                    collision => component.onCollisionStay2D(collision),
                     component.executionOrder
                 );
             }
@@ -204,13 +190,7 @@ export class ComponentEventContainer {
             if (isOnCollisionExit2DableComponent(component)) {
                 this._onCollisionExit2D = ComponentEvent.createOnCollisionExit2DEvent(
                     this._instantiater,
-                    collision => {
-                        if (physicsProcessor.callbacksOnDisable) {
-                            component.onCollisionExit2D(collision);
-                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
-                            component.onCollisionExit2D(collision);
-                        }
-                    },
+                    collision => component.onCollisionExit2D(collision),
                     component.executionOrder
                 );
             }
@@ -218,13 +198,7 @@ export class ComponentEventContainer {
             if (isOnTriggerEnter2DableComponent(component)) {
                 this._onTriggerEnter2D = ComponentEvent.createOnTriggerEnter2DEvent(
                     this._instantiater,
-                    other => {
-                        if (physicsProcessor.callbacksOnDisable) {
-                            component.onTriggerEnter2D(other);
-                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
-                            component.onTriggerEnter2D(other);
-                        }
-                    },
+                    other => component.onTriggerEnter2D(other),
                     component.executionOrder
                 );
             }
@@ -232,13 +206,7 @@ export class ComponentEventContainer {
             if (isOnTriggerStay2DableComponent(component)) {
                 this._onTriggerStay2D = ComponentEvent.createOnTriggerStay2DEvent(
                     this._instantiater,
-                    other => {
-                        if (physicsProcessor.callbacksOnDisable) {
-                            component.onTriggerStay2D(other);
-                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
-                            component.onTriggerStay2D(other);
-                        }
-                    },
+                    other => component.onTriggerStay2D(other),
                     component.executionOrder
                 );
             }
@@ -246,13 +214,7 @@ export class ComponentEventContainer {
             if (isOnTriggerExit2DableComponent(component)) {
                 this._onTriggerExit2D = ComponentEvent.createOnTriggerExit2DEvent(
                     this._instantiater,
-                    other => {
-                        if (physicsProcessor.callbacksOnDisable) {
-                            component.onTriggerExit2D(other);
-                        } else if (component.enabled && component.gameObject.activeInHierarchy) {
-                            component.onTriggerExit2D(other);
-                        }
-                    },
+                    other => component.onTriggerExit2D(other),
                     component.executionOrder
                 );
             }
