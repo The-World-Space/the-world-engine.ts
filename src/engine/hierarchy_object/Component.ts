@@ -77,6 +77,7 @@ export abstract class Component {
             }
         });
         this._runningCoroutines.push(coroutine);
+        coroutine.fatchNextInstruction();
         this.engine.coroutineProcessor.addCoroutine(coroutine);
         return coroutine;
     }

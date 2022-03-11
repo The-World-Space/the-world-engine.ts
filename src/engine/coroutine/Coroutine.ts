@@ -21,8 +21,6 @@ export class Coroutine {
         this._currentYieldInstruction = null;
         this._isCurrenYieldInstructionExist = false;
         this._onFinish = onFinish;
-
-        this.fatchNextInstruction();
     }
 
     /** @internal */
