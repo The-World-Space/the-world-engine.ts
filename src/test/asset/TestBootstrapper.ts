@@ -13,7 +13,7 @@ import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollide
 import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 import { CollisionEventTest } from "./script/CollisionEventTset";
 import { Spawner } from "./script/Spawner";
-import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
+import { IframeDynamicBoxPrefab } from "./prefab/IframeDynamicBoxPrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -39,9 +39,12 @@ export class TestBootstrapper extends Bootstrapper {
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("spawner")
-                .withComponent(Spawner, c => c.prefabCtor = DynamicBoxPrefab))
+                .withComponent(Spawner, c => {
+                    c.prefabCtor = IframeDynamicBoxPrefab;
+                    c.initSpawnCount = 3;
+                }))
 
-            .withChild(instantiater.buildGameObject("ground", new Vector3(0, -2, 0))
+            .withChild(instantiater.buildGameObject("ground", new Vector3(0, -3, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Static;
                     c.setCollisionLayer<TestLayer>("level");
@@ -50,7 +53,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.size = new Vector2(17, 1);
                 }))
 
-            .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 5))
+            .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 4))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Dynamic;
                     c.setCollisionLayer<TestLayer>("player");
@@ -183,6 +186,12 @@ export class TestBootstrapper extends Bootstrapper {
                         c.enabled = false;
                         c.renderWidth = 100;
                         c.renderHeight = 100;
+                    })
+                    .withComponent(CssTextRenderer, c => {
+                        c.pointerEvents = false;
+                        c.text = "e : spawn object  d : despawn object";
+                        c.textWidth = 18;
+                        c.centerOffset = new Vector2(0, 3);
                     })
                     .withChild(instantiater.buildGameObject("fps_counter")
                         .withComponent(CssTextRenderer, c => {
