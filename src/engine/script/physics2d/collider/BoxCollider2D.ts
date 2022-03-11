@@ -4,6 +4,7 @@ import { Collider2D } from "./Collider2D";
 import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
 import { GameObject } from "../../../hierarchy_object/GameObject";
 import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
+import { WritableVector2 } from "../../../math/WritableVector2";
 
 export class BoxCollider2D extends Collider2D {
     private _size: Vector2 = new Vector2(1, 1);
@@ -58,7 +59,8 @@ export class BoxCollider2D extends Collider2D {
     }
 
     public set size(value: ReadonlyVector2) {
-        this._size.set(value.x, value.y);
+        if (value.x <= 0 || value.y <= 0) throw new Error("size must be greater than 0");
+        (this._size as WritableVector2).copy(value);
         this.updateFixture();
     }
 
