@@ -996,6 +996,10 @@ export class Transform {
         this._engineGlobalObject.transformMatrixProcessor.enqueueRenderObject(rerenderObject);
     }
 
+    public dequeueRenderAttachedObject3D(rerenderObject: Object3D): void {
+        this._engineGlobalObject.transformMatrixProcessor.dequeueRenderObject(rerenderObject);
+    }
+
     public static updateRawObject3DWorldMatrixRecursively(object3D: Object3D): void {
         if (object3D.matrixAutoUpdate) object3D.updateMatrix();
         if (object3D.parent) {

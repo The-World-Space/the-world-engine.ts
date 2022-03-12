@@ -29,6 +29,10 @@ export class TransformMatrixProcessor {
         this._rerenderObjectsWriteBuffer.add(object);
     }
 
+    public dequeueRenderObject(object: Object3D): void {
+        this._rerenderObjectsWriteBuffer.delete(object);
+    }
+
     public flush(): void {
         this._rerenderObjectsReadBuffer.clear();
     }

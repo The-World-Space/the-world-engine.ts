@@ -29,7 +29,10 @@ export class CssRenderer<T extends HTMLElement> extends Component {
 
     public onDestroy(): void {
         if (this.css3DObject) {
+            this.transform.dequeueRenderAttachedObject3D(this.css3DObject);
             this.transform.unsafeGetObject3D().remove(this.css3DObject); //it's safe because _css3DObject is not GameObject and remove is from onDestroy
+            this.css3DObject = null;
+            this.htmlElement = null;
         }
     }
 
