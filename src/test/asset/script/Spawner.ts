@@ -9,6 +9,7 @@ export class Spawner extends Component {
     public prefabCtor: PrefabConstructor|null = null;
     public initSpawnCount = 0;
     private _queue: QueueType<GameObject> = new Queue();
+    private _objectCounter = 0;
 
     public awake(): void {
         this.engine.input.addOnKeyDownEventListener(this.onKeyDown);
@@ -22,7 +23,7 @@ export class Spawner extends Component {
     public onKeyDown = (e: KeyboardEvent): void => {
         if (e.key === "e") {
             this._queue.push(this.gameObject.addChildFromBuilder(
-                this.engine.instantiater.buildPrefab("spanwed object", this.prefabCtor!).make()
+                this.engine.instantiater.buildPrefab("spanwed_object_" + this._objectCounter++, this.prefabCtor!).make()
             ));
         } else if (e.key === "d") {
             this._queue.front()?.destroy();
@@ -33,7 +34,7 @@ export class Spawner extends Component {
     private *spawninitObjects() : CoroutineIterator {
         for (let i = 0; i < this.initSpawnCount; i++) {
             this._queue.push(this.gameObject.addChildFromBuilder(
-                this.engine.instantiater.buildPrefab("spanwed object", this.prefabCtor!).make()
+                this.engine.instantiater.buildPrefab("spanwed_object_" + this._objectCounter++, this.prefabCtor!).make()
             ));
             yield new WaitForSeconds(1);
         }
