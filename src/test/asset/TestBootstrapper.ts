@@ -13,7 +13,8 @@ import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollide
 import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 import { CollisionEventTest } from "./script/CollisionEventTset";
 import { Spawner } from "./script/Spawner";
-import { IframeDynamicBoxPrefab } from "./prefab/IframeDynamicBoxPrefab";
+import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
+import { ContactTest } from "./script/ContactTest";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -40,7 +41,7 @@ export class TestBootstrapper extends Bootstrapper {
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("spawner")
                 .withComponent(Spawner, c => {
-                    c.prefabCtor = IframeDynamicBoxPrefab;
+                    c.prefabCtor = DynamicBoxPrefab;
                     c.initSpawnCount = 3;
                 }))
 
@@ -63,6 +64,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.edgeRadius = 1;
                 })
                 .withComponent(CollisionEventTest)
+                .withComponent(ContactTest)
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
