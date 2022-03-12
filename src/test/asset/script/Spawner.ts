@@ -23,7 +23,7 @@ export class Spawner extends Component {
     public onKeyDown = (e: KeyboardEvent): void => {
         if (e.key === "e") {
             this._queue.push(this.gameObject.addChildFromBuilder(
-                this.engine.instantiater.buildPrefab("spanwed_object_" + this._objectCounter++, this.prefabCtor!).make()
+                this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()
             ));
         } else if (e.key === "d") {
             this._queue.front()?.destroy();
@@ -34,7 +34,7 @@ export class Spawner extends Component {
     private *spawninitObjects() : CoroutineIterator {
         for (let i = 0; i < this.initSpawnCount; i++) {
             this._queue.push(this.gameObject.addChildFromBuilder(
-                this.engine.instantiater.buildPrefab("spanwed_object_" + this._objectCounter++, this.prefabCtor!).make()
+                this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()
             ));
             yield new WaitForSeconds(1);
         }
