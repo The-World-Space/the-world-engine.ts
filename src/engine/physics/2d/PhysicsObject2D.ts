@@ -5,6 +5,7 @@ import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 
 export interface IPhysicsObject2D {
+    readonly gameObject: GameObject;
     readonly body: b2.Body;
     get rigidBody(): RigidBody2D|null;
     get colliders(): readonly Collider2D[];
