@@ -8,6 +8,7 @@ import { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
 import { Collider2D } from "./collider/Collider2D";
 import { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer";
 import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
+import { ContactPoint2D } from "../../physics/2d/ContactPoint2D";
 
 export enum RigidbodyType2D {
     Dynamic,
@@ -424,6 +425,20 @@ export class RigidBody2D extends Component {
             out[i] = colliders[i];
         }
         return colliders.length;
+    }
+
+    public getContacts(_out: ContactPoint2D[]): number {
+        let contactEdge = this.getB2Body().GetContactList();
+        while (contactEdge) {
+            const currentContactEdge = contactEdge;
+            contactEdge = contactEdge.next;
+            console.log((currentContactEdge.other.GetUserData() as IPhysicsObject2D).gameObject.name);
+            console.log(
+                (currentContactEdge.contact.GetFixtureA().GetUserData() as Collider2D).gameObject.name,
+                (currentContactEdge.contact.GetFixtureB().GetUserData() as Collider2D).gameObject.name
+            );
+        }
+        return 0;
     }
     
     // GetContacts    Retrieves all contact points for all of the Collider(s) attached to this Rigidbody.
