@@ -36,5 +36,6 @@
     },
     "dependencies": {
         "js-sdsl": "^2.1.4"
-    }
+    },
+    "sideEffects": false
 }
