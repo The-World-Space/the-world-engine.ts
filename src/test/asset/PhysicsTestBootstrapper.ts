@@ -6,6 +6,7 @@ import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollide
 import { RigidBody2D } from "../../engine/script/physics2d/RigidBody2D";
 import { Camera } from "../../engine/script/render/Camera";
 import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElementRenderer";
+import { CollisionEventTest } from "./script/CollisionEventTest";
 
 /** @internal */
 export class PhysicsTestBootstrapper extends Bootstrapper {
@@ -46,7 +47,8 @@ export class PhysicsTestBootstrapper extends Bootstrapper {
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(1, 1);
                     c.debugDraw = false;
-                }))
+                })
+                .withComponent(CollisionEventTest))
         ;
     }
 }
