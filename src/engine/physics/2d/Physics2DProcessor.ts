@@ -9,14 +9,41 @@ import { DeepReadonly } from "../../type/DeepReadonly";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { IPhysicsObject2D, PhysicsObject2D } from "./PhysicsObject2D";
 import { Collider2D } from "../../script/physics2d/collider/Collider2D";
+import { Collision2DPool } from "./Collision2DPool";
+import { Collision2D } from "./Collision2D";
 
 export class ContactListener extends b2.ContactListener {
+    private _collision2DPool: Collision2DPool = new Collision2DPool();
+    private _physicsProcessor: Physics2DProcessor;
+
+    public constructor(physicsProcessor: Physics2DProcessor) {
+        super();
+        this._physicsProcessor = physicsProcessor;
+    }
+
     public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
-        const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
-        const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-        //todo: pooling collision data
-        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dB as any);
-        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collider2dA as any);
+        
+        if (this._physicsProcessor.reuseCollisionCallbacks) {
+            const collsion2d = this._collision2DPool.getInstance();
+            collsion2d.setData(contact);
+
+            const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+            const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+            
+            collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
+            collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
+
+            this._collision2DPool.release(collsion2d);
+        } else {
+            const collision2d = new Collision2D();
+            collision2d.setData(contact);
+
+            const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+            const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+
+            collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
+            collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
+        }
     }
 
     public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
@@ -46,10 +73,11 @@ export class Physics2DProcessor implements IPhysics2D {
     //engine internal variables
     private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));
     private readonly _gameObjectToBodyMap = new Map<GameObject, PhysicsObject2D>();
+    public readonly collisionPool: Collision2DPool = new Collision2DPool();
 
     /** @internal */
     public constructor() {
-        this._world.SetContactListener(new ContactListener());
+        this._world.SetContactListener(new ContactListener(this));
     }
 
     /** @internal */
