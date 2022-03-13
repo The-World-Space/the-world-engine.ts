@@ -427,18 +427,22 @@ export class RigidBody2D extends Component {
         return colliders.length;
     }
 
-    public getContacts(_out: ContactPoint2D[]): number {
-        let contactEdge = this.getB2Body().GetContactList();
+    public getContacts(out: ContactPoint2D[]): number {
+        let insertPos = 0;
+        const b2Body = this.getB2Body();
+        let contactEdge = b2Body.GetContactList();
         while (contactEdge) {
             const currentContactEdge = contactEdge;
             contactEdge = contactEdge.next;
-            console.log((currentContactEdge.other.GetUserData() as IPhysicsObject2D).gameObject.name);
-            console.log(
-                (currentContactEdge.contact.GetFixtureA().GetUserData() as Collider2D).gameObject.name,
-                (currentContactEdge.contact.GetFixtureB().GetUserData() as Collider2D).gameObject.name
-            );
+            
+            const manifold = currentContactEdge.contact.GetManifold();
+            for (let i = 0; i < manifold.pointCount; i++) {
+                if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
+                out[insertPos].setData(b2Body, currentContactEdge.contact, manifold.points[i]);
+                insertPos += 1;
+            }
         }
-        return 0;
+        return insertPos;
     }
     
     // GetContacts    Retrieves all contact points for all of the Collider(s) attached to this Rigidbody.

@@ -1,4 +1,5 @@
 import { Component } from "../../../engine/hierarchy_object/Component";
+import { ContactPoint2D } from "../../../engine/physics/2d/ContactPoint2D";
 import { RigidBody2D } from "../../../engine/script/physics2d/RigidBody2D";
 
 export class ContactTest extends Component {
@@ -14,9 +15,17 @@ export class ContactTest extends Component {
         this.engine.input.removeOnKeyDownEventListener(this.onKeyDown);
     }
 
+    private contactBuffer: ContactPoint2D[] = [];
+
     private onKeyDown = (event: KeyboardEvent): void => {
         if (event.key === "a") {
-            this._rigidbody?.getContacts([]);
+            if (!this._rigidbody) return;
+            const len = this._rigidbody.getContacts(this.contactBuffer);
+            for (let i = 0; i < len; i++) {
+                const contact = this.contactBuffer[i];
+                console.log(`${contact.rigidbody?.gameObject.name} - ${contact.otherRigidbody?.gameObject.name}`, contact.normal.x, contact.normal.y);
+                contact.enabled = false;
+            }
         }
     };
 }
