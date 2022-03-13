@@ -15,6 +15,7 @@ import { CollisionEventTest } from "./script/CollisionEventTset";
 import { Spawner } from "./script/Spawner";
 import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
 import { ContactTest } from "./script/ContactTest";
+import { PhysicsController } from "./script/PhysicsController";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -65,6 +66,7 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(CollisionEventTest)
                 .withComponent(ContactTest)
+                .withComponent(PhysicsController)
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
