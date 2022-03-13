@@ -1,5 +1,4 @@
 import { Quaternion, Vector2, Vector3 } from "three";
-import { Camera, CameraType, Color, CssCollideTilemapChunkRenderer, CssHtmlElementRenderer, CssSpriteAtlasRenderer, CssSpriteRenderer, CssTextRenderer, EditorCameraController, EditorGridRenderer, GameObject, GlobalConfig, PlayerGridMovementController, PointerGridInputListener, PrefabRef, TextAlign } from "../..";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRenderer";
@@ -10,12 +9,25 @@ import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
-import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 import { CollisionEventTest } from "./script/CollisionEventTest";
 import { Spawner } from "./script/Spawner";
 import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
 import { ContactTest } from "./script/ContactTest";
 import { PhysicsController } from "./script/PhysicsController";
+import { GameObject } from "../../engine/hierarchy_object/GameObject";
+import { CssCollideTilemapChunkRenderer } from "../../engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
+import { PrefabRef } from "../../engine/hierarchy_object/PrefabRef";
+import { PointerGridInputListener } from "../../engine/script/input/PointerGridInputListener";
+import { GlobalConfig } from "../../GlobalConfig";
+import { CssSpriteRenderer } from "../../engine/script/render/CssSpriteRenderer";
+import { PlayerGridMovementController } from "../../engine/script/controller/PlayerGridMovementController";
+import { Camera, CameraType } from "../../engine/script/render/Camera";
+import { EditorCameraController } from "../../engine/script/controller/EditorCameraController";
+import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRenderer";
+import { CssTextRenderer, TextAlign } from "../../engine/script/render/CssTextRenderer";
+import { Color } from "../../engine/render/Color";
+import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElementRenderer";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
