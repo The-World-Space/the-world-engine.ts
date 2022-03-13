@@ -114,7 +114,7 @@ export class RigidBody2D extends Component {
         this.updateSimulatedToCollider();
     }
 
-    public updateSimulatedToCollider(): void {
+    private updateSimulatedToCollider(): void {
         if (!this._physicsObject) return;
         const colliders = this._physicsObject.colliders;
         for (let i = 0, l = colliders.length; i < l; i++) {
@@ -142,6 +142,16 @@ export class RigidBody2D extends Component {
         if (!this._useAutoMass) massData.mass = this._mass;
         massData.center.Copy(this._centerOfMass);
         massData.I = this._inertia;
+        this._body.SetMassData(massData);
+    }
+
+    /** @internal */
+    public updateMass(): void {
+        if (!this._body) return;
+        if (!this._useAutoMass) return;
+        const massData = this._massData;
+        this._body.GetMassData(massData);
+        massData.mass = this._mass;
         this._body.SetMassData(massData);
     }
 

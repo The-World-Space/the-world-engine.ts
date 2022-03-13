@@ -43,6 +43,7 @@ export class Collider2D extends Component {
         this._fixture = this.engine.physics2DProcessor.addCollider(this.gameObject, this, fixtureDef);
         this.updateFixtureMaterialInfo();
         this.updateFixtureFilter();
+        (this._fixture.GetBody().GetUserData() as IPhysicsObject2D).rigidbody?.updateMass();
 
         this._fixtureCreated = true;
     }
@@ -51,6 +52,7 @@ export class Collider2D extends Component {
         if (this._fixture) {
             if (!this._fixtureCreated) return;
             this.engine.physics2DProcessor.removeCollider(this.gameObject, this, this._fixture);
+            (this._fixture.GetBody().GetUserData() as IPhysicsObject2D).rigidbody?.updateMass();
             this._fixture = null;
             this._fixtureCreated = false;
         }
