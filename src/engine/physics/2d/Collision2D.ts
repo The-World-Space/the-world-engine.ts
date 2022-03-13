@@ -9,10 +9,10 @@ import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 export class Collision2D {
     public contact: b2.Contact|null = null;
 
-    public collider: Collider2D|null = null;
+    private _collider: Collider2D|null = null;
     public rigidbody: RigidBody2D|null = null;
 
-    public otherCollider: Collider2D|null = null;
+    private _otherCollider: Collider2D|null = null;
     public otherRigidbody: RigidBody2D|null = null;
 
     public contactCount = 0;
@@ -28,13 +28,21 @@ export class Collision2D {
         const bodyA = fixtureA.GetBody();
         const bodyB = fixtureB.GetBody();
         
-        this.collider = collider2dA;
+        this._collider = collider2dA;
         this.rigidbody = (bodyA.GetUserData() as IPhysicsObject2D).rigidbody;
-        this.otherCollider = collider2dB;
+        this._otherCollider = collider2dB;
         this.otherRigidbody = (bodyB.GetUserData() as IPhysicsObject2D).rigidbody;
 
         this.contactCount = contact.GetManifold().pointCount;
         this._relativeVelocity.set(NaN, NaN);
+    }
+
+    public get collider(): Collider2D {
+        return this._collider!;
+    }
+
+    public get otherCollider(): Collider2D {
+        return this._otherCollider!;
     }
 
     public getContacts(_out: ContactPoint2D[]): number {
