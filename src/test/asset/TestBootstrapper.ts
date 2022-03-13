@@ -11,7 +11,7 @@ import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
 import { CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
-import { CollisionEventTest } from "./script/CollisionEventTset";
+import { CollisionEventTest } from "./script/CollisionEventTest";
 import { Spawner } from "./script/Spawner";
 import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
 import { ContactTest } from "./script/ContactTest";
