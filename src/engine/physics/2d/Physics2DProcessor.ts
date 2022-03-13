@@ -12,6 +12,7 @@ import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import { Collision2DPool } from "./Collision2DPool";
 import { Collision2D } from "./Collision2D";
 
+/** @internal */
 export class ContactListener extends b2.ContactListener {
     private _collision2DPool: Collision2DPool = new Collision2DPool();
     private _physicsProcessor: Physics2DProcessor;
