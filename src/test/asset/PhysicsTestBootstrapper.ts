@@ -2,6 +2,7 @@ import { Vector2, Vector3 } from "three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Color } from "../../engine/render/Color";
+import { EditorCameraController } from "../../engine/script/controller/EditorCameraController";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
 import { RigidBody2D } from "../../engine/script/physics2d/RigidBody2D";
 import { Camera } from "../../engine/script/render/Camera";
@@ -20,6 +21,10 @@ export class PhysicsTestBootstrapper extends Bootstrapper {
                 .withComponent(Camera, c => {
                     c.viewSize = 10;
                     c.backgroundColor = new Color(0.1, 0.1, 0.1);
+                })
+                .withComponent(EditorCameraController, c => {
+                    c.maxViewSize = 20;
+                    c.minViewSize = 5;
                 }))
 
             .withChild(instantiater.buildGameObject("ground", new Vector3(0, -3, 0))
