@@ -1,5 +1,7 @@
-import { CoroutineIterator, GameObject, WaitForSeconds } from "../../..";
+import { CoroutineIterator } from "../../../engine/coroutine/CoroutineIterator";
+import { WaitForSeconds } from "../../../engine/coroutine/YieldInstruction";
 import { Component } from "../../../engine/hierarchy_object/Component";
+import { GameObject } from "../../../engine/hierarchy_object/GameObject";
 
 export class ChangeParentTest extends Component {
     public parent1: GameObject|null = null;

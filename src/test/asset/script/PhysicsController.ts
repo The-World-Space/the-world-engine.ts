@@ -2,6 +2,7 @@ import { Vector2 } from "three";
 import { Component } from "../../../engine/hierarchy_object/Component";
 import { RigidBody2D } from "../../../engine/script/physics2d/RigidBody2D";
 
+/** @internal */
 export class PhysicsController extends Component {
     public override readonly requiredComponents = [RigidBody2D];
     public force = 100;

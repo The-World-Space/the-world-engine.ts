@@ -5,6 +5,7 @@ import { Component } from "../../../engine/hierarchy_object/Component";
 import { GameObject } from "../../../engine/hierarchy_object/GameObject";
 import { PrefabConstructor } from "../../../engine/hierarchy_object/PrefabConstructor";
 
+/** @internal */
 export class Spawner extends Component {
     public prefabCtor: PrefabConstructor|null = null;
     public initSpawnCount = 0;

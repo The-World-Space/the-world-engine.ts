@@ -1,21 +1,18 @@
 import { Vector2, Vector3 } from "three";
-import { CssSpriteAtlasRenderMode } from "../../../engine/script/render/CssSpriteAtlasRenderer";
-import {
-    CssCollideTilemapChunkRenderer,
-    CssTilemapChunkRenderer,
-    ParallaxTranslater,
-    CameraRelativeZaxisSorter,
-    CssSpriteAtlasRenderer,
-    CssSpriteRenderer,
-    TileAtlasItem,
-    CssIframeRenderer,
-    ZaxisSorter,
-    GameObjectBuilder,
-    Prefab,
-    PrefabRef,
-    GridCollider,
-    GridObjectCollideMap
-} from "../../../index";
+import { GameObjectBuilder } from "../../../engine/hierarchy_object/GameObjectBuilder";
+import { Prefab } from "../../../engine/hierarchy_object/Prefab";
+import { PrefabRef } from "../../../engine/hierarchy_object/PrefabRef";
+import { CssCollideTilemapChunkRenderer } from "../../../engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
+import { GridCollider } from "../../../engine/script/grid_physics2d/GridCollider";
+import { GridObjectCollideMap } from "../../../engine/script/grid_physics2d/GridObjectCollideMap";
+import { CssTilemapChunkRenderer } from "../../../engine/script/post_render/CssTilemapChunkRenderer";
+import { ParallaxTranslater } from "../../../engine/script/post_render/ParallaxTranslater";
+import { CameraRelativeZaxisSorter } from "../../../engine/script/render/CameraRelativeZaxisSorter";
+import { CssIframeRenderer } from "../../../engine/script/render/CssIframeRenderer";
+import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "../../../engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteRenderer } from "../../../engine/script/render/CssSpriteRenderer";
+import { TileAtlasItem } from "../../../engine/script/render/CssTilemapRenderer";
+import { ZaxisSorter } from "../../../engine/script/render/ZaxisSorter";
 import SansFightRoomTileAtlas from "../source/room_sanscorridor.png";
 import SansBlack from "../source/Sans black.png";
 import Pillar from "../source/spr_foregroundpillar.png";

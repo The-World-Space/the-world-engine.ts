@@ -1,6 +1,7 @@
 import { Component } from "../../../engine/hierarchy_object/Component";
 import { RigidBody2D } from "../../../engine/script/physics2d/RigidBody2D";
 
+/** @internal */
 export class RigidBodyAttacher extends Component {
     public awake(): void {
         setTimeout(() => {
