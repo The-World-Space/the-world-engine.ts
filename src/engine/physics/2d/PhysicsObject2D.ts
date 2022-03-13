@@ -7,7 +7,7 @@ import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 export interface IPhysicsObject2D {
     readonly gameObject: GameObject;
     readonly body: b2.Body;
-    get rigidBody(): RigidBody2D|null;
+    get rigidbody(): RigidBody2D|null;
     get colliders(): readonly Collider2D[];
     get sharedMaterial(): PhysicsMaterial2D|null;
     setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void;
@@ -89,7 +89,7 @@ export class PhysicsObject2D implements IPhysicsObject2D {
         return this._sharedMaterial;
     }
 
-    public get rigidBody(): RigidBody2D|null {
+    public get rigidbody(): RigidBody2D|null {
         return this._rigidBody;
     }
 

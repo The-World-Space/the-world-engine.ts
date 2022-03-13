@@ -71,7 +71,7 @@ export class Collider2D extends Component {
 
         const filter = Collider2D._filterBuffer;
         const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
-        const rigidBody = physicsObject.rigidBody;
+        const rigidBody = physicsObject.rigidbody;
 
         let layer: number;
         if (this._collisionLayer) {
@@ -124,7 +124,7 @@ export class Collider2D extends Component {
     public set density(value: number) {
         if (this._fixture) {
             const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
-            if (physicsObject && physicsObject.rigidBody && !physicsObject.rigidBody.useAutoMass) {
+            if (physicsObject && physicsObject.rigidbody && !physicsObject.rigidbody.useAutoMass) {
                 throw new Error("You cannot change the density of a collider when the rigid body is not using auto mass.");
             }
         }
