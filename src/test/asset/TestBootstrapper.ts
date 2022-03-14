@@ -77,7 +77,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.edgeRadius = 1;
                 })
                 .withComponent(CollisionEventTest)
-                .withComponent(ContactTest)
+                .withComponent(ContactTest, c => c.enabled = false)
                 .withComponent(PhysicsController)
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;
