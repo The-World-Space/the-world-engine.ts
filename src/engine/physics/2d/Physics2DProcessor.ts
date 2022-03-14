@@ -23,35 +23,53 @@ export class ContactListener extends b2.ContactListener {
     }
 
     public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
-        
-        if (this._physicsProcessor.reuseCollisionCallbacks) {
-            const collsion2d = this._collision2DPool.getInstance();
-            collsion2d.setData(contact);
-
-            const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
-            const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-            
-            collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
-            collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
-
-            this._collision2DPool.release(collsion2d);
+        const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
+        const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+        if (collider2dA.isTrigger || collider2dB.isTrigger) {
+            collider2dA.gameObject.gameObjectEventContainer.invokeOnTriggerEnter2D(collider2dB);
+            collider2dB.gameObject.gameObjectEventContainer.invokeOnTriggerEnter2D(collider2dA);
         } else {
-            const collision2d = new Collision2D();
-            collision2d.setData(contact);
+            if (this._physicsProcessor.reuseCollisionCallbacks) {
+                const collsion2d = this._collision2DPool.getInstance();
+                collsion2d.setData(contact);
+                
+                collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
+                collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
 
-            const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
-            const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
+                this._collision2DPool.release(collsion2d);
+            } else {
+                const collision2d = new Collision2D();
+                collision2d.setData(contact);
 
-            collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
-            collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
+                collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
+                collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
+            }
         }
     }
 
     public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
-        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dB as any);
-        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collider2dA as any);
+        if (collider2dA.isTrigger || collider2dB.isTrigger) {
+            collider2dA.gameObject.gameObjectEventContainer.invokeOnTriggerExit2D(collider2dB);
+            collider2dB.gameObject.gameObjectEventContainer.invokeOnTriggerExit2D(collider2dA);
+        } else {
+            if (this._physicsProcessor.reuseCollisionCallbacks) {
+                const collsion2d = this._collision2DPool.getInstance();
+                collsion2d.setData(contact);
+
+                collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collsion2d);
+                collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collsion2d);
+
+                this._collision2DPool.release(collsion2d);
+            } else {
+                const collision2d = new Collision2D();
+                collision2d.setData(contact);
+
+                collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collision2d);
+                collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collision2d);
+            }
+        }
     }
 }
 
