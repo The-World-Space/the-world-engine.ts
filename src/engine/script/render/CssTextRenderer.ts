@@ -2,13 +2,13 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 import { Color } from "../../render/Color";
 
-export enum TextAlign {
+export const enum TextAlign {
     Left = "left",
     Center = "center",
     Right = "right",
 }
 
-export enum FontWeight {
+export const enum FontWeight {
     Normal = "normal",
     Bold = "bold",
 }

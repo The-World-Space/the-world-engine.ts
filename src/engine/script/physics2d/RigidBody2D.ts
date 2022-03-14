@@ -10,24 +10,24 @@ import { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer
 import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
 import { ContactPoint2D } from "../../physics/2d/ContactPoint2D";
 
-export enum RigidbodyType2D {
+export const enum RigidbodyType2D {
     Dynamic,
     Kinematic,
     Static
 }
 
-export enum CollisionDetectionMode2D {
+export const enum CollisionDetectionMode2D {
     Discrete,
     Continuous
 }
 
-export enum RigidbodySleepMode2D {
+export const enum RigidbodySleepMode2D {
     NeverSleep,
     StartAwake,
     StartAsleep
 }
 
-export enum ForceMode2D {
+export const enum ForceMode2D {
     Force,
     Impulse
 }
