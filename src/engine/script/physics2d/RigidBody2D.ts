@@ -436,6 +436,8 @@ export class RigidBody2D extends Component {
         }
         return colliders.length;
     }
+    
+    private _worldManifold: b2.WorldManifold = new b2.WorldManifold();
 
     public getContacts(out: ContactPoint2D[]): number {
         let insertPos = 0;
@@ -448,14 +450,21 @@ export class RigidBody2D extends Component {
             const manifold = currentContactEdge.contact.GetManifold();
             for (let i = 0; i < manifold.pointCount; i++) {
                 if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
-                out[insertPos].setData(b2Body, currentContactEdge.contact, manifold.points[i]);
+                currentContactEdge.contact.GetWorldManifold(this._worldManifold);
+                out[insertPos].setData(
+                    currentContactEdge.contact,
+                    manifold.points[i],
+                    this._worldManifold.normal,
+                    this._worldManifold.points[i],
+                    this._worldManifold.separations[i]
+                );
                 insertPos += 1;
             }
         }
         return insertPos;
     }
+
     
-    // GetContacts    Retrieves all contact points for all of the Collider(s) attached to this Rigidbody.
     // IsTouching    Checks whether the collider is touching any of the collider(s) attached to this rigidbody or not.
     // IsTouchingLayers    Checks whether any of the collider(s) attached to this rigidbody are touching any colliders on the specified layerMask or not.
     // OverlapCollider    Get a list of all Colliders that overlap all Colliders attached to this Rigidbody2D.

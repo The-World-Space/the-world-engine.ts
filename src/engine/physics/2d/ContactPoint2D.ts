@@ -1,5 +1,6 @@
 import { Vector2 } from "three";
 import * as b2 from "../../../box2d.ts/build/index";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { IPhysicsObject2D } from "./PhysicsObject2D";
@@ -13,7 +14,7 @@ export class ContactPoint2D {
     public otherCollider: Collider2D|null = null;
     public otherRigidbody: RigidBody2D|null = null;
 
-    public relativeVelocity: Vector2 = new Vector2();
+    private _relativeVelocity: Vector2 = new Vector2();
     public point: Vector2 = new Vector2();
     public normal: Vector2 = new Vector2();
     public normalImpulse = 0;
@@ -21,33 +22,28 @@ export class ContactPoint2D {
     public separation = 0;
 
     /** @internal */
-    public setData(body: b2.Body, contact: b2.Contact, manifoldPoint: b2.ManifoldPoint): void {
+    public setData(
+        contact: b2.Contact,
+        manifoldPoint: b2.ManifoldPoint,
+        worldNormal: b2.Vec2,
+        worldPoint: b2.Vec2,
+        separation: number
+    ): void {
         this._contact = contact;
         const fixtureA = contact.GetFixtureA();
         const fixtureB = contact.GetFixtureB();
-        if (fixtureA.GetBody() === body) {
-            this.collider = fixtureA.GetUserData() as Collider2D;
-            this.rigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-            this.otherCollider = fixtureB.GetUserData() as Collider2D;
-            this.otherRigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-        } else {
-            this.collider = fixtureB.GetUserData() as Collider2D;
-            this.rigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-            this.otherCollider = fixtureA.GetUserData() as Collider2D;
-            this.otherRigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-        }
+        this.collider = fixtureA.GetUserData() as Collider2D;
+        this.rigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
+        this.otherCollider = fixtureB.GetUserData() as Collider2D;
+        this.otherRigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
 
-        // this.relativeVelocity = this.rigidbody?.getLinearVelocityFromWorldPoint(this.point) ?? new Vector2();
-        // this.relativeVelocity.sub(this.otherRigidbody?.getLinearVelocityFromWorldPoint(this.point) ?? new Vector2());
+        this._relativeVelocity.set(NaN, NaN);
         
-        const manifold = contact.GetManifold();
-        this.point.set(manifoldPoint.localPoint.x, manifoldPoint.localPoint.y);
-        const localNormal = manifold.localNormal;
-        this.normal.set(localNormal.x, localNormal.y);
+        this.point.set(worldPoint.x, worldPoint.y);
+        this.normal.set(worldNormal.x, worldNormal.y);
         this.normalImpulse = manifoldPoint.normalImpulse;
         this.tangentImpulse = manifoldPoint.tangentImpulse;
-        //this.separation = contact
-        // this.separation = this._contact.GetManifold().m_points[0].m_separation;
+        this.separation = separation;
     }
 
     public get enabled(): boolean {
@@ -56,5 +52,20 @@ export class ContactPoint2D {
 
     public set enabled(value: boolean) {
         this._contact?.SetEnabled(value);
+    }
+    
+    private static tempVec = new b2.Vec2();
+
+    public get relativeVelocity(): ReadonlyVector2 {
+        if (this._contact) {
+            if (isNaN(this._relativeVelocity.x)) {
+                const bodyA = this._contact.GetFixtureA().GetBody();
+                const bodyB = this._contact.GetFixtureB().GetBody();
+                const aVelocity = ContactPoint2D.tempVec.Copy(bodyA.GetLinearVelocity());
+                const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
+                this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
+            }
+        }
+        return this._relativeVelocity;
     }
 }

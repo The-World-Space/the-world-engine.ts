@@ -8,6 +8,7 @@ import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 
 export class Collision2D {
     private _contact: b2.Contact|null = null;
+    private _worldManifold: b2.WorldManifold = new b2.WorldManifold();
 
     private _collider: Collider2D|null = null;
     public rigidbody: RigidBody2D|null = null;
@@ -45,8 +46,39 @@ export class Collision2D {
         return this._otherCollider!;
     }
 
-    public getContacts(_out: ContactPoint2D[]): number {
-        throw new Error("Method not implemented.");
+    public getContacts(out: ContactPoint2D[]): number {
+        if (!this._contact) return 0;
+        let insertPos = 0;
+        const manifold = this._contact.GetManifold();
+        for (let i = 0; i < manifold.pointCount; i++) {
+            if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
+            this._contact.GetWorldManifold(this._worldManifold);
+            out[insertPos].setData(
+                this._contact,
+                manifold.points[i],
+                this._worldManifold.normal,
+                this._worldManifold.points[i],
+                this._worldManifold.separations[i]
+            );
+            insertPos += 1;
+        }
+        return insertPos;
+    }
+
+    public getContact(index: number, out?: ContactPoint2D): ContactPoint2D|null {
+        if (!this._contact) return null;
+        const manifold = this._contact.GetManifold();
+        if (index < 0 || manifold.pointCount <= index) return null;
+        if (!out) out = new ContactPoint2D();
+        this._contact.GetWorldManifold(this._worldManifold);
+        out.setData(
+            this._contact,
+            manifold.points[index],
+            this._worldManifold.normal,
+            this._worldManifold.points[index],
+            this._worldManifold.separations[index]
+        );
+        return out;
     }
 
     public get enabled(): boolean {
