@@ -8,18 +8,18 @@ import { IPhysicsObject2D } from "./PhysicsObject2D";
 export class ContactPoint2D {
     private _contact: b2.Contact|null = null;
 
-    public collider: Collider2D|null = null;
-    public rigidbody: RigidBody2D|null = null;
+    private _collider: Collider2D|null = null;
+    private _rigidbody: RigidBody2D|null = null;
 
-    public otherCollider: Collider2D|null = null;
-    public otherRigidbody: RigidBody2D|null = null;
+    private _otherCollider: Collider2D|null = null;
+    private _otherRigidbody: RigidBody2D|null = null;
 
     private _relativeVelocity: Vector2 = new Vector2();
-    public point: Vector2 = new Vector2();
-    public normal: Vector2 = new Vector2();
-    public normalImpulse = 0;
-    public tangentImpulse = 0;
-    public separation = 0;
+    private _point: Vector2 = new Vector2();
+    private _normal: Vector2 = new Vector2();
+    private _normalImpulse = 0;
+    private _tangentImpulse = 0;
+    private _separation = 0;
 
     /** @internal */
     public setData(
@@ -32,26 +32,38 @@ export class ContactPoint2D {
         this._contact = contact;
         const fixtureA = contact.GetFixtureA();
         const fixtureB = contact.GetFixtureB();
-        this.collider = fixtureA.GetUserData() as Collider2D;
-        this.rigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-        this.otherCollider = fixtureB.GetUserData() as Collider2D;
-        this.otherRigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
+        this._collider = fixtureA.GetUserData() as Collider2D;
+        this._rigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
+        this._otherCollider = fixtureB.GetUserData() as Collider2D;
+        this._otherRigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
 
         this._relativeVelocity.set(NaN, NaN);
         
-        this.point.set(worldPoint.x, worldPoint.y);
-        this.normal.set(worldNormal.x, worldNormal.y);
-        this.normalImpulse = manifoldPoint.normalImpulse;
-        this.tangentImpulse = manifoldPoint.tangentImpulse;
-        this.separation = separation;
+        this._point.set(worldPoint.x, worldPoint.y);
+        this._normal.set(worldNormal.x, worldNormal.y);
+        this._normalImpulse = manifoldPoint.normalImpulse;
+        this._tangentImpulse = manifoldPoint.tangentImpulse;
+        this._separation = separation;
     }
 
     public get enabled(): boolean {
         return this._contact?.IsEnabled() ?? false;
     }
 
-    public set enabled(value: boolean) {
-        this._contact?.SetEnabled(value);
+    public get collider(): Collider2D {
+        return this._collider!;
+    }
+
+    public get rigidbody(): RigidBody2D|null {
+        return this._rigidbody;
+    }
+
+    public get otherCollider(): Collider2D {
+        return this._otherCollider!;
+    }
+
+    public get otherRigidbody(): RigidBody2D|null {
+        return this._otherRigidbody;
     }
     
     private static tempVec = new b2.Vec2();
@@ -67,5 +79,25 @@ export class ContactPoint2D {
             }
         }
         return this._relativeVelocity;
+    }
+
+    public get point(): ReadonlyVector2 {
+        return this._point;
+    }
+
+    public get normal(): ReadonlyVector2 {
+        return this._normal;
+    }
+
+    public get normalImpulse(): number {
+        return this._normalImpulse;
+    }
+
+    public get tangentImpulse(): number {
+        return this._tangentImpulse;
+    }
+
+    public get separation(): number {
+        return this._separation;
     }
 }

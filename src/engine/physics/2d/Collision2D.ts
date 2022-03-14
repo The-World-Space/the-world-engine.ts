@@ -11,12 +11,12 @@ export class Collision2D {
     private _worldManifold: b2.WorldManifold = new b2.WorldManifold();
 
     private _collider: Collider2D|null = null;
-    public rigidbody: RigidBody2D|null = null;
+    private _rigidbody: RigidBody2D|null = null;
 
     private _otherCollider: Collider2D|null = null;
-    public otherRigidbody: RigidBody2D|null = null;
+    private _otherRigidbody: RigidBody2D|null = null;
 
-    public contactCount = 0;
+    private _contactCount = 0;
     private _relativeVelocity: Vector2 = new Vector2();
 
     public setData(contact: b2.Contact) {
@@ -30,11 +30,11 @@ export class Collision2D {
         const bodyB = fixtureB.GetBody();
         
         this._collider = collider2dA;
-        this.rigidbody = (bodyA.GetUserData() as IPhysicsObject2D).rigidbody;
+        this._rigidbody = (bodyA.GetUserData() as IPhysicsObject2D).rigidbody;
         this._otherCollider = collider2dB;
-        this.otherRigidbody = (bodyB.GetUserData() as IPhysicsObject2D).rigidbody;
+        this._otherRigidbody = (bodyB.GetUserData() as IPhysicsObject2D).rigidbody;
 
-        this.contactCount = contact.GetManifold().pointCount;
+        this._contactCount = contact.GetManifold().pointCount;
         this._relativeVelocity.set(NaN, NaN);
     }
 
@@ -42,8 +42,20 @@ export class Collision2D {
         return this._collider!;
     }
 
+    public get rigidbody(): RigidBody2D|null {
+        return this._rigidbody;
+    }
+
     public get otherCollider(): Collider2D {
         return this._otherCollider!;
+    }
+
+    public get otherRigidbody(): RigidBody2D|null {
+        return this._otherRigidbody;
+    }
+
+    public get contactCount(): number {
+        return this._contactCount;
     }
 
     public getContacts(out: ContactPoint2D[]): number {

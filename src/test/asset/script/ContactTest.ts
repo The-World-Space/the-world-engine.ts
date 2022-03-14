@@ -24,7 +24,6 @@ export class ContactTest extends Component {
             for (let i = 0; i < len; i++) {
                 const contact = this.contactBuffer[i];
                 console.log(`${contact.rigidbody?.gameObject.name} - ${contact.otherRigidbody?.gameObject.name}`, contact.normal.x, contact.normal.y);
-                contact.enabled = false;
             }
         }
     };
