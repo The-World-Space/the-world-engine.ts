@@ -45,7 +45,7 @@ export { ContactPoint2D } from "./engine/physics/2d/ContactPoint2D";
 export type { IPhysics2D } from "./engine/physics/2d/IPhysics2D";
 export { PhysicsMaterial2D } from "./engine/physics/2d/PhysicsMaterial2D";
 export type { CollisionLayer, CollisionLayerParm } from "./engine/physics/CollisionLayer";
-export type { CollisionLayerConst } from "./engine/physics/CollisionLayerConst";
+export { CollisionLayerConst } from "./engine/physics/CollisionLayerConst";
 export type { DefaultLayerName } from "./engine/physics/CollisionLayerConstType";
 export { CollisionLayerMaskConverter } from "./engine/physics/CollisionLayerMaskConverter";
 
