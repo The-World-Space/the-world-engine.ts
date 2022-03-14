@@ -98,6 +98,7 @@ export class ContactListener extends b2.ContactListener {
     }
 }
 
+/** @internal */
 export class Physics2DProcessor implements IPhysics2D {
     //configuration variables
     private _defaultMaterial: PhysicsMaterial2D|null = null;

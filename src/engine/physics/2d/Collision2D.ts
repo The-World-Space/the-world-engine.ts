@@ -19,6 +19,7 @@ export class Collision2D {
     private _contactCount = 0;
     private _relativeVelocity: Vector2 = new Vector2();
 
+    /** @internal */
     public setData(contact: b2.Contact) {
         this._contact = contact;
         

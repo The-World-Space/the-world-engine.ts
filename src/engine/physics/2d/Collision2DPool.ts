@@ -1,5 +1,6 @@
 import { Collision2D } from "./Collision2D";
 
+/** @internal */
 export class Collision2DPool {
     private _pool: Collision2D[] = [];
 

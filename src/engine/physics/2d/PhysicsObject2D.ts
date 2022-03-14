@@ -4,6 +4,7 @@ import { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 
+/** @internal */
 export interface IPhysicsObject2D {
     readonly gameObject: GameObject;
     readonly body: b2.Body;
@@ -13,6 +14,7 @@ export interface IPhysicsObject2D {
     setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void;
 }
 
+/** @internal */
 export class PhysicsObject2D implements IPhysicsObject2D {
     public readonly gameObject: GameObject;
     public readonly body: b2.Body;

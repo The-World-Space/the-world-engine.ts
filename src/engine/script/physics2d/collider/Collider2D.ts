@@ -68,6 +68,7 @@ export class Collider2D extends Component {
 
     private static readonly _filterBuffer = new b2.Filter();
 
+    /** @internal */
     public updateFixtureFilter(): void {
         if (!this._fixture) return;
 

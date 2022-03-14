@@ -39,8 +39,16 @@ export type { WritableVector2 } from "./engine/math/WritableVector2";
 export type { WritableVector3 } from "./engine/math/WritableVector3";
 export type { WritableVector4 } from "./engine/math/WritableVector4";
 
-//physics2d
+//physics
+export { Collision2D } from "./engine/physics/2d/Collision2D";
+export { Collision2DPool } from "./engine/physics/2d/Collision2DPool";
+export { ContactPoint2D } from "./engine/physics/2d/ContactPoint2D";
 export type { IPhysics2D } from "./engine/physics/2d/IPhysics2D";
+export { PhysicsMaterial2D } from "./engine/physics/2d/PhysicsMaterial2D";
+export type { CollisionLayer, CollisionLayerParm } from "./engine/physics/CollisionLayer";
+export type { CollisionLayerConst } from "./engine/physics/CollisionLayerConst";
+export type { DefaultLayerName } from "./engine/physics/CollisionLayerConstType";
+export { CollisionLayerMaskConverter } from "./engine/physics/CollisionLayerMaskConverter";
 
 //render
 export { CameraContainer } from "./engine/render/CameraContainer";
@@ -84,6 +92,11 @@ export type { IGridPositionable } from "./engine/script/helper/IGridPositionable
 //input
 export { GridPointer } from "./engine/script/input/GridPointer";
 export { PointerGridEvent, PointerGridInputListener } from "./engine/script/input/PointerGridInputListener";
+
+//physics2d
+export { RigidBody2D, RigidbodyType2D, CollisionDetectionMode2D, RigidbodySleepMode2D, ForceMode2D } from "./engine/script/physics2d/RigidBody2D";
+export { Collider2D } from "./engine/script/physics2d/collider/Collider2D";
+export { BoxCollider2D } from "./engine/script/physics2d/collider/BoxCollider2D";
 
 //grid_physics2d
 export { CssCollideTilemapChunkRenderer } from "./engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
