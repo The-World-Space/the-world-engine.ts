@@ -463,7 +463,6 @@ export class RigidBody2D extends Component {
         }
         return insertPos;
     }
-
     
     // IsTouching    Checks whether the collider is touching any of the collider(s) attached to this rigidbody or not.
     // IsTouchingLayers    Checks whether any of the collider(s) attached to this rigidbody are touching any colliders on the specified layerMask or not.
