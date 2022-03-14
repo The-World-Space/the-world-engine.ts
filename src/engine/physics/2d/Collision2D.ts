@@ -7,7 +7,7 @@ import { IPhysicsObject2D } from "./PhysicsObject2D";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 
 export class Collision2D {
-    public contact: b2.Contact|null = null;
+    private _contact: b2.Contact|null = null;
 
     private _collider: Collider2D|null = null;
     public rigidbody: RigidBody2D|null = null;
@@ -19,7 +19,7 @@ export class Collision2D {
     private _relativeVelocity: Vector2 = new Vector2();
 
     public setData(contact: b2.Contact) {
-        this.contact = contact;
+        this._contact = contact;
         
         const fixtureA = contact.GetFixtureA();
         const fixtureB = contact.GetFixtureB();
@@ -50,20 +50,20 @@ export class Collision2D {
     }
 
     public get enabled(): boolean {
-        return this.contact?.IsEnabled() ?? false;
+        return this._contact?.IsEnabled() ?? false;
     }
 
     public set enabled(value: boolean) {
-        this.contact?.SetEnabled(value);
+        this._contact?.SetEnabled(value);
     }
 
     private static tempVec = new b2.Vec2();
 
     public get relativeVelocity(): ReadonlyVector2 {
-        if (this.contact) {
+        if (this._contact) {
             if (isNaN(this._relativeVelocity.x)) {
-                const bodyA = this.contact.GetFixtureA().GetBody();
-                const bodyB = this.contact.GetFixtureB().GetBody();
+                const bodyA = this._contact.GetFixtureA().GetBody();
+                const bodyB = this._contact.GetFixtureB().GetBody();
                 const aVelocity = Collision2D.tempVec.Copy(bodyA.GetLinearVelocity());
                 const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
                 this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
