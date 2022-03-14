@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import { Camera as ThreeCamera, PerspectiveCamera as ThreePerspectiveCamera, OrthographicCamera as ThreeOrthographicCamera } from "three";
 import { Transform } from "../../../engine/hierarchy_object/Transform";
 import { Component } from "../../hierarchy_object/Component";
 import { CameraInfo } from "../../render/CameraInfo";
@@ -10,7 +10,7 @@ export const enum CameraType {
 }
 
 export class Camera extends Component {
-    private _camera: THREE.Camera|null = null;
+    private _camera: ThreeCamera|null = null;
     private _cameraType: CameraType = CameraType.Orthographic;
     private _fov = 75;
     private _viewSize = 5;
@@ -40,7 +40,7 @@ export class Camera extends Component {
                 this._camera = this.createNewPerspectiveCamera();
                 this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
             } else {
-                if (this._camera instanceof THREE.PerspectiveCamera) {
+                if (this._camera instanceof ThreePerspectiveCamera) {
                     this._camera.aspect = aspectRatio;
                     this._camera.fov = this._fov;
                     this._camera.near = this._near;
@@ -57,7 +57,7 @@ export class Camera extends Component {
                 this._camera = this.createNewOrthographicCamera();
                 this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
             } else {
-                if (this._camera instanceof THREE.OrthographicCamera) {
+                if (this._camera instanceof ThreeOrthographicCamera) {
                     const viewSizeScalar = this._viewSize;
                     this._camera.left = -viewSizeScalar * aspectRatio;
                     this._camera.right = viewSizeScalar * aspectRatio;
@@ -80,9 +80,9 @@ export class Camera extends Component {
         this.engine.cameraContainer.addCamera(this._camera, new CameraInfo(this._priority, this._backgroudColor));
     }
 
-    private createNewPerspectiveCamera(): THREE.PerspectiveCamera {
+    private createNewPerspectiveCamera(): ThreePerspectiveCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
-        const camera = new THREE.PerspectiveCamera(
+        const camera = new ThreePerspectiveCamera(
             this._fov,
             aspectRatio,
             this._near,
@@ -91,10 +91,10 @@ export class Camera extends Component {
         return camera;
     }
 
-    private createNewOrthographicCamera(): THREE.OrthographicCamera {
+    private createNewOrthographicCamera(): ThreeOrthographicCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
         const viewSizeScalar = this._viewSize;
-        const camera = new THREE.OrthographicCamera(
+        const camera = new ThreeOrthographicCamera(
             -viewSizeScalar * aspectRatio,
             viewSizeScalar * aspectRatio,
             viewSizeScalar,
@@ -116,10 +116,10 @@ export class Camera extends Component {
 
     private onScreenResize(width: number, height: number): void {
         const aspectRatio = width / height;
-        if (this._camera instanceof THREE.PerspectiveCamera) {
+        if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.aspect = aspectRatio;
             this._camera.updateProjectionMatrix();
-        } else if (this._camera instanceof THREE.OrthographicCamera) {
+        } else if (this._camera instanceof ThreeOrthographicCamera) {
             const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
             this._camera.right = viewSizeScalar * aspectRatio;
@@ -148,7 +148,7 @@ export class Camera extends Component {
     public set fov(value: number) {
         if (this._fov === value) return;
         this._fov = value;
-        if (this._camera instanceof THREE.PerspectiveCamera) {
+        if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.fov = value;
             this._camera.updateProjectionMatrix();
         }
@@ -161,7 +161,7 @@ export class Camera extends Component {
     public set viewSize(value: number) {
         if (this._viewSize === value) return;
         this._viewSize = value;
-        if (this._camera instanceof THREE.OrthographicCamera) {
+        if (this._camera instanceof ThreeOrthographicCamera) {
             const aspectRatio = this.engine.screen.width / this.engine.screen.height;
             const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
@@ -179,7 +179,7 @@ export class Camera extends Component {
     public set near(value: number) {
         if (this._near === value) return;
         this._near = value;
-        if (this._camera instanceof THREE.PerspectiveCamera) {
+        if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.near = value;
             this._camera.updateProjectionMatrix();
         }
@@ -192,7 +192,7 @@ export class Camera extends Component {
     public set far(value: number) {
         if (this._far === value) return;
         this._far = value;
-        if (this._camera instanceof THREE.PerspectiveCamera) {
+        if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.far = value;
             this._camera.updateProjectionMatrix();
         }

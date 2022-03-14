@@ -1,15 +1,16 @@
-import * as b2 from "../../../../box2d.ts/build/index";
+import type { Fixture, Shape } from "../../../../box2d.ts/build/index";
+import { FixtureDef, Filter } from "../../../../box2d.ts/build/index";
 import { Vector2 } from "three";
-import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import { Component } from "../../../hierarchy_object/Component";
-import { WritableVector2 } from "../../../math/WritableVector2";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
-import { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
-import { IPhysicsObject2D } from "../../../physics/2d/PhysicsObject2D";
 import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
+import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../../math/WritableVector2";
+import type { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
+import type { IPhysicsObject2D } from "../../../physics/2d/PhysicsObject2D";
 
 export class Collider2D extends Component {
-    private _fixture: b2.Fixture|null = null;
+    private _fixture: Fixture|null = null;
     private _density = 1;
     private _material: PhysicsMaterial2D|null = null;
     private _isTrigger = false;
@@ -34,7 +35,7 @@ export class Collider2D extends Component {
 
     private createFixture(): void {
         if (this._fixtureCreated) return;
-        const fixtureDef = new b2.FixtureDef();
+        const fixtureDef = new FixtureDef();
         fixtureDef.userData = this;
         fixtureDef.density = this._density;
         fixtureDef.isSensor = this._isTrigger;
@@ -66,7 +67,7 @@ export class Collider2D extends Component {
         }
     }
 
-    private static readonly _filterBuffer = new b2.Filter();
+    private static readonly _filterBuffer = new Filter();
 
     /** @internal */
     public updateFixtureFilter(): void {
@@ -116,7 +117,7 @@ export class Collider2D extends Component {
         }
     };
 
-    protected createShape(): b2.Shape {
+    protected createShape(): Shape {
         throw new Error("You should not use Collider2D directly but one of its subclasses. e.g. BoxCollider2D");
     }
     

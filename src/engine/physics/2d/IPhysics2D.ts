@@ -1,6 +1,6 @@
-import { Vector2 } from "three";
-import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
-import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
+import type { Vector2 } from "three";
+import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
+import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 
 export interface IPhysics2D {
     get gravity(): Vector2;

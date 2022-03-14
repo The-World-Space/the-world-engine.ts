@@ -1,4 +1,4 @@
-import * as THREE from "three";
+import { Scene as ThreeScene } from "three";
 import { GameObject } from "./GameObject";
 import { GameObjectBuilder } from "./GameObjectBuilder";
 
@@ -6,7 +6,7 @@ import { GameObjectBuilder } from "./GameObjectBuilder";
  * scene is a container for all game objects
  * do not drive this class
  */
-export class Scene extends THREE.Scene {
+export class Scene extends ThreeScene {
     /** @internal */
     public constructor() {
         super();

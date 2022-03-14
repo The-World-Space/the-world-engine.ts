@@ -1,14 +1,15 @@
-import * as b2 from "../../../box2d.ts/build/index";
+import type { Body } from "../../../box2d.ts/build/index";
+import { BodyType, BodyDef, MassData, Vec2, WorldManifold } from "../../../box2d.ts/build/index";
 import { Vector2 } from "three";
 import { Component } from "../../hierarchy_object/Component";
-import { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../math/WritableVector2";
-import { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
-import { Collider2D } from "./collider/Collider2D";
-import { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer";
 import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
 import { ContactPoint2D } from "../../physics/2d/ContactPoint2D";
+import type { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
+import type { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
+import type { Collider2D } from "./collider/Collider2D";
+import type { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer";
 
 export const enum RigidbodyType2D {
     Dynamic,
@@ -36,9 +37,9 @@ export class RigidBody2D extends Component {
     public override readonly disallowMultipleComponent = true;
 
     private _physicsObject: IPhysicsObject2D|null = null;
-    private _body: b2.Body|null = null;
+    private _body: Body|null = null;
 
-    private _bodyType: b2.BodyType = b2.BodyType.b2_dynamicBody; // Body Type
+    private _bodyType: BodyType = BodyType.b2_dynamicBody; // Body Type
     // Material
     private _simulated = true; // Simulated
     private _useAutoMass = false; // https://stackoverflow.com/questions/14004179/box2d-set-mass-on-a-figure
@@ -61,7 +62,7 @@ export class RigidBody2D extends Component {
     public awake(): void {
         if (this._physicsObject) return;
 
-        const bodyDef = new b2.BodyDef();
+        const bodyDef = new BodyDef();
         bodyDef.userData = this;
         bodyDef.type = this._bodyType;
         bodyDef.enabled = this._simulated;
@@ -130,12 +131,12 @@ export class RigidBody2D extends Component {
         return this._physicsObject!;
     }
 
-    private getB2Body(): b2.Body {
+    private getB2Body(): Body {
         if (!this._body) this.awake();
         return this._body!;
     }
     
-    private readonly _massData: b2.MassData = new b2.MassData();
+    private readonly _massData: MassData = new MassData();
 
     private updateMassData(): void {
         if (!this._body) return;
@@ -159,11 +160,11 @@ export class RigidBody2D extends Component {
 
     public get bodyType(): RigidbodyType2D {
         switch (this._bodyType) {
-        case b2.BodyType.b2_staticBody:
+        case BodyType.b2_staticBody:
             return RigidbodyType2D.Static;
-        case b2.BodyType.b2_kinematicBody:
+        case BodyType.b2_kinematicBody:
             return RigidbodyType2D.Kinematic;
-        case b2.BodyType.b2_dynamicBody:
+        case BodyType.b2_dynamicBody:
             return RigidbodyType2D.Dynamic;
         }
         throw new Error("Unknown body type");
@@ -172,13 +173,13 @@ export class RigidBody2D extends Component {
     public set bodyType(value: RigidbodyType2D) {
         switch (value) {
         case RigidbodyType2D.Dynamic:
-            this._bodyType = b2.BodyType.b2_dynamicBody;
+            this._bodyType = BodyType.b2_dynamicBody;
             break;
         case RigidbodyType2D.Kinematic:
-            this._bodyType = b2.BodyType.b2_kinematicBody;
+            this._bodyType = BodyType.b2_kinematicBody;
             break;
         case RigidbodyType2D.Static:
-            this._bodyType = b2.BodyType.b2_staticBody;
+            this._bodyType = BodyType.b2_staticBody;
             break;
         }
     }
@@ -348,7 +349,7 @@ export class RigidBody2D extends Component {
         return this.getPhysicsObject().colliders.length;
     }
 
-    private readonly _vec2Buffer = new b2.Vec2();
+    private readonly _vec2Buffer = new Vec2();
 
     public addForce(force: ReadonlyVector2, mode: ForceMode2D = ForceMode2D.Force): void {
         const body = this.getB2Body();
@@ -439,7 +440,7 @@ export class RigidBody2D extends Component {
         return colliders.length;
     }
     
-    private _worldManifold: b2.WorldManifold = new b2.WorldManifold();
+    private _worldManifold: WorldManifold = new WorldManifold();
 
     public getContacts(out: ContactPoint2D[]): number {
         let insertPos = 0;

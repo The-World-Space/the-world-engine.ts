@@ -1,14 +1,15 @@
-import * as b2 from "../../../box2d.ts/build/index";
+import type { Contact } from "../../../box2d.ts/build/index";
+import { WorldManifold, Vec2 } from "../../../box2d.ts/build/index";
 import { Vector2 } from "three";
-import { Collider2D } from "../../script/physics2d/collider/Collider2D";
-import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { ContactPoint2D } from "./ContactPoint2D";
-import { IPhysicsObject2D } from "./PhysicsObject2D";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
+import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
+import type { IPhysicsObject2D } from "./PhysicsObject2D";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 
 export class Collision2D {
-    private _contact: b2.Contact|null = null;
-    private _worldManifold: b2.WorldManifold = new b2.WorldManifold();
+    private _contact: Contact|null = null;
+    private _worldManifold: WorldManifold = new WorldManifold();
 
     private _collider: Collider2D|null = null;
     private _rigidbody: RigidBody2D|null = null;
@@ -20,7 +21,7 @@ export class Collision2D {
     private _relativeVelocity: Vector2 = new Vector2();
 
     /** @internal */
-    public setData(contact: b2.Contact) {
+    public setData(contact: Contact) {
         this._contact = contact;
         
         const fixtureA = contact.GetFixtureA();
@@ -102,7 +103,7 @@ export class Collision2D {
         this._contact?.SetEnabled(value);
     }
 
-    private static tempVec = new b2.Vec2();
+    private static tempVec = new Vec2();
 
     public get relativeVelocity(): ReadonlyVector2 {
         if (this._contact) {

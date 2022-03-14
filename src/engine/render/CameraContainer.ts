@@ -1,6 +1,6 @@
 import { Set } from "js-sdsl";
 import { SetType } from "js-sdsl/dist/esm/Set/Set";
-import * as THREE from "three";
+import { Camera as ThreeCamera } from "three";
 import { CameraInfo } from "./CameraInfo";
 import { Color } from "./Color";
 
@@ -9,9 +9,9 @@ import { Color } from "./Color";
  * do not drive this class
  */
 export class CameraContainer {
-    private _currentCameraInfo: {camera: THREE.Camera, info: CameraInfo}|null = null; 
-    private _cameraInfoMap: Map<THREE.Camera, CameraInfo>;
-    private _cameraQueue: SetType<{camera: THREE.Camera, info: CameraInfo}>;
+    private _currentCameraInfo: {camera: ThreeCamera, info: CameraInfo}|null = null; 
+    private _cameraInfoMap: Map<ThreeCamera, CameraInfo>;
+    private _cameraQueue: SetType<{camera: ThreeCamera, info: CameraInfo}>;
     private _onChangeBackgroundColor: (color: Color) => void;
 
     /** @internal */
@@ -29,7 +29,7 @@ export class CameraContainer {
     /**
      * get current render camera
      */
-    public get camera(): THREE.Camera|null {
+    public get camera(): ThreeCamera|null {
         return this._currentCameraInfo?.camera ?? null;
     }
 
@@ -48,7 +48,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public addCamera(camera: THREE.Camera, info: CameraInfo): void {
+    public addCamera(camera: ThreeCamera, info: CameraInfo): void {
         this._cameraInfoMap.set(camera, info);
         this._cameraQueue.insert({camera, info});
         this.setCamera();
@@ -60,7 +60,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public removeCamera(camera: THREE.Camera): void {
+    public removeCamera(camera: ThreeCamera): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         this._cameraQueue.eraseElementByValue({camera, info});
@@ -75,7 +75,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public changeCameraPriority(camera: THREE.Camera, priority: number): void {
+    public changeCameraPriority(camera: ThreeCamera, priority: number): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         this._cameraQueue.eraseElementByValue({camera, info});
@@ -91,7 +91,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public changeCameraBackgroundColor(camera: THREE.Camera, color: Color): void {
+    public changeCameraBackgroundColor(camera: ThreeCamera, color: Color): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         info.backgroundColor = color;

@@ -1,13 +1,13 @@
 /**
  * Based on http://www.emagix.net/academic/mscs-project/item/camera-sync-with-css3-and-webgl-threejs
  */
-import * as THREE from "three";
+import { Camera, Matrix4, Object3D, Quaternion, Scene, Vector3 } from "three";
 
-const _position = new THREE.Vector3();
-const _quaternion = new THREE.Quaternion();
-const _scale = new THREE.Vector3();
-const _matrix = new THREE.Matrix4();
-const _matrix2 = new THREE.Matrix4();
+const _position = new Vector3();
+const _quaternion = new Quaternion();
+const _scale = new Vector3();
+const _matrix = new Matrix4();
+const _matrix2 = new Matrix4();
 
 /** @internal */
 export class OptimizedCSS3DRenderer {
@@ -48,7 +48,7 @@ export class OptimizedCSS3DRenderer {
         };
     }
 
-    public render(renderObjects: Set<THREE.Object3D>, scene: THREE.Scene, camera: THREE.Camera): void {
+    public render(renderObjects: Set<Object3D>, scene: Scene, camera: Camera): void {
         const fov = camera.projectionMatrix.elements[5] * this._heightHalf;
         if (this._cache.camera.fov !== fov) {
             this.domElement.style.perspective = (camera as any).isPerspectiveCamera ? fov + "px" : "";
@@ -98,7 +98,7 @@ export class OptimizedCSS3DRenderer {
         return Math.abs(value) < 1e-10 ? 0 : value;
     }
 
-    private getCameraCSSMatrix(matrix: THREE.Matrix4): string {
+    private getCameraCSSMatrix(matrix: Matrix4): string {
         const m = matrix.elements;
         const ep = this.epsilon;
         return "matrix3d(" + ep(m[0 ]) + "," + ep(-m[1 ]) + "," + ep(m[2 ]) + "," + ep(m[3 ]) + ","
@@ -107,7 +107,7 @@ export class OptimizedCSS3DRenderer {
                            + ep(m[12]) + "," + ep(-m[13]) + "," + ep(m[14]) + "," + ep(m[15]) + ")";
     }
 
-    private getObjectCSSMatrix(matrix: THREE.Matrix4): string {
+    private getObjectCSSMatrix(matrix: Matrix4): string {
         const m = matrix.elements;
         const ep = this.epsilon;
         const matrix3d = "matrix3d(" + ep(m[0 ]) + "," + ep(m[1 ]) + "," + ep(m[2 ]) + "," + ep(m[3 ])
@@ -117,7 +117,7 @@ export class OptimizedCSS3DRenderer {
         return "translate(-50%,-50%)" + matrix3d;
     }
 
-    private renderObject(object: any, scene: THREE.Scene, camera: THREE.Camera): void {
+    private renderObject(object: any, scene: Scene, camera: Camera): void {
         if (object.isCSS3DObject) {
             object.onBeforeRender(this, scene, camera);
             let style;

@@ -1,10 +1,11 @@
-import * as b2 from "../../../../box2d.ts/build/index";
+import type { Shape } from "../../../../box2d.ts/build/index";
+import { Vec2, PolygonShape } from "../../../../box2d.ts/build/index";
 import { Vector2, Vector3 } from "three";
 import { Collider2D } from "./Collider2D";
 import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
-import { GameObject } from "../../../hierarchy_object/GameObject";
-import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../../math/WritableVector2";
+import type { GameObject } from "../../../hierarchy_object/GameObject";
+import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../../math/WritableVector2";
 
 export class BoxCollider2D extends Collider2D {
     private _size: Vector2 = new Vector2(1, 1);
@@ -41,10 +42,10 @@ export class BoxCollider2D extends Collider2D {
         }
     }
 
-    private _b2Vector = new b2.Vec2();
+    private _b2Vector = new Vec2();
 
-    protected override createShape(): b2.Shape {
-        const shape = new b2.PolygonShape();
+    protected override createShape(): Shape {
+        const shape = new PolygonShape();
         shape.SetAsBox(
             this._size.x / 2,
             this._size.y / 2,

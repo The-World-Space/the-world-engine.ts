@@ -1,19 +1,42 @@
-import * as b2 from "../../../box2d.ts/build/index";
+import type {
+    Contact as B2Contact,
+    Fixture as B2Fixture,
+    FixtureDef as B2FixtureDef,
+    Manifold as B2Manifold,
+    Shape as B2Shape,
+} from "../../../box2d.ts/build/index";
+import {
+    angularSleepTolerance,
+    baumgarte,
+    linearSleepTolerance,
+    maxAngularCorrection,
+    maxLinearCorrection,
+    maxRotation,
+    maxTranslation,
+    timeToSleep,
+    toiBaumgarte,
+    BodyDef as B2BodyDef,
+    BodyType as B2BodyType,
+    ContactListener as B2ContactListener,
+    Vec2 as B2Vec2,
+    World as B2World
+} from "../../../box2d.ts/build/index";
 import { Vector2 } from "three";
-import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
-import { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
-import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
-import { IPhysics2D } from "./IPhysics2D";
-import { DeepReadonly } from "../../type/DeepReadonly";
-import { GameObject } from "../../hierarchy_object/GameObject";
-import { IPhysicsObject2D, PhysicsObject2D } from "./PhysicsObject2D";
-import { Collider2D } from "../../script/physics2d/collider/Collider2D";
+import { PhysicsObject2D } from "./PhysicsObject2D";
 import { Collision2DPool } from "./Collision2DPool";
 import { Collision2D } from "./Collision2D";
+import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
+import type { DeepReadonly } from "../../type/DeepReadonly";
+import type { GameObject } from "../../hierarchy_object/GameObject";
+import type { IPhysics2D } from "./IPhysics2D";
+import type { IPhysicsObject2D } from "./PhysicsObject2D";
+import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
+import type { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
+import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 
 /** @internal */
-export class ContactListener extends b2.ContactListener {
+export class ContactListener extends B2ContactListener {
     private _collision2DPool: Collision2DPool = new Collision2DPool();
     private _physicsProcessor: Physics2DProcessor;
 
@@ -22,7 +45,7 @@ export class ContactListener extends b2.ContactListener {
         this._physicsProcessor = physicsProcessor;
     }
 
-    public override BeginContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
+    public override BeginContact(contact: B2Contact<B2Shape, B2Shape>): void {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
         if (collider2dA.isTrigger || collider2dB.isTrigger) {
@@ -48,7 +71,7 @@ export class ContactListener extends b2.ContactListener {
         }
     }
 
-    public override EndContact(contact: b2.Contact<b2.Shape, b2.Shape>): void {
+    public override EndContact(contact: B2Contact<B2Shape, B2Shape>): void {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
         if (collider2dA.isTrigger || collider2dB.isTrigger) {
@@ -73,7 +96,7 @@ export class ContactListener extends b2.ContactListener {
         }
     }
 
-    public override PreSolve(contact: b2.Contact<b2.Shape, b2.Shape>, _oldManifold: b2.Manifold): void {
+    public override PreSolve(contact: B2Contact<B2Shape, B2Shape>, _oldManifold: B2Manifold): void {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
         if (collider2dA.isTrigger || collider2dB.isTrigger) {
@@ -117,7 +140,7 @@ export class Physics2DProcessor implements IPhysics2D {
     });
 
     //engine internal variables
-    private readonly _world: b2.World = new b2.World(new b2.Vec2(0, -9.81));
+    private readonly _world: B2World = new B2World(new B2Vec2(0, -9.81));
     private readonly _gameObjectToBodyMap = new Map<GameObject, PhysicsObject2D>();
     public readonly collisionPool: Collision2DPool = new Collision2DPool();
 
@@ -204,7 +227,7 @@ export class Physics2DProcessor implements IPhysics2D {
      * bodyDef.userData must not be set.
      * @internal
      */
-    public addRigidBody(gameObject: GameObject, rigidBody: RigidBody2D, bodyDef: b2.BodyDef): IPhysicsObject2D {
+    public addRigidBody(gameObject: GameObject, rigidBody: RigidBody2D, bodyDef: B2BodyDef): IPhysicsObject2D {
         let physicsObject = this._gameObjectToBodyMap.get(gameObject);
         if (!physicsObject) {
             physicsObject = new PhysicsObject2D(
@@ -242,9 +265,9 @@ export class Physics2DProcessor implements IPhysics2D {
         physicsObject.removeRigidBody();
     }
 
-    private createColliderDefaultBodyDef(gameObject: GameObject): b2.BodyDef {
-        const bodyDef = new b2.BodyDef();
-        bodyDef.type = b2.BodyType.b2_kinematicBody;
+    private createColliderDefaultBodyDef(gameObject: GameObject): B2BodyDef {
+        const bodyDef = new B2BodyDef();
+        bodyDef.type = B2BodyType.b2_kinematicBody;
         bodyDef.position.x = gameObject.transform.position.x;
         bodyDef.position.y = gameObject.transform.position.y;
         bodyDef.angle = gameObject.transform.eulerAngles.z;
@@ -252,7 +275,7 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     /** @internal */
-    public addCollider(gameObject: GameObject, collider: Collider2D, fixturedef: b2.FixtureDef): b2.Fixture {
+    public addCollider(gameObject: GameObject, collider: Collider2D, fixturedef: B2FixtureDef): B2Fixture {
         let physicsObject = this._gameObjectToBodyMap.get(gameObject);
         if (!physicsObject) {
             physicsObject = new PhysicsObject2D(
@@ -266,7 +289,7 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     /** @internal */
-    public removeCollider(gameObject: GameObject, collider: Collider2D, fixture: b2.Fixture): void {
+    public removeCollider(gameObject: GameObject, collider: Collider2D, fixture: B2Fixture): void {
         const physicsObject = this._gameObjectToBodyMap.get(gameObject);
         if (!physicsObject) throw new Error("PhysicsObject2D not found");
         physicsObject.removeCollider(collider, fixture);
@@ -278,7 +301,7 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     public set gravity(value: Vector2) {
-        this._world.SetGravity(new b2.Vec2(value.x, value.y));
+        this._world.SetGravity(new B2Vec2(value.x, value.y));
     }
 
     public get defaultMaterial(): PhysicsMaterial2D|null {
@@ -310,39 +333,39 @@ export class Physics2DProcessor implements IPhysics2D {
     // }
 
     public get maxLinearCorrection(): number {
-        return b2.maxLinearCorrection;
+        return maxLinearCorrection;
     }
 
     public get maxAngularCorrection(): number {
-        return b2.maxAngularCorrection;
+        return maxAngularCorrection;
     }
 
     public get maxTranslationSpeed(): number {
-        return b2.maxTranslation;
+        return maxTranslation;
     }
 
     public get maxRotationSpeed(): number {
-        return b2.maxRotation;
+        return maxRotation;
     }
 
     public get baumgarteScale(): number {
-        return b2.baumgarte;
+        return baumgarte;
     }
 
     public get baumgarteTimeOfImpactScale(): number {
-        return b2.toiBaumgarte;
+        return toiBaumgarte;
     }
 
     public get timeToSleep(): number {
-        return b2.timeToSleep;
+        return timeToSleep;
     }
 
     public get linearSleepTolerance(): number {
-        return b2.linearSleepTolerance;
+        return linearSleepTolerance;
     }
 
     public get angularSleepTolerance(): number {
-        return b2.angularSleepTolerance;
+        return angularSleepTolerance;
     }
 
     // for performance reasons, we don't use this get set method

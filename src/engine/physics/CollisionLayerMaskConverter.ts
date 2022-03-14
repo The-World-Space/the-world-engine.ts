@@ -1,4 +1,4 @@
-import { CollisionLayer, CollisionLayerParm } from "./CollisionLayer";
+import type { CollisionLayer, CollisionLayerParm } from "./CollisionLayer";
 
 export class CollisionLayerMaskConverter {
     private readonly _strCategory: Map<string, number>; //key: layerName value: layer

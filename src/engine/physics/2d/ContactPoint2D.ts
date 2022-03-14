@@ -1,12 +1,13 @@
+import type { Contact } from "../../../box2d.ts/build/index";
+import { ManifoldPoint, Vec2 } from "../../../box2d.ts/build/index";
 import { Vector2 } from "three";
-import * as b2 from "../../../box2d.ts/build/index";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { Collider2D } from "../../script/physics2d/collider/Collider2D";
-import { RigidBody2D } from "../../script/physics2d/RigidBody2D";
-import { IPhysicsObject2D } from "./PhysicsObject2D";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
+import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
+import type { IPhysicsObject2D } from "./PhysicsObject2D";
 
 export class ContactPoint2D {
-    private _contact: b2.Contact|null = null;
+    private _contact: Contact|null = null;
 
     private _collider: Collider2D|null = null;
     private _rigidbody: RigidBody2D|null = null;
@@ -23,10 +24,10 @@ export class ContactPoint2D {
 
     /** @internal */
     public setData(
-        contact: b2.Contact,
-        manifoldPoint: b2.ManifoldPoint,
-        worldNormal: b2.Vec2,
-        worldPoint: b2.Vec2,
+        contact: Contact,
+        manifoldPoint: ManifoldPoint,
+        worldNormal: Vec2,
+        worldPoint: Vec2,
         separation: number
     ): void {
         this._contact = contact;
@@ -66,7 +67,7 @@ export class ContactPoint2D {
         return this._otherRigidbody;
     }
     
-    private static tempVec = new b2.Vec2();
+    private static tempVec = new Vec2();
 
     public get relativeVelocity(): ReadonlyVector2 {
         if (this._contact) {
