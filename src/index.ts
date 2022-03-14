@@ -41,7 +41,6 @@ export type { WritableVector4 } from "./engine/math/WritableVector4";
 
 //physics
 export { Collision2D } from "./engine/physics/2d/Collision2D";
-export { Collision2DPool } from "./engine/physics/2d/Collision2DPool";
 export { ContactPoint2D } from "./engine/physics/2d/ContactPoint2D";
 export type { IPhysics2D } from "./engine/physics/2d/IPhysics2D";
 export { PhysicsMaterial2D } from "./engine/physics/2d/PhysicsMaterial2D";
@@ -61,7 +60,7 @@ export { Time } from "./engine/time/Time";
 //engine
 export { EngineGlobalObject } from "./engine/EngineGlobalObject";
 export { Game } from "./engine/Game";
-export type { GameSetting } from "./engine/bootstrap/setting/GameSetting";
+export { GameSetting } from "./engine/bootstrap/setting/GameSetting";
 export type { IReadonlyGameState } from "./engine/GameState";
 export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";
