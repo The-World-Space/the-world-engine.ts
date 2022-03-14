@@ -26,6 +26,7 @@ export class ContactListener extends b2.ContactListener {
         const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
         const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
         if (collider2dA.isTrigger || collider2dB.isTrigger) {
+            //todo fix lock problem
             collider2dA.gameObject.gameObjectEventContainer.invokeOnTriggerEnter2D(collider2dB);
             collider2dB.gameObject.gameObjectEventContainer.invokeOnTriggerEnter2D(collider2dA);
         } else {
@@ -194,6 +195,9 @@ export class Physics2DProcessor implements IPhysics2D {
                 transform.eulerAngles.z = currentBody.GetAngle();
             }
         }
+
+        //onTrigger invoke
+        //onCollision invoke
     }
 
     /**

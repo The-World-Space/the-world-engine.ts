@@ -104,12 +104,14 @@ export class RigidBody2D extends Component {
 
     public onEnable(): void {
         this._simulated = true;
+        console.log("onEnable", this.gameObject.name);
         this.getB2Body().SetEnabled(true);
         this.updateSimulatedToCollider();
     }
 
     public onDisable(): void {
         this._simulated = false;
+        console.log("onDisable", this.gameObject.name);
         this._body?.SetEnabled(false);
         this.updateSimulatedToCollider();
     }

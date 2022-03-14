@@ -10,9 +10,8 @@ import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
 import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
-import { CollisionEventTest } from "./script/CollisionEventTest";
 import { Spawner } from "./script/Spawner";
-import { DynamicBoxPrefab } from "./prefab/DynamicBoxPrefab";
+import { IframeDynamicBoxPrefab } from "./prefab/IframeDynamicBoxPrefab";
 import { ContactTest } from "./script/ContactTest";
 import { PhysicsController } from "./script/PhysicsController";
 import { GameObject } from "../../engine/hierarchy_object/GameObject";
@@ -28,6 +27,7 @@ import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRe
 import { CssTextRenderer, TextAlign } from "../../engine/script/render/CssTextRenderer";
 import { Color } from "../../engine/render/Color";
 import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElementRenderer";
+import { BodyDisposer } from "./script/BodyDisposer";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -54,7 +54,7 @@ export class TestBootstrapper extends Bootstrapper {
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("spawner")
                 .withComponent(Spawner, c => {
-                    c.prefabCtor = DynamicBoxPrefab;
+                    c.prefabCtor = IframeDynamicBoxPrefab;
                     c.initSpawnCount = 3;
                 }))
 
@@ -76,13 +76,19 @@ export class TestBootstrapper extends Bootstrapper {
                     c.size = new Vector2(1, 1);
                     c.edgeRadius = 1;
                 })
-                .withComponent(CollisionEventTest)
-                .withComponent(ContactTest, c => c.enabled = false)
+                .withComponent(ContactTest)
                 .withComponent(PhysicsController)
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
                 }))
+
+            .withChild(instantiater.buildGameObject("bound_1")
+                .withComponent(BoxCollider2D, c => {
+                    c.size = new Vector2(1, 1);
+                    c.isTrigger = true;
+                })
+                .withComponent(BodyDisposer))
 
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(0.5, 0.5, 0))
                 .getColideTilemapChunkRendererRef(gridMap)
