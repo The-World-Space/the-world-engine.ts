@@ -3,6 +3,7 @@ import { WaitForSeconds } from "../../../engine/coroutine/YieldInstruction";
 import { Component } from "../../../engine/hierarchy_object/Component";
 import { GameObject } from "../../../engine/hierarchy_object/GameObject";
 
+/** @internal */
 export class ChangeParentTest extends Component {
     public parent1: GameObject|null = null;
     public parent2: GameObject|null = null;

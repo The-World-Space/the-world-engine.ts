@@ -2,6 +2,7 @@ import { Component } from "../../../engine/hierarchy_object/Component";
 import { ContactPoint2D } from "../../../engine/physics/2d/ContactPoint2D";
 import { RigidBody2D } from "../../../engine/script/physics2d/RigidBody2D";
 
+/** @internal */
 export class ContactTest extends Component {
     public override readonly requiredComponents = [RigidBody2D];
     private _rigidbody: RigidBody2D|null = null;

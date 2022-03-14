@@ -2,6 +2,7 @@ import { Component } from "../../../engine/hierarchy_object/Component";
 import { Collision2D } from "../../../engine/physics/2d/Collision2D";
 import { ContactPoint2D } from "../../../engine/physics/2d/ContactPoint2D";
 
+/** @internal */
 export class CollisionEventTest extends Component {
     private _contactBuffer: ContactPoint2D[] = [];
 
