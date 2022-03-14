@@ -1,5 +1,5 @@
 import { Set } from "js-sdsl";
-import { SetType } from "js-sdsl/dist/cjs/Set/Set";
+import { SetType } from "js-sdsl/dist/esm/Set/Set";
 import * as THREE from "three";
 import { CameraInfo } from "./CameraInfo";
 import { Color } from "./Color";

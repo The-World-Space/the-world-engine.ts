@@ -1,4 +1,4 @@
-import Queue, { QueueType } from "js-sdsl/dist/cjs/Queue/Queue";
+import Queue, { QueueType } from "js-sdsl/dist/esm/Queue/Queue";
 import { CoroutineIterator } from "../../../engine/coroutine/CoroutineIterator";
 import { WaitForSeconds } from "../../../engine/coroutine/YieldInstruction";
 import { Component } from "../../../engine/hierarchy_object/Component";

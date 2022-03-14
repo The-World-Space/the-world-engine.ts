@@ -1,5 +1,5 @@
 import { Set } from "js-sdsl";
-import { SetType } from "js-sdsl/dist/cjs/Set/Set";
+import { SetType } from "js-sdsl/dist/esm/Set/Set";
 
 /** @internal */
 export class MutIteratableCollection<T extends { isRemoved: boolean }> {
