@@ -32,11 +32,11 @@ export class CollisionEventTest extends Component {
         console.log(str);
     }
 
-    public onCollisionStay2D(collision: Collision2D) {
-        console.log(`CollisionEventTest.onCollisionStay2D gameObject: ${this.gameObject.name}`, collision);
+    public onCollisionStay2D(_collision: Collision2D) {
+        console.log(`CollisionEventTest.onCollisionStay2D gameObject: ${this.gameObject.name}`);
     }
 
-    public onCollisionExit2D(collision: Collision2D) {
-        console.log(`CollisionEventTest.onCollisionExit2D gameObject: ${this.gameObject.name}`, collision);
+    public onCollisionExit2D(_collision: Collision2D) {
+        console.log(`CollisionEventTest.onCollisionExit2D gameObject: ${this.gameObject.name}`);
     }
 }
