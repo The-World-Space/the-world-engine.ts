@@ -1,4 +1,4 @@
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/math/Vector2";
 
 export interface IGridCoordinatable {
     get gridCellWidth(): number;

@@ -1,6 +1,6 @@
 import type { Contact } from "../../../box2d.ts/build/index";
 import { WorldManifold, Vec2 } from "../../../box2d.ts/build/index";
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/math/Vector2";
 import { ContactPoint2D } from "./ContactPoint2D";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";

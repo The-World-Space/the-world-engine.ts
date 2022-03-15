@@ -1,6 +1,7 @@
 import type { Shape } from "../../../../box2d.ts/build/index";
 import { Vec2, PolygonShape } from "../../../../box2d.ts/build/index";
-import { Vector2, Vector3 } from "three";
+import { Vector2 } from "three/src/math/Vector2";
+import { Vector3 } from "three/src/math/Vector3";
 import { Collider2D } from "./Collider2D";
 import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
 import type { GameObject } from "../../../hierarchy_object/GameObject";

@@ -1,4 +1,5 @@
-import { BufferAttribute, Vector2, Vector2Tuple } from "three";
+import { BufferAttribute } from "three/src/core/BufferAttribute";
+import { Vector2, Vector2Tuple } from "three/src/math/Vector2";
 import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
 import { ReadonlyVector2 } from "./ReadonlyVector2";
 

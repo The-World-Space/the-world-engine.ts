@@ -1,4 +1,4 @@
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/math/Vector2";
 import type { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
 import type { CollisionLayer } from "../../physics/CollisionLayer";
 import * as CollisionLayerConstType from "../../physics/CollisionLayerConstType";

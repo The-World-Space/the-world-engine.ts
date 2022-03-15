@@ -1,4 +1,4 @@
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/math/Vector2";
 import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { ReadonlyVector2 } from "../../../engine/math/ReadonlyVector2";
 import { WritableVector2 } from "../../../engine/math/WritableVector2";

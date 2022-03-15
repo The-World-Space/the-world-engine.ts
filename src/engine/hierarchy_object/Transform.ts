@@ -1,4 +1,3 @@
-import { Euler, Matrix4, Object3D, Quaternion, Vector3 } from "three";
 import { GameObject } from "./GameObject";
 import { Scene } from "./Scene";
 import { ObservableVector3 } from "../math/ObservableVector3";
@@ -7,6 +6,11 @@ import { ObservableQuaternion } from "../math/ObservableQuaternion";
 import { ReadonlyVector3 } from "../math/ReadonlyVector3";
 import { WritableVector3 } from "../math/WritableVector3";
 import { EngineGlobalObject } from "../EngineGlobalObject";
+import { Object3D } from "three/src/core/Object3D";
+import { Quaternion } from "three/src/math/Quaternion";
+import { Vector3 } from "three/src/math/Vector3";
+import { Matrix4 } from "three/src/math/Matrix4";
+import { Euler } from "three/src/math/Euler";
 
 /**
  * transform that delegates Object3D

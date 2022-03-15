@@ -1,8 +1,4 @@
-//import { Quaternion, Vector3 } from "three";
-//import { GameObject } from "../../engine/hierarchy_object/GameObject";
-//import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { CssTilemapRenderer } from "../render/CssTilemapRenderer";
-//import { ZaxisInitializer } from "../render/ZaxisInitializer";
 
 export class CssCollideTilemapRenderer extends CssTilemapRenderer {
     private readonly _collideMap: Map<`${number}_${number}`, boolean> = new Map();

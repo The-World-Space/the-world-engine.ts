@@ -1,6 +1,17 @@
-import { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute, MathUtils, Matrix3, Matrix4, Quaternion, Spherical, Vector3 } from "three";
-
 //duck typed class of THREE.Vector3
+
+import { Camera } from "three/src/cameras/Camera";
+import { Matrix3 } from "three/src/math/Matrix3";
+import { Matrix4 } from "three/src/math/Matrix4";
+import { Quaternion } from "three/src/math/Quaternion";
+import { Vector3 } from "three/src/math/Vector3";
+import { Euler } from "three/src/math/Euler";
+import { clamp } from "three/src/math/MathUtils";
+import { Spherical } from "three/src/math/Spherical";
+import { BufferAttribute } from "three/src/core/BufferAttribute";
+import { InterleavedBufferAttribute } from "three/src/core/InterleavedBufferAttribute";
+import { Cylindrical } from "three/src/math/Cylindrical";
+
 /** @internal */
 export class ObservableVector3 {
     public readonly isVector3 = true;
@@ -532,7 +543,7 @@ export class ObservableVector3 {
         const theta = this.dot(v) / denominator;
 
         // clamp, to handle numerical problems
-        return Math.acos(MathUtils.clamp(theta, - 1, 1));
+        return Math.acos(clamp(theta, - 1, 1));
     }
 
     public distanceTo(v: ObservableVector3): number {
