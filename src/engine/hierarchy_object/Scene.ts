@@ -1,4 +1,4 @@
-import { Scene as ThreeScene } from "three";
+import { Scene as ThreeScene } from "three/src/Three";
 import { GameObject } from "./GameObject";
 import { GameObjectBuilder } from "./GameObjectBuilder";
 

@@ -1,4 +1,4 @@
-import { Quaternion, Vector2, Vector3 } from "three";
+import { Quaternion, Vector2, Vector3 } from "three/src/Three";
 import { Component } from "../../hierarchy_object/Component";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";

@@ -1,4 +1,4 @@
-import { BufferAttribute, Euler, InterleavedBufferAttribute, MathUtils, Matrix4, Quaternion, Vector3 } from "three";
+import { BufferAttribute, Euler, InterleavedBufferAttribute, MathUtils, Matrix4, Quaternion, Vector3 } from "three/src/Three";
 
 /** @internal */
 export class ObservableQuaternion {

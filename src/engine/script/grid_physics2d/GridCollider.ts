@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3 } from "three/src/Three";
 import { Component } from "../../hierarchy_object/Component";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";

@@ -1,14 +1,20 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ESLintPlugin = require('eslint-webpack-plugin');
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   entry: "./src/test/index.ts",
   output: {
     path: path.join(__dirname, "/testbundle"),
-    filename: "bundle.js",
+    filename: "[name].bundle.js",
     assetModuleFilename: 'images/[name][ext]',
   },
+  // optimization: {
+  //   splitChunks: {
+  //     chunks: "all",
+  //   },
+  // },
   module: {
     rules: [
       { 
@@ -36,6 +42,7 @@ module.exports = {
     new ESLintPlugin({
       extensions: 'ts',
     }),
+    //new BundleAnalyzerPlugin(),
   ],
   devServer: {
     host: "0.0.0.0",

@@ -1,4 +1,4 @@
-import { Quaternion, Vector2, Vector3 } from "three";
+import { Quaternion, Vector2, Vector3 } from "three/src/Three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRenderer";

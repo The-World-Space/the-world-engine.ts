@@ -1,6 +1,6 @@
 import type { SetType } from "js-sdsl/dist/esm/Set/Set";
 import Set from "js-sdsl/dist/esm/Set/Set";
-import { Camera as ThreeCamera } from "three";
+import { Camera as ThreeCamera } from "three/src/Three";
 import { CameraInfo } from "./CameraInfo";
 import { Color } from "./Color";
 

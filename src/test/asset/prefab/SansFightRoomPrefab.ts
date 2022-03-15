@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "three";
+import { Vector2, Vector3 } from "three/src/Three";
 import { GameObjectBuilder } from "../../../engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "../../../engine/hierarchy_object/Prefab";
 import { PrefabRef } from "../../../engine/hierarchy_object/PrefabRef";

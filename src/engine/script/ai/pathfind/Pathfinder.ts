@@ -1,6 +1,6 @@
 //use a star algorithm to find the shortest path
 
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/Three";
 import { IGridCollidable } from "../../grid_physics2d/IGridCollidable";
 import { PathNode } from "./PathNode";
 

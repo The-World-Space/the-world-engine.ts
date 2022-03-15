@@ -1,4 +1,4 @@
-import { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from "three";
+import { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from "three/src/Three";
 
 export type ReadonlyMatrix4 = {
     /**

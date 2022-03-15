@@ -1,4 +1,4 @@
-import { Euler } from "three";
+import { Euler } from "three/src/Three";
 
 export type ReadonlyEuler = {
     /**

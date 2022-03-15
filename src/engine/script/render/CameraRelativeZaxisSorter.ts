@@ -1,4 +1,4 @@
-import { Vector3 } from "three";
+import { Vector3 } from "three/src/Three";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class CameraRelativeZaxisSorter extends ZaxisSortable {

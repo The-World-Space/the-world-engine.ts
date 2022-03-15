@@ -1,4 +1,4 @@
-import { Matrix3, Matrix3Tuple, Matrix4, Vector3 } from "three";
+import { Matrix3, Matrix3Tuple, Matrix4, Vector3 } from "three/src/Three";
 import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
 import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
 

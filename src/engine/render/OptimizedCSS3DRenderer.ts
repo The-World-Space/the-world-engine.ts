@@ -1,7 +1,7 @@
 /**
  * Based on http://www.emagix.net/academic/mscs-project/item/camera-sync-with-css3-and-webgl-threejs
  */
-import { Camera, Matrix4, Object3D, Quaternion, Scene, Vector3 } from "three";
+import { Camera, Matrix4, Object3D, Quaternion, Scene, Vector3 } from "three/src/Three";
 
 const _position = new Vector3();
 const _quaternion = new Quaternion();

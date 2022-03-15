@@ -1,4 +1,4 @@
-import { Euler, Matrix4, Quaternion, Vector3 } from "three";
+import { Euler, Matrix4, Quaternion, Vector3 } from "three/src/Three";
 import { clamp } from "three/src/math/MathUtils";
 
 /** @internal */

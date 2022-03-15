@@ -1,4 +1,4 @@
-import { Quaternion, Vector3 } from "three";
+import { Quaternion, Vector3 } from "three/src/Three";
 import { Component } from "../../../engine/hierarchy_object/Component";
 
 /** @internal */

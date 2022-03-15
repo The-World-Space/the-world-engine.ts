@@ -1,4 +1,4 @@
-import { Euler, Matrix4, Object3D, Quaternion, Vector3 } from "three";
+import { Euler, Matrix4, Object3D, Quaternion, Vector3 } from "three/src/Three";
 import { GameObject } from "./GameObject";
 import { Scene } from "./Scene";
 import { ObservableVector3 } from "../math/ObservableVector3";

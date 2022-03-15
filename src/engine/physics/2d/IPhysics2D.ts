@@ -1,4 +1,4 @@
-import type { Vector2 } from "three";
+import type { Vector2 } from "three/src/Three";
 import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 

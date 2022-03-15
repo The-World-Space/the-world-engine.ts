@@ -1,4 +1,4 @@
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/Three";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Color } from "../../render/Color";
 import { Transform } from "../../hierarchy_object/Transform";

@@ -1,4 +1,4 @@
-//import { Quaternion, Vector3 } from "three";
+//import { Quaternion, Vector3 } from "three/src/Three";
 //import { GameObject } from "../../engine/hierarchy_object/GameObject";
 //import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { CssTilemapRenderer } from "../render/CssTilemapRenderer";

@@ -1,4 +1,4 @@
-import { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute, MathUtils, Matrix3, Matrix4, Quaternion, Spherical, Vector3 } from "three";
+import { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute, MathUtils, Matrix3, Matrix4, Quaternion, Spherical, Vector3 } from "three/src/Three";
 
 //duck typed class of THREE.Vector3
 /** @internal */

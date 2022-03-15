@@ -1,9 +1,10 @@
-import { Vector2, Vector3 } from "three";
-import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { Vector2, Vector3 } from "three/src/Three";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
+import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
+//import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 
 export class PointerGridEvent {

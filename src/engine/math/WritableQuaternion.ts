@@ -1,4 +1,4 @@
-import { Quaternion } from "three";
+import { Quaternion } from "three/src/Three";
 import { ReadonlyEuler } from "./ReadonlyEuler";
 import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
 import { ReadonlyQuaternion } from "./ReadonlyQuaternion";

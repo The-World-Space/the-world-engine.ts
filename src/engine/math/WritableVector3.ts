@@ -1,4 +1,4 @@
-import { BufferAttribute, Camera, Cylindrical, InterleavedBufferAttribute, Spherical, Vector3, Vector3Tuple } from "three";
+import { BufferAttribute, Camera, Cylindrical, InterleavedBufferAttribute, Spherical, Vector3, Vector3Tuple } from "three/src/Three";
 import { ReadonlyEuler } from "./ReadonlyEuler";
 import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
 import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
