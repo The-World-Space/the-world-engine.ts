@@ -1,11 +1,11 @@
-import { Vector2 } from "three";
-import { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
-import { CollisionLayerMaskConverter } from "../../physics/CollisionLayerMaskConverter";
-import { CollisionLayer } from "../../physics/CollisionLayer";
+import { Vector2 } from "three/
+import type { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
+import type { CollisionLayer } from "../../physics/CollisionLayer";
 import * as CollisionLayerConstType from "../../physics/CollisionLayerConstType";
+import type { Physics2DLoader } from "../../physics/2d/Physics2DLoader";
 
 export type PhysicsSettingObject = {
-    usePhysics2D: boolean,
+    loader?: typeof Physics2DLoader,
     gravity?: Vector2,
     defaultMaterial?: PhysicsMaterial2D,
     velocityIterations?: number,
@@ -15,7 +15,7 @@ export type PhysicsSettingObject = {
     //queriesHitTriggers?: boolean,
     //queriesStartInColliders?: boolean,
     reuseCollisionCallbacks?: boolean,
-    collisionLayerMaskConverter?: CollisionLayerMaskConverter
+    collisionLayerMaskMatrix?: object
 }
 
 export class PhysicsSetting {
@@ -26,13 +26,11 @@ export class PhysicsSetting {
     }
 
     public static createDefaultObject(): PhysicsSettingObject {
-        return {
-            usePhysics2D: false
-        };
+        return { };
     }
 
-    public usePhysics2D(value: boolean): this {
-        this._physicsSettingObject.usePhysics2D = value;
+    public loader(value: typeof Physics2DLoader): PhysicsSetting {
+        this._physicsSettingObject.loader = value;
         return this;
     }
 
@@ -1272,6 +1270,6 @@ export class PhysicsSetting {
     public layerCollisionMatrix<T extends CollisionLayer>(
         collisionMatrix: { [key in T[number]]: { [key in T[number]]: boolean } }
     ): void {
-        this._physicsSettingObject.collisionLayerMaskConverter = new CollisionLayerMaskConverter(collisionMatrix);
+        this._physicsSettingObject.collisionLayerMaskMatrix = collisionMatrix;
     }
 }

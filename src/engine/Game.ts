@@ -16,7 +16,7 @@ import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
 import { GameSettingObject } from "./bootstrap/setting/GameSetting";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { DeepReadonly } from "./type/DeepReadonly";
-
+    
 /**
  * game engine class
  */
@@ -127,9 +127,7 @@ export class Game {
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._gameState.kind = GameStateKind.Running;
         this._sceneProcessor.startProcessNonSyncedEvent(); // execute start() and update() event
-        if (this._gameSetting.physics.usePhysics2D) {
-            this._physics2DProcessor.update(this._time.deltaTime);
-        }
+        this._physics2DProcessor.update(this._time.deltaTime);
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
@@ -146,9 +144,7 @@ export class Game {
         this._animationFrameId = requestAnimationFrame(this._loopBind);
         this._time.update();
         this._sceneProcessor.startProcessNonSyncedEvent();
-        if (this._gameSetting!.physics.usePhysics2D) {
-            this._physics2DProcessor.update(this._time.deltaTime);
-        }
+        this._physics2DProcessor.update(this._time.deltaTime);
         this._coroutineProcessor.tryCompact();
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");

@@ -43,6 +43,7 @@ export type { WritableVector4 } from "./engine/math/WritableVector4";
 export { Collision2D } from "./engine/physics/2d/Collision2D";
 export { ContactPoint2D } from "./engine/physics/2d/ContactPoint2D";
 export type { IPhysics2D } from "./engine/physics/2d/IPhysics2D";
+export { Physics2DLoader } from "./engine/physics/2d/Physics2DLoader";
 export { PhysicsMaterial2D } from "./engine/physics/2d/PhysicsMaterial2D";
 export type { CollisionLayer, CollisionLayerParm } from "./engine/physics/CollisionLayer";
 export { CollisionLayerConst } from "./engine/physics/CollisionLayerConst";

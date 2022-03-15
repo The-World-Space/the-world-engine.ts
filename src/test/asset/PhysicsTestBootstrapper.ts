@@ -1,6 +1,7 @@
 import { Vector2, Vector3 } from "three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
+import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
 import { Color } from "../../engine/render/Color";
 import { EditorCameraController } from "../../engine/script/controller/EditorCameraController";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
@@ -13,7 +14,7 @@ import { PhysicsController } from "./script/PhysicsController";
 /** @internal */
 export class PhysicsTestBootstrapper extends Bootstrapper {
     public run(): SceneBuilder {
-        this.setting.physics.usePhysics2D(true);
+        this.setting.physics.loader(Physics2DLoader);
 
         const instantiater = this.instantiater;
         return this.sceneBuilder

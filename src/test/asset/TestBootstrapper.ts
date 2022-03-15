@@ -28,6 +28,7 @@ import { CssTextRenderer, TextAlign } from "../../engine/script/render/CssTextRe
 import { Color } from "../../engine/render/Color";
 import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElementRenderer";
 import { BodyDisposer } from "./script/BodyDisposer";
+import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -39,7 +40,7 @@ export class TestBootstrapper extends Bootstrapper {
             .useCss3DRenderer(true);
 
         this.setting.physics
-            .usePhysics2D(true)
+            .loader(Physics2DLoader)
             .layerCollisionMatrix<TestLayer>({
                 default: { player: true, level: true, default: true },
                 level: { player: true, level: true },
@@ -84,6 +85,7 @@ export class TestBootstrapper extends Bootstrapper {
                 }))
 
             .withChild(instantiater.buildGameObject("bound_1")
+                .active(false)
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(1, 1);
                     c.isTrigger = true;
