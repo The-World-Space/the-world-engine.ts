@@ -4,7 +4,7 @@ import { Component } from "../../hierarchy_object/Component";
 import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
 
-export const enum CameraType {
+export enum CameraType {
     Perspective,
     Orthographic
 }

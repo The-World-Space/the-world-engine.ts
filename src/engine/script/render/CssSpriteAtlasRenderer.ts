@@ -2,7 +2,7 @@ import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
 
-export const enum CssSpriteAtlasRenderMode {
+export enum CssSpriteAtlasRenderMode {
     ObjectFit,
     ClipPath
 }

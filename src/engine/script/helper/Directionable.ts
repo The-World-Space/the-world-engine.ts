@@ -1,6 +1,6 @@
 import { Component } from "../../hierarchy_object/Component";
 
-export const enum Direction {
+export enum Direction {
     Up,
     Down,
     Left,

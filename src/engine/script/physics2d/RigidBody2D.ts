@@ -11,24 +11,24 @@ import type { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
 import type { Collider2D } from "./collider/Collider2D";
 import type { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer";
 
-export const enum RigidbodyType2D {
+export enum RigidbodyType2D {
     Dynamic,
     Kinematic,
     Static
 }
 
-export const enum CollisionDetectionMode2D {
+export enum CollisionDetectionMode2D {
     Discrete,
     Continuous
 }
 
-export const enum RigidbodySleepMode2D {
+export enum RigidbodySleepMode2D {
     NeverSleep,
     StartAwake,
     StartAsleep
 }
 
-export const enum ForceMode2D {
+export enum ForceMode2D {
     Force,
     Impulse
 }
