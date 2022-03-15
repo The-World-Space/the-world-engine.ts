@@ -1,9 +1,9 @@
 import { Game } from "../engine/Game";
-import { NonPhysicsTestBootstrapper } from "./asset/NonPhysicsTestBootstrapper";
+import { TestBootstrapper } from "./asset/TestBootstrapper";
 
 function startTestGame(container: HTMLElement) {
     const game = new Game(container);
-    game.run(NonPhysicsTestBootstrapper);
+    game.run(TestBootstrapper);
     game.inputHandler.startHandleEvents();
 }
 
