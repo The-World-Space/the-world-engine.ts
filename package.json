@@ -5,7 +5,8 @@
     "main": "dist/index.js",
     "scripts": {
         "start": "webpack serve --mode development",
-        "build": "tsc"
+        "build": "tsc",
+        "webpack": "webpack --mode production"
     },
     "repository": {
         "type": "git",
