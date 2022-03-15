@@ -1,11 +1,9 @@
+import { Quaternion, Vector2, Vector3 } from "three";
 import { Component } from "../../hierarchy_object/Component";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 import { GlobalConfig } from "../../../GlobalConfig";
-import { Vector3 } from "three/src/math/Vector3";
-import { Quaternion } from "three/src/math/Quaternion";
-import { Vector2 } from "three/src/math/Vector2";
 
 export class SpriteInstance {
     private _width: number;

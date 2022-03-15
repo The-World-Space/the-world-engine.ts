@@ -1,10 +1,4 @@
-import { Euler } from "three/src/math/Euler";
-import { Matrix4 } from "three/src/math/Matrix4";
-import { Quaternion } from "three/src/math/Quaternion";
-import { Vector3 } from "three/src/math/Vector3";
-import { clamp } from "three/src/math/MathUtils";
-import { BufferAttribute } from "three/src/core/BufferAttribute";
-import { InterleavedBufferAttribute } from "three/src/core/InterleavedBufferAttribute";
+import { BufferAttribute, Euler, InterleavedBufferAttribute, MathUtils, Matrix4, Quaternion, Vector3 } from "three";
 
 /** @internal */
 export class ObservableQuaternion {
@@ -427,7 +421,7 @@ export class ObservableQuaternion {
     }
 
     public angleTo(q: ObservableQuaternion): number {
-        return 2 * Math.acos(Math.abs(clamp(this.dot(q), -1, 1)));
+        return 2 * Math.acos(Math.abs(MathUtils.clamp(this.dot(q), -1, 1)));
     }
 
     public rotateTowards(q: ObservableQuaternion, step: number): ObservableQuaternion {

@@ -1,4 +1,4 @@
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 import { Component } from "../../../engine/hierarchy_object/Component";
 import { RigidBody2D } from "../../../engine/script/physics2d/RigidBody2D";
 

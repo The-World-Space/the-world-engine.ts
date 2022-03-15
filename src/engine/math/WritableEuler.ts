@@ -1,5 +1,4 @@
-import { Euler } from "three/src/math/Euler";
-import { Vector3 } from "three/src/math/Vector3";
+import { Euler, Vector3 } from "three";
 import { ReadonlyEuler } from "./ReadonlyEuler";
 import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
 import { ReadonlyQuaternion } from "./ReadonlyQuaternion";

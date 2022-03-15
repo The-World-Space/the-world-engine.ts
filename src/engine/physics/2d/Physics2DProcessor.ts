@@ -7,7 +7,7 @@ import type {
     BodyDef as B2BodyDef,
     World as B2World
 } from "../../../box2d.ts/build/index";
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import type { PhysicsObject2D } from "./PhysicsObject2D";
 import type { Collision2DPool } from "./Collision2DPool";

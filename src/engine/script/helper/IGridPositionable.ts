@@ -1,4 +1,4 @@
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 
 export interface IGridPositionable {
     get positionInGrid(): Vector2;

@@ -1,5 +1,4 @@
-import { BufferAttribute } from "three/src/core/BufferAttribute";
-import { Vector4, Vector4Tuple } from "three/src/math/Vector4";
+import { BufferAttribute, Vector4, Vector4Tuple } from "three";
 import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
 import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
 import { ReadonlyVector4 } from "./ReadonlyVector4";

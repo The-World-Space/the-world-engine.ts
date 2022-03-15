@@ -1,4 +1,4 @@
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 

@@ -1,6 +1,6 @@
 import type { Body } from "../../../box2d.ts/build/index";
 import { BodyType, BodyDef, MassData, Vec2, WorldManifold } from "../../../box2d.ts/build/index";
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 import { Component } from "../../hierarchy_object/Component";
 import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
 import { ContactPoint2D } from "../../physics/2d/ContactPoint2D";

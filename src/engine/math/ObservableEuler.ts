@@ -1,8 +1,5 @@
-import { Euler } from "three/src/math/Euler";
+import { Euler, Matrix4, Quaternion, Vector3 } from "three";
 import { clamp } from "three/src/math/MathUtils";
-import { Matrix4 } from "three/src/math/Matrix4";
-import { Quaternion } from "three/src/math/Quaternion";
-import { Vector3 } from "three/src/math/Vector3";
 
 /** @internal */
 export class ObservableEuler {

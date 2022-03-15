@@ -1,3 +1,4 @@
+import { Quaternion, Vector2, Vector3 } from "three";
 import { Component } from "../../hierarchy_object/Component";
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
@@ -6,9 +7,6 @@ import { GlobalConfig } from "../../../GlobalConfig";
 import { ReadonlyVector3 } from "../../math/ReadonlyVector3";
 import { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { Vector3 } from "three/src/math/Vector3";
-import { Quaternion } from "three/src/math/Quaternion";
-import { Vector2 } from "three/src/math/Vector2";
 
 export class SpriteAtlasInstance {
     private _width: number;

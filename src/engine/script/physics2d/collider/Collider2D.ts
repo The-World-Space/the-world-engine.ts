@@ -1,6 +1,6 @@
 import type { Fixture, Shape } from "../../../../box2d.ts/build/index";
 import { FixtureDef, Filter } from "../../../../box2d.ts/build/index";
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 import { Component } from "../../../hierarchy_object/Component";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
 import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";

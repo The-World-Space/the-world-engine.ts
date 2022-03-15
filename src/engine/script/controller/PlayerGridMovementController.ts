@@ -1,4 +1,4 @@
-import { Vector2 } from "three/src/math/Vector2";
+import { Vector2 } from "three";
 import { Pathfinder } from "../ai/pathfind/Pathfinder";
 import { GridPointer } from "../input/GridPointer";
 import { PointerGridEvent } from "../input/PointerGridInputListener";

@@ -1,5 +1,4 @@
-import { Vector2 } from "three/src/math/Vector2";
-import { Vector3 } from "three/src/math/Vector3";
+import { Vector2, Vector3 } from "three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
