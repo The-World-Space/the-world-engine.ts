@@ -22,20 +22,21 @@ export class BoxCollider2D extends Collider2D {
 
             const physicsDebugRenderObject = getOrCreatePhysicsDebugRenderObject(this.engine);
             this._debugObject = physicsDebugRenderObject.addChildFromBuilder(
-                this.engine.instantiater.buildGameObject("debug_box", new Vector3(this.offset.x, this.offset.y, 200))
-                    .withComponent(CssHtmlElementRenderer, c => {
-                        const div = document.createElement("div");
-                        div.style.border = "2px solid rgba(255, 255, 0, 0.3)";
-                        div.style.borderRadius = this.edgeRadius * 100 + "px";
-                        div.style.margin = "0";
-                        div.style.padding = "0";
-                        div.style.backgroundColor = "rgba(0, 0, 0, 0)";
-                        c.element = div;
-                        c.elementHeight = this._size.y + this.edgeRadius * 2;
-                        c.elementWidth = this._size.x + this.edgeRadius * 2;
-                        c.viewScale = 0.01;
-                    })
-            );
+                this.engine.instantiater.buildGameObject(this.gameObject.name + "_debug_box")
+                    .withChild(this.engine.instantiater.buildGameObject("debug_box", new Vector3(this.offset.x, this.offset.y, 200))
+                        .withComponent(CssHtmlElementRenderer, c => {
+                            const div = document.createElement("div");
+                            div.style.border = "2px solid rgba(255, 255, 0, 0.3)";
+                            div.style.borderRadius = this.edgeRadius * 100 + "px";
+                            div.style.margin = "0";
+                            div.style.padding = "0";
+                            div.style.backgroundColor = "rgba(0, 0, 0, 0)";
+                            c.element = div;
+                            c.elementHeight = this._size.y + this.edgeRadius * 2;
+                            c.elementWidth = this._size.x + this.edgeRadius * 2;
+                            c.viewScale = 0.01;
+                        })));
+                        
             objectAttacher!.target = this._debugObject;
         }
     }
