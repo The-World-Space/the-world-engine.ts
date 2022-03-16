@@ -7,7 +7,7 @@ import type { GameObject } from "../../../hierarchy_object/GameObject";
 import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../../math/WritableVector2";
 import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
-import { ObjectAttacher } from "../ObjectAttacher";
+import { Object2DAttacher } from "../Object2DAttacher";
 
 export class BoxCollider2D extends Collider2D {
     private _size: Vector2 = new Vector2(1, 1);
@@ -18,7 +18,7 @@ export class BoxCollider2D extends Collider2D {
     public override onEnable(): void {
         super.onEnable();
         if (this._debugDraw) {
-            const objectAttacher = this.gameObject.addComponent(ObjectAttacher);
+            const objectAttacher = this.gameObject.addComponent(Object2DAttacher);
 
             const physicsDebugRenderObject = getOrCreatePhysicsDebugRenderObject(this.engine);
             this._debugObject = physicsDebugRenderObject.addChildFromBuilder(
@@ -36,7 +36,7 @@ export class BoxCollider2D extends Collider2D {
                             c.elementWidth = this._size.x + this.edgeRadius * 2;
                             c.viewScale = 0.01;
                         })));
-                        
+
             objectAttacher!.target = this._debugObject;
         }
     }
