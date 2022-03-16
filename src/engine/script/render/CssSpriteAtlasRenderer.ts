@@ -147,6 +147,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         this.htmlElement.src = path;
 
         const onLoad = (e: Event) => {
+            if (!this.exists) return;
             const image = e.target as HTMLImageElement;
             image.removeEventListener("load", onLoad);
             image.alt = this.gameObject.name + "_sprite_atlas";
