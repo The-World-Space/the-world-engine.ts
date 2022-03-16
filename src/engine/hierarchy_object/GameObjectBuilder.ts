@@ -17,6 +17,7 @@ export class GameObjectBuilder {
     private readonly _gameObject: GameObject;
     private readonly _children: GameObjectBuilder[];
     private readonly _componentInitializeFuncList: (() => void)[];
+    private _isBuilt = false;
 
     /** @internal */
     public constructor(
@@ -222,6 +223,9 @@ export class GameObjectBuilder {
 
     /** @internal */
     public build(parent: Transform|null): GameObject {
+        if (this._isBuilt) throw new Error("GameObjectBuilder is already built");
+        this._isBuilt = true;
+
         this.registerTransform(parent);
         this.chackComponentRequirementsRecursive();
         this.componentInitialize();
