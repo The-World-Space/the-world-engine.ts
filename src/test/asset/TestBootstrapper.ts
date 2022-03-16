@@ -203,7 +203,7 @@ export class TestBootstrapper extends Bootstrapper {
                         c.cameraType = CameraType.Orthographic;
                     })
                     .withComponent(EditorCameraController, c => {
-                        c.maxViewSize = 10;
+                        c.maxViewSize = 20;
                     })
                     .withComponent(EditorGridRenderer, c => {
                         c.enabled = false;

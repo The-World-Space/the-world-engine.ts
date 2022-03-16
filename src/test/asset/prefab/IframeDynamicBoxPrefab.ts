@@ -8,7 +8,7 @@ import { CssIframeRenderer } from "../../../engine/script/render/CssIframeRender
 
 /** @internal */
 export class IframeDynamicBoxPrefab extends Prefab {
-    private _iframeSrc: PrefabRef<string> = new PrefabRef("https://www.youtube.com/embed/EOpwt95lOH8");
+    private _iframeSrc: PrefabRef<string> = new PrefabRef("https://www.youtube.com/embed/thzz6KT6LMA");
 
     public withSrc(src: PrefabRef<string>): Prefab {
         this._iframeSrc = src;
