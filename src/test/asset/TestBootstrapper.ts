@@ -84,10 +84,9 @@ export class TestBootstrapper extends Bootstrapper {
                     c.imageHeight = 1;
                 }))
 
-            .withChild(instantiater.buildGameObject("bound_1")
-                .active(false)
+            .withChild(instantiater.buildGameObject("bound_1", new Vector3(0, -8, 0))
                 .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(1, 1);
+                    c.size = new Vector2(100, 1);
                     c.isTrigger = true;
                 })
                 .withComponent(BodyDisposer))
