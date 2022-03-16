@@ -195,7 +195,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -210,7 +210,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -225,7 +225,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -240,7 +240,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -255,7 +255,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -270,7 +270,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -285,7 +285,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
@@ -300,7 +300,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.asyncSetImagePath(Pillar);
                         c.centerOffset = new Vector2(0, 0.5);
                         c.pointerEvents = false;
-                        c.imageWidth = 3.5;
+                        c.imageWidth = 3.35;
                         c.imageHeight = 10;
                     })
                     .withComponent(ParallaxTranslater, c => {
