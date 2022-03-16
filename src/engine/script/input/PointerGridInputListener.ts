@@ -89,7 +89,7 @@ export class PointerGridInputListener extends Component {
 
     public update(): void {
         let cameraLocalPosition: Vector3;
-        this.engine.cameraContainer.camera!.getWorldPosition(this._tempVector3);
+        this._tempVector3.copy(this.engine.cameraContainer.camera!.transform.position);
         if (this.transform.parent) {
             cameraLocalPosition = this.transform.parent!.inverseTransformPoint(this._tempVector3);
         } else { // if no parent transform, world position is same as local position

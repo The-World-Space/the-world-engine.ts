@@ -77,7 +77,7 @@ export class Camera extends Component {
         }
         
         Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
-        this.engine.cameraContainer.addCamera(this._camera, new CameraInfo(this._priority, this._backgroudColor));
+        this.engine.cameraContainer.addCamera(this, new CameraInfo(this._priority, this._backgroudColor));
     }
 
     private createNewPerspectiveCamera(): ThreePerspectiveCamera {
@@ -107,7 +107,7 @@ export class Camera extends Component {
 
     public onDisable(): void {
         this.engine.screen.removeOnResizeEventListener(this._onScreenResizeBind);
-        if (this._camera) this.engine.cameraContainer.removeCamera(this._camera);
+        if (this._camera) this.engine.cameraContainer.removeCamera(this);
     }
 
     public onDestroy(): void {
@@ -205,7 +205,7 @@ export class Camera extends Component {
     public set priority(value: number) {
         this._priority = value;
         if (this._camera) {
-            this.engine.cameraContainer.changeCameraPriority(this._camera, value);
+            this.engine.cameraContainer.changeCameraPriority(this, value);
         }
     }
 
@@ -216,7 +216,12 @@ export class Camera extends Component {
     public set backgroundColor(value: Color) {
         this._backgroudColor = value;
         if (this._camera) {
-            this.engine.cameraContainer.changeCameraBackgroundColor(this._camera, value);
+            this.engine.cameraContainer.changeCameraBackgroundColor(this, value);
         }
+    }
+
+    /** @internal */
+    public get threeCamera(): ThreeCamera|null {
+        return this._camera;
     }
 }

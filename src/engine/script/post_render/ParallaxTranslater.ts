@@ -19,8 +19,7 @@ export class ParallaxTranslater extends Component {
     private readonly _tempVector2 = new Vector2();
 
     public update(): void {
-        const cameraWorldPosition = this.engine
-            .cameraContainer.camera!.getWorldPosition(this._tempVector3);
+        const cameraWorldPosition = this._tempVector3.copy(this.engine.cameraContainer.camera!.transform.position);
         const parent = this.transform.parent;
         const cameraLocalPosition = parent ? parent.inverseTransformPoint(cameraWorldPosition) : cameraWorldPosition;
         const cameraPosition = this._tempVector2.set(cameraLocalPosition.x, cameraLocalPosition.y);

@@ -132,7 +132,7 @@ export class Game {
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
         if (this._gameSetting.render.useCss3DRenderer) {
-            this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera);
+            this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
@@ -150,7 +150,7 @@ export class Game {
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
         if (this._gameSetting!.render.useCss3DRenderer) {
-            this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera);
+            this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();

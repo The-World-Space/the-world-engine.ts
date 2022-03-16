@@ -1,14 +1,12 @@
-import { Vector3 } from "three/src/Three";
 import { ZaxisSortable } from "./ZaxisSortable";
 
 export class CameraRelativeZaxisSorter extends ZaxisSortable {
     public override readonly disallowMultipleComponent: boolean = true;
 
     private _offset = -100;
-    private readonly _tempVector3: Vector3 = new Vector3();
 
     public update(): void { 
-        this.transform.localPosition.z = this.engine.cameraContainer.camera!.getWorldPosition(this._tempVector3).z + this._offset;
+        this.transform.localPosition.z = this.engine.cameraContainer.camera!.transform.position.z + this._offset;
         this.gameObject.getComponentsInChildren().forEach(component => {
             const cAny = component as any;
             if (cAny.onSortByZaxis) {

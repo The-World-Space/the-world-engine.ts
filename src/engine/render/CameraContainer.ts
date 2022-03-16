@@ -1,6 +1,6 @@
 import type { SetType } from "js-sdsl/dist/esm/Set/Set";
 import Set from "js-sdsl/dist/esm/Set/Set";
-import { Camera as ThreeCamera } from "three/src/Three";
+import { Camera } from "../script/render/Camera";
 import { CameraInfo } from "./CameraInfo";
 import { Color } from "./Color";
 
@@ -9,9 +9,9 @@ import { Color } from "./Color";
  * do not drive this class
  */
 export class CameraContainer {
-    private _currentCameraInfo: {camera: ThreeCamera, info: CameraInfo}|null = null; 
-    private _cameraInfoMap: Map<ThreeCamera, CameraInfo>;
-    private _cameraQueue: SetType<{camera: ThreeCamera, info: CameraInfo}>;
+    private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null; 
+    private _cameraInfoMap: Map<Camera, CameraInfo>;
+    private _cameraQueue: SetType<{camera: Camera, info: CameraInfo}>;
     private _onChangeBackgroundColor: (color: Color) => void;
 
     /** @internal */
@@ -19,7 +19,7 @@ export class CameraContainer {
         this._cameraInfoMap = new Map();
         this._cameraQueue = new Set(undefined, (a, b) => {
             if (a.info.priority === b.info.priority) {
-                return a.camera.id - b.camera.id;
+                return a.camera.instanceId - b.camera.instanceId;
             }
             return a.info.priority - b.info.priority;
         });
@@ -29,7 +29,7 @@ export class CameraContainer {
     /**
      * get current render camera
      */
-    public get camera(): ThreeCamera|null {
+    public get camera(): Camera|null {
         return this._currentCameraInfo?.camera ?? null;
     }
 
@@ -48,7 +48,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public addCamera(camera: ThreeCamera, info: CameraInfo): void {
+    public addCamera(camera: Camera, info: CameraInfo): void {
         this._cameraInfoMap.set(camera, info);
         this._cameraQueue.insert({camera, info});
         this.setCamera();
@@ -60,7 +60,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public removeCamera(camera: ThreeCamera): void {
+    public removeCamera(camera: Camera): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         this._cameraQueue.eraseElementByValue({camera, info});
@@ -75,7 +75,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public changeCameraPriority(camera: ThreeCamera, priority: number): void {
+    public changeCameraPriority(camera: Camera, priority: number): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         this._cameraQueue.eraseElementByValue({camera, info});
@@ -91,7 +91,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public changeCameraBackgroundColor(camera: ThreeCamera, color: Color): void {
+    public changeCameraBackgroundColor(camera: Camera, color: Color): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         info.backgroundColor = color;
