@@ -20,6 +20,9 @@ import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import type { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import type { Physics2DLoader } from "./Physics2DLoader";
+import type { PhysicsEventDispatcher } from "./PhysicsEventDispatcher";
+import type { CollisionEventPool, TriggerEventPool } from "./EventPool";
+import { CollisionType, TriggerType } from "./EventPool";
 
 /** @internal */
 export class Physics2DProcessor implements IPhysics2D {
@@ -40,6 +43,7 @@ export class Physics2DProcessor implements IPhysics2D {
     private _world: B2World|null = null;
     private readonly _gameObjectToBodyMap = new Map<GameObject, PhysicsObject2D>();
     private _loader: typeof Physics2DLoader|null = null;
+    private _physicsEventDispatcher: PhysicsEventDispatcher|null = null; 
 
     /** @internal */
     public applyPhysicsSettings(physicSetting: DeepReadonly<PhysicsSettingObject>): void {
@@ -48,38 +52,47 @@ export class Physics2DProcessor implements IPhysics2D {
         this._loader = physicSetting.loader;
         this._world = new this._loader.World(new this._loader.Vec2(0, -9.81));
 
-        const ContactListener = class extends this._loader.ContactListener {
+        const ContactListener = class extends this._loader.ContactListener implements PhysicsEventDispatcher {
             private _physicsProcessor: Physics2DProcessor;
             private _collision2DPool: Collision2DPool;
+
+            private _triggerEventPool: TriggerEventPool;
+            private _collisionEventPool: CollisionEventPool;
         
             public constructor(physicsProcessor: Physics2DProcessor) {
                 super();
                 this._physicsProcessor = physicsProcessor;
                 this._collision2DPool = new this._physicsProcessor._loader!.Collision2DPool();
+
+                this._triggerEventPool = new this._physicsProcessor._loader!.TriggerEventPool();
+                this._collisionEventPool = new this._physicsProcessor._loader!.CollisionEventPool();
             }
         
             public override BeginContact(contact: B2Contact<B2Shape, B2Shape>): void {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
                 const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
                 if (collider2dA.isTrigger || collider2dB.isTrigger) {
-                    //todo fix lock problem
-                    collider2dA.gameObject.gameObjectEventContainer.invokeOnTriggerEnter2D(collider2dB);
-                    collider2dB.gameObject.gameObjectEventContainer.invokeOnTriggerEnter2D(collider2dA);
+                    this._triggerEventPool.insert(TriggerType.Enter, collider2dA, collider2dB);
                 } else {
                     if (this._physicsProcessor.reuseCollisionCallbacks) {
                         const collsion2d = this._collision2DPool.getInstance();
                         collsion2d.setData(contact);
-                        
-                        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
-                        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collsion2d);
-        
-                        this._collision2DPool.release(collsion2d);
+                        this._collisionEventPool.insert(
+                            CollisionType.Enter,
+                            collider2dA,
+                            collider2dB,
+                            collsion2d,
+                            this._collision2DPool
+                        );
                     } else {
                         const collision2d = new this._physicsProcessor._loader!.Collision2D();
                         collision2d.setData(contact);
-        
-                        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
-                        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionEnter2D(collision2d);
+                        this._collisionEventPool.insert(
+                            CollisionType.Enter,
+                            collider2dA,
+                            collider2dB,
+                            collision2d
+                        );
                     }
                 }
             }
@@ -88,23 +101,27 @@ export class Physics2DProcessor implements IPhysics2D {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
                 const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
                 if (collider2dA.isTrigger || collider2dB.isTrigger) {
-                    collider2dA.gameObject.gameObjectEventContainer.invokeOnTriggerExit2D(collider2dB);
-                    collider2dB.gameObject.gameObjectEventContainer.invokeOnTriggerExit2D(collider2dA);
+                    this._triggerEventPool.insert(TriggerType.Exit, collider2dA, collider2dB);
                 } else {
                     if (this._physicsProcessor.reuseCollisionCallbacks) {
                         const collsion2d = this._collision2DPool.getInstance();
                         collsion2d.setData(contact);
-        
-                        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collsion2d);
-                        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collsion2d);
-        
-                        this._collision2DPool.release(collsion2d);
+                        this._collisionEventPool.insert(
+                            CollisionType.Exit,
+                            collider2dA,
+                            collider2dB,
+                            collsion2d,
+                            this._collision2DPool
+                        );
                     } else {
                         const collision2d = new this._physicsProcessor._loader!.Collision2D();
                         collision2d.setData(contact);
-        
-                        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collision2d);
-                        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionExit2D(collision2d);
+                        this._collisionEventPool.insert(
+                            CollisionType.Exit,
+                            collider2dA,
+                            collider2dB,
+                            collision2d
+                        );
                     }
                 }
             }
@@ -113,29 +130,42 @@ export class Physics2DProcessor implements IPhysics2D {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
                 const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
                 if (collider2dA.isTrigger || collider2dB.isTrigger) {
-                    collider2dA.gameObject.gameObjectEventContainer.invokeOnTriggerStay2D(collider2dB);
-                    collider2dB.gameObject.gameObjectEventContainer.invokeOnTriggerStay2D(collider2dA);
+                    this._triggerEventPool.insert(TriggerType.Stay, collider2dA, collider2dB);
                 } else {
                     if (this._physicsProcessor.reuseCollisionCallbacks) {
                         const collsion2d = this._collision2DPool.getInstance();
                         collsion2d.setData(contact);
-        
-                        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionStay2D(collsion2d);
-                        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionStay2D(collsion2d);
-        
-                        this._collision2DPool.release(collsion2d);
+                        this._collisionEventPool.insert(
+                            CollisionType.Stay,
+                            collider2dA,
+                            collider2dB,
+                            collsion2d,
+                            this._collision2DPool
+                        );
                     } else {
                         const collision2d = new this._physicsProcessor._loader!.Collision2D();
                         collision2d.setData(contact);
-        
-                        collider2dA.gameObject.gameObjectEventContainer.invokeOnCollisionStay2D(collision2d);
-                        collider2dB.gameObject.gameObjectEventContainer.invokeOnCollisionStay2D(collision2d);
+                        this._collisionEventPool.insert(
+                            CollisionType.Stay,
+                            collider2dA,
+                            collider2dB,
+                            collision2d
+                        );
                     }
                 }
             }
-        };
 
-        this._world.SetContactListener(new ContactListener(this));
+            public onTriggerInvoke() {
+                this._triggerEventPool.invoke();
+            }
+
+            public onCollisionInvoke() {
+                this._collisionEventPool.invoke();
+            }
+        };
+        const contactListener = new ContactListener(this);
+        this._physicsEventDispatcher = contactListener;
+        this._world.SetContactListener(contactListener);
 
         if (physicSetting.gravity) this._world?.SetGravity(physicSetting.gravity);
         if (physicSetting.defaultMaterial) this._defaultMaterial = physicSetting.defaultMaterial.clone();
@@ -146,7 +176,13 @@ export class Physics2DProcessor implements IPhysics2D {
         // if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
         // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
         if (physicSetting.reuseCollisionCallbacks) this.reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
-        if (physicSetting.collisionLayerMaskMatrix) this._collisionLayerMaskConverter = new this._loader.CollisionLayerMaskConverter(physicSetting.collisionLayerMaskMatrix);
+        if (physicSetting.collisionLayerMaskMatrix) {
+            this._collisionLayerMaskConverter = new this._loader.CollisionLayerMaskConverter(physicSetting.collisionLayerMaskMatrix);
+        } else {
+            this._collisionLayerMaskConverter = new this._loader.CollisionLayerMaskConverter({ 
+                default: { default: true }
+            });
+        }
     }
 
     /** @internal */
@@ -199,8 +235,8 @@ export class Physics2DProcessor implements IPhysics2D {
             }
         }
 
-        //onTrigger invoke
-        //onCollision invoke
+        this._physicsEventDispatcher!.onTriggerInvoke();
+        this._physicsEventDispatcher!.onCollisionInvoke();
     }
 
     /**
