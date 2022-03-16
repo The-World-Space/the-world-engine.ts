@@ -1,12 +1,19 @@
 import { Vector2 } from "three/src/Three";
 import { GameObjectBuilder } from "../../../engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "../../../engine/hierarchy_object/Prefab";
+import { PrefabRef } from "../../../engine/hierarchy_object/PrefabRef";
 import { BoxCollider2D } from "../../../engine/script/physics2d/collider/BoxCollider2D";
 import { RigidBody2D } from "../../../engine/script/physics2d/RigidBody2D";
 import { CssIframeRenderer } from "../../../engine/script/render/CssIframeRenderer";
 
 /** @internal */
 export class IframeDynamicBoxPrefab extends Prefab {
+    private _iframeSrc: PrefabRef<string> = new PrefabRef("https://www.youtube.com/embed/EOpwt95lOH8");
+
+    public withSrc(src: PrefabRef<string>): Prefab {
+        this._iframeSrc = src;
+        return this;
+    }
 
     public make(): GameObjectBuilder {
         return this.gameObjectBuilder
@@ -18,7 +25,7 @@ export class IframeDynamicBoxPrefab extends Prefab {
             .withComponent(CssIframeRenderer, c => {
                 c.width = 4;
                 c.height = 3;
-                c.iframeSource = "https://www.youtube.com/embed/thzz6KT6LMA";
+                c.iframeSource = this._iframeSrc.ref!;
                 c.viewScale = 0.01;
             })
         ;
