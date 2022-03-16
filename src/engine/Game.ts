@@ -8,7 +8,6 @@ import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
 import { GameScreen } from "./render/GameScreen";
 import { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
-import { Transform } from "./hierarchy_object/Transform";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { Color } from "./render/Color";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
@@ -133,7 +132,7 @@ export class Game {
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
         if (this._gameSetting.render.useCss3DRenderer) {
-            this._css3DRenderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
+            this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera);
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
@@ -151,7 +150,7 @@ export class Game {
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
         if (this._gameSetting!.render.useCss3DRenderer) {
-            this._css3DRenderer.render(renderObjects, this._rootScene, this._cameraContainer.camera);
+            this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera);
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
@@ -187,9 +186,11 @@ export class Game {
         this._gameState.kind = GameStateKind.Finalizing;
         if (this._animationFrameId) cancelAnimationFrame(this._animationFrameId);
         this._engineGlobalObject.dispose();
-        this._rootScene.children.slice().forEach(child => {
-            if (child instanceof Transform) child.gameObject.destroy();
-        });
+
+        const rootChildren = this._rootScene.children;
+        for (let i = 0; i < rootChildren.length; i++) {
+            rootChildren[i].gameObject.destroy();
+        }
         
         if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
         this._container.removeChild(this._css3DRenderer.domElement);

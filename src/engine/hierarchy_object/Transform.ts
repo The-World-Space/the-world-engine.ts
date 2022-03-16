@@ -1,6 +1,5 @@
-import { Euler, Matrix4, Object3D, Quaternion, Vector3 } from "three/src/Three";
+import { Euler, Matrix4, Object3D, Quaternion, Scene, Vector3 } from "three/src/Three";
 import { GameObject } from "./GameObject";
-import { Scene } from "./Scene";
 import { ObservableVector3 } from "../math/ObservableVector3";
 import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
@@ -76,7 +75,7 @@ export class Transform {
         this._object3D = new Transform.TransformObject3D();
         this._object3D.matrixAutoUpdate = true;
         this._object3D.userData = this;
-        engineGlobalObject.scene.add(this._object3D);
+        engineGlobalObject.scene.unsafeGetThreeScene().add(this._object3D);
         
         Object.defineProperties(this._object3D, {
             position: {
@@ -579,7 +578,7 @@ export class Transform {
             }
 
             this._object3D.removeFromParent();
-            this._engineGlobalObject.scene.add(this._object3D);
+            this._engineGlobalObject.scene.unsafeGetThreeScene().add(this._object3D);
             this._onParentChanged(oldParent, null);
         }
     }
