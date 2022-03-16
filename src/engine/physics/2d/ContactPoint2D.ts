@@ -5,6 +5,7 @@ import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
+import type { WritableVector2 } from "../../math/WritableVector2";
 
 export class ContactPoint2D {
     private _contact: Contact|null = null;
@@ -28,7 +29,8 @@ export class ContactPoint2D {
         manifoldPoint: ManifoldPoint,
         worldNormal: Vec2,
         worldPoint: Vec2,
-        separation: number
+        separation: number,
+        relativeVelocity?: ReadonlyVector2
     ): void {
         this._contact = contact;
         const fixtureA = contact.GetFixtureA();
@@ -37,15 +39,23 @@ export class ContactPoint2D {
         this._rigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
         this._otherCollider = fixtureB.GetUserData() as Collider2D;
         this._otherRigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-
-        this._relativeVelocity.set(NaN, NaN);
         
+        if (relativeVelocity) {
+            (this._relativeVelocity as WritableVector2).copy(relativeVelocity);
+        } else {
+            const aVelocity = ContactPoint2D.tempVec.Copy(fixtureA.GetBody().GetLinearVelocity());
+            const relativeVelocity = aVelocity.SelfSub(fixtureB.GetBody().GetLinearVelocity());
+            this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
+        }
+
         this._point.set(worldPoint.x, worldPoint.y);
         this._normal.set(worldNormal.x, worldNormal.y);
         this._normalImpulse = manifoldPoint.normalImpulse;
         this._tangentImpulse = manifoldPoint.tangentImpulse;
         this._separation = separation;
     }
+    
+    private static tempVec = new Vec2();
 
     public get enabled(): boolean {
         return this._contact?.IsEnabled() ?? false;
@@ -66,19 +76,8 @@ export class ContactPoint2D {
     public get otherRigidbody(): RigidBody2D|null {
         return this._otherRigidbody;
     }
-    
-    private static tempVec = new Vec2();
 
     public get relativeVelocity(): ReadonlyVector2 {
-        if (this._contact) {
-            if (isNaN(this._relativeVelocity.x)) {
-                const bodyA = this._contact.GetFixtureA().GetBody();
-                const bodyB = this._contact.GetFixtureB().GetBody();
-                const aVelocity = ContactPoint2D.tempVec.Copy(bodyA.GetLinearVelocity());
-                const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
-                this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
-            }
-        }
         return this._relativeVelocity;
     }
 

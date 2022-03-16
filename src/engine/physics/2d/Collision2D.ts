@@ -37,8 +37,13 @@ export class Collision2D {
         this._otherRigidbody = (bodyB.GetUserData() as IPhysicsObject2D).rigidbody;
 
         this._contactCount = contact.GetManifold().pointCount;
-        this._relativeVelocity.set(NaN, NaN);
+
+        const aVelocity = Collision2D.tempVec.Copy(bodyA.GetLinearVelocity());
+        const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
+        this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
     }
+    
+    private static tempVec = new Vec2();
 
     public get collider(): Collider2D {
         return this._collider!;
@@ -72,7 +77,8 @@ export class Collision2D {
                 manifold.points[i],
                 this._worldManifold.normal,
                 this._worldManifold.points[i],
-                this._worldManifold.separations[i]
+                this._worldManifold.separations[i],
+                this._relativeVelocity
             );
             insertPos += 1;
         }
@@ -90,7 +96,8 @@ export class Collision2D {
             manifold.points[index],
             this._worldManifold.normal,
             this._worldManifold.points[index],
-            this._worldManifold.separations[index]
+            this._worldManifold.separations[index],
+            this._relativeVelocity
         );
         return out;
     }
@@ -103,18 +110,7 @@ export class Collision2D {
         this._contact?.SetEnabled(value);
     }
 
-    private static tempVec = new Vec2();
-
     public get relativeVelocity(): ReadonlyVector2 {
-        if (this._contact) {
-            if (isNaN(this._relativeVelocity.x)) {
-                const bodyA = this._contact.GetFixtureA().GetBody();
-                const bodyB = this._contact.GetFixtureB().GetBody();
-                const aVelocity = Collision2D.tempVec.Copy(bodyA.GetLinearVelocity());
-                const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
-                this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
-            }
-        }
         return this._relativeVelocity;
     }
 }
