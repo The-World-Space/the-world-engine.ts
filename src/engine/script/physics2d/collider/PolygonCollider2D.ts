@@ -33,6 +33,7 @@ export class PolygonCollider2D extends Collider2D {
                             c.color = new Color(0, 0, 0, 0);
                             c.borderWidth = 2;
                             c.borderColor = new Color(1, 1, 0, 0.3);
+                            c.pointerEvents = false;
                         })
                         .getComponent(Css2DPolygonRenderer, debugRenderer)));
             
