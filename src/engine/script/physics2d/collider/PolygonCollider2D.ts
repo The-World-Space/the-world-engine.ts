@@ -9,6 +9,7 @@ import { Object2DAttacher } from "../Object2DAttacher";
 import { Css2DPolygonRenderer } from "../../render/Css2DPolygonRenderer";
 import { PrefabRef } from "../../../hierarchy_object/PrefabRef";
 import { Color } from "../../../render/Color";
+import { DEG2RAD } from "three/src/math/MathUtils";
 
 export class PolygonCollider2D extends Collider2D {
     private _points: Vector2[] = [];
@@ -67,6 +68,18 @@ export class PolygonCollider2D extends Collider2D {
         if (this._debugRenderer) {
             this._debugRenderer.points = this._points;
         }
+    }
+    
+    public setShapeToRegularPolygon(sides: number, radius: number): void {
+        const points = [];
+        const angle = DEG2RAD * 360 / sides;
+        for (let i = 0; i < sides; i++) {
+            points.push(new Vector2(
+                radius * Math.cos(angle * i + Math.PI / 2),
+                radius * Math.sin(angle * i + Math.PI / 2)
+            ));
+        }
+        this.points = points;
     }
 
     public get debugDraw(): boolean {
