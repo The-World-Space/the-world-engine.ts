@@ -12,7 +12,12 @@ import { Color } from "../../../render/Color";
 import { DEG2RAD } from "three/src/math/MathUtils";
 
 export class PolygonCollider2D extends Collider2D {
-    private _points: Vector2[] = [];
+    private _points: Vector2[] = [
+        new Vector2(-2, -2),
+        new Vector2(2, -2),
+        new Vector2(2, 2),
+        new Vector2(-2, 2),
+    ];
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;
     private _debugRenderer: Css2DPolygonRenderer|null = null;
