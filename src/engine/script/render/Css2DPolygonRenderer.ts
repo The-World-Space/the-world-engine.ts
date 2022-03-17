@@ -16,6 +16,8 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     private _width = 4;
     private _height = 4;
     private _color = Color.fromHex("#39C5BB");
+    private _borderColor = Color.fromHex("#00FF00");
+    private _borderWidth = 0;
 
     protected override renderInitialize(): void {
         if (!this.htmlElement) {
@@ -41,6 +43,8 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
 
             const svgPolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
             svgPolygon.style.fill = this._color.toHexWithAlpha();
+            svgPolygon.style.stroke = this._borderColor.toHexWithAlpha();
+            svgPolygon.style.strokeWidth = this._borderWidth + "px";
             // svgPolygon.style.filter = "url(#blur)";
             svgElement.appendChild(svgPolygon);
             this.htmlElement.appendChild(svgElement);
@@ -85,8 +89,8 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
             if (Math.abs(point.x) > maxX) maxX = Math.abs(point.x);
             if (Math.abs(point.y) > maxY) maxY = Math.abs(point.y);
         }
-        this._width = maxX * 2;
-        this._height = maxY * 2;
+        this._width = maxX * 2 + this._borderWidth * 0.03;
+        this._height = maxY * 2 + this._borderWidth * 0.03;
         this.htmlElement!.style.width = (this._width / this.viewScale) + "px";
         this.htmlElement!.style.height = (this._height / this.viewScale) + "px";
     }
@@ -144,6 +148,28 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         this._color = value;
         if (this.htmlElement) {
             this._svgElement!.style.fill = value.toHexWithAlpha();
+        }
+    }
+
+    public get borderColor(): Color {
+        return this._borderColor;
+    }
+
+    public set borderColor(value: Color) {
+        this._borderColor = value;
+        if (this.htmlElement) {
+            this._svgElement!.style.stroke = value.toHexWithAlpha();
+        }
+    }
+
+    public get borderWidth(): number {
+        return this._borderWidth;
+    }
+
+    public set borderWidth(value: number) {
+        this._borderWidth = value;
+        if (this.htmlElement) {
+            this._svgElement!.style.strokeWidth = value + "px";
         }
     }
 }
