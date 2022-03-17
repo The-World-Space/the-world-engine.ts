@@ -8,6 +8,12 @@ export class Color {
     private readonly _a: number;
 
     public constructor(r: number, g: number, b: number, a = 1) {
+        if (1 < r) r = 1;
+        if (0 > r) r = 0;
+        if (1 < g) g = 1;
+        if (0 > g) g = 0;
+        if (1 < b) b = 1;
+        if (0 > b) b = 0;
         this._r = r;
         this._g = g;
         this._b = b;
