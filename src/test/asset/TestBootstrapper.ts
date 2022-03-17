@@ -31,6 +31,8 @@ import { BodyDisposer } from "./script/BodyDisposer";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
 import { CircleCollider2D } from "../../engine/script/physics2d/collider/CircleCollider2D";
 import { PolygonCollider2D } from "../../engine/script/physics2d/collider/PolygonCollider2D";
+import { Css2DEdgeRenderer } from "../../engine/script/render/Css2DEdgeRenderer";
+import { EdgeCollider2D } from "../../engine/script/physics2d/collider/EdgeCollider2D";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -68,6 +70,19 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(31, 1);
+                }))
+
+            .withChild(instantiater.buildGameObject("ground_edge", new Vector3(0, 10, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Static;
+                    c.setCollisionLayer<TestLayer>("level");
+                })
+                .withComponent(EdgeCollider2D, c => {
+                    c.points = [
+                        new Vector2(-15, 0),
+                        new Vector2(0, 2),
+                        new Vector2(15, 0)
+                    ];
                 }))
 
             .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 4))
@@ -140,11 +155,11 @@ export class TestBootstrapper extends Bootstrapper {
                 //.active(false)
             )
 
-            .withChild(instantiater.buildGameObject("test_object")
+            .withChild(instantiater.buildGameObject("test_object", new Vector3(5, 0, 0))
                 //.active(false)
                 .withComponent(TimeTest, c => c.enabled = false)
                 .withComponent(CssHtmlElementRenderer, c => {
-                    c.enabled = false;
+                    //c.enabled = false;
                     const element = document.createElement("div");
                     element.style.backgroundColor = "#dddddd";
                     element.appendChild(document.createTextNode("hi! i'm a test object!"));
@@ -179,10 +194,10 @@ export class TestBootstrapper extends Bootstrapper {
                         div.style.backgroundColor = "#dddddd";
                         c.element = div;
                     }, 1000000);
-                    c.viewScale = 0.5;
+                    c.viewScale = 0.05;
                     c.autoSize = false;
-                    c.elementWidth = 100;
-                    c.elementHeight = 100;
+                    c.elementWidth = 10;
+                    c.elementHeight = 10;
                     c.centerOffset = new Vector2(0.5, 0.5);
                 })
                 .withComponent(CssTextRenderer, c => {
@@ -197,6 +212,11 @@ export class TestBootstrapper extends Bootstrapper {
                     c.viewScale = 0.01;
                     c.setShapeToRegularPolygon(10, 6);
                     c.color = new Color(0, 0, 0, 1);
+                })
+                .withComponent(Css2DEdgeRenderer, c => {
+                    c.edgeWidth = 2;
+                    c.edgeColor = new Color(1, 1, 1, 0.3);
+                    c.viewScale = 0.01;
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
