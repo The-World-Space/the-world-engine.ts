@@ -30,6 +30,7 @@ import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElemen
 import { BodyDisposer } from "./script/BodyDisposer";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
 import { CircleCollider2D } from "../../engine/script/physics2d/collider/CircleCollider2D";
+import { PolygonCollider2D } from "../../engine/script/physics2d/collider/PolygonCollider2D";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -86,7 +87,7 @@ export class TestBootstrapper extends Bootstrapper {
                 }))
 
             
-            .withChild(instantiater.buildGameObject("circle", new Vector3(2, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 4))
+            .withChild(instantiater.buildGameObject("circle", new Vector3(2, 0, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Dynamic;
                     c.setCollisionLayer<TestLayer>("player");
@@ -97,6 +98,19 @@ export class TestBootstrapper extends Bootstrapper {
                 .withComponent(CssSpriteRenderer, c => {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
+                }))
+
+            .withChild(instantiater.buildGameObject("polygon", new Vector3(3, 0, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Dynamic;
+                    c.setCollisionLayer<TestLayer>("player");
+                })
+                .withComponent(PolygonCollider2D, c => {
+                    c.points = [
+                        new Vector2(-1, -1),
+                        new Vector2(1, -1),
+                        new Vector2(1, 1)
+                    ];
                 }))
 
             .withChild(instantiater.buildGameObject("bound_1", new Vector3(0, -8, 0))
