@@ -26,6 +26,7 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
             svgElement.setAttribute("height", "100%");
             
             const svgPolyLine = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+            svgPolyLine.style.fill = "none";
             svgPolyLine.style.stroke = this._edgeColor.toHexWithAlpha();
             svgPolyLine.style.strokeWidth = this._edgeWidth + "px";
             
