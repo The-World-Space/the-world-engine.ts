@@ -67,7 +67,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.setCollisionLayer<TestLayer>("level");
                 })
                 .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(17, 1);
+                    c.size = new Vector2(31, 1);
                 }))
 
             .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 4))
@@ -106,11 +106,25 @@ export class TestBootstrapper extends Bootstrapper {
                     c.setCollisionLayer<TestLayer>("player");
                 })
                 .withComponent(PolygonCollider2D, c => {
-                    c.points = [
-                        new Vector2(-1, -1),
-                        new Vector2(1, -1),
-                        new Vector2(1, 1)
-                    ];
+                    c.setShapeToRegularPolygon(6, 1);
+                }))
+
+            .withChild(instantiater.buildGameObject("polygon2", new Vector3(3, 2, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Dynamic;
+                    c.setCollisionLayer<TestLayer>("player");
+                })
+                .withComponent(PolygonCollider2D, c => {
+                    c.setShapeToRegularPolygon(10, 1);
+                }))
+
+            .withChild(instantiater.buildGameObject("polygon3", new Vector3(3, 4, 0))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Dynamic;
+                    c.setCollisionLayer<TestLayer>("player");
+                })
+                .withComponent(PolygonCollider2D, c => {
+                    c.setShapeToRegularPolygon(3, 1);
                 }))
 
             .withChild(instantiater.buildGameObject("bound_1", new Vector3(0, -8, 0))
