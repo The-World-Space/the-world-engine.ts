@@ -29,6 +29,7 @@ import { Color } from "../../engine/render/Color";
 import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElementRenderer";
 import { BodyDisposer } from "./script/BodyDisposer";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
+import { CircleCollider2D } from "../../engine/script/physics2d/collider/CircleCollider2D";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -84,6 +85,20 @@ export class TestBootstrapper extends Bootstrapper {
                     c.imageHeight = 1;
                 }))
 
+            
+            .withChild(instantiater.buildGameObject("circle", new Vector3(2, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 4))
+                .withComponent(RigidBody2D, c => {
+                    c.bodyType = RigidbodyType2D.Dynamic;
+                    c.setCollisionLayer<TestLayer>("player");
+                })
+                .withComponent(CircleCollider2D, c => {
+                    c.radius = 1;
+                })
+                .withComponent(CssSpriteRenderer, c => {
+                    c.imageWidth = 1;
+                    c.imageHeight = 1;
+                }))
+
             .withChild(instantiater.buildGameObject("bound_1", new Vector3(0, -8, 0))
                 .withComponent(BoxCollider2D, c => {
                     c.size = new Vector2(100, 1);
@@ -94,11 +109,11 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(0.5, 0.5, 0))
                 .getColideTilemapChunkRendererRef(gridMap)
                 .make()
-                .active(false)
+                //.active(false)
             )
 
             .withChild(instantiater.buildGameObject("test_object")
-                .active(false)
+                //.active(false)
                 .withComponent(TimeTest, c => c.enabled = false)
                 .withComponent(CssHtmlElementRenderer, c => {
                     c.enabled = false;
@@ -151,14 +166,14 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(Css2DPolygonRenderer, c => {
                     c.enabled = true;
-                    c.viewScale = 0.1;
-                    c.setShapeToRegularPolygon(10, 60);
+                    c.viewScale = 0.01;
+                    c.setShapeToRegularPolygon(10, 6);
                     c.color = new Color(0, 0, 0, 1);
                 })
                 .withComponent(PointerGridInputListener, c => c.enabled = false))
 
             .withChild(instantiater.buildGameObject("track_object")
-                .active(false)
+                //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     //c.enabled = false;
                     c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);

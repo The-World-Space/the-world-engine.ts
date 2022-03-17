@@ -1,5 +1,5 @@
 import type { Shape } from "../../../../box2d.ts/build/index";
-import { Vec2, PolygonShape } from "../../../../box2d.ts/build/index";
+import { PolygonShape } from "../../../../box2d.ts/build/index";
 import { Vector2, Vector3 } from "three/src/Three";
 import { Collider2D } from "./Collider2D";
 import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
@@ -49,14 +49,12 @@ export class BoxCollider2D extends Collider2D {
         }
     }
 
-    private _b2Vector = new Vec2();
-
     protected override createShape(): Shape {
         const shape = new PolygonShape();
         shape.SetAsBox(
             this._size.x / 2,
             this._size.y / 2,
-            this._b2Vector.Copy(this.offset)
+            this.offset
         );
         shape.m_radius = this._edgeRadius;
         return shape;
