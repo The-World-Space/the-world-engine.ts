@@ -1,9 +1,10 @@
-import type { Body, Fixture, FixtureDef } from "../../../box2d.ts/build/index";
+import type { Body } from "../../../box2d.ts/build/index";
 import { BodyType } from "../../../box2d.ts/build/index";
 import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import type { GameObject } from "../../hierarchy_object/GameObject";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
+import { FixtureGroup } from "./FixtureGroup";
 
 /** @internal */
 export interface IPhysicsObject2D {
@@ -45,16 +46,16 @@ export class PhysicsObject2D implements IPhysicsObject2D {
         this.checkDestroy();
     }
 
-    public addCollider(collider: Collider2D, fixtureDef: FixtureDef): Fixture {
+    public addCollider(collider: Collider2D): FixtureGroup {
         this._colliders.push(collider);
-        return this.body.CreateFixture(fixtureDef);
+        return new FixtureGroup(this.body, this);
     }
 
-    public removeCollider(collider: Collider2D, fixture: Fixture): void {
+    public removeCollider(collider: Collider2D, fixtureGroup: FixtureGroup): void {
         const index = this._colliders.indexOf(collider);
         if (index === -1) throw new Error("Collider not found");
         this._colliders.splice(index, 1);
-        this.body.DestroyFixture(fixture);
+        fixtureGroup.clear();
         this.checkDestroy();
     }
 
@@ -83,7 +84,7 @@ export class PhysicsObject2D implements IPhysicsObject2D {
 
     private updateMaterialInfo = () => {
         for (let i = 0; i < this._colliders.length; i++) {
-            this._colliders[i].updateFixtureMaterialInfo();
+            this._colliders[i].updateFixturesMaterialInfo();
         }
     };
 

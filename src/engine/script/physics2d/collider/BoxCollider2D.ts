@@ -49,7 +49,7 @@ export class BoxCollider2D extends Collider2D {
         }
     }
 
-    protected override createShape(): Shape {
+    protected override createShapes(): Shape[] {
         const shape = new PolygonShape();
         shape.SetAsBox(
             this._size.x / 2,
@@ -57,7 +57,7 @@ export class BoxCollider2D extends Collider2D {
             this.offset
         );
         shape.m_radius = this._edgeRadius;
-        return shape;
+        return [shape];
     }
 
     public get size(): ReadonlyVector2 {

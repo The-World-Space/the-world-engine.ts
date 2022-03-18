@@ -1,4 +1,4 @@
-import type { Fixture, Shape } from "../../../../box2d.ts/build/index";
+import type { Shape } from "../../../../box2d.ts/build/index";
 import { FixtureDef, Filter } from "../../../../box2d.ts/build/index";
 import { Vector2 } from "three/src/Three";
 import { Component } from "../../../hierarchy_object/Component";
@@ -7,74 +7,74 @@ import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../../math/WritableVector2";
 import type { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
-import type { IPhysicsObject2D } from "../../../physics/2d/PhysicsObject2D";
+import type { FixtureGroup } from "../../../physics/2d/FixtureGroup";
 
 export class Collider2D extends Component {
-    private _fixture: Fixture|null = null;
+    private _fixtureGroup: FixtureGroup|null = null;
     private _density = 1;
     private _material: PhysicsMaterial2D|null = null;
     private _isTrigger = false;
     private _offset: Vector2 = new Vector2();
     private _collisionLayer: string|null = null;
 
-    private _fixtureCreated = false;
-
     public onEnable(): void {
         this.createFixture();
-        this._fixture!.GetBody().SetAwake(true);
+        this._fixtureGroup!.body.SetAwake(true);
     }
 
     public onDisable(): void {
-        this._fixture?.GetBody().SetAwake(true);
+        this._fixtureGroup?.body.SetAwake(true);
         this.destroyFixture();
     }
 
     public onDestroy(): void {   
-        this._material?.removeOnChangedEventListener(this.updateFixtureMaterialInfo);
+        this._material?.removeOnChangedEventListener(this.updateFixturesMaterialInfo);
     }
 
     private createFixture(): void {
-        if (this._fixtureCreated) return;
-        const fixtureDef = new FixtureDef();
-        fixtureDef.userData = this;
-        fixtureDef.density = this._density;
-        fixtureDef.isSensor = this._isTrigger;
-        fixtureDef.shape = this.createShape();
+        if (this._fixtureGroup) return;
+        this._fixtureGroup = this.engine.physics2DProcessor.addCollider(this.gameObject, this);
 
-        this._fixture = this.engine.physics2DProcessor.addCollider(this.gameObject, this, fixtureDef);
-        this.updateFixtureMaterialInfo();
-        this.updateFixtureFilter();
-        (this._fixture.GetBody().GetUserData() as IPhysicsObject2D).rigidbody?.updateMass();
+        const shapes = this.createShapes();
+        for (let i = 0; i < shapes.length; i++) {
+            const shape = shapes[i];
+            const fixtureDef = new FixtureDef();
+            fixtureDef.userData = this;
+            fixtureDef.density = this._density;
+            fixtureDef.isSensor = this._isTrigger;
+            fixtureDef.shape = shape;
+            this._fixtureGroup.add(fixtureDef);
+        }
+        this.updateFixturesMaterialInfo();
+        this.updateFixturesFilter();
 
-        this._fixtureCreated = true;
+        this._fixtureGroup.physicObject.rigidbody?.updateMass();
     }
 
     private destroyFixture(): void {
-        if (this._fixture) {
-            if (!this._fixtureCreated) return;
-            this.engine.physics2DProcessor.removeCollider(this.gameObject, this, this._fixture);
-            (this._fixture.GetBody().GetUserData() as IPhysicsObject2D).rigidbody?.updateMass();
-            this._fixture = null;
-            this._fixtureCreated = false;
+        if (this._fixtureGroup) {
+            this.engine.physics2DProcessor.removeCollider(this.gameObject, this, this._fixtureGroup);
+            this._fixtureGroup.physicObject.rigidbody?.updateMass();
+            this._fixtureGroup = null;
         }
     }
 
     protected updateFixture(): void {
-        if (this._fixture) {
+        if (this._fixtureGroup) {
             this.destroyFixture();
             this.createFixture();
-            this._fixture!.GetBody().SetAwake(true);
+            this._fixtureGroup!.body.SetAwake(true);
         }
     }
 
     private static readonly _filterBuffer = new Filter();
 
     /** @internal */
-    public updateFixtureFilter(): void {
-        if (!this._fixture) return;
+    public updateFixturesFilter(): void {
+        if (!this._fixtureGroup) return;
 
         const filter = Collider2D._filterBuffer;
-        const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
+        const physicsObject = this._fixtureGroup.physicObject;
         const rigidBody = physicsObject.rigidbody;
 
         let layer: number;
@@ -96,28 +96,73 @@ export class Collider2D extends Component {
         }
         //filter.groupIndex
 
-        this._fixture.SetFilterData(filter);
+        this._fixtureGroup.foreachFixture(fixture => fixture.SetFilterData(filter));
     }
 
     /** @internal */
-    public readonly updateFixtureMaterialInfo = () => {
-        if (this._fixture) {
+    public readonly updateFixturesMaterialInfo = () => {
+        if (this._fixtureGroup) {
             let material: PhysicsMaterial2D|null = null;
             if (this._material) {
                 material = this._material;
-            } else if (this._fixture) {
-                const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
-                const rigidBodyMaterial = physicsObject.sharedMaterial;
+            } else if (this._fixtureGroup) {
+                const rigidBodyMaterial = this._fixtureGroup.physicObject.sharedMaterial;
                 if (rigidBodyMaterial) material = rigidBodyMaterial;
             }
             if (!material) material = new PhysicsMaterial2D();
             
-            this._fixture.SetFriction(material.friction);
-            this._fixture.SetRestitution(material.bounciness);
+            this._fixtureGroup.foreachFixture(fixture => {
+                fixture.SetFriction(material!.friction);
+                fixture.SetRestitution(material!.bounciness);
+            });
         }
     };
 
-    protected createShape(): Shape {
+    // private updateFixtureFilter(fixture: Fixture): void {
+    //     const filter = Collider2D._filterBuffer;
+    //     const physicsObject = fixture.GetBody().GetUserData() as IPhysicsObject2D;
+    //     const rigidBody = physicsObject.rigidbody;
+
+    //     let layer: number;
+    //     if (this._collisionLayer) {
+    //         layer = this.engine.physics.collisionLayerMask.nameToLayer(this._collisionLayer as any);
+    //     } else {
+    //         if (rigidBody) {
+    //             layer = this.engine.physics.collisionLayerMask.nameToLayer(rigidBody.getCollisionLayer() as any);
+    //         } else {
+    //             layer = this.engine.physics.collisionLayerMask.nameToLayer(CollisionLayerConst.DefaultLayerName);
+    //         }
+    //     }
+    //     filter.categoryBits = layer;
+
+    //     if (rigidBody && !rigidBody.simulated) {
+    //         filter.maskBits = 0x0000;
+    //     } else {
+    //         filter.maskBits = this.engine.physics.collisionLayerMask.getMaskFromLayer(layer);
+    //     }
+    //     //filter.groupIndex
+
+    //     fixture.SetFilterData(filter);
+    // }
+
+    // private updateFixtureMaterialInfo(fixture: Fixture): void {
+    //     if (fixture) {
+    //         let material: PhysicsMaterial2D|null = null;
+    //         if (this._material) {
+    //             material = this._material;
+    //         } else if (fixture) {
+    //             const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
+    //             const rigidBodyMaterial = physicsObject.sharedMaterial;
+    //             if (rigidBodyMaterial) material = rigidBodyMaterial;
+    //         }
+    //         if (!material) material = new PhysicsMaterial2D();
+            
+    //         fixture.SetFriction(material.friction);
+    //         fixture.SetRestitution(material.bounciness);
+    //     }
+    // };
+
+    protected createShapes(): Shape[] {
         throw new Error("You should not use Collider2D directly but one of its subclasses. e.g. BoxCollider2D");
     }
     
@@ -126,15 +171,15 @@ export class Collider2D extends Component {
     }
 
     public set density(value: number) {
-        if (this._fixture) {
-            const physicsObject = this._fixture.GetBody().GetUserData() as IPhysicsObject2D;
+        if (this._fixtureGroup) {
+            const physicsObject = this._fixtureGroup.physicObject;
             if (physicsObject && physicsObject.rigidbody && !physicsObject.rigidbody.useAutoMass) {
                 throw new Error("You cannot change the density of a collider when the rigid body is not using auto mass.");
             }
         }
         this._density = value;
-        if (this._fixture) {
-            this._fixture.SetDensity(value);
+        if (this._fixtureGroup) {
+            this._fixtureGroup.foreachFixture(fixture => fixture.SetDensity(value));
         }
     }
 
@@ -146,15 +191,15 @@ export class Collider2D extends Component {
         if (value) {
             if (!this._material) {
                 this._material = new PhysicsMaterial2D(value.friction, value.bounciness);
-                this._material.addOnChangedEventListener(this.updateFixtureMaterialInfo);
+                this._material.addOnChangedEventListener(this.updateFixturesMaterialInfo);
             } else {
                 this._material.copy(value);
             }
         } else {
-            this._material?.removeOnChangedEventListener(this.updateFixtureMaterialInfo);
+            this._material?.removeOnChangedEventListener(this.updateFixturesMaterialInfo);
             this._material = null;
         }
-        this.updateFixtureMaterialInfo();
+        this.updateFixturesMaterialInfo();
     }
 
     public get isTrigger(): boolean {
@@ -163,8 +208,8 @@ export class Collider2D extends Component {
 
     public set isTrigger(value: boolean) {
         this._isTrigger = value;
-        if (this._fixture) {
-            this._fixture.SetSensor(value);
+        if (this._fixtureGroup) {
+            this._fixtureGroup.foreachFixture(fixture => fixture.SetSensor(value));
         }
     }
 
@@ -183,6 +228,6 @@ export class Collider2D extends Component {
 
     public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>|null) {
         this._collisionLayer = value as string|null;
-        this.updateFixtureFilter();
+        this.updateFixturesFilter();
     }
 }

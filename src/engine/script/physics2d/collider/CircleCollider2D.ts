@@ -46,10 +46,10 @@ export class CircleCollider2D extends Collider2D {
         }
     }
 
-    protected override createShape(): Shape {
+    protected override createShapes(): Shape[] {
         const shape = new CircleShape();
         shape.Set(this.offset, this._radius);
-        return shape;
+        return [shape];
     }
 
     public get radius(): number {

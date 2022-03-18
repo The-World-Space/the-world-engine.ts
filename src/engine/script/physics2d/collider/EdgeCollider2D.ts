@@ -1,5 +1,5 @@
 import type { Shape } from "../../../../box2d.ts/build/index";
-import { ChainShape, Vec2_zero } from "../../../../box2d.ts/build/index";
+import { EdgeShape } from "../../../../box2d.ts/build/index";
 import { Vector2, Vector3 } from "three/src/Three";
 import { Collider2D } from "./Collider2D";
 import type { GameObject } from "../../../hierarchy_object/GameObject";
@@ -52,11 +52,15 @@ export class EdgeCollider2D extends Collider2D {
         }
     }
 
-    protected override createShape(): Shape {
-        const shape = new ChainShape();
-        shape.CreateChain(this._points, Vec2_zero, Vec2_zero);
-        shape.m_radius = this._edgeRadius;
-        return shape;
+    protected override createShapes(): Shape[] {
+        const shapes: Shape[] = [];
+        for (let i = 0; i < this._points.length - 1; i++) {
+            const shape = new EdgeShape();
+            shape.SetTwoSided(this._points[i], this._points[i + 1]);
+            shape.m_radius = this._edgeRadius;
+            shapes.push(shape);
+        }
+        return shapes;
     }
 
     public get points(): readonly ReadonlyVector2[] {

@@ -55,10 +55,10 @@ export class PolygonCollider2D extends Collider2D {
         }
     }
 
-    protected override createShape(): Shape {
+    protected override createShapes(): Shape[] {
         const shape = new PolygonShape();
         shape.Set(this._points);
-        return shape;
+        return [shape];
     }
 
     public get points(): readonly ReadonlyVector2[] {

@@ -1,7 +1,5 @@
 import type {
     Contact as B2Contact,
-    Fixture as B2Fixture,
-    FixtureDef as B2FixtureDef,
     Manifold as B2Manifold,
     Shape as B2Shape,
     BodyDef as B2BodyDef,
@@ -23,6 +21,7 @@ import type { Physics2DLoader } from "./Physics2DLoader";
 import type { PhysicsEventDispatcher } from "./PhysicsEventDispatcher";
 import type { CollisionEventPool, TriggerEventPool } from "./EventPool";
 import { CollisionType, TriggerType } from "./EventPool";
+import type { FixtureGroup } from "./FixtureGroup";
 
 /** @internal */
 export class Physics2DProcessor implements IPhysics2D {
@@ -293,7 +292,7 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     /** @internal */
-    public addCollider(gameObject: GameObject, collider: Collider2D, fixturedef: B2FixtureDef): B2Fixture {
+    public addCollider(gameObject: GameObject, collider: Collider2D): FixtureGroup {
         if (!this._world) throw new Error("Physics2D is not loaded.");
         
         let physicsObject = this._gameObjectToBodyMap.get(gameObject);
@@ -305,14 +304,14 @@ export class Physics2DProcessor implements IPhysics2D {
             );
         }
         this._gameObjectToBodyMap.set(gameObject, physicsObject);
-        return physicsObject.addCollider(collider, fixturedef);
+        return physicsObject.addCollider(collider);
     }
 
     /** @internal */
-    public removeCollider(gameObject: GameObject, collider: Collider2D, fixture: B2Fixture): void {
+    public removeCollider(gameObject: GameObject, collider: Collider2D, fixtureGroup: FixtureGroup): void {
         const physicsObject = this._gameObjectToBodyMap.get(gameObject);
         if (!physicsObject) throw new Error("PhysicsObject2D not found");
-        physicsObject.removeCollider(collider, fixture);
+        physicsObject.removeCollider(collider, fixtureGroup);
     }
 
     public get physicsLoader(): Physics2DLoader|null {

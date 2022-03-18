@@ -120,7 +120,7 @@ export class RigidBody2D extends Component {
         const colliders = this._physicsObject.colliders;
         for (let i = 0, l = colliders.length; i < l; i++) {
             const collider = colliders[i];
-            collider.updateFixtureFilter();
+            collider.updateFixturesFilter();
         }
     }
 
