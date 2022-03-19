@@ -35,6 +35,7 @@ export class BoxCollider2D extends Collider2D {
                             c.elementHeight = this._size.y + this.edgeRadius * 2;
                             c.elementWidth = this._size.x + this.edgeRadius * 2;
                             c.viewScale = 0.01;
+                            c.pointerEvents = false;
                         })));
 
             objectAttacher!.target = this._debugObject;

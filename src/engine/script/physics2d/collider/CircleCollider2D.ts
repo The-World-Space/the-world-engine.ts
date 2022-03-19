@@ -32,6 +32,7 @@ export class CircleCollider2D extends Collider2D {
                             c.elementHeight = this._radius * 2;
                             c.elementWidth = this._radius * 2;
                             c.viewScale = 0.01;
+                            c.pointerEvents = false;
                         })));
 
             objectAttacher!.target = this._debugObject;
