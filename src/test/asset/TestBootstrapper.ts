@@ -86,7 +86,6 @@ export class TestBootstrapper extends Bootstrapper {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
                 }))
-
             
             .withChild(instantiater.buildGameObject("circle", new Vector3(2, 0, 0))
                 .withComponent(RigidBody2D, c => {
