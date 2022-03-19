@@ -184,7 +184,6 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(EditorCameraController, c => {
                     c.maxViewSize = 40;
-                    c.mouseMoveButton = 0;
                 })
                 .withComponent(EditorGridRenderer, c => {
                     c.enabled = false;

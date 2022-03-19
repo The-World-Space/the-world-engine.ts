@@ -71,7 +71,7 @@ export class RenderTestPrefab extends Prefab {
                 .withComponent(CssTextRenderer, c => {
                     c.enabled = true;
                     c.autoSize = false;
-                    c.textWidth = 64;
+                    c.textWidth = 16;
                     c.fontFamily = "Sans";
                     c.text = "lorem ipsum dolor sit amet, consectetur";
                     c.textAlign = TextAlign.Center;
