@@ -36,6 +36,7 @@ export class PlayerGridMovementController extends Directionable
     private _findedPath: Vector2[]|null = null;
     private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
+    private _cachedParentWorldPosition: Vector2 = new Vector2();
 
     private readonly _tempVector2 = new Vector2();
 
@@ -47,6 +48,9 @@ export class PlayerGridMovementController extends Directionable
         position.x = this._gridCenter.x + this._initPosition.x * this._gridCellWidth;
         position.y = this._gridCenter.y + this._initPosition.y * this._gridCellHeight;
         this._currentGridPosition.set(transform.localPosition.x, transform.localPosition.y);
+
+        const parent = transform.parent;
+        if (parent) this._cachedParentWorldPosition.set(parent.position.x, parent.position.y);
     }
 
     public update(): void {
@@ -218,6 +222,9 @@ export class PlayerGridMovementController extends Directionable
     }
 
     private checkCollision(x: number, y: number): boolean {
+        x += this._cachedParentWorldPosition.x;
+        y += this._cachedParentWorldPosition.y;
+        
         for (let i = 0; i < this._collideMaps.length; i++) {
             if (this._collideMaps[i].checkCollision(x, y, this._collideSize, this._collideSize)){
                 return true;
