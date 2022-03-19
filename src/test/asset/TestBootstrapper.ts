@@ -140,7 +140,6 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
             
             .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 80))
-                //.active(false)
                 .withComponent(Camera, c => {
                     c.viewSize = 10;
                     c.backgroundColor = new Color(0, 0, 0);
