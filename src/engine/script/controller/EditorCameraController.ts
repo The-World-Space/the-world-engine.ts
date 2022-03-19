@@ -13,7 +13,8 @@ export class EditorCameraController extends Component {
     public override readonly requiredComponents: ComponentConstructor[] = [Camera];
 
     private _camera: Camera|null = null;
-    private _mouseMiddleDown = false;
+    private _mouseMoveButtonDown = false;
+    private _mouseMoveButton = 1;
     private readonly _lastOffset: Vector2 = new Vector2();
     private _minViewSize = 1;
     private _maxViewSize = 10;
@@ -78,23 +79,23 @@ export class EditorCameraController extends Component {
             event.clientX / this.engine.screen.width,
             event.clientY / this.engine.screen.height
         );
-        if (event.button === 1) {
-            this._mouseMiddleDown = true;
+        if (event.button === this._mouseMoveButton) {
+            this._mouseMoveButtonDown = true;
         }
     }
 
     private onPointerUp(event: MouseEvent): void {
-        if (event.button === 1) {
-            this._mouseMiddleDown = false;
+        if (event.button === this._mouseMoveButton) {
+            this._mouseMoveButtonDown = false;
         }
     }
 
     private onPointerLeave(_event: MouseEvent): void {
-        this._mouseMiddleDown = false;
+        this._mouseMoveButtonDown = false;
     }
 
     private onPointerMove(event: MouseEvent): void {
-        if (!this._mouseMiddleDown) return;
+        if (!this._mouseMoveButtonDown) return;
 
         const clientOffsetX = event.clientX / this.engine.screen.width;
         const clientOffsetY = event.clientY / this.engine.screen.height;
@@ -152,5 +153,13 @@ export class EditorCameraController extends Component {
             this._currentViewSize = this._maxViewSize;
             this.resize();
         }
+    }
+
+    public get mouseMoveButton(): number {
+        return this._mouseMoveButton;
+    }
+
+    public set mouseMoveButton(value: number) {
+        this._mouseMoveButton = value;
     }
 }
