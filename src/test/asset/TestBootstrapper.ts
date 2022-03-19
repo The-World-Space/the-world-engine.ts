@@ -1,27 +1,17 @@
-import { Quaternion, Vector2, Vector3 } from "three/src/Three";
+import { Vector2, Vector3 } from "three/src/Three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
 import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
-import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
-import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
-import { Spawner } from "./script/Spawner";
-import { IframeDynamicBoxPrefab } from "./prefab/IframeDynamicBoxPrefab";
-import { ContactTest } from "./script/ContactTest";
-import { PhysicsController } from "./script/PhysicsController";
-import { CssSpriteRenderer } from "../../engine/script/render/CssSpriteRenderer";
 import { Camera, CameraType } from "../../engine/script/render/Camera";
 import { EditorCameraController } from "../../engine/script/controller/EditorCameraController";
 import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRenderer";
 import { CssTextRenderer } from "../../engine/script/render/CssTextRenderer";
 import { Color } from "../../engine/render/Color";
-import { BodyDisposer } from "./script/BodyDisposer";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
-import { CircleCollider2D } from "../../engine/script/physics2d/collider/CircleCollider2D";
-import { PolygonCollider2D } from "../../engine/script/physics2d/collider/PolygonCollider2D";
-import { EdgeCollider2D } from "../../engine/script/physics2d/collider/EdgeCollider2D";
 import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
 import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
+import { PhysicsTestPrefab } from "./prefab/PhysicsTestPrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -43,96 +33,8 @@ export class TestBootstrapper extends Bootstrapper {
         const instantiater = this.instantiater;
 
         return this.sceneBuilder
-            .withChild(instantiater.buildGameObject("spawner")
-                .withComponent(Spawner, c => {
-                    c.prefabCtor = IframeDynamicBoxPrefab;
-                    c.initSpawnCount = 3;
-                }))
-
-            .withChild(instantiater.buildGameObject("ground", new Vector3(0, -3, 0))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Static;
-                    c.setLayerFromName<TestLayer>("level");
-                })
-                .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(31, 1);
-                }))
-
-            .withChild(instantiater.buildGameObject("ground_edge", new Vector3(0, 10, 0))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Static;
-                    c.setLayerFromName<TestLayer>("level");
-                })
-                .withComponent(EdgeCollider2D, c => {
-                    c.points = [
-                        new Vector2(-15, 0),
-                        new Vector2(0, 2),
-                        new Vector2(15, 0)
-                    ];
-                }))
-
-            .withChild(instantiater.buildGameObject("box", new Vector3(0, 0, 0), new Quaternion().setFromAxisAngle(new Vector3(0, 0, 1), Math.PI / 4))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Dynamic;
-                    c.setLayerFromName<TestLayer>("player");
-                })
-                .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(1, 1);
-                    c.edgeRadius = 1;
-                })
-                .withComponent(ContactTest)
-                .withComponent(PhysicsController)
-                .withComponent(CssSpriteRenderer, c => {
-                    c.imageWidth = 1;
-                    c.imageHeight = 1;
-                }))
             
-            .withChild(instantiater.buildGameObject("circle", new Vector3(2, 0, 0))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Dynamic;
-                    c.setLayerFromName<TestLayer>("level");
-                })
-                .withComponent(CircleCollider2D, c => {
-                    c.radius = 1;
-                })
-                .withComponent(CssSpriteRenderer, c => {
-                    c.imageWidth = 1;
-                    c.imageHeight = 1;
-                }))
-
-            .withChild(instantiater.buildGameObject("polygon", new Vector3(3, 0, 0))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Dynamic;
-                    c.setLayerFromName<TestLayer>("level");
-                })
-                .withComponent(PolygonCollider2D, c => {
-                    c.setShapeToRegularPolygon(6, 1);
-                }))
-
-            .withChild(instantiater.buildGameObject("polygon2", new Vector3(3, 2, 0))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Dynamic;
-                    c.setLayerFromName<TestLayer>("level");
-                })
-                .withComponent(PolygonCollider2D, c => {
-                    c.setShapeToRegularPolygon(10, 1);
-                }))
-
-            .withChild(instantiater.buildGameObject("polygon3", new Vector3(3, 4, 0))
-                .withComponent(RigidBody2D, c => {
-                    c.bodyType = RigidbodyType2D.Dynamic;
-                    c.setLayerFromName<TestLayer>("level");
-                })
-                .withComponent(PolygonCollider2D, c => {
-                    c.setShapeToRegularPolygon(3, 1);
-                }))
-
-            .withChild(instantiater.buildGameObject("bound_1", new Vector3(0, -8, 0))
-                .withComponent(BoxCollider2D, c => {
-                    c.size = new Vector2(100, 1);
-                    c.isTrigger = true;
-                })
-                .withComponent(BodyDisposer))
+            .withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
 
             .withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
 
