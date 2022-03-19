@@ -1,22 +1,15 @@
 import { Quaternion, Vector2, Vector3 } from "three/src/Three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
-import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
 import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
 import { BoxCollider2D } from "../../engine/script/physics2d/collider/BoxCollider2D";
-import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "../../engine/script/render/CssSpriteAtlasRenderer";
 import { Spawner } from "./script/Spawner";
 import { IframeDynamicBoxPrefab } from "./prefab/IframeDynamicBoxPrefab";
 import { ContactTest } from "./script/ContactTest";
 import { PhysicsController } from "./script/PhysicsController";
-import { GameObject } from "../../engine/hierarchy_object/GameObject";
-import { CssCollideTilemapChunkRenderer } from "../../engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
-import { PrefabRef } from "../../engine/hierarchy_object/PrefabRef";
-import { GlobalConfig } from "../../GlobalConfig";
 import { CssSpriteRenderer } from "../../engine/script/render/CssSpriteRenderer";
-import { PlayerGridMovementController } from "../../engine/script/controller/PlayerGridMovementController";
 import { Camera, CameraType } from "../../engine/script/render/Camera";
 import { EditorCameraController } from "../../engine/script/controller/EditorCameraController";
 import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRenderer";
@@ -28,7 +21,7 @@ import { CircleCollider2D } from "../../engine/script/physics2d/collider/CircleC
 import { PolygonCollider2D } from "../../engine/script/physics2d/collider/PolygonCollider2D";
 import { EdgeCollider2D } from "../../engine/script/physics2d/collider/EdgeCollider2D";
 import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
-import { ZaxisSorter } from "../../engine/script/render/ZaxisSorter";
+import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -48,9 +41,6 @@ export class TestBootstrapper extends Bootstrapper {
             });
 
         const instantiater = this.instantiater;
-
-        const trackObject = new PrefabRef<GameObject>();
-        const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("spawner")
@@ -145,35 +135,9 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(BodyDisposer))
 
-            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(-28, -50, 0))
-                .getColideTilemapChunkRendererRef(gridMap)
-                .make()
-                //.active(false)
-            )
-
-            .withChild(instantiater.buildGameObject("track_object")
-                //.active(false)
-                .withComponent(CssSpriteAtlasRenderer, c => {
-                    //c.enabled = false;
-                    c.asyncSetImage(GlobalConfig.defaultSpriteSrc, 2, 3);
-                    c.viewScale = 1;
-                    c.imageIndex = 0;
-                    c.pointerEvents = true;
-                    c.imageFlipX = true;
-                    c.imageFlipY = true;
-                    c.imageWidth = 1;
-                    c.imageHeight = 2;
-                    c.centerOffset = new Vector2(0, 0.4);
-                    c.renderMode = CssSpriteAtlasRenderMode.ObjectFit;
-                })
-                .withComponent(PlayerGridMovementController, c => {
-                    c.setGridInfoFromCollideMap(gridMap.ref!);
-                    c.addCollideMap(gridMap.ref!);
-                })
-                .withComponent(ZaxisSorter)
-                .getGameObject(trackObject))
-
             .withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
+
+            .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
             
             .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 80))
                 //.active(false)
