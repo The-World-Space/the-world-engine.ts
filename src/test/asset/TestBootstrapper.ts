@@ -1,10 +1,8 @@
 import { Quaternion, Vector2, Vector3 } from "three/src/Three";
 import { Bootstrapper } from "../../engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "../../engine/bootstrap/SceneBuilder";
-import { Css2DPolygonRenderer } from "../../engine/script/render/Css2DPolygonRenderer";
 import { CameraPrefab } from "./prefab/CameraPrefab";
 import { SansFightRoomPrefab } from "./prefab/SansFightRoomPrefab";
-import { TimeTest } from "./script/TimeTest";
 import { FpsCounter } from "./script/FpsCounter";
 import { TestLayer } from "./TestLayer";
 import { RigidBody2D, RigidbodyType2D } from "../../engine/script/physics2d/RigidBody2D";
@@ -17,22 +15,20 @@ import { PhysicsController } from "./script/PhysicsController";
 import { GameObject } from "../../engine/hierarchy_object/GameObject";
 import { CssCollideTilemapChunkRenderer } from "../../engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
 import { PrefabRef } from "../../engine/hierarchy_object/PrefabRef";
-import { PointerGridInputListener } from "../../engine/script/input/PointerGridInputListener";
 import { GlobalConfig } from "../../GlobalConfig";
 import { CssSpriteRenderer } from "../../engine/script/render/CssSpriteRenderer";
 import { PlayerGridMovementController } from "../../engine/script/controller/PlayerGridMovementController";
 import { Camera, CameraType } from "../../engine/script/render/Camera";
 import { EditorCameraController } from "../../engine/script/controller/EditorCameraController";
 import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRenderer";
-import { CssTextRenderer, TextAlign } from "../../engine/script/render/CssTextRenderer";
+import { CssTextRenderer } from "../../engine/script/render/CssTextRenderer";
 import { Color } from "../../engine/render/Color";
-import { CssHtmlElementRenderer } from "../../engine/script/render/CssHtmlElementRenderer";
 import { BodyDisposer } from "./script/BodyDisposer";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
 import { CircleCollider2D } from "../../engine/script/physics2d/collider/CircleCollider2D";
 import { PolygonCollider2D } from "../../engine/script/physics2d/collider/PolygonCollider2D";
-import { Css2DEdgeRenderer } from "../../engine/script/render/Css2DEdgeRenderer";
 import { EdgeCollider2D } from "../../engine/script/physics2d/collider/EdgeCollider2D";
+import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -149,76 +145,11 @@ export class TestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(BodyDisposer))
 
-            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(0.5, 0.5, 0))
+            .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(-28, -50, 0))
                 .getColideTilemapChunkRendererRef(gridMap)
                 .make()
                 //.active(false)
             )
-
-            .withChild(instantiater.buildGameObject("test_object", new Vector3(5, 0, 0))
-                //.active(false)
-                .withComponent(TimeTest, c => c.enabled = false)
-                .withComponent(CssHtmlElementRenderer, c => {
-                    //c.enabled = false;
-                    const element = document.createElement("div");
-                    element.style.backgroundColor = "#dddddd";
-                    element.appendChild(document.createTextNode("hi! i'm a test object!"));
-                    element.appendChild(document.createElement("br"));
-                    element.appendChild(document.createElement("br"));
-                    element.appendChild(document.createTextNode("you can add html elements on game objects!"));
-                    element.appendChild(document.createElement("br"));
-                    element.appendChild(document.createElement("br"));
-                    const button = document.createElement("button");
-                    button.innerText = "click me!";
-                    const counter = document.createElement("span");
-                    counter.innerText = "0";
-                    button.onclick = () => {
-                        counter.innerText = (parseInt(counter.innerText) + 1).toString();
-                    };
-                    element.appendChild(button);
-                    element.appendChild(document.createElement("br"));
-                    element.appendChild(document.createTextNode("count: "));
-                    element.appendChild(counter);
-                    element.appendChild(document.createElement("br"));
-                    const slider = document.createElement("input");
-                    slider.type = "range";
-                    slider.min = "0";
-                    slider.max = "100";
-                    slider.value = "0";
-                    element.appendChild(slider);
-
-                    c.element = element;
-                    setTimeout(() => {
-                        const div = document.createElement("div");
-                        div.innerText = "hello world!";
-                        div.style.backgroundColor = "#dddddd";
-                        c.element = div;
-                    }, 1000000);
-                    c.viewScale = 0.05;
-                    c.autoSize = false;
-                    c.elementWidth = 10;
-                    c.elementHeight = 10;
-                    c.centerOffset = new Vector2(0.5, 0.5);
-                })
-                .withComponent(CssTextRenderer, c => {
-                    c.enabled = false;
-                    c.autoSize = false;
-                    c.textWidth = 64;
-                    c.fontFamily = "Sans";
-                    c.textAlign = TextAlign.Center;
-                })
-                .withComponent(Css2DPolygonRenderer, c => {
-                    c.enabled = true;
-                    c.viewScale = 0.01;
-                    c.setShapeToRegularPolygon(10, 6);
-                    c.color = new Color(0, 0, 0, 1);
-                })
-                .withComponent(Css2DEdgeRenderer, c => {
-                    c.edgeWidth = 2;
-                    c.edgeColor = new Color(1, 1, 1, 0.3);
-                    c.viewScale = 0.01;
-                })
-                .withComponent(PointerGridInputListener, c => c.enabled = false))
 
             .withChild(instantiater.buildGameObject("track_object")
                 //.active(false)
@@ -256,9 +187,11 @@ export class TestBootstrapper extends Bootstrapper {
                     c.addCollideMap(gridMap.ref!);
                 })
                 .getGameObject(trackObject))
+
+            .withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
             
             .withChild(instantiater.buildGameObject("camera_parent")
-                .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 10))
+                .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 80))
                     //.active(false)
                     .withComponent(Camera, c => {
                         c.viewSize = 10;
@@ -266,7 +199,7 @@ export class TestBootstrapper extends Bootstrapper {
                         c.cameraType = CameraType.Orthographic;
                     })
                     .withComponent(EditorCameraController, c => {
-                        c.maxViewSize = 20;
+                        c.maxViewSize = 40;
                     })
                     .withComponent(EditorGridRenderer, c => {
                         c.enabled = false;

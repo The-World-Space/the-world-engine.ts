@@ -9,8 +9,8 @@ import { GameObjectBuilder } from "./GameObjectBuilder";
  * do not override constructor it's break the engine
  */
 export abstract class Prefab {
-    protected _instantiater: Instantiater;
-    protected _gameObjectBuilder: GameObjectBuilder;
+    private _instantiater: Instantiater;
+    private _gameObjectBuilder: GameObjectBuilder;
 
     public constructor(
         engineGlobalObject: EngineGlobalObject,
