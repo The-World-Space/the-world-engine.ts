@@ -51,7 +51,10 @@ export class TopDownScenePrefab extends Prefab {
                     c.setGridInfoFromCollideMap(gridMap.ref!);
                     c.addCollideMap(gridMap.ref!);
                 })
-                .withComponent(ZaxisSorter))
+                .withComponent(ZaxisSorter, c => {
+                    c.runOnce = false;
+                    c.offset = 0.7;
+                }))
         ;
     }
 }
