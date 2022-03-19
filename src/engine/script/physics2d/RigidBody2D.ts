@@ -50,7 +50,7 @@ export class RigidBody2D extends Component {
     private _collisionDetection: CollisionDetectionMode2D = CollisionDetectionMode2D.Discrete; // Collision Detection
     private _sleepMode: RigidbodySleepMode2D = RigidbodySleepMode2D.StartAwake; // Sleeping Mode
     private _freezeRotation = false; // Freeze Rotation
-    private _collisionLayer: string = CollisionLayerConst.DefaultLayerName;
+    private _collisionLayer: number = CollisionLayerConst.DefaultLayer;
 
     private readonly _centerOfMass = new Vector2(NaN, NaN);
     private readonly _worldCenterOfMass = new Vector2(NaN, NaN);
@@ -80,7 +80,7 @@ export class RigidBody2D extends Component {
         bodyDef.linearVelocity.Copy(this._linearVelocity);
         bodyDef.angularVelocity = this._angularVelocity;
         this._physicsObject = this.engine.physics2DProcessor.addRigidBody(this.gameObject, this, bodyDef);
-        this.updateSimulatedToCollider();
+        this.updateCollidersFilter();
 
         this._body = this._physicsObject.body;
 
@@ -100,22 +100,22 @@ export class RigidBody2D extends Component {
         this.engine.physics2DProcessor.removeRigidBody(this.gameObject);
         this._physicsObject = null;
         this._body = null;
-        this.updateSimulatedToCollider();
+        this.updateCollidersFilter();
     }
 
     public onEnable(): void {
         this._simulated = true;
         this.getB2Body().SetEnabled(true);
-        this.updateSimulatedToCollider();
+        this.updateCollidersFilter();
     }
 
     public onDisable(): void {
         this._simulated = false;
         this._body?.SetEnabled(false);
-        this.updateSimulatedToCollider();
+        this.updateCollidersFilter();
     }
 
-    private updateSimulatedToCollider(): void {
+    private updateCollidersFilter(): void {
         if (!this._physicsObject) return;
         const colliders = this._physicsObject.colliders;
         for (let i = 0, l = colliders.length; i < l; i++) {
@@ -279,12 +279,22 @@ export class RigidBody2D extends Component {
         this._body?.SetFixedRotation(value);
     }
 
-    public getCollisionLayer<T extends CollisionLayer>(): CollisionLayerParm<T> {
-        return this._collisionLayer as CollisionLayerParm<T>;
+    public getLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T> {
+        return this.engine.physics.collisionLayerMask.layerToName(this._collisionLayer);
     }
 
-    public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>) {
-        this._collisionLayer = value as string;
+    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>) {
+        this._collisionLayer = this.engine.physics.collisionLayerMask.nameToLayer(value);
+        this.updateCollidersFilter();
+    }
+
+    public get layer(): number {
+        return this._collisionLayer;
+    }
+
+    public set layer(value: number) {
+        this._collisionLayer = value;
+        this.updateCollidersFilter();
     }
     
     public get centerOfMass(): ReadonlyVector2 {

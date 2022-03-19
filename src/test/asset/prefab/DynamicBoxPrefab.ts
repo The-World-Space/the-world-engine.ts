@@ -11,7 +11,7 @@ export class DynamicBoxPrefab extends Prefab {
         return this.gameObjectBuilder
             .withComponent(RigidBody2D)
             .withComponent(BoxCollider2D, c => {
-                c.setCollisionLayer<TestLayer>("default");
+                c.setLayerFromName<TestLayer>("default");
             })
         ;
     }

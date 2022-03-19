@@ -15,7 +15,7 @@ export class Collider2D extends Component {
     private _material: PhysicsMaterial2D|null = null;
     private _isTrigger = false;
     private _offset: Vector2 = new Vector2();
-    private _collisionLayer: string|null = null;
+    private _collisionLayer: number|null = null;
 
     public onEnable(): void {
         this.createFixture();
@@ -79,12 +79,12 @@ export class Collider2D extends Component {
 
         let layer: number;
         if (this._collisionLayer) {
-            layer = this.engine.physics.collisionLayerMask.nameToLayer(this._collisionLayer as any);
+            layer = this._collisionLayer;
         } else {
             if (rigidBody) {
-                layer = this.engine.physics.collisionLayerMask.nameToLayer(rigidBody.getCollisionLayer() as any);
+                layer = rigidBody.layer;
             } else {
-                layer = this.engine.physics.collisionLayerMask.nameToLayer(CollisionLayerConst.DefaultLayerName);
+                layer = CollisionLayerConst.DefaultLayer;
             }
         }
         filter.categoryBits = layer;
@@ -222,13 +222,38 @@ export class Collider2D extends Component {
         this.updateFixture();
     }
 
-    public getCollisionLayer<T extends CollisionLayer>(): CollisionLayerParm<T>|null {
-        return this._collisionLayer as CollisionLayerParm<T>|null;
+    public getLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T>|null {
+        return this._collisionLayer ? this.engine.physics.collisionLayerMask.layerToName<T>(this._collisionLayer) : null;
     }
 
-    public setCollisionLayer<T extends CollisionLayer>(value: CollisionLayerParm<T>|null) {
-        this._collisionLayer = value as string|null;
+    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>|null) {
+        this._collisionLayer = value ? this.engine.physics.collisionLayerMask.nameToLayer(value) : null;
         this.updateFixturesFilter();
+    }
+
+    public get layer(): number|null {
+        return this._collisionLayer;
+    }
+
+    public set layer(value: number|null) {
+        this._collisionLayer = value;
+        this.updateFixturesFilter();
+    }
+
+    public getThisOrRigidBodyLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T> {
+        if (this._collisionLayer) {
+            return this.engine.physics.collisionLayerMask.layerToName<T>(this._collisionLayer);
+        } else {
+            return this._fixtureGroup?.physicObject.rigidbody?.getLayerToName<T>() ?? CollisionLayerConst.DefaultLayerName;
+        }
+    }
+
+    public getThisOrRigidBodyLayer(): number {
+        if (this._collisionLayer) {
+            return this._collisionLayer;
+        } else {
+            return this._fixtureGroup?.physicObject.rigidbody?.layer ?? CollisionLayerConst.DefaultLayer;
+        }
     }
 
     // Cast	Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself.
