@@ -4,7 +4,7 @@ import type { IPhysicsObject2D } from "./PhysicsObject2D";
 export class FixtureGroup {
     private _body: Body;
     private _physicObject: IPhysicsObject2D;
-    private _fixtures: Fixture[] = [];
+    private _fixtures: Set<Fixture> = new Set();
 
     public constructor(body: Body, physicObject: IPhysicsObject2D) {
         this._body = body;
@@ -13,28 +13,30 @@ export class FixtureGroup {
 
     public add(fixtureDef: FixtureDef): Fixture {
         const fixture = this._body.CreateFixture(fixtureDef);
-        this._fixtures.push(fixture);
+        this._fixtures.add(fixture);
         return fixture;
     }
 
     public remove(fixture: Fixture): void {
-        const index = this._fixtures.indexOf(fixture);
-        if (index === -1) throw new Error("Fixture not found");
-        this._fixtures.splice(index, 1);
+        this._fixtures.delete(fixture);
         this._body.DestroyFixture(fixture);
     }
 
     public clear(): void {
-        for (let i = 0; i < this._fixtures.length; i++) {
-            this._body.DestroyFixture(this._fixtures[i]);
+        for (const fixture of this._fixtures) {
+            this._body.DestroyFixture(fixture);
         }
-        this._fixtures.length = 0;
+        this._fixtures.clear();
     }
 
     public foreachFixture(callback: (fixture: Fixture) => void): void {
-        for (let i = 0; i < this._fixtures.length; i++) {
-            callback(this._fixtures[i]);
+        for (const fixture of this._fixtures) {
+            callback(fixture);
         }
+    }
+
+    public contains(fixture: Fixture): boolean {
+        return this._fixtures.has(fixture);
     }
 
     public get body(): Body {

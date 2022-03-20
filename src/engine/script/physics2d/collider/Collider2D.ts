@@ -1,5 +1,5 @@
 import type { Shape } from "../../../../box2d.ts/build/index";
-import { FixtureDef, Filter } from "../../../../box2d.ts/build/index";
+import { FixtureDef, Filter, WorldManifold } from "../../../../box2d.ts/build/index";
 import { Vector2 } from "three/src/Three";
 import { Component } from "../../../hierarchy_object/Component";
 import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
@@ -8,6 +8,7 @@ import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../../math/WritableVector2";
 import type { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
 import type { FixtureGroup } from "../../../physics/2d/FixtureGroup";
+import { ContactPoint2D } from "../../../physics/2d/ContactPoint2D";
 
 export class Collider2D extends Component {
     private _fixtureGroup: FixtureGroup|null = null;
@@ -259,7 +260,39 @@ export class Collider2D extends Component {
     // Cast	Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself.
     // ClosestPoint	Returns a point on the perimeter of this Collider that is closest to the specified position.
     // Distance	Calculates the minimum separation of this collider against another collider.
-    // GetContacts	Retrieves all contact points for this Collider.
+    
+    private _worldManifold: WorldManifold = new WorldManifold();
+
+    public getContacts(out: ContactPoint2D[]): number {
+        if (!this._fixtureGroup) return 0;
+        let insertPos = 0;
+        let contactEdge = this._fixtureGroup.body.GetContactList();
+        while (contactEdge) {
+            const currentContactEdge = contactEdge;
+            contactEdge = contactEdge.next;
+
+            if (!this._fixtureGroup.contains(currentContactEdge.contact.GetFixtureA()) &&
+                !this._fixtureGroup.contains(currentContactEdge.contact.GetFixtureB())) {
+                continue;
+            }
+            
+            const manifold = currentContactEdge.contact.GetManifold();
+            for (let i = 0; i < manifold.pointCount; i++) {
+                if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
+                currentContactEdge.contact.GetWorldManifold(this._worldManifold);
+                out[insertPos].setData(
+                    currentContactEdge.contact,
+                    manifold.points[i],
+                    this._worldManifold.normal,
+                    this._worldManifold.points[i],
+                    this._worldManifold.separations[i]
+                );
+                insertPos += 1;
+            }
+        }
+        return insertPos;
+    }
+
     // IsTouching	Check whether this collider is touching the collider or not.
     // IsTouchingLayers	Checks whether this collider is touching any colliders on the specified layerMask or not.
     // OverlapCollider	Get a list of all colliders that overlap this collider.
