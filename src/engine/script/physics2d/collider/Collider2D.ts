@@ -258,10 +258,8 @@ export class Collider2D extends Component {
 
     // Cast	Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself.
     // ClosestPoint	Returns a point on the perimeter of this Collider that is closest to the specified position.
-    // CreateMesh	Creates a planar Mesh that is identical to the area defined by the Collider2D geometry.
     // Distance	Calculates the minimum separation of this collider against another collider.
     // GetContacts	Retrieves all contact points for this Collider.
-    // GetShapeHash	Generates a simple hash value based upon the geometry of the Collider2D.
     // IsTouching	Check whether this collider is touching the collider or not.
     // IsTouchingLayers	Checks whether this collider is touching any colliders on the specified layerMask or not.
     // OverlapCollider	Get a list of all colliders that overlap this collider.
