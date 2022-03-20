@@ -13,7 +13,7 @@ import { ContactTest } from "../script/ContactTest";
 import { PhysicsController } from "../script/PhysicsController";
 import { Spawner } from "../script/Spawner";
 import { TestLayer } from "../TestLayer";
-import { IframeDynamicBoxPrefab } from "./IframeDynamicBoxPrefab";
+import { DynamicBoxPrefab } from "./DynamicBoxPrefab";
 
 /** @internal */
 export class PhysicsTestPrefab extends Prefab {
@@ -32,7 +32,7 @@ export class PhysicsTestPrefab extends Prefab {
             
             .withChild(instantiater.buildGameObject("spawner")
                 .withComponent(Spawner, c => {
-                    c.prefabCtor = IframeDynamicBoxPrefab;
+                    c.prefabCtor = DynamicBoxPrefab;
                     c.initSpawnCount = 3;
                 }))
 

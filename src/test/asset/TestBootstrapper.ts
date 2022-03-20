@@ -9,8 +9,6 @@ import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRe
 import { CssTextRenderer } from "../../engine/script/render/CssTextRenderer";
 import { Color } from "../../engine/render/Color";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
-import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
-import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 import { PhysicsTestPrefab } from "./prefab/PhysicsTestPrefab";
 
 /** @internal */
@@ -36,9 +34,9 @@ export class TestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
 
-            .withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
+        //.withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
 
-            .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
+        //.withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
             
             .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 80))
                 .withComponent(Camera, c => {
