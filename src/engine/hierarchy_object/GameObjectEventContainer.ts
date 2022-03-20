@@ -96,26 +96,32 @@ export class GameObjectEventContainer {
     }
 
     public invokeOnCollisionEnter2D(collision: Collision2D): void {
+        if (this._collisionEnter2DComponentEvents.size === 0) return;
         this._collisionEnter2DComponentEvents.forEach(componentEvent => componentEvent.invoke(collision));
     }
 
     public invokeOnCollisionStay2D(collision: Collision2D): void {
+        if (this._collisionStay2DComponentEvents.size === 0) return;
         this._collisionStay2DComponentEvents.forEach(componentEvent => componentEvent.invoke(collision));
     }
 
     public invokeOnCollisionExit2D(collision: Collision2D): void {
+        if (this._collisionExit2DComponentEvents.size === 0) return;
         this._collisionExit2DComponentEvents.forEach(componentEvent => componentEvent.invoke(collision));
     }
 
     public invokeOnTriggerEnter2D(other: Collider2D): void {
+        if (this._triggerEnter2DComponentEvents.size === 0) return;
         this._triggerEnter2DComponentEvents.forEach(componentEvent => componentEvent.invoke(other));
     }
 
     public invokeOnTriggerStay2D(other: Collider2D): void {
+        if (this._triggerStay2DComponentEvents.size === 0) return;
         this._triggerStay2DComponentEvents.forEach(componentEvent => componentEvent.invoke(other));
     }
 
     public invokeOnTriggerExit2D(other: Collider2D): void {
+        if (this._triggerExit2DComponentEvents.size === 0) return;
         this._triggerExit2DComponentEvents.forEach(componentEvent => componentEvent.invoke(other));
     }
 }
