@@ -17,6 +17,7 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
     private _height = 4;
     private _edgeColor = Color.fromHex("#00FF00");
     private _edgeWidth = 0;
+    private static _safebound = 0.1;
 
     protected override renderInitialize(): void {
         if (!this.htmlElement) {
@@ -73,8 +74,8 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
             if (Math.abs(point.x) > maxX) maxX = Math.abs(point.x);
             if (Math.abs(point.y) > maxY) maxY = Math.abs(point.y);
         }
-        this._width = maxX * 2 + this._edgeWidth * 0.03;
-        this._height = maxY * 2 + this._edgeWidth * 0.03;
+        this._width = maxX * 2 + this._edgeWidth * 0.03 + Css2DEdgeRenderer._safebound * 2;
+        this._height = maxY * 2 + this._edgeWidth * 0.03 + Css2DEdgeRenderer._safebound * 2;
         this.htmlElement!.style.width = (this._width / this.viewScale) + "px";
         this.htmlElement!.style.height = (this._height / this.viewScale) + "px";
     }
