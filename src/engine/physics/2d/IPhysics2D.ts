@@ -1,6 +1,8 @@
 import type { Vector2 } from "three/src/Three";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
+import { RaycastHit2D } from "./RaycastHit2D";
 
 export interface IPhysics2D {
     get gravity(): Vector2;
@@ -48,4 +50,14 @@ export interface IPhysics2D {
     set reuseCollisionCallbacks(value: boolean);
 
     get collisionLayerMask(): CollisionLayerMaskConverter;
+
+    raycastOne(
+        origin: ReadonlyVector2,
+        direction: ReadonlyVector2,
+        out?: RaycastHit2D,
+        distance?: number,
+        layerMask?: number,
+        minDepth?: number,
+        maxDepth?: number
+    ): RaycastHit2D|null
 }
