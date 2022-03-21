@@ -61,16 +61,16 @@ export class ContactPoint2D {
         return this._contact?.IsEnabled() ?? false;
     }
 
-    public get collider(): Collider2D {
-        return this._collider!;
+    public get collider(): Collider2D|null {
+        return this._collider;
     }
 
     public get rigidbody(): RigidBody2D|null {
         return this._rigidbody;
     }
 
-    public get otherCollider(): Collider2D {
-        return this._otherCollider!;
+    public get otherCollider(): Collider2D|null {
+        return this._otherCollider;
     }
 
     public get otherRigidbody(): RigidBody2D|null {

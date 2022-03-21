@@ -24,6 +24,8 @@ import { Collision2DPool } from "./Collision2DPool";
 import { Collision2D } from "./Collision2D";
 import { PhysicsObject2D } from "./PhysicsObject2D";
 import { CollisionEventPool, TriggerEventPool } from "./EventPool";
+import { RaycastHit2D } from "./RaycastHit2D";
+import { RayCastOneCallback } from "./RayCastOneCallback";
 
 export class Physics2DLoader {
     /** @internal */
@@ -78,4 +80,9 @@ export class Physics2DLoader {
     public static readonly TriggerEventPool: typeof TriggerEventPool = TriggerEventPool;
     /** @internal */
     public static readonly CollisionEventPool: typeof CollisionEventPool = CollisionEventPool;
+
+    /** @internal */
+    public static readonly RaycastHit2D: typeof RaycastHit2D = RaycastHit2D;
+    /** @internal */
+    public static readonly RayCastOneCallback: typeof RayCastOneCallback = RayCastOneCallback;
 }

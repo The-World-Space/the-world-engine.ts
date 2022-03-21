@@ -3,7 +3,7 @@ import type {
     Manifold as B2Manifold,
     Shape as B2Shape,
     BodyDef as B2BodyDef,
-    World as B2World
+    World as B2World,
 } from "../../../box2d.ts/build/index";
 import { Vector2 } from "three/src/Three";
 import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
@@ -22,6 +22,10 @@ import type { PhysicsEventDispatcher } from "./PhysicsEventDispatcher";
 import type { CollisionEventPool, TriggerEventPool } from "./EventPool";
 import { CollisionType, TriggerType } from "./EventPool";
 import type { FixtureGroup } from "./FixtureGroup";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { RaycastHit2D } from "./RaycastHit2D";
+import type { WritableVector2 } from "../../math/WritableVector2";
+import type { RayCastOneCallback } from "./RayCastOneCallback";
 
 /** @internal */
 export class Physics2DProcessor implements IPhysics2D {
@@ -182,6 +186,8 @@ export class Physics2DProcessor implements IPhysics2D {
                 default: { default: true }
             });
         }
+
+        this._raycastOneCallback = new this._loader.RayCastOneCallback();
     }
 
     /** @internal */
@@ -416,5 +422,37 @@ export class Physics2DProcessor implements IPhysics2D {
     
     public get collisionLayerMask(): CollisionLayerMaskConverter {
         return this._collisionLayerMaskConverter!;
+    }
+
+    private static readonly _raycastEndPoint: WritableVector2 = new Vector2();
+    private _raycastOneCallback: RayCastOneCallback|null = null;
+
+    public raycastOne(
+        origin: ReadonlyVector2,
+        direction: ReadonlyVector2,
+        out? : RaycastHit2D,
+        distance = Number.POSITIVE_INFINITY,
+        layerMask = 0xFFFFFFFF,
+        minDepth = Number.NEGATIVE_INFINITY,
+        maxDepth = Number.POSITIVE_INFINITY
+    ): RaycastHit2D|null {
+        if (!this._world) throw new Error("Physics2D is not loaded.");
+
+        if (!out) out = new this._loader!.RaycastHit2D();
+
+        const endPoint = Physics2DProcessor._raycastEndPoint
+            .copy(direction)
+            .multiplyScalar(distance)
+            .add(origin);
+
+        this._raycastOneCallback!.setRaycastData(
+            out,
+            origin,
+            layerMask,
+            minDepth,
+            maxDepth
+        );
+        this._world.RayCast(this._raycastOneCallback!, origin, endPoint);
+        return this._raycastOneCallback!.hit ? out : null;
     }
 }
