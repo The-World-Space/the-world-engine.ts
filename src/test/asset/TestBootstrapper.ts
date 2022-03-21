@@ -9,7 +9,7 @@ import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRe
 import { CssTextRenderer } from "../../engine/script/render/CssTextRenderer";
 import { Color } from "../../engine/render/Color";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
-import { PhysicsTestPrefab } from "./prefab/PhysicsTestPrefab";
+import { RaycastTestPrefab } from "./prefab/RaycastTestPrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -31,8 +31,10 @@ export class TestBootstrapper extends Bootstrapper {
         const instantiater = this.instantiater;
 
         return this.sceneBuilder
-            
-            .withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
+        
+            .withChild(instantiater.buildPrefab("raycast_test", RaycastTestPrefab, new Vector3(0, 0, 0)).make())
+
+        //.withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
 
         //.withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
 
@@ -53,6 +55,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.renderHeight = 100;
                 })
                 .withComponent(CssTextRenderer, c => {
+                    c.enabled = false;
                     c.pointerEvents = false;
                     c.text = "e : spawn object  d : despawn object";
                     c.textWidth = 18;

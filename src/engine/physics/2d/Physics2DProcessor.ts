@@ -430,7 +430,7 @@ export class Physics2DProcessor implements IPhysics2D {
     public raycastOne(
         origin: ReadonlyVector2,
         direction: ReadonlyVector2,
-        out? : RaycastHit2D,
+        out?: RaycastHit2D,
         distance = Number.POSITIVE_INFINITY,
         layerMask = 0xFFFFFFFF,
         minDepth = Number.NEGATIVE_INFINITY,
@@ -442,7 +442,7 @@ export class Physics2DProcessor implements IPhysics2D {
 
         const endPoint = Physics2DProcessor._raycastEndPoint
             .copy(direction)
-            .multiplyScalar(distance)
+            .multiplyScalar(distance === Number.POSITIVE_INFINITY ? 10000000 : distance)
             .add(origin);
 
         this._raycastOneCallback!.setRaycastData(
