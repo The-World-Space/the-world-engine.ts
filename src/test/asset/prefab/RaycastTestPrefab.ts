@@ -54,6 +54,7 @@ export class RaycastTestPrefab extends Prefab {
                     c.setLayerFromName<TestLayer>("level");
                 })
                 .withComponent(CircleCollider2D, c => {
+                    c.isTrigger = true;
                     c.radius = 1;
                 }))
 

@@ -2,10 +2,12 @@ import { RayCastCallback, Vec2 } from "../../../box2d.ts/build";
 import type { b2Fixture } from "../../../box2d.ts/build/box2d";
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
+import type { IPhysics2D } from "./IPhysics2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 import type { RaycastHit2D } from "./RaycastHit2D";
 
 export class RayCastOneCallback extends RayCastCallback {
+    private readonly _physics2d: IPhysics2D;
     private _hit = false;
     private _raycastHit2D: RaycastHit2D|null = null;
     private _startPosition: Vec2|null = null;
@@ -14,6 +16,11 @@ export class RayCastOneCallback extends RayCastCallback {
     private _maxDepth = 0;
 
     private static readonly _tempVec2: Vec2 = new Vec2();
+
+    public constructor(physics2d: IPhysics2D) {
+        super();
+        this._physics2d = physics2d;
+    }
 
     public setRaycastData(
         raycastHit2D: RaycastHit2D,
@@ -40,12 +47,14 @@ export class RayCastOneCallback extends RayCastCallback {
         normal: Vec2,
         fraction: number
     ): number {
+        const collider = fixture.GetUserData() as Collider2D;
+        if (!this._physics2d.queriesHitTriggers && collider.isTrigger) return -1;
+
         const distance = RayCastOneCallback._tempVec2
             .Copy(point)
             .SelfSub(this._startPosition!)
             .Length();
 
-        const collider = fixture.GetUserData() as Collider2D;
         if ((collider.getThisOrRigidBodyLayer() & this._layerMask) === 0) return -1;
         const transform = collider.transform;
         const depth = transform.position.z;

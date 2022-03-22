@@ -40,8 +40,8 @@ export interface IPhysics2D {
     // get defaultContactOffset(): number;
     // set defaultContactOffset(value: number);
 
-    // get queriesHitTriggers(): boolean;
-    // set queriesHitTriggers(value: boolean);
+    get queriesHitTriggers(): boolean;
+    set queriesHitTriggers(value: boolean);
 
     // get queriesStartInColliders(): boolean;
     // set queriesStartInColliders(value: boolean);

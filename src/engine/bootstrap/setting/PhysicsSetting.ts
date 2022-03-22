@@ -12,7 +12,7 @@ export type PhysicsSettingObject = {
     positionIterations?: number,
     //velocityThreshold?: number,
     //defaultContactOffset?: number,
-    //queriesHitTriggers?: boolean,
+    queriesHitTriggers?: boolean,
     //queriesStartInColliders?: boolean,
     reuseCollisionCallbacks?: boolean,
     collisionLayerMaskMatrix?: object
@@ -64,10 +64,10 @@ export class PhysicsSetting {
     //    return this;
     //}
 
-    //public queriesHitTriggers(value: boolean): this {
-    //    this._physicsSettingObject.queriesHitTriggers = value;
-    //    return this;
-    //}
+    public queriesHitTriggers(value: boolean): this {
+        this._physicsSettingObject.queriesHitTriggers = value;
+        return this;
+    }
 
     //public queriesStartInColliders(value: boolean): this {
     //    this._physicsSettingObject.queriesStartInColliders = value;

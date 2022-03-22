@@ -37,7 +37,7 @@ export class Physics2DProcessor implements IPhysics2D {
     // private _velocityThreshold: number = 1;
     // private _defaultContactOffset: number = 0.01;
 
-    // private _queriesHitTriggers: boolean = true;
+    private _queriesHitTriggers = true;
     // private _queriesStartInColliders: boolean = true;
     // private _reuseCollisionCallbacks = true;
     private _collisionLayerMaskConverter: CollisionLayerMaskConverter|null = null;
@@ -176,7 +176,7 @@ export class Physics2DProcessor implements IPhysics2D {
         if (physicSetting.positionIterations) this._positionIterations = physicSetting.positionIterations;
         // if (physicSetting.velocityThreshold) this._velocityThreshold = physicSetting.velocityThreshold;
         // if (physicSetting.defaultContactOffset) this._defaultContactOffset = physicSetting.defaultContactOffset;
-        // if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
+        if (physicSetting.queriesHitTriggers) this._queriesHitTriggers = physicSetting.queriesHitTriggers;
         // if (physicSetting.queriesStartInColliders) this._queriesStartInColliders = physicSetting.queriesStartInColliders;
         if (physicSetting.reuseCollisionCallbacks) this.reuseCollisionCallbacks = physicSetting.reuseCollisionCallbacks;
         if (physicSetting.collisionLayerMaskMatrix) {
@@ -187,7 +187,7 @@ export class Physics2DProcessor implements IPhysics2D {
             });
         }
 
-        this._raycastOneCallback = new this._loader.RayCastOneCallback();
+        this._raycastOneCallback = new this._loader.RayCastOneCallback(this);
     }
 
     /** @internal */
@@ -406,6 +406,14 @@ export class Physics2DProcessor implements IPhysics2D {
     public get angularSleepTolerance(): number {
         if (!this._loader) throw new Error("Physics2D is not loaded.");
         return this._loader.angularSleepTolerance;
+    }
+
+    public get queriesHitTriggers(): boolean {
+        return this._queriesHitTriggers;
+    }
+
+    public set queriesHitTriggers(value: boolean) {
+        this._queriesHitTriggers = value;
     }
 
     // for performance reasons, we don't use this get set method
