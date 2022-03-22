@@ -39,7 +39,11 @@ export class RaycastTest extends Component {
             this.gameObject.transform.position.y
         );
         const result = this.engine.physics.raycastOne(position, direction, this._raycastHit);
-        (this._rayPoint as WritableVector2).copy(result?.point ?? direction.multiplyScalar(100)).sub(position);
+        if (result?.point) {
+            (this._rayPoint as WritableVector2).copy(result?.point).sub(position);
+        } else {
+            (this._rayPoint as WritableVector2).copy(direction.multiplyScalar(100));
+        }
         this._lineRenderer!.point2 = this._rayPoint;
 
         // if (this._frameCount++ % 4 === 0) {
