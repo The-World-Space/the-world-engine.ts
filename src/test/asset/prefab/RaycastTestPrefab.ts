@@ -1,6 +1,7 @@
 import { Vector2, Vector3 } from "three/src/Three";
 import { GameObjectBuilder } from "../../../engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "../../../engine/hierarchy_object/Prefab";
+import { PlayerGridMovementController } from "../../../engine/script/controller/PlayerGridMovementController";
 import { BoxCollider2D } from "../../../engine/script/physics2d/collider/BoxCollider2D";
 import { CircleCollider2D } from "../../../engine/script/physics2d/collider/CircleCollider2D";
 import { EdgeCollider2D } from "../../../engine/script/physics2d/collider/EdgeCollider2D";
@@ -93,7 +94,8 @@ export class RaycastTestPrefab extends Prefab {
                 }))
 
             .withChild(instantiater.buildGameObject("raycast_test", new Vector3(0, 0, 0))
-                .withComponent(RaycastTest))
+                .withComponent(RaycastTest)
+                .withComponent(PlayerGridMovementController))
         ;
     }
 }
