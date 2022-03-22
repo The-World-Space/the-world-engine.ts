@@ -28,10 +28,10 @@ export class RenderTestPrefab extends Prefab {
                 .withComponent(CssHtmlElementRenderer, c => {
                     const element = document.createElement("div");
                     element.style.backgroundColor = "#dddddd";
-                    element.appendChild(document.createTextNode("hi! i'm a test object!"));
+                    element.appendChild(new Text("hi! i'm a test object!"));
                     element.appendChild(document.createElement("br"));
                     element.appendChild(document.createElement("br"));
-                    element.appendChild(document.createTextNode("you can add html elements on game objects!"));
+                    element.appendChild(new Text("you can add html elements on game objects!"));
                     element.appendChild(document.createElement("br"));
                     element.appendChild(document.createElement("br"));
                     const button = document.createElement("button");
@@ -43,7 +43,7 @@ export class RenderTestPrefab extends Prefab {
                     };
                     element.appendChild(button);
                     element.appendChild(document.createElement("br"));
-                    element.appendChild(document.createTextNode("count: "));
+                    element.appendChild(new Text("count: "));
                     element.appendChild(counter);
                     element.appendChild(document.createElement("br"));
                     const slider = document.createElement("input");
