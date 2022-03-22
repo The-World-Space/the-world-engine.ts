@@ -46,10 +46,10 @@ export class RayCastOneCallback extends RayCastCallback {
             .Length();
 
         const collider = fixture.GetUserData() as Collider2D;
-        if ((collider.getThisOrRigidBodyLayer() & this._layerMask) === 0) return 1;
+        if ((collider.getThisOrRigidBodyLayer() & this._layerMask) === 0) return -1;
         const transform = collider.transform;
         const depth = transform.position.z;
-        if (depth < this._minDepth || this._maxDepth < depth) return 1;
+        if (depth < this._minDepth || this._maxDepth < depth) return -1;
 
         this._raycastHit2D!.setData(
             point,
@@ -62,7 +62,7 @@ export class RayCastOneCallback extends RayCastCallback {
             transform
         );
         this._hit = true;
-        return 0;
+        return fraction;
     }
 
     public override ReportParticle(
