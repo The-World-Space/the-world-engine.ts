@@ -1,9 +1,12 @@
-import { Vector2 } from "three/src/Three";
+import { Vector2, Vector3 } from "three/src/Three";
 import { Component } from "../../../engine/hierarchy_object/Component";
+import { GameObject } from "../../../engine/hierarchy_object/GameObject";
 import { WritableVector2 } from "../../../engine/math/WritableVector2";
+import { ContactFilter2D } from "../../../engine/physics/2d/ContactFilter2D";
 import { RaycastHit2D } from "../../../engine/physics/2d/RaycastHit2D";
 import { Color } from "../../../engine/render/Color";
 import { Css2DLineRenderer } from "../../../engine/script/render/Css2DLineRenderer";
+import { CssHtmlElementRenderer } from "../../../engine/script/render/CssHtmlElementRenderer";
 //import { Css2DPolygonRenderer } from "../../../engine/script/render/Css2DPolygonRenderer";
 
 export class RaycastTest extends Component {
@@ -12,10 +15,13 @@ export class RaycastTest extends Component {
     private _degrees = 0;
     private readonly _directionVector = new Vector2();
     private readonly _positionVector2 = new Vector2();
+    private readonly _localPositionVector3 = new Vector3();
     private readonly _raycastHit = new RaycastHit2D();
     private readonly _rayPoint = new Vector2();
     // private readonly _polygonPoints: Vector2[] = [];
     // private _frameCount = 0;
+    private readonly _resultBuffer: RaycastHit2D[] = [];
+    private readonly _pointPool: GameObject[] = [];
 
     public awake(): void {
         this._lineRenderer = this.gameObject.addComponent(Css2DLineRenderer)!;
@@ -38,12 +44,49 @@ export class RaycastTest extends Component {
             this.gameObject.transform.position.x,
             this.gameObject.transform.position.y
         );
-        const result = this.engine.physics.raycastOne(position, direction, this._raycastHit);
-        if (result?.point) {
-            (this._rayPoint as WritableVector2).copy(result?.point).sub(position);
-        } else {
-            (this._rayPoint as WritableVector2).copy(direction.multiplyScalar(100));
+        
+        {
+            const result = this.engine.physics.raycastOne(position, direction, this._raycastHit);
+            if (result?.point) {
+                const localPosition = this.gameObject.transform.inverseTransformPoint(
+                    this._localPositionVector3.set(
+                        result.point.x,
+                        result.point.y,
+                        0
+                    )
+                );
+                this._rayPoint.set(localPosition.x, localPosition.y);
+            } else {
+                (this._rayPoint as WritableVector2).copy(direction.multiplyScalar(100));
+            }
         }
+
+        {
+            const resultCount = this.engine.physics.raycast(position, direction, ContactFilter2D.noFilter, this._resultBuffer);
+            for (let i = this._pointPool.length; i < resultCount; i++) {
+                this._pointPool.push(
+                    this.engine.scene.addChildFromBuilder(this.engine.instantiater.buildGameObject("point")
+                        .withComponent(CssHtmlElementRenderer, c => {
+                            const div = document.createElement("div");
+                            div.style.backgroundColor = "rgba(255, 255, 255, 0.5)";
+                            div.style.borderRadius = "50%";
+                            c.element = div;
+                            c.elementWidth = 0.5;
+                            c.elementHeight = 0.5;
+                        }))
+                );
+            }
+            for (let i = 0; i < resultCount; i++) {
+                const point = this._pointPool[i];
+                point.transform.position.x = this._resultBuffer[i].point.x;
+                point.transform.position.y = this._resultBuffer[i].point.y;
+                point.activeSelf = true;
+            }
+            for (let i = resultCount; i < this._pointPool.length; i++) {
+                this._pointPool[i].activeSelf = false;
+            }
+        }
+
         this._lineRenderer!.point2 = this._rayPoint;
 
         // if (this._frameCount++ % 4 === 0) {

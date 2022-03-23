@@ -26,6 +26,8 @@ import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { RaycastHit2D } from "./RaycastHit2D";
 import type { WritableVector2 } from "../../math/WritableVector2";
 import type { RayCastOneCallback } from "./RayCastOneCallback";
+import type { ContactFilter2D } from "./ContactFilter2D";
+import type { RayCastFilterCallback } from "./RayCastFilterCallback";
 
 /** @internal */
 export class Physics2DProcessor implements IPhysics2D {
@@ -188,6 +190,7 @@ export class Physics2DProcessor implements IPhysics2D {
         }
 
         this._raycastOneCallback = new this._loader.RayCastOneCallback(this);
+        this._raycastFilterCallback = new this._loader.RayCastFilterCallback();
     }
 
     /** @internal */
@@ -434,6 +437,7 @@ export class Physics2DProcessor implements IPhysics2D {
 
     private static readonly _raycastEndPoint: WritableVector2 = new Vector2();
     private _raycastOneCallback: RayCastOneCallback|null = null;
+    private _raycastFilterCallback: RayCastFilterCallback|null = null;
 
     public raycastOne(
         origin: ReadonlyVector2,
@@ -462,5 +466,28 @@ export class Physics2DProcessor implements IPhysics2D {
         );
         this._world.RayCast(this._raycastOneCallback!, origin, endPoint);
         return this._raycastOneCallback!.hit ? out : null;
+    }
+
+    public raycast(
+        origin: ReadonlyVector2,
+        direction: ReadonlyVector2,
+        contactFilter: ContactFilter2D,
+        results: RaycastHit2D[],
+        distance = Number.POSITIVE_INFINITY
+    ): number {
+        if (!this._world) throw new Error("Physics2D is not loaded.");
+
+        const endPoint = Physics2DProcessor._raycastEndPoint
+            .copy(direction)
+            .multiplyScalar(distance === Number.POSITIVE_INFINITY ? 10000000 : distance)
+            .add(origin);
+        
+        this._raycastFilterCallback!.setRaycastData(
+            results,
+            origin,
+            contactFilter
+        );
+        this._world.RayCast(this._raycastFilterCallback!, origin, endPoint);
+        return this._raycastFilterCallback!.hitCount;
     }
 }

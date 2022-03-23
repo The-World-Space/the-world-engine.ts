@@ -10,7 +10,7 @@ export class RayCastOneCallback extends RayCastCallback {
     private readonly _physics2d: IPhysics2D;
     private _hit = false;
     private _raycastHit2D: RaycastHit2D|null = null;
-    private _startPosition: Vec2|null = null;
+    private _startPosition: Vec2 = new Vec2();
     private _layerMask = 0;
     private _minDepth = 0;
     private _maxDepth = 0;
@@ -31,7 +31,7 @@ export class RayCastOneCallback extends RayCastCallback {
     ): void {
         this._hit = false;
         this._raycastHit2D = raycastHit2D;
-        this._startPosition = RayCastOneCallback._tempVec2.Copy(origin);
+        this._startPosition.Copy(origin);
         this._layerMask = layerMask;
         this._minDepth = minDepth;
         this._maxDepth = maxDepth;
