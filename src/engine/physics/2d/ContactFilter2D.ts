@@ -117,4 +117,3 @@ export class ContactFilter2D {
         return this.useOutsideNormalAngle ? !flag : flag;
     }
 }
-
