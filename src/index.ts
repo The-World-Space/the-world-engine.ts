@@ -41,10 +41,12 @@ export type { WritableVector4 } from "./engine/math/WritableVector4";
 
 //physics
 export { Collision2D } from "./engine/physics/2d/Collision2D";
+export { ContactFilter2D } from "./engine/physics/2d/ContactFilter2D";
 export { ContactPoint2D } from "./engine/physics/2d/ContactPoint2D";
 export type { IPhysics2D } from "./engine/physics/2d/IPhysics2D";
 export { Physics2DLoader } from "./engine/physics/2d/Physics2DLoader";
 export { PhysicsMaterial2D } from "./engine/physics/2d/PhysicsMaterial2D";
+export { RaycastHit2D } from "./engine/physics/2d/RaycastHit2D";
 export type { CollisionLayer, CollisionLayerParm } from "./engine/physics/CollisionLayer";
 export { CollisionLayerConst } from "./engine/physics/CollisionLayerConst";
 export type { DefaultLayerName } from "./engine/physics/CollisionLayerConstType";
@@ -97,6 +99,9 @@ export { PointerGridEvent, PointerGridInputListener } from "./engine/script/inpu
 export { RigidBody2D, RigidbodyType2D, CollisionDetectionMode2D, RigidbodySleepMode2D, ForceMode2D } from "./engine/script/physics2d/RigidBody2D";
 export { Collider2D } from "./engine/script/physics2d/collider/Collider2D";
 export { BoxCollider2D } from "./engine/script/physics2d/collider/BoxCollider2D";
+export { CircleCollider2D } from "./engine/script/physics2d/collider/CircleCollider2D";
+export { EdgeCollider2D } from "./engine/script/physics2d/collider/EdgeCollider2D";
+export { PolygonCollider2D } from "./engine/script/physics2d/collider/PolygonCollider2D";
 
 //grid_physics2d
 export { CssCollideTilemapChunkRenderer } from "./engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
@@ -118,6 +123,8 @@ export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_rend
 //render
 export { CameraType, Camera } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
+export { Css2DLineRenderer } from "./engine/script/render/Css2DLineRenderer";
+export { Css2DEdgeRenderer } from "./engine/script/render/Css2DEdgeRenderer";
 export { Css2DPolygonRenderer } from "./engine/script/render/Css2DPolygonRenderer";
 export { CssHtmlElementRenderer } from "./engine/script/render/CssHtmlElementRenderer";
 export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
