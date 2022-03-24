@@ -2,6 +2,7 @@ import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { Collision2D } from "./Collision2D";
 import type { Collision2DPool } from "./Collision2DPool";
 
+/** @internal */
 export const enum TriggerType {
     Enter,
     Stay,
@@ -59,6 +60,7 @@ export class TriggerEventPool {
     }
 }
 
+/** @internal */
 export const enum CollisionType {
     Enter,
     Stay,

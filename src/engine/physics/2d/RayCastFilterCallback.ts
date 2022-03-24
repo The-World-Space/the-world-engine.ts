@@ -6,6 +6,7 @@ import type { ContactFilter2D } from "./ContactFilter2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 import { RaycastHit2D } from "./RaycastHit2D";
 
+/** @internal */
 export class RayCastFilterCallback extends RayCastCallback {
     private _hitCount = 0;
     private _raycastHit2DList: RaycastHit2D[]|null = null;

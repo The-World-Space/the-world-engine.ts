@@ -1,6 +1,7 @@
 import type { Body, Fixture, FixtureDef } from "../../../box2d.ts/build";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 
+/** @internal */
 export class FixtureGroup {
     private _body: Body;
     private _physicObject: IPhysicsObject2D;

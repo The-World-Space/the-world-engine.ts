@@ -6,6 +6,7 @@ import type { IPhysics2D } from "./IPhysics2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 import type { RaycastHit2D } from "./RaycastHit2D";
 
+/** @internal */
 export class RayCastOneCallback extends RayCastCallback {
     private readonly _physics2d: IPhysics2D;
     private _hit = false;
