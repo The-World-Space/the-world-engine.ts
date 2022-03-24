@@ -99,7 +99,7 @@ const config = {
                 //     ],
                 // },
             ],
-            copyright: `Copyright © ${new Date().getFullYear()} the-world-engine, Inc. Built with Docusaurus.`,
+            copyright: `Copyright © ${new Date().getFullYear()} the-world, Inc. Built with Docusaurus.`,
         },
         prism: {
             theme: lightCodeTheme,
