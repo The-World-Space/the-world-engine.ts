@@ -23,6 +23,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
 
     /** Set an entry, O(log n) */
     public insert(value: T): void {
+        value.isRemoved = false;
         if (this._iterateCollection !== null) this._insertBuffer.insert(value);
         else this._collection.insert(value);
     }
