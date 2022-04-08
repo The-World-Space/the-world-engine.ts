@@ -9,7 +9,9 @@ import { EditorGridRenderer } from "../../engine/script/post_render/EditorGridRe
 import { CssTextRenderer } from "../../engine/script/render/CssTextRenderer";
 import { Color } from "../../engine/render/Color";
 import { Physics2DLoader } from "../../engine/physics/2d/Physics2DLoader";
-import { RaycastTestPrefab } from "./prefab/RaycastTestPrefab";
+import { PhysicsTestPrefab } from "./prefab/PhysicsTestPrefab";
+import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
+import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {
@@ -32,13 +34,13 @@ export class TestBootstrapper extends Bootstrapper {
 
         return this.sceneBuilder
         
-            .withChild(instantiater.buildPrefab("raycast_test", RaycastTestPrefab, new Vector3(0, 0, 0)).make())
+        // .withChild(instantiater.buildPrefab("raycast_test", RaycastTestPrefab, new Vector3(0, 0, 0)).make())
 
-        //.withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
+            .withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
 
-        //.withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
+            .withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
 
-        //.withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
+            .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
             
             .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 80))
                 .withComponent(Camera, c => {
@@ -55,7 +57,7 @@ export class TestBootstrapper extends Bootstrapper {
                     c.renderHeight = 100;
                 })
                 .withComponent(CssTextRenderer, c => {
-                    c.enabled = false;
+                    //c.enabled = false;
                     c.pointerEvents = false;
                     c.text = "e : spawn object  d : despawn object";
                     c.textWidth = 18;
