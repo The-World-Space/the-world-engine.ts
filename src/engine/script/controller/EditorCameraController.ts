@@ -21,12 +21,6 @@ export class EditorCameraController extends Component {
     private _defaultViewSize = 5;
     private _currentViewSize = 5;
     private readonly _defaultPosition = new Vector3();
-    private _onKeyDownBind = this.onKeyDown.bind(this);
-    private _onWheelBind = this.onWheel.bind(this);
-    private _onPointerDownBind = this.onPointerDown.bind(this);
-    private _onPointerUpBind = this.onPointerUp.bind(this);
-    private _onPointerMoveBind = this.onPointerMove.bind(this);
-    private _onPointerLeaveBind = this.onPointerLeave.bind(this);
 
     public awake(): void {
         this._camera = this.gameObject.getComponent(Camera);
@@ -38,33 +32,33 @@ export class EditorCameraController extends Component {
 
     public onEnable(): void {
         const input = this.engine.input;
-        input.addOnKeyDownEventListener(this._onKeyDownBind);
-        input.addOnWheelEventListener(this._onWheelBind);
-        input.addOnPointerDownEventListener(this._onPointerDownBind);
-        input.addOnPointerUpEventListener(this._onPointerUpBind);
-        input.addOnPointerMoveEventListener(this._onPointerMoveBind);
-        input.addOnPointerLeaveEventListener(this._onPointerLeaveBind);
+        input.onKeyDown.addListener(this.onKeyDown);
+        input.onWheel.addListener(this.onWheel);
+        input.onPointerDown.addListener(this.onPointerDown);
+        input.onPointerUp.addListener(this.onPointerUp);
+        input.onPointerMove.addListener(this.onPointerMove);
+        input.onPointerLeave.addListener(this.onPointerLeave);
     }
 
     public onDisable(): void {
         const input = this.engine.input;
-        input.removeOnKeyDownEventListener(this._onKeyDownBind);
-        input.removeOnWheelEventListener(this._onWheelBind);
-        input.removeOnPointerDownEventListener(this._onPointerDownBind);
-        input.removeOnPointerUpEventListener(this._onPointerUpBind);
-        input.removeOnPointerMoveEventListener(this._onPointerMoveBind);
-        input.removeOnPointerLeaveEventListener(this._onPointerLeaveBind);
+        input.onKeyDown.removeListener(this.onKeyDown);
+        input.onWheel.removeListener(this.onWheel);
+        input.onPointerDown.removeListener(this.onPointerDown);
+        input.onPointerUp.removeListener(this.onPointerUp);
+        input.onPointerMove.removeListener(this.onPointerMove);
+        input.onPointerLeave.removeListener(this.onPointerLeave);
     }
 
-    private onKeyDown(event: KeyboardEvent): void {
+    private onKeyDown = (event: KeyboardEvent): void => {
         if (event.key === " ") {
             this._currentViewSize = this._defaultViewSize;
             this.resize();
             this.transform.localPosition.copy(this._defaultPosition);
         }
-    }
+    };
 
-    private onWheel(event: WheelEvent): void {
+    private onWheel = (event: WheelEvent): void => {
         this._currentViewSize += event.deltaY * 0.01;
         if (this._currentViewSize < this._minViewSize) {
             this._currentViewSize = this._minViewSize;
@@ -72,9 +66,9 @@ export class EditorCameraController extends Component {
             this._currentViewSize = this._maxViewSize;
         }
         this.resize();
-    }
+    };
 
-    private onPointerDown(event: MouseEvent): void {
+    private onPointerDown = (event: MouseEvent): void => {
         this._lastOffset.set(
             event.clientX / this.engine.screen.width,
             event.clientY / this.engine.screen.height
@@ -82,19 +76,15 @@ export class EditorCameraController extends Component {
         if (event.button === this._mouseMoveButton) {
             this._mouseMoveButtonDown = true;
         }
-    }
+    };
 
-    private onPointerUp(event: MouseEvent): void {
+    private onPointerUp = (event: MouseEvent): void => {
         if (event.button === this._mouseMoveButton) {
             this._mouseMoveButtonDown = false;
         }
-    }
+    };
 
-    private onPointerLeave(_event: MouseEvent): void {
-        this._mouseMoveButtonDown = false;
-    }
-
-    private onPointerMove(event: MouseEvent): void {
+    private onPointerMove = (event: MouseEvent): void => {
         if (!this._mouseMoveButtonDown) return;
 
         const clientOffsetX = event.clientX / this.engine.screen.width;
@@ -109,7 +99,11 @@ export class EditorCameraController extends Component {
         this.transform.localPosition.y += clientYdiff * this._camera!.viewSize * 2;
 
         this._lastOffset.set(clientOffsetX, clientOffsetY);
-    }
+    };
+
+    private onPointerLeave = (_event: MouseEvent): void => {
+        this._mouseMoveButtonDown = false;
+    };
 
     private resize(): void {
         if (this._camera) {

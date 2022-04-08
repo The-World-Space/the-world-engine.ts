@@ -14,11 +14,11 @@ export class PlayerGridEventInvoker extends Component {
 
     public awake(): void {
         this._playerGridMovementController = this.gameObject.getComponent(PlayerGridMovementController);
-        this._playerGridMovementController!.addOnMoveToTargetEventListener(this._onMoveToTargetBind);
+        this._playerGridMovementController!.onMoveToTarget.addListener(this._onMoveToTargetBind);
     }
 
     public onDestroy(): void {
-        this._playerGridMovementController!.removeOnMoveToTargetEventListener(this._onMoveToTargetBind);
+        this._playerGridMovementController!.onMoveToTarget.removeListener(this._onMoveToTargetBind);
     }
 
     private onMoveToTarget(x: number, y: number): void {

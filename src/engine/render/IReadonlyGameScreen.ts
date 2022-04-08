@@ -1,3 +1,5 @@
+import { IEventContainer } from "../collection/EventContainer";
+
 /**
  * readonly game screen interface
  */
@@ -13,14 +15,7 @@ export interface IReadonlyGameScreen {
     get height(): number;
 
     /**
-     * add onResize event listener
-     * @param delegate this function will be called when the screen is resized
+     * onResize event listener
      */
-    addOnResizeEventListener(delegate: (width: number, height: number) => void): void;
-
-    /**
-     * remove onResize event listener
-     * @param delegate remove delegate from the list of event listeners
-     */
-    removeOnResizeEventListener(delegate: (width: number, height: number) => void): void;
+    get onResize(): IEventContainer<(width: number, height: number) => void>;
 }

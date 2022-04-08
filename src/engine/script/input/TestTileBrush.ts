@@ -10,10 +10,6 @@ export class TestTileBrush extends Component {
     private _colideTilemapChunk: CssCollideTilemapChunkRenderer|null = null;
     private _pointerDown: boolean = false;
 
-    private readonly _onPointerDownBind = this.onPointerDown.bind(this);
-    private readonly _onPointerUpBind = this.onPointerUp.bind(this);
-    private readonly _onPointerMoveBind = this.onPointerMove.bind(this);
-
     public start(): void {
         if (!this._colideTilemapChunk) {
             throw new Error("TestTileBrush: colideTilemapChunk is not set");
@@ -24,33 +20,33 @@ export class TestTileBrush extends Component {
         if (!this._gridPointer) {
             throw new Error("TestTileBrush: gridPointer is not set");
         }
-        this._gridPointer.addOnPointerDownEventListener(this._onPointerDownBind);
-        this._gridPointer.addOnPointerUpEventListener(this._onPointerUpBind);
-        this._gridPointer.addOnPointerMoveEventListener(this._onPointerMoveBind);
+        this._gridPointer.onPointerDown.addListener(this.onPointerDown);
+        this._gridPointer.onPointerUp.addListener(this.onPointerUp);
+        this._gridPointer.onPointerMove.addListener(this.onPointerMove);
     }
 
     public onDisable(): void {
         if (this._gridPointer) {
-            this._gridPointer.removeOnPointerDownEventListener(this._onPointerDownBind);
-            this._gridPointer.removeOnPointerUpEventListener(this._onPointerUpBind);
-            this._gridPointer.removeOnPointerMoveEventListener(this._onPointerMoveBind);
+            this._gridPointer.onPointerDown.removeListener(this.onPointerDown);
+            this._gridPointer.onPointerUp.removeListener(this.onPointerUp);
+            this._gridPointer.onPointerMove.removeListener(this.onPointerMove);
         }
     }
 
-    private onPointerDown(event: PointerGridEvent) {
+    private onPointerDown = (event: PointerGridEvent) => {
         this._pointerDown = true;
         this._colideTilemapChunk!.drawTile(event.gridPosition.x, event.gridPosition.y, 0, 10);
-    }
+    };
 
-    private onPointerUp(_: PointerGridEvent) {
+    private onPointerUp = (_: PointerGridEvent) => {
         this._pointerDown = false;
-    }
+    };
 
-    private onPointerMove(event: PointerGridEvent) {
+    private onPointerMove = (event: PointerGridEvent) => {
         if (this._pointerDown) {
             this._colideTilemapChunk!.drawTile(event.gridPosition.x, event.gridPosition.y, 0, 10);
         }
-    }
+    };
 
     public get gridPointer(): GridPointer|null {
         return this._gridPointer;

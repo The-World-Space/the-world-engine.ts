@@ -8,12 +8,12 @@ export class ContactTest extends Component {
     private _rigidbody: RigidBody2D|null = null;
 
     public awake(): void {
-        this.engine.input.addOnKeyDownEventListener(this.onKeyDown);
+        this.engine.input.onKeyDown.addListener(this.onKeyDown);
         this._rigidbody = this.gameObject.getComponent(RigidBody2D);
     }
 
     public onDestroy(): void {
-        this.engine.input.removeOnKeyDownEventListener(this.onKeyDown);
+        this.engine.input.onKeyDown.removeListener(this.onKeyDown);
     }
 
     private contactBuffer: ContactPoint2D[] = [];

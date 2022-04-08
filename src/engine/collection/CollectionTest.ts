@@ -1,3 +1,4 @@
+import { EventContainer } from "./EventContainer";
 import { MutIteratableCollection } from "./MutIteratableCollection";
 
 class TestItem {
@@ -80,4 +81,28 @@ export function mutIteratableCollectionTest2(): void {
 
     mutIteratableCollection.delete(item1);
     mutIteratableCollection.delete(item3);
+}
+
+/** @internal */
+export function eventContainerTest1(): void {
+    const eventContainer = new EventContainer<() => void>();
+
+    const f2 = () => {
+        console.log("f2");
+    };
+
+    const f3 = () => {
+        console.log("f3");
+    };
+
+    const f1 = () => {
+        console.log("f1");
+        eventContainer.removeListener(f2);
+        eventContainer.addListener(f3);
+    };
+
+    eventContainer.addListener(f1);
+    eventContainer.addListener(f2);
+
+    eventContainer.invoke();
 }

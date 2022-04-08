@@ -29,7 +29,7 @@ export class Collider2D extends Component {
     }
 
     public onDestroy(): void {   
-        this._material?.removeOnChangedEventListener(this.updateFixturesMaterialInfo);
+        this._material?.onChanged.removeListener(this.updateFixturesMaterialInfo);
     }
 
     private createFixture(): void {
@@ -192,12 +192,12 @@ export class Collider2D extends Component {
         if (value) {
             if (!this._material) {
                 this._material = new PhysicsMaterial2D(value.friction, value.bounciness);
-                this._material.addOnChangedEventListener(this.updateFixturesMaterialInfo);
+                this._material.onChanged.addListener(this.updateFixturesMaterialInfo);
             } else {
                 this._material.copy(value);
             }
         } else {
-            this._material?.removeOnChangedEventListener(this.updateFixturesMaterialInfo);
+            this._material?.onChanged.removeListener(this.updateFixturesMaterialInfo);
             this._material = null;
         }
         this.updateFixturesMaterialInfo();

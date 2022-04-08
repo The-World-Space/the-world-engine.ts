@@ -1,13 +1,16 @@
+import { EventContainer, IEventContainer } from "../collection/EventContainer";
+import { IReadonlyGameScreen } from "./IReadonlyGameScreen";
+
 /** @internal */
-export class GameScreen {
+export class GameScreen implements IReadonlyGameScreen {
     private _width: number;
     private _height: number;
-    private _onResizeDelegates: ((width: number, height: number) => void)[];
+    private _onResizeEvent: EventContainer<(width: number, height: number) => void>;
 
     public constructor(width: number, height: number) {
         this._width = width;
         this._height = height;
-        this._onResizeDelegates = [];
+        this._onResizeEvent = new EventContainer();
     }
 
     public get width(): number {
@@ -18,20 +21,13 @@ export class GameScreen {
         return this._height;
     }
 
+    public get onResize(): IEventContainer<(width: number, height: number) => void> {
+        return this._onResizeEvent;
+    }
+
     public resize(width: number, height: number): void {
         this._width = width;
         this._height = height;
-        this._onResizeDelegates.forEach(delegate => delegate(width, height));
-    }
-    
-    public addOnResizeEventListener(delegate: (width: number, height: number) => void): void {
-        this._onResizeDelegates.push(delegate);
-    }
-
-    public removeOnResizeEventListener(delegate: (width: number, height: number) => void): void {
-        const index = this._onResizeDelegates.indexOf(delegate);
-        if (index >= 0) {
-            this._onResizeDelegates.splice(index, 1);
-        }
+        this._onResizeEvent.invoke(width, height);
     }
 }

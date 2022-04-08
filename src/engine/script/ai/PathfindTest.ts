@@ -32,11 +32,11 @@ export class PathfindTest extends Component {
             throw new Error("Grid pointer not set");
         }
         this._pathfinder = new Pathfinder(this._collideMaps);
-        this._gridPointer.addOnPointerDownEventListener(this._onPointerDownBind);
+        this._gridPointer.onPointerDown.addListener(this._onPointerDownBind);
     }
 
     public onDestroy(): void {
-        this._gridPointer?.removeOnPointerDownEventListener(this._onPointerDownBind);
+        this._gridPointer?.onPointerDown.removeListener(this._onPointerDownBind);
     }
 
     private onPointerDown(event: PointerGridEvent): void {

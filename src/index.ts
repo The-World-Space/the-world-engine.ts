@@ -3,6 +3,10 @@ export { Bootstrapper } from "./engine/bootstrap/Bootstrapper";
 export type { BootstrapperConstructor } from "./engine/bootstrap/BootstrapperConstructor";
 export { SceneBuilder } from "./engine/bootstrap/SceneBuilder";
 
+//collection
+export { EventContainer } from "./engine/collection/EventContainer";
+export type { IEventContainer } from "./engine/collection/EventContainer";
+
 //coroutine
 export type { CoroutineIterator } from "./engine/coroutine/CoroutineIterator";
 export { Coroutine } from "./engine/coroutine/Coroutine";

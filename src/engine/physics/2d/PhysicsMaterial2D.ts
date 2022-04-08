@@ -1,5 +1,7 @@
+import { EventContainer, IEventContainer } from "../../collection/EventContainer";
+
 export class PhysicsMaterial2D {
-    private _onChangedDelegates: (() => void)[] = [];
+    private readonly _onChangedEvent = new EventContainer<() => void>();
 
     private _friction: number;
     private _bounciness: number;
@@ -15,7 +17,7 @@ export class PhysicsMaterial2D {
 
     public set friction(value: number) {
         this._friction = value;
-        this.notifyOnChangedEventListeners();
+        this._onChangedEvent.invoke();
     }
 
     public get bounciness(): number {
@@ -24,30 +26,17 @@ export class PhysicsMaterial2D {
 
     public set bounciness(value: number) {
         this._bounciness = value;
-        this.notifyOnChangedEventListeners();
+        this._onChangedEvent.invoke();
     }
-
-    private notifyOnChangedEventListeners(): void {
-        for (let i = 0; i < this._onChangedDelegates.length; i++) {
-            this._onChangedDelegates[i]();
-        }
-    }
-
-    /** @internal */
-    public addOnChangedEventListener(delegate: () => void): void {
-        this._onChangedDelegates.push(delegate);
-    }
-
-    /** @internal */
-    public removeOnChangedEventListener(delegate: () => void): void {
-        const index = this._onChangedDelegates.indexOf(delegate);
-        if (index >= 0) this._onChangedDelegates.splice(index, 1);
+    
+    public get onChanged(): IEventContainer<() => void> {
+        return this._onChangedEvent;
     }
 
     public copy(other: PhysicsMaterial2D): void {
         this.friction = other.friction;
         this.bounciness = other.bounciness;
-        this.notifyOnChangedEventListeners();
+        this._onChangedEvent.invoke();
     }
 
     public clone(): PhysicsMaterial2D {

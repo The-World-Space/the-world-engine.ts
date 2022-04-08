@@ -1,4 +1,5 @@
 import { Vector2, Vector3 } from "three/src/Three";
+import { EventContainer, IEventContainer } from "../../collection/EventContainer";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
@@ -42,24 +43,14 @@ export class PointerGridInputListener extends Component {
     private _inputWidth = 64;
     private _inputHeight = 64;
     private _zindex = 0;
-    private _onPointerDownDelegates: ((event: PointerGridEvent) => void)[] = [];
-    private _onPointerUpDelegates: ((event: PointerGridEvent) => void)[] = [];
-    private _onPointerEnterDelegates: ((event: PointerGridEvent) => void)[] = [];
-    private _onPointerLeaveDelegates: ((event: PointerGridEvent) => void)[] = [];
-    private _onPointerMoveDelegates: ((event: PointerGridEvent) => void)[] = [];
+    private _onPointerDownEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private _onPointerUpEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private _onPointerEnterEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private _onPointerLeaveEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private _onPointerMoveEvent = new EventContainer<(event: PointerGridEvent) => void>();
     private _onTouchStartFunc: (() => void)|null = null;
     private _touchMoveOccured = false;
     private _started = false;
-
-    private readonly _onMouseDownBind = this.onMouseDown.bind(this);
-    private readonly _onMouseUpBind = this.onMouseUp.bind(this);
-    private readonly _onMouseEnterBind = this.onMouseEnter.bind(this);
-    private readonly _onMouseLeaveBind = this.onMouseLeave.bind(this);
-    private readonly _onMouseMoveBind = this.onMouseMove.bind(this);
-    private readonly _onTouchStartBind = this.onTouchStart.bind(this);
-    private readonly _ononTouchEndBind = this.onTouchEnd.bind(this);
-    private readonly _onTouchMoveBind = this.onTouchMove.bind(this);
-    private readonly _onTouchCancelBind = this.onTouchCancel.bind(this);
 
     public start(): void {
         this._htmlDivElement = document.createElement("div");
@@ -67,15 +58,15 @@ export class PointerGridInputListener extends Component {
         this._htmlDivElement.style.width = this._inputWidth + "px";
         this._htmlDivElement.style.height = this._inputHeight + "px";
         this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
-        this._htmlDivElement.addEventListener("mousedown", this._onMouseDownBind);
-        this._htmlDivElement.addEventListener("mouseup", this._onMouseUpBind);
-        this._htmlDivElement.addEventListener("mouseenter", this._onMouseEnterBind);
-        this._htmlDivElement.addEventListener("mouseleave", this._onMouseLeaveBind);
-        this._htmlDivElement.addEventListener("mousemove", this._onMouseMoveBind);
-        this._htmlDivElement.addEventListener("touchstart", this._onTouchStartBind);
-        this._htmlDivElement.addEventListener("touchend", this._ononTouchEndBind);
-        this._htmlDivElement.addEventListener("touchmove", this._onTouchMoveBind);
-        this._htmlDivElement.addEventListener("touchcancel", this._onTouchCancelBind);
+        this._htmlDivElement.addEventListener("mousedown", this.onMouseDown);
+        this._htmlDivElement.addEventListener("mouseup", this.onMouseUp);
+        this._htmlDivElement.addEventListener("mouseenter", this.onMouseEnter);
+        this._htmlDivElement.addEventListener("mouseleave", this.onMouseLeave);
+        this._htmlDivElement.addEventListener("mousemove", this.onMouseMove);
+        this._htmlDivElement.addEventListener("touchstart", this.onTouchStart);
+        this._htmlDivElement.addEventListener("touchend", this.onTouchEnd);
+        this._htmlDivElement.addEventListener("touchmove", this.onTouchMove);
+        this._htmlDivElement.addEventListener("touchcancel", this.onTouchCancel);
 
         this.transform.unsafeGetObject3D().add(this._css3DObject);
         //it's safe because _css3DObject is not a GameObject and i'm removing it from the scene in onDestroy
@@ -104,15 +95,15 @@ export class PointerGridInputListener extends Component {
     public onDestroy(): void {
         if (!this._started) return;
         if (this._htmlDivElement) { //it's the intended useless branch
-            this._htmlDivElement.removeEventListener("mousedown", this._onMouseDownBind);
-            this._htmlDivElement.removeEventListener("mouseup", this._onMouseUpBind);
-            this._htmlDivElement.removeEventListener("mouseenter", this._onMouseEnterBind);
-            this._htmlDivElement.removeEventListener("mouseleave", this._onMouseLeaveBind);
-            this._htmlDivElement.removeEventListener("mousemove", this._onMouseMoveBind);
-            this._htmlDivElement.removeEventListener("touchstart", this._onTouchStartBind);
-            this._htmlDivElement.removeEventListener("touchend", this._ononTouchEndBind);
-            this._htmlDivElement.removeEventListener("touchmove", this._onTouchMoveBind);
-            this._htmlDivElement.removeEventListener("touchcancel", this._onTouchCancelBind);
+            this._htmlDivElement.removeEventListener("mousedown", this.onMouseDown);
+            this._htmlDivElement.removeEventListener("mouseup", this.onMouseUp);
+            this._htmlDivElement.removeEventListener("mouseenter", this.onMouseEnter);
+            this._htmlDivElement.removeEventListener("mouseleave", this.onMouseLeave);
+            this._htmlDivElement.removeEventListener("mousemove", this.onMouseMove);
+            this._htmlDivElement.removeEventListener("touchstart", this.onTouchStart);
+            this._htmlDivElement.removeEventListener("touchend", this.onTouchEnd);
+            this._htmlDivElement.removeEventListener("touchmove", this.onTouchMove);
+            this._htmlDivElement.removeEventListener("touchcancel", this.onTouchCancel);
         }
         if (this._css3DObject) {
             this.transform.unsafeGetObject3D().remove(this._css3DObject);
@@ -152,30 +143,30 @@ export class PointerGridInputListener extends Component {
         );
     }
 
-    private onMouseDown(event: MouseEvent): void {
+    private onMouseDown = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
-        this._onPointerDownDelegates.forEach(delegate => delegate(gridEvent));
-    }
+        this._onPointerDownEvent.invoke(gridEvent);
+    };
     
-    private onMouseUp(event: MouseEvent): void {
+    private onMouseUp = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
-        this._onPointerUpDelegates.forEach(delegate => delegate(gridEvent));
-    }
+        this._onPointerUpEvent.invoke(gridEvent);
+    };
 
-    private onMouseEnter(event: MouseEvent): void {
+    private onMouseEnter = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
-        this._onPointerEnterDelegates.forEach(delegate => delegate(gridEvent));
-    }
+        this._onPointerEnterEvent.invoke(gridEvent);
+    };
 
-    private onMouseLeave(event: MouseEvent): void {
+    private onMouseLeave = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
-        this._onPointerLeaveDelegates.forEach(delegate => delegate(gridEvent));
-    }
+        this._onPointerLeaveEvent.invoke(gridEvent);
+    };
 
-    private onMouseMove(event: MouseEvent): void {
+    private onMouseMove = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
-        this._onPointerMoveDelegates.forEach(delegate => delegate(gridEvent));
-    }
+        this._onPointerMoveEvent.invoke(gridEvent);
+    };
 
     private simulateMouseEvent(eventName: string, touch: Touch): void {
         const simulatedEvent = new MouseEvent(
@@ -187,78 +178,53 @@ export class PointerGridInputListener extends Component {
         touch.target.dispatchEvent(simulatedEvent);
     }
 
-    private onTouchStart(event: TouchEvent): void {
+    private onTouchStart = (event: TouchEvent): void => {
         this._onTouchStartFunc = () => {
             this.simulateMouseEvent("mouseenter", event.touches[0]);
             this.simulateMouseEvent("mousedown", event.touches[0]);
         };
-    }
+    };
 
-    private onTouchEnd(event: TouchEvent): void {
+    private onTouchEnd = (event: TouchEvent): void => {
         if (!this._touchMoveOccured) return;
         this._touchMoveOccured = false;
         this.simulateMouseEvent("mouseup", event.changedTouches[0]);
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);
-    }
+    };
 
-    private onTouchMove(event: TouchEvent): void {
+    private onTouchMove = (event: TouchEvent): void => {
         if (this._onTouchStartFunc) {
             this._onTouchStartFunc();
             this._onTouchStartFunc = null;
         }
         this.simulateMouseEvent("mousemove", event.touches[0]);
         this._touchMoveOccured = true;
-    }
+    };
 
-    private onTouchCancel(event: TouchEvent): void {
+    private onTouchCancel = (event: TouchEvent): void => {
         if (!this._touchMoveOccured) return;
         this._touchMoveOccured = false;
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);
+    };
+
+    public get onPointerDown(): IEventContainer<(event: PointerGridEvent) => void> {
+        return this._onPointerDownEvent;
     }
 
-    public addOnPointerDownEventListener(delegate: (event: PointerGridEvent) => void): void {
-        this._onPointerDownDelegates.push(delegate);
+    public get onPointerUp(): IEventContainer<(event: PointerGridEvent) => void> {
+        return this._onPointerUpEvent;
     }
 
-    public addOnPointerUpEventListener(delegate: (event: PointerGridEvent) => void): void {
-        this._onPointerUpDelegates.push(delegate);
+    public get onPointerEnter(): IEventContainer<(event: PointerGridEvent) => void> {
+        return this._onPointerEnterEvent;
     }
 
-    public addOnPointerEnterEventListener(delegate: (event: PointerGridEvent) => void): void {
-        this._onPointerEnterDelegates.push(delegate);
+    public get onPointerLeave(): IEventContainer<(event: PointerGridEvent) => void> {
+        return this._onPointerLeaveEvent;
     }
 
-    public addOnPointerLeaveEventListener(delegate: (event: PointerGridEvent) => void): void {
-        this._onPointerLeaveDelegates.push(delegate);
-    }
-
-    public addOnPointerMoveEventListener(delegate: (event: PointerGridEvent) => void): void {
-        this._onPointerMoveDelegates.push(delegate);
-    }
-
-    public removeOnPointerDownEventListener(delegate: (event: PointerGridEvent) => void): void {
-        const index = this._onPointerDownDelegates.indexOf(delegate);
-        if (index !== -1) this._onPointerDownDelegates.splice(index, 1);
-    }
-
-    public removeOnPointerUpEventListener(delegate: (event: PointerGridEvent) => void): void {
-        const index = this._onPointerUpDelegates.indexOf(delegate);
-        if (index !== -1) this._onPointerUpDelegates.splice(index, 1);
-    }
-
-    public removeOnPointerEnterEventListener(delegate: (event: PointerGridEvent) => void): void {
-        const index = this._onPointerEnterDelegates.indexOf(delegate);
-        if (index !== -1) this._onPointerEnterDelegates.splice(index, 1);
-    }
-
-    public removeOnPointerLeaveEventListener(delegate: (event: PointerGridEvent) => void): void {
-        const index = this._onPointerLeaveDelegates.indexOf(delegate);
-        if (index !== -1) this._onPointerLeaveDelegates.splice(index, 1);
-    }
-
-    public removeOnPointerMoveEventListener(delegate: (event: PointerGridEvent) => void): void {
-        const index = this._onPointerMoveDelegates.indexOf(delegate);
-        if (index !== -1) this._onPointerMoveDelegates.splice(index, 1);
+    public get onPointerMove(): IEventContainer<(event: PointerGridEvent) => void> {
+        return this._onPointerMoveEvent;
     }
 
     public get gridCenter(): ReadonlyVector2 {

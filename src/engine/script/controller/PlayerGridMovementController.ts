@@ -7,6 +7,7 @@ import { Direction, Directionable } from "../helper/Directionable";
 import { IGridPositionable } from "../helper/IGridPositionable";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
+import { EventContainer, IEventContainer } from "../../collection/EventContainer";
 
 /**
  * make gameobject moves on grid coordinates
@@ -26,8 +27,8 @@ export class PlayerGridMovementController extends Directionable
     private readonly _currentGridPosition: Vector2 = new Vector2();
     private readonly _targetGridPosition: Vector2 = new Vector2();
     private readonly _initPosition: Vector2 = new Vector2(); //integer position
-    private readonly _onMoveToTargetDelegates: ((x: number, y: number) => void)[] = []; //integer position
-    private readonly _onMovedToTargetDelegates: ((x: number, y: number) => void)[] = []; //integer position
+    private readonly _onMoveToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
+    private readonly _onMovedToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
 
     private _onPointerDownBind = this.onPointerDown.bind(this);
     private _gridPointer: GridPointer|null = null;
@@ -125,20 +126,16 @@ export class PlayerGridMovementController extends Directionable
     }
 
     private invokeOnMoveToTarget(_vector2: Vector2): void {
-        this._onMoveToTargetDelegates.forEach(
-            delegate => delegate(
-                Math.floor(this._targetGridPosition.x / this._gridCellWidth),
-                Math.floor(this._targetGridPosition.y / this._gridCellHeight)
-            )
+        this._onMoveToTargetEvent.invoke(
+            Math.floor(this._targetGridPosition.x / this._gridCellWidth),
+            Math.floor(this._targetGridPosition.y / this._gridCellHeight)
         );
     }
 
     private invokeOnMovedToTarget(_vector2: Vector2): void {
-        this._onMovedToTargetDelegates.forEach(
-            delegate => delegate(
-                Math.floor(this._currentGridPosition.x / this._gridCellWidth),
-                Math.floor(this._currentGridPosition.y / this._gridCellHeight)
-            )
+        this._onMovedToTargetEvent.invoke(
+            Math.floor(this._currentGridPosition.x / this._gridCellWidth),
+            Math.floor(this._currentGridPosition.y / this._gridCellHeight)
         );
     }
 
@@ -276,42 +273,12 @@ export class PlayerGridMovementController extends Directionable
         this._movingByPathfinder = true;
     }
 
-    /**
-     * add onMoveToTarget event listener
-     * @param delegate this delegate function will be called when onMoveToTarget event is fired
-     */
-    public addOnMoveToTargetEventListener(delegate: (x: number, y: number) => void): void {
-        this._onMoveToTargetDelegates.push(delegate);
+    public get onMoveToTarget(): IEventContainer<(x: number, y: number) => void> {
+        return this._onMoveToTargetEvent;
     }
 
-    /**
-     * remove onMoveToTarget event listener
-     * @param delegate delegate function to remove from onMoveToTarget event listeners
-     */
-    public removeOnMoveToTargetEventListener(delegate: (x: number, y: number) => void): void {
-        const index = this._onMoveToTargetDelegates.indexOf(delegate);
-        if (index >= 0) {
-            this._onMoveToTargetDelegates.splice(index, 1);
-        }
-    }
-
-    /**
-     * add onMovedToTarget event listener
-     * @param delegate this delegate function will be called when onMovedToTarget event is fired
-     */
-    public addOnMovedToTargetEventListener(delegate: (x: number, y: number) => void): void {
-        this._onMovedToTargetDelegates.push(delegate);
-    }
-
-    /**
-     * remove onMovedToTarget event listener
-     * @param delegate delegate function to remove from onMovedToTarget event listeners
-     */
-    public removeOnMovedToTargetEventListener(delegate: (x: number, y: number) => void): void {
-        const index = this._onMovedToTargetDelegates.indexOf(delegate);
-        if (index >= 0) {
-            this._onMovedToTargetDelegates.splice(index, 1);
-        }
+    public get onMovedToTarget(): IEventContainer<(x: number, y: number) => void> {
+        return this._onMovedToTargetEvent;
     }
 
     /**
@@ -383,11 +350,11 @@ export class PlayerGridMovementController extends Directionable
      */
     public set gridPointer(value: GridPointer|null) {
         if (this._gridPointer) {
-            this._gridPointer.removeOnPointerDownEventListener(this._onPointerDownBind);
+            this._gridPointer.onPointerDown.removeListener(this._onPointerDownBind);
         }
         this._gridPointer = value;
         if (this._gridPointer) {
-            this._gridPointer.addOnPointerDownEventListener(this._onPointerDownBind);
+            this._gridPointer.onPointerDown.addListener(this._onPointerDownBind);
         }
     }
 

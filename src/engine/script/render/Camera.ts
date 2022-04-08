@@ -21,7 +21,7 @@ export class Camera extends Component {
     private readonly _onScreenResizeBind = this.onScreenResize.bind(this);
 
     public onEnable(): void {
-        this.engine.screen.addOnResizeEventListener(this._onScreenResizeBind);
+        this.engine.screen.onResize.addListener(this._onScreenResizeBind);
         this.createOrUpdateCamera();
     }
 
@@ -106,7 +106,7 @@ export class Camera extends Component {
     }
 
     public onDisable(): void {
-        this.engine.screen.removeOnResizeEventListener(this._onScreenResizeBind);
+        this.engine.screen.onResize.removeListener(this._onScreenResizeBind);
         if (this._camera) this.engine.cameraContainer.removeCamera(this);
     }
 

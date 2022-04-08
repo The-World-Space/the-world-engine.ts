@@ -70,12 +70,12 @@ export class PhysicsObject2D implements IPhysicsObject2D {
         if (material) {
             if (!this._sharedMaterial) {
                 this._sharedMaterial = new PhysicsMaterial2D(material.friction, material.bounciness);
-                this._sharedMaterial.addOnChangedEventListener(this.updateMaterialInfo);
+                this._sharedMaterial.onChanged.addListener(this.updateMaterialInfo);
             } else {
                 this._sharedMaterial.copy(material);
             }
         } else {
-            this._sharedMaterial?.removeOnChangedEventListener(this.updateMaterialInfo);
+            this._sharedMaterial?.onChanged.removeListener(this.updateMaterialInfo);
             this._sharedMaterial = null;
         }
         

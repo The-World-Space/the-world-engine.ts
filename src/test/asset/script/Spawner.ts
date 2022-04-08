@@ -13,12 +13,12 @@ export class Spawner extends Component {
     private _objectCounter = 0;
 
     public awake(): void {
-        this.engine.input.addOnKeyDownEventListener(this.onKeyDown);
+        this.engine.input.onKeyDown.addListener(this.onKeyDown);
         this.startCorutine(this.spawninitObjects());
     }
 
     public onDestroy(): void {
-        this.engine.input.removeOnKeyDownEventListener(this.onKeyDown);
+        this.engine.input.onKeyDown.removeListener(this.onKeyDown);
     }
 
     public onKeyDown = (e: KeyboardEvent): void => {
