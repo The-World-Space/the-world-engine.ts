@@ -1,14 +1,14 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ESLintPlugin = require('eslint-webpack-plugin');
-//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+const ESLintPlugin = require("eslint-webpack-plugin");
+//const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
     entry: "./src/test/index.ts",
     output: {
         path: path.join(__dirname, "/testbundle"),
         filename: "[name].bundle.js",
-        assetModuleFilename: 'images/[name][ext]',
+        assetModuleFilename: "images/[name][ext]",
     },
     // optimization: {
     //   splitChunks: {
@@ -19,12 +19,12 @@ module.exports = {
         rules: [{
                 test: /\.tsx?$/,
                 use: [{
-                    loader: 'ts-loader'
+                    loader: "ts-loader"
                 }]
             },
             {
                 test: /\.(png|jpg|gif)$/,
-                type: 'asset',
+                type: "asset",
             }
         ],
     },
@@ -37,7 +37,7 @@ module.exports = {
             template: "./src/test/index.html",
         }),
         new ESLintPlugin({
-            extensions: 'ts',
+            extensions: "ts",
         }),
         //new BundleAnalyzerPlugin(),
     ],
