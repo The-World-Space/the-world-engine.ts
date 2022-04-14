@@ -6,7 +6,6 @@ import { DeepReadonly } from "../type/DeepReadonly";
 
 /**
  * make game scene with interop object and scene builder
- * do not drive this class
  */
 export abstract class Bootstrapper<T = any> {
     private _instantiater: Instantiater;
