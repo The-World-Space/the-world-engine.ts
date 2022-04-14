@@ -46,7 +46,7 @@ export class ObservableQuaternion {
         srcOffset0: number,
         src1: number[],
         srcOffset1: number,
-        t: number,
+        t: number
     ): void {
         // fuzz-free, array-based Quaternion SLERP operation
         let x0 = src0[srcOffset0 + 0],
@@ -118,7 +118,7 @@ export class ObservableQuaternion {
         src0: number[],
         srcOffset0: number,
         src1: number[],
-        srcOffset1: number,
+        srcOffset1: number
     ): number[] {
         const x0 = src0[srcOffset0];
         const y0 = src0[srcOffset0 + 1];
@@ -138,42 +138,42 @@ export class ObservableQuaternion {
         return dst;
     }
 
-    private get _x(): number { // this can't be private because it's used like public in three.js
+    public get _x(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_x;
     }
 
-    private set _x(value: number) { // this can't be private because it's used like public in three.js
+    public set _x(value: number) { // this can't be private because it's used like public in three.js
         if (this._internal_x === value) return;
         this._internal_x = value;
     }
 
-    private get _y(): number { // this can't be private because it's used like public in three.js
+    public get _y(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_y;
     }
 
-    private set _y(value: number) { // this can't be private because it's used like public in three.js
+    public set _y(value: number) { // this can't be private because it's used like public in three.js
         if (this._internal_y === value) return;
         this._internal_y = value;
     }
 
-    private get _z(): number { // this can't be private because it's used like public in three.js
+    public get _z(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_z;
     }
 
-    private set _z(value: number) { // this can't be private because it's used like public in three.js
+    public set _z(value: number) { // this can't be private because it's used like public in three.js
         if (this._internal_z === value) return;
         this._internal_z = value;
     }
 
-    private get _w(): number { // this can't be private because it's used like public in three.js
+    public get _w(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_w;
     }
 
-    private set _w(value: number) { // this can't be private because it's used like public in three.js
+    public set _w(value: number) { // this can't be private because it's used like public in three.js
         if (this._internal_w === value) return;
         this._internal_w = value;
     }
@@ -598,7 +598,7 @@ export class ObservableQuaternion {
             sqrt1u1 * Math.cos(u2),
             sqrtu1 * Math.sin(u3),
             sqrtu1 * Math.cos(u3),
-            sqrt1u1 * Math.sin(u2),
+            sqrt1u1 * Math.sin(u2)
         );
     }
 

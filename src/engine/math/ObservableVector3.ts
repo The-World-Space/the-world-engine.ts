@@ -140,7 +140,7 @@ export class ObservableVector3 {
         this._onBeforeGetComponentCallback();
         return new Vector3(this._x, this._y, this._z);
     }
-
+    
     public copy(v: ObservableVector3): ObservableVector3 {
         if (this._x === v.x && this._y === v.y && this._z === v.z) return this;
         this._onBeforeChangeCallback();

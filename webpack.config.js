@@ -1,6 +1,9 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const ESLintPlugin = require("eslint-webpack-plugin");
+//const propertiesRenameTransformer = require('ts-transformer-properties-rename').default;
+const minifyPrivatesTransformer = require('ts-transformer-minify-privates').default;
+const TerserPlugin = require("terser-webpack-plugin");
 //const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
@@ -10,17 +13,42 @@ module.exports = {
         filename: "[name].bundle.js",
         assetModuleFilename: "images/[name][ext]",
     },
-    // optimization: {
+    optimization: {
+        minimize: true,
+        minimizer: [
+            new TerserPlugin({
+                terserOptions: {
+                    compress: false,
+                    output: {
+                        beautify: true,
+                    },
+                    mangle: {
+                        keep_fnames: true,
+                        keep_classnames: true,
+                        properties: {
+                            regex: /^_private_/,
+                        }
+                    },
+                    nameCache: { }
+                }
+            }),
+        ],
     //   splitChunks: {
     //     chunks: "all",
     //   },
-    // },
+    },
     module: {
         rules: [{
                 test: /\.tsx?$/,
-                use: [{
-                    loader: "ts-loader"
-                }]
+                loader: "ts-loader",
+                options: {
+                    getCustomTransformers: program => ({
+                        before: [
+                            minifyPrivatesTransformer(program),
+                            //propertiesRenameTransformer(program, { entrySourceFiles: ["./index.ts"] })
+                        ]
+                    })
+                }
             },
             {
                 test: /\.(png|jpg|gif)$/,

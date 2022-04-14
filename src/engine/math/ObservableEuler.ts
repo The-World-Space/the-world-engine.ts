@@ -1,7 +1,7 @@
 import { Euler, Matrix4, Quaternion, Vector3 } from "three/src/Three";
 import { clamp } from "three/src/math/MathUtils";
 
-/** @internal */
+/** @internal  */
 export class ObservableEuler {
     public readonly isEuler = true;
     
@@ -39,39 +39,39 @@ export class ObservableEuler {
         this._onBeforeChangeCallback = callback;
     }
 
-    private get _x(): number { // this can't be private because it's used like public in three.js
+    public get _x(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_x;
     }
 
-    private set _x(value: number) { // this can't be private because it's used like public in three.js
+    public set _x(value: number) { // this can't be private because it's used like public in three.js
         this._internal_x = value;
     }
 
-    private get _y(): number { // this can't be private because it's used like public in three.js
+    public get _y(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_y;
     }
 
-    private set _y(value: number) { // this can't be private because it's used like public in three.js
+    public set _y(value: number) { // this can't be private because it's used like public in three.js
         this._internal_y = value;
     }
 
-    private get _z(): number { // this can't be private because it's used like public in three.js
+    public get _z(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_z;
     }
 
-    private set _z(value: number) { // this can't be private because it's used like public in three.js
+    public set _z(value: number) { // this can't be private because it's used like public in three.js
         this._internal_z = value;
     }
 
-    private get _order(): string { // this can't be private because it's used like public in three.js
+    public get _order(): string { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internal_order;
     }
 
-    private set _order(value: string) { // this can't be private because it's used like public in three.js
+    public set _order(value: string) { // this can't be private because it's used like public in three.js
         this._internal_order = value;
     }
 
