@@ -16,7 +16,7 @@ export class PolygonCollider2D extends Collider2D {
         new Vector2(-2, -2),
         new Vector2(2, -2),
         new Vector2(2, 2),
-        new Vector2(-2, 2),
+        new Vector2(-2, 2)
     ];
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;

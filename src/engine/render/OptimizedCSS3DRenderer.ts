@@ -20,7 +20,7 @@ export class OptimizedCSS3DRenderer {
         camera: {
             fov: 0,
             style: ""
-        },
+        }
         //objects: new WeakMap()
     };
     private _cameraElement: HTMLElement;

@@ -89,7 +89,7 @@ export class Transform {
             },
             scale: {
                 writable: true
-            },
+            }
         });
 
         const onBeforeGetLocalBind = this._onBeforeGetLocalBind;

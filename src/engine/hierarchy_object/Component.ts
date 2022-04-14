@@ -50,15 +50,15 @@ export abstract class Component {
         Object.defineProperties(this, {
             disallowMultipleComponent: {
                 configurable: false,
-                writable: false,
+                writable: false
             },
             requiredComponents: {
                 configurable: false,
-                writable: false,
+                writable: false
             },
             executionOrder: {
                 configurable: false,
-                writable: false,
+                writable: false
             }
         });
     }   

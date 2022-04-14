@@ -3,7 +3,7 @@ import type {
     Manifold as B2Manifold,
     Shape as B2Shape,
     BodyDef as B2BodyDef,
-    World as B2World,
+    World as B2World
 } from "../../../box2d.ts/build/index";
 import { Vector2 } from "three/src/Three";
 import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";

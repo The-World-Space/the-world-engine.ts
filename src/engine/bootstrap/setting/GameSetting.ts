@@ -23,7 +23,7 @@ export class GameSetting {
     public static createDefaultObject(): GameSettingObject {
         return {
             render: RenderSetting.createDefaultObject(),
-            physics: PhysicsSetting.createDefaultObject(),
+            physics: PhysicsSetting.createDefaultObject()
         };
     }
 

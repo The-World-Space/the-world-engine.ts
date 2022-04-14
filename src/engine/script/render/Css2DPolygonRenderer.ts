@@ -11,7 +11,7 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         new Vector2(-2, -2),
         new Vector2(2, -2),
         new Vector2(2, 2),
-        new Vector2(-2, 2),
+        new Vector2(-2, 2)
     ];
     private _width = 4;
     private _height = 4;

@@ -60,7 +60,7 @@ export class SansFightRoomPrefab extends Prefab {
                                 [G, F, G, F, G, F, G, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, G, F, G, F, G, F, G, F],
                                 [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G],
                                 [G, F, G, F, G, F, G, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, G, F, G, F, G, F, G, F],
-                                [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G],
+                                [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G]
                             ], -2, -2);
                         };
                     }))
@@ -85,12 +85,12 @@ export class SansFightRoomPrefab extends Prefab {
                             const A = {i:0, a:51};
                             const o = null;
                             c.drawTileFromTwoDimensionalArray([
-                                [W, W, W, W, W, W, W, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, W, W, W, W, W, W, W, W,],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W,],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W,],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W,],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W,],
-                                [Y, Y, Y, Y, Y, Y, Y, Y, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, W, W, W, W, W, W, W, W,],
+                                [W, W, W, W, W, W, W, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, W, W, W, W, W, W, W, W],
+                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
+                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
+                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
+                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
+                                [Y, Y, Y, Y, Y, Y, Y, Y, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, W, W, W, W, W, W, W, W]
                             ], -2, 2);
 
                             const B = {i:0, a:44};
@@ -119,7 +119,7 @@ export class SansFightRoomPrefab extends Prefab {
                                 {x: 29, y: 1},
                                 {x: 35, y: 1},
                                 {x: 41, y: 1},
-                                {x: 47, y: 1},
+                                {x: 47, y: 1}
                             ].forEach(p => {
                                 c.drawTileFromTwoDimensionalArray([
                                     [{i: 0, a: 0}, {i: 0, a: 1}, {i: 0, a: 2}],
@@ -127,7 +127,7 @@ export class SansFightRoomPrefab extends Prefab {
                                     [{i: 0, a: 6}, {i: 0, a: 7}, {i: 0, a: 8}],
                                     [{i: 0, a: 9}, {i: 0, a: 10}, {i: 0, a: 11}],
                                     [{i: 0, a: 12}, {i: 0, a: 13}, {i: 0, a: 14}],
-                                    [{i: 0, a: 15}, {i: 0, a: 16}, {i: 0, a: 17}],
+                                    [{i: 0, a: 15}, {i: 0, a: 16}, {i: 0, a: 17}]
                                 ], p.x, p.y);
                             });
 
@@ -138,14 +138,14 @@ export class SansFightRoomPrefab extends Prefab {
                                 {x: 26, y: 3},
                                 {x: 32, y: 3},
                                 {x: 38, y: 3},
-                                {x: 44, y: 3},
+                                {x: 44, y: 3}
                             ].forEach(p => {
                                 c.drawTileFromTwoDimensionalArray([
                                     [{i: 0, a: 24}, {i: 0, a: 25}, {i: 0, a: 26}],
                                     [{i: 0, a: 27}, {i: 0, a: 28}, {i: 0, a: 29}],
                                     [{i: 0, a: 30}, {i: 0, a: 31}, {i: 0, a: 32}],
                                     [{i: 0, a: 33}, {i: 0, a: 34}, {i: 0, a: 35}],
-                                    [{i: 0, a: 36}, {i: 0, a: 37}, {i: 0, a: 38}],
+                                    [{i: 0, a: 36}, {i: 0, a: 37}, {i: 0, a: 38}]
                                 ], p.x, p.y);
                             });
                         };
