@@ -59,6 +59,7 @@ export { CollisionLayerMaskConverter } from "./engine/physics/CollisionLayerMask
 //render
 export { CameraContainer } from "./engine/render/CameraContainer";
 export { Color } from "./engine/render/Color";
+export type { ReadonlyColor } from "./engine/render/ReadonlyColor";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 
 //time
