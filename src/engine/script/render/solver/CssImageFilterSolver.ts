@@ -1,5 +1,7 @@
 import { Color } from "../../../render/Color";
 
+//code from https://stackoverflow.com/a/43960991
+
 type FilterValue = [
     number, // invert
     number, // sepia
@@ -129,12 +131,5 @@ export class CssImageFilterSolver {
             Math.abs(colorHSL.s - this.targetHSL.s) +
             Math.abs(colorHSL.l - this.targetHSL.l)
         );
-    }
-
-    private css(filters: FilterValue): string {
-        function fmt(idx: number): number {
-            return Math.round(filters[idx] * 1);
-        }
-        return "filter: invert(" + fmt(0) + "%) sepia(" + fmt(1) + "%) saturate(" + fmt(2) + "%) hue-rotate(" + fmt(3) + "deg) brightness(" + fmt(4) + "%) contrast(" + fmt(5) + "%)";
     }
 }
