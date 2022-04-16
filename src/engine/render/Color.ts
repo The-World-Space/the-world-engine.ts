@@ -160,18 +160,21 @@ export class Color implements ReadonlyColor {
 
     /**
      * get the color as a string with the format rgb(r, g, b)
+     * r, g, b values is range [0, 255]
      * @returns 
      */
     public toString(): string {
-        return "rgb(" + this._r + ", " + this._g + ", " + this._b + ")";
+        return "rgb(" + this._r * 255 + ", " + this._g * 255 + ", " + this._b * 255 + ")";
     }
 
     /**
      * get the color as a string with the format rgba(r, g, b, a)
+     * r, g, b values is range [0, 255]
+     * a value is range [0, 1]
      * @returns 
      */
     public toStringWithAlpha(): string {
-        return "rgba(" + this._r + ", " + this._g + ", " + this._b + ", " + this._a + ")";
+        return "rgba(" + this._r * 255 + ", " + this._g * 255 + ", " + this._b * 255 + ", " + this._a + ")";
     }
 
     /**
