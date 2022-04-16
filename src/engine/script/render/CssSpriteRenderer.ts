@@ -1,6 +1,5 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
-//import { Color } from "../../render/Color";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
 
 export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
@@ -8,8 +7,8 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageHeight = 0;
     private _imageFlipX = false;
     private _imageFlipY = false;
-    //private _color: Color = new Color(1, 1, 1, 1);
     private _opacity = 1;
+    private _blur = 0;
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -80,6 +79,9 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
             image.style.width = (this._imageWidth / this.viewScale) + "px";
             image.style.height = (this._imageHeight / this.viewScale) + "px";
             image.style.opacity = this._opacity.toString();
+            if (0 < this._blur) {
+                image.style.filter = "blur(" + this._blur + "px)";
+            }
             const css3DObject = this.initializeBaseComponents(false);
             Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
             this.transform.enqueueRenderAttachedObject3D(css3DObject);
@@ -163,6 +165,21 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         this._opacity = value;
         if (this.htmlElement) {
             this.htmlElement.style.opacity = this._opacity.toString();
+        }
+    }
+
+    public get blur(): number {
+        return this._blur;
+    }
+
+    public set blur(value: number) {
+        this._blur = value;
+        if (this.htmlElement) {
+            if (0 < this._blur) {
+                this.htmlElement.style.filter = "blur(" + this._blur + "px)";
+            } else {
+                this.htmlElement.style.filter = "";
+            }
         }
     }
 }

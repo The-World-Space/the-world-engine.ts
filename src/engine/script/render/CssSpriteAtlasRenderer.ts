@@ -14,6 +14,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipX = false;
     private _imageFlipY = false;
     private _opacity = 1;
+    private _blur = 0;
     private _rowCount = 1;
     private _columnCount = 1;
     private _currentImageIndex = 0;
@@ -153,6 +154,9 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             image.alt = this.gameObject.name + "_sprite_atlas";
             image.style.imageRendering = "pixelated";
             image.style.opacity = this._opacity.toString();
+            if (0 < this._blur) {
+                image.style.filter = "blur(" + this._blur + "px)";
+            }
             if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
                 if (this.viewScale !== 1) {
                     console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit, for supressing this warning set viewScale to 1.");
@@ -336,6 +340,21 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         this._opacity = value;
         if (this.htmlElement) {
             this.htmlElement.style.opacity = this._opacity.toString();
+        }
+    }
+
+    public get blur(): number {
+        return this._blur;
+    }
+
+    public set blur(value: number) {
+        this._blur = value;
+        if (this.htmlElement) {
+            if (0 < this._blur) {
+                this.htmlElement.style.filter = "blur(" + this._blur + "px)";
+            } else {
+                this.htmlElement.style.filter = "";
+            }
         }
     }
 }
