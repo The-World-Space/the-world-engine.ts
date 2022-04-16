@@ -1,6 +1,7 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
+import { CssFilter } from "./filter/CssFilter";
 
 export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageWidth = 0;
@@ -8,7 +9,14 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipX = false;
     private _imageFlipY = false;
     private _opacity = 1;
-    private _blur = 0;
+
+    private onFilterUpdate = (): void => {
+        if (this.htmlElement) {
+            this.htmlElement.style.filter = this._filter.toString();
+        }
+    };
+
+    private _filter: CssFilter = new CssFilter(this.onFilterUpdate);
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -79,9 +87,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
             image.style.width = (this._imageWidth / this.viewScale) + "px";
             image.style.height = (this._imageHeight / this.viewScale) + "px";
             image.style.opacity = this._opacity.toString();
-            if (0 < this._blur) {
-                image.style.filter = "blur(" + this._blur + "px)";
-            }
+            image.style.filter = this._filter.toString();
             const css3DObject = this.initializeBaseComponents(false);
             Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
             this.transform.enqueueRenderAttachedObject3D(css3DObject);
@@ -168,18 +174,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
-    public get blur(): number {
-        return this._blur;
-    }
-
-    public set blur(value: number) {
-        this._blur = value;
-        if (this.htmlElement) {
-            if (0 < this._blur) {
-                this.htmlElement.style.filter = "blur(" + this._blur + "px)";
-            } else {
-                this.htmlElement.style.filter = "";
-            }
-        }
+    public get filter(): CssFilter {
+        return this._filter;
     }
 }

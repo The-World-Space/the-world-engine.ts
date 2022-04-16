@@ -1,6 +1,7 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
+import { CssFilter } from "./filter/CssFilter";
 
 export enum CssSpriteAtlasRenderMode {
     ObjectFit,
@@ -14,7 +15,15 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipX = false;
     private _imageFlipY = false;
     private _opacity = 1;
-    private _blur = 0;
+    
+    private onFilterUpdate = (): void => {
+        if (this.htmlElement) {
+            this.htmlElement.style.filter = this._filter.toString();
+        }
+    };
+    
+    private _filter: CssFilter = new CssFilter(this.onFilterUpdate);
+
     private _rowCount = 1;
     private _columnCount = 1;
     private _currentImageIndex = 0;
@@ -154,9 +163,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             image.alt = this.gameObject.name + "_sprite_atlas";
             image.style.imageRendering = "pixelated";
             image.style.opacity = this._opacity.toString();
-            if (0 < this._blur) {
-                image.style.filter = "blur(" + this._blur + "px)";
-            }
+            image.style.filter = this._filter.toString();
             if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
                 if (this.viewScale !== 1) {
                     console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit, for supressing this warning set viewScale to 1.");
@@ -342,19 +349,8 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             this.htmlElement.style.opacity = this._opacity.toString();
         }
     }
-
-    public get blur(): number {
-        return this._blur;
-    }
-
-    public set blur(value: number) {
-        this._blur = value;
-        if (this.htmlElement) {
-            if (0 < this._blur) {
-                this.htmlElement.style.filter = "blur(" + this._blur + "px)";
-            } else {
-                this.htmlElement.style.filter = "";
-            }
-        }
+    
+    public get filter(): CssFilter {
+        return this._filter;
     }
 }
