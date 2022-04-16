@@ -4,6 +4,7 @@ import { Color } from "../../render/Color";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 import { DEG2RAD } from "three/src/math/MathUtils";
+import { ReadonlyColor } from "../../render/ReadonlyColor";
 
 export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolygonElement|null = null;
@@ -151,12 +152,12 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
-    public get borderColor(): Color {
+    public get borderColor(): ReadonlyColor {
         return this._borderColor;
     }
 
-    public set borderColor(value: Color) {
-        this._borderColor = value;
+    public set borderColor(value: ReadonlyColor) {
+        this._borderColor.copy(value);
         if (this.htmlElement) {
             this._svgElement!.style.stroke = value.toHexWithAlpha();
         }

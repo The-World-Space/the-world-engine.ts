@@ -3,6 +3,7 @@ import { Transform } from "../../../engine/hierarchy_object/Transform";
 import { Component } from "../../hierarchy_object/Component";
 import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
+import { ReadonlyColor } from "../../render/ReadonlyColor";
 
 export enum CameraType {
     Perspective,
@@ -209,12 +210,12 @@ export class Camera extends Component {
         }
     }
 
-    public get backgroundColor(): Color {
+    public get backgroundColor(): ReadonlyColor {
         return this._backgroudColor;
     }
 
-    public set backgroundColor(value: Color) {
-        this._backgroudColor = value;
+    public set backgroundColor(value: ReadonlyColor) {
+        this._backgroudColor.copy(value);
         if (this._camera) {
             this.engine.cameraContainer.changeCameraBackgroundColor(this, value);
         }

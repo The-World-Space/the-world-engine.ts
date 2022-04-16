@@ -3,6 +3,7 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
 import { Color } from "../../render/Color";
+import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
 export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
@@ -58,12 +59,12 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
-    public get lineColor(): Color {
+    public get lineColor(): ReadonlyColor {
         return this._lineColor;
     }
 
-    public set lineColor(value: Color) {
-        this._lineColor = value;
+    public set lineColor(value: ReadonlyColor) {
+        this._lineColor.copy(value);
         if (this.htmlElement) {
             this.htmlElement.style.backgroundColor = value.toHexWithAlpha();
         }

@@ -1,5 +1,6 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
+//import { Color } from "../../render/Color";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
 
 export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
@@ -7,6 +8,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageHeight = 0;
     private _imageFlipX = false;
     private _imageFlipY = false;
+    //private _color: Color = new Color(1, 1, 1, 1);
     private _opacity = 1;
 
     private _initializeFunction: (() => void)|null = null;

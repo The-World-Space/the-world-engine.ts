@@ -4,6 +4,7 @@ import { Color } from "../../render/Color";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 import { DEG2RAD } from "three/src/math/MathUtils";
+import { ReadonlyColor } from "../../render/ReadonlyColor";
 
 export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolylineElement|null = null;
@@ -125,12 +126,12 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
         this.points = points;
     }
 
-    public get edgeColor(): Color {
+    public get edgeColor(): ReadonlyColor {
         return this._edgeColor;
     }
 
-    public set edgeColor(value: Color) {
-        this._edgeColor = value;
+    public set edgeColor(value: ReadonlyColor) {
+        this._edgeColor.copy(value);
         if (this.htmlElement) {
             this._svgElement!.style.stroke = value.toHexWithAlpha();
         }

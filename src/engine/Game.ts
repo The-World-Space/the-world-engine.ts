@@ -9,12 +9,12 @@ import { Time } from "./time/Time";
 import { GameScreen } from "./render/GameScreen";
 import { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
-import { Color } from "./render/Color";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
 import { GameSettingObject } from "./bootstrap/setting/GameSetting";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { DeepReadonly } from "./type/DeepReadonly";
+import { ReadonlyColor } from "./render/ReadonlyColor";
     
 /**
  * game engine class
@@ -57,7 +57,7 @@ export class Game {
             this._css3DRenderer.domElement.scrollTop = 0;
         };
 
-        this._cameraContainer = new CameraContainer((color: Color) => {
+        this._cameraContainer = new CameraContainer((color: ReadonlyColor) => {
             this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
         });
         

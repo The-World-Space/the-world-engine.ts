@@ -2,7 +2,7 @@ import type { SetType } from "js-sdsl/dist/esm/Set/Set";
 import Set from "js-sdsl/dist/esm/Set/Set";
 import { Camera } from "../script/render/Camera";
 import { CameraInfo } from "./CameraInfo";
-import { Color } from "./Color";
+import { ReadonlyColor } from "./ReadonlyColor";
 
 /**
  * schedule camera by priority to be rendered
@@ -12,10 +12,10 @@ export class CameraContainer {
     private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null; 
     private _cameraInfoMap: Map<Camera, CameraInfo>;
     private _cameraQueue: SetType<{camera: Camera, info: CameraInfo}>;
-    private _onChangeBackgroundColor: (color: Color) => void;
+    private _onChangeBackgroundColor: (color: ReadonlyColor) => void;
 
     /** @internal */
-    public constructor(onChangeBackgroundColor: (color: Color) => void) {
+    public constructor(onChangeBackgroundColor: (color: ReadonlyColor) => void) {
         this._cameraInfoMap = new Map();
         this._cameraQueue = new Set(undefined, (a, b) => {
             if (a.info.priority === b.info.priority) {
@@ -91,7 +91,7 @@ export class CameraContainer {
      * 
      * @internal
      */
-    public changeCameraBackgroundColor(camera: Camera, color: Color): void {
+    public changeCameraBackgroundColor(camera: Camera, color: ReadonlyColor): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         info.backgroundColor = color;

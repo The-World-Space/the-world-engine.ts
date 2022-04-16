@@ -1,6 +1,7 @@
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 import { Color } from "../../render/Color";
+import { ReadonlyColor } from "../../render/ReadonlyColor";
 
 export enum TextAlign {
     Left = "left",
@@ -234,12 +235,12 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
-    public get textColor(): Color {
+    public get textColor(): ReadonlyColor {
         return this._textColor;
     }
 
-    public set textColor(value: Color) {
-        this._textColor = value;
+    public set textColor(value: ReadonlyColor) {
+        this._textColor.copy(value);
         if (this.htmlElement) {
             this.htmlElement.style.color = value.toHex();
             this.htmlElement.style.opacity = value.a.toString();

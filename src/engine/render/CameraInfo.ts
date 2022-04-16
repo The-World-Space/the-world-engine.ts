@@ -1,4 +1,5 @@
 import { Color } from "./Color";
+import { ReadonlyColor } from "./ReadonlyColor";
 
 /**
  * camera info object
@@ -15,10 +16,10 @@ export class CameraInfo {
      */
     public constructor(
         priority: number,
-        backgroundColor: Color
+        backgroundColor: ReadonlyColor
     ) {
         this._priority = priority;
-        this._backgroundColor = backgroundColor;
+        this._backgroundColor = new Color().copy(backgroundColor);
     }
 
     /**
@@ -38,14 +39,14 @@ export class CameraInfo {
     /**
      * get camera background color
      */
-    public get backgroundColor(): Color {
+    public get backgroundColor(): ReadonlyColor {
         return this._backgroundColor;
     }
 
     /**
      * set camera background color
      */
-    public set backgroundColor(value: Color) {
-        this._backgroundColor = value;
+    public set backgroundColor(value: ReadonlyColor) {
+        this._backgroundColor.copy(value);
     }
 }
