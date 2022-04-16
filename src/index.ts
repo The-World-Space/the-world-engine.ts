@@ -126,6 +126,9 @@ export { SpriteAtlasInstance, SpriteAtlasStaticInstancer } from "./engine/script
 export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_render/SpriteStaticInstancer";
 
 //render
+export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
+export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
+export { CssFilter } from "./engine/script/render/filter/CssFilter";
 export { CameraType, Camera } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
 export { Css2DLineRenderer } from "./engine/script/render/Css2DLineRenderer";
