@@ -162,6 +162,8 @@ export class Transform {
     private onBeforeLocalChange(): void {
         if (this._ignoreObservableEvent) return;
 
+        this.updateLocalPositionRotationScaleFromOthers();
+        
         this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
         this._localPositionRotationScaleNeedUpdate = false;
         this._localMatrixNeedUpdate = true;
@@ -197,6 +199,8 @@ export class Transform {
     private onBeforeWorldChange(): void {
         if (this._ignoreObservableEvent) return;
         
+        this.updateWorldPositionRotationScaleFromOthers();
+
         this.updateChildrenLocalPositionRotationScaleFromOthersRecursively();
         this._worldPositionRotationScaleNeedUpdate = false;
         this._localPositionRotationScaleNeedUpdate = true;
