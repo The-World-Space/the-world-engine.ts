@@ -10,7 +10,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipY = false;
     private _opacity = 1;
 
-    private onFilterUpdate = (): void => {
+    private readonly onFilterUpdate = (): void => {
         if (this.htmlElement) {
             this.htmlElement.style.filter = this._filter.toString();
         }
@@ -21,9 +21,10 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _initializeFunction: (() => void)|null = null;
 
     protected override renderInitialize(): void {
-        this._initializeFunction?.call(this);
-        if (!this.htmlElement) {
-            this.asyncSetImagePath(GlobalConfig.defaultSpriteSrc);
+        if (this._initializeFunction) {
+            this._initializeFunction();
+        } else {
+            this.asyncSetImageFromPath(GlobalConfig.defaultSpriteSrc);
         }
     }
 
@@ -63,38 +64,49 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
-    public get imagePath(): string|null {
-        return this.htmlElement?.src || null;
+    public get image(): HTMLImageElement|null {
+        return this.htmlElement;
     }
 
-    public asyncSetImagePath(path: string, onComplete?: () => void): void {
+    public asyncSetImageFromPath(path: string, onComplete?: () => void): void {
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.asyncSetImagePath(path, onComplete);
+            this._initializeFunction = () => this.asyncSetImageFromPath(path, onComplete);
             return;
         }
 
-        if (!this.htmlElement) this.htmlElement = new Image();
-        this.htmlElement.src = path;
+        const image = this.htmlElement ?? new Image();
+        image.src = path;
 
-        const onLoad = (e: Event) => {
+        const onLoad = (_e: Event) => {
             if (!this.exists) return;
-            const image = e.target as HTMLImageElement;
             image.removeEventListener("load", onLoad);
-            image.alt = this.gameObject.name + "_sprite_atlas";
-            image.style.imageRendering = "pixelated";
-            if (this._imageWidth === 0) this._imageWidth = image.naturalWidth * CssRendererConst.LengthUnitScalar;
-            if (this._imageHeight === 0) this._imageHeight = image.naturalHeight * CssRendererConst.LengthUnitScalar;
-            image.style.width = (this._imageWidth / this.viewScale) + "px";
-            image.style.height = (this._imageHeight / this.viewScale) + "px";
-            image.style.opacity = this._opacity.toString();
-            image.style.filter = this._filter.toString();
-            const css3DObject = this.initializeBaseComponents(false);
-            Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(css3DObject);
-
+            this.setImage(image);
             onComplete?.();
         };
-        this.htmlElement.addEventListener("load", onLoad);
+        image.addEventListener("load", onLoad);
+    }
+
+    public setImage(image: HTMLImageElement): void {
+        if (!image.complete) throw new Error(`Image {${image.src}} is not loaded.`);
+
+        this.htmlElement = image;
+
+        if (!this.readyToDraw) {
+            this._initializeFunction = () => this.setImage(image);
+            return;
+        }
+
+        image.alt = this.gameObject.name + "_sprite";
+        image.style.imageRendering = "pixelated";
+        if (this._imageWidth === 0) this._imageWidth = image.naturalWidth * CssRendererConst.LengthUnitScalar;
+        if (this._imageHeight === 0) this._imageHeight = image.naturalHeight * CssRendererConst.LengthUnitScalar;
+        image.style.width = (this._imageWidth / this.viewScale) + "px";
+        image.style.height = (this._imageHeight / this.viewScale) + "px";
+        image.style.opacity = this._opacity.toString();
+        image.style.filter = this._filter.toString();
+        const css3DObject = this.initializeBaseComponents(false);
+        Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
     public get imageWidth(): number {

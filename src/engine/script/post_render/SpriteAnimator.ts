@@ -29,7 +29,7 @@ export class SpriteAnimator extends Component {
             if (this._playingAnimationFrame >= this._playingAnimation!.length) {
                 this._playingAnimationFrame = 0;
             }
-            this._spriteRenderer!.asyncSetImagePath(this._playingAnimation![this._playingAnimationFrame]);
+            this._spriteRenderer!.asyncSetImageFromPath(this._playingAnimation![this._playingAnimationFrame]);
         }
     }
 
@@ -40,7 +40,7 @@ export class SpriteAnimator extends Component {
         this._playingAnimationName = name;
         this._playingAnimation = this._animations[name];
         this._playingAnimationFrame = 0;
-        this._spriteRenderer!.asyncSetImagePath(this._animations[name][0]);
+        this._spriteRenderer!.asyncSetImageFromPath(this._animations[name][0]);
         this._playing = true;
     }
 

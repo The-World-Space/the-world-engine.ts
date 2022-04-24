@@ -16,7 +16,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipY = false;
     private _opacity = 1;
     
-    private onFilterUpdate = (): void => {
+    private readonly onFilterUpdate = (): void => {
         if (this.htmlElement) {
             this.htmlElement.style.filter = this._filter.toString();
         }
@@ -35,9 +35,10 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _initializeFunction: (() => void)|null = null;
 
     protected override renderInitialize(): void {
-        this._initializeFunction?.call(this);
-        if (!this.htmlElement) {
-            this.asyncSetImage(GlobalConfig.defaultSpriteSrc, 1, 1);
+        if (this._initializeFunction) {
+            this._initializeFunction();
+        } else {
+            this.asyncSetImageFromPath(GlobalConfig.defaultSpriteSrc, 1, 1);
         }
     }
 
@@ -140,55 +141,60 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
-    public get imagePath(): string|null {
-        return this.htmlElement?.src || null;
+    public get image(): HTMLImageElement|null {
+        return this.htmlElement;
     }
 
-    public asyncSetImage(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
+    public asyncSetImageFromPath(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.asyncSetImage(path, rowCount, columnCount, onComplete);
+            this._initializeFunction = () => this.asyncSetImageFromPath(path, rowCount, columnCount, onComplete);
             return;
         }
 
-        this._rowCount = rowCount;
-        this._columnCount = columnCount;
+        const image = this.htmlElement ?? new Image();
+        image.src = path;
 
-        if (!this.htmlElement) this.htmlElement = new Image();
-        this.htmlElement.src = path;
-
-        const onLoad = (e: Event) => {
+        const onLoad = (_e: Event) => {
             if (!this.exists) return;
-            const image = e.target as HTMLImageElement;
             image.removeEventListener("load", onLoad);
-            image.alt = this.gameObject.name + "_sprite_atlas";
-            image.style.imageRendering = "pixelated";
-            image.style.opacity = this._opacity.toString();
-            image.style.filter = this._filter.toString();
-            if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
-                if (this.viewScale !== 1) {
-                    console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit, for supressing this warning set viewScale to 1.");
-                }
-                this._croppedImageWidth = image.naturalWidth / this._columnCount;
-                this._croppedImageHeight = image.naturalHeight / this._rowCount;
-                if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth * CssRendererConst.LengthUnitScalar;
-                if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight * CssRendererConst.LengthUnitScalar;
-                image.style.width = (this._croppedImageWidth/* / this.viewScale*/) + "px";
-                image.style.height = (this._croppedImageHeight/* / this.viewScale*/) + "px";
-                image.style.objectFit = "none";
-            } else /* if (this._renderMode === CssSpriteAtlasRenderMode.ClipPath) */ {
-                if (this._imageWidth === 0) this._imageWidth = image.naturalWidth / this._columnCount * CssRendererConst.LengthUnitScalar;
-                if (this._imageHeight === 0) this._imageHeight = image.naturalHeight / this._rowCount * CssRendererConst.LengthUnitScalar;
-                image.style.width = (this._imageWidth * this._columnCount / this.viewScale) + "px";
-                image.style.height = (this._imageHeight * this._rowCount / this.viewScale) + "px";
-            }
-            const css3DObject = this.initializeBaseComponents(false);
-            this.updateImageIndex();
-            Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
-            this.transform.enqueueRenderAttachedObject3D(css3DObject);
-
+            this.setImage(image, rowCount, columnCount);
             onComplete?.();
         };
-        this.htmlElement.addEventListener("load", onLoad);
+        image.addEventListener("load", onLoad);
+    }
+
+    public setImage(image: HTMLImageElement, rowCount: number, columnCount: number): void {
+        if (!image.complete) throw new Error(`Image {${image.src}} is not loaded.`);
+
+        this._rowCount = rowCount;
+        this._columnCount = columnCount;
+        this.htmlElement = image;
+
+        image.alt = this.gameObject.name + "_sprite_atlas";
+        image.style.imageRendering = "pixelated";
+        image.style.opacity = this._opacity.toString();
+        image.style.filter = this._filter.toString();
+        if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
+            if (this.viewScale !== 1) {
+                console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit, for supressing this warning set viewScale to 1.");
+            }
+            this._croppedImageWidth = image.naturalWidth / this._columnCount;
+            this._croppedImageHeight = image.naturalHeight / this._rowCount;
+            if (this._imageWidth === 0) this._imageWidth = this._croppedImageWidth * CssRendererConst.LengthUnitScalar;
+            if (this._imageHeight === 0) this._imageHeight = this._croppedImageHeight * CssRendererConst.LengthUnitScalar;
+            image.style.width = (this._croppedImageWidth/* / this.viewScale*/) + "px";
+            image.style.height = (this._croppedImageHeight/* / this.viewScale*/) + "px";
+            image.style.objectFit = "none";
+        } else /* if (this._renderMode === CssSpriteAtlasRenderMode.ClipPath) */ {
+            if (this._imageWidth === 0) this._imageWidth = image.naturalWidth / this._columnCount * CssRendererConst.LengthUnitScalar;
+            if (this._imageHeight === 0) this._imageHeight = image.naturalHeight / this._rowCount * CssRendererConst.LengthUnitScalar;
+            image.style.width = (this._imageWidth * this._columnCount / this.viewScale) + "px";
+            image.style.height = (this._imageHeight * this._rowCount / this.viewScale) + "px";
+        }
+        const css3DObject = this.initializeBaseComponents(false);
+        this.updateImageIndex();
+        Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+        this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
     public get renderMode(): CssSpriteAtlasRenderMode {
@@ -229,6 +235,10 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject!);
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject!);
         }
+    }
+
+    public get imageIndex(): number {
+        return this._currentImageIndex;
     }
 
     public set imageIndex(value: number) {

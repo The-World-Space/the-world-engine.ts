@@ -8,6 +8,7 @@ import { EditorCameraController } from "../../engine/script/controller/EditorCam
 import { Camera } from "../../engine/script/render/Camera";
 import { CssSpriteRenderer } from "../../engine/script/render/CssSpriteRenderer";
 import { HorizontalObjectsAnimator } from "./script/HorizontalObjectsAnimator";
+import Pillar from "./source/spr_foregroundpillar.png";
 
 /** @internal */
 export class TransformTestBootstrapper extends Bootstrapper {
@@ -31,7 +32,9 @@ export class TransformTestBootstrapper extends Bootstrapper {
                     c.prefab = class extends Prefab {
                         public make(): GameObjectBuilder {
                             return this.gameObjectBuilder
-                                .withComponent(CssSpriteRenderer);
+                                .withComponent(CssSpriteRenderer, c => {
+                                    c.asyncSetImageFromPath(Pillar);
+                                });
                         }
                     };
                     c.spawnCount = 3;
