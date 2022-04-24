@@ -22,7 +22,8 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private _fontWeight: FontWeight = FontWeight.Normal;
     private _fontFamily = "Arial";
     private _textalign: TextAlign = TextAlign.Left;
-    private _textColor: Color = new Color(1, 1, 1, 1);
+    private readonly _textColor: Color = new Color(1, 1, 1, 1);
+    private _text: string|null = null;
     
     private _initializeFunction: (() => void)|null = null;
 
@@ -94,15 +95,21 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     }
 
     public get text(): string|null {
-        return this.htmlElement?.textContent || null;
+        return this._text;
     }
 
     public set text(value: string|null) {
+        this._text = value;
+
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.text = value;
+            this._initializeFunction = () => this.setTextInternal(value);
             return;
         }
 
+        this.setTextInternal(value);
+    }
+
+    private setTextInternal(value: string|null): void {
         if (!this.htmlElement) this.htmlElement = document.createElement("div");
         this.htmlElement.textContent = value ?? "";
         

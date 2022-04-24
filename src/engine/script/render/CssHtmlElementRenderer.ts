@@ -77,19 +77,23 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
     }
 
     public set element(value: HTMLDivElement|null) {
+        const element = this.htmlElement = value ?? document.createElement("div");
+
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.element = value;
+            this._initializeFunction = () => this.setElementInternal(element);
             return;
         }
-
-        this.htmlElement = value ?? document.createElement("div");
         
+        this.setElementInternal(element);
+    }
+
+    private setElementInternal(htmlElement: HTMLDivElement): void {
         if (this._autoSize) {
-            this.htmlElement.style.width = "auto";
-            this.htmlElement.style.height = "auto";
+            htmlElement.style.width = "auto";
+            htmlElement.style.height = "auto";
         } else {
-            this.htmlElement.style.width = (this._elementWidth / this.viewScale) + "px";
-            this.htmlElement.style.height = (this._elementHeight / this.viewScale) + "px";
+            htmlElement.style.width = (this._elementWidth / this.viewScale) + "px";
+            htmlElement.style.height = (this._elementHeight / this.viewScale) + "px";
         }
         
         const css3DObject = this.initializeBaseComponents(true);
