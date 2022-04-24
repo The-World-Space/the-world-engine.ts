@@ -14,9 +14,15 @@ export class SpriteAtlasAnimator extends Component {
     private _playing = false;
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
+    private _pendingPlayAnimation: string|null = null;
     
     public awake(): void {
         this._spriteAtlasRenderer = this.gameObject.getComponent(CssSpriteAtlasRenderer);
+        
+        if (this._pendingPlayAnimation !== null) {
+            this.playAnimation(this._pendingPlayAnimation);
+            this._pendingPlayAnimation = null;
+        }
     }
     
     public update(): void {
@@ -35,7 +41,10 @@ export class SpriteAtlasAnimator extends Component {
     }
 
     public playAnimation(name: string): void {
-        if (this._spriteAtlasRenderer === null) return;
+        if (this._spriteAtlasRenderer === null) {
+            this._pendingPlayAnimation = name;
+            return;
+        }
 
         if (this._playingAnimationName === name) return;
 
@@ -47,8 +56,8 @@ export class SpriteAtlasAnimator extends Component {
     }
 
     public stopAnimation(): void {
-        if (this._spriteAtlasRenderer === null) return;
         this._playing = false;
+        this._pendingPlayAnimation = null;
     }
     
     public addAnimation(name: string, animationFrames: number[]): void {
