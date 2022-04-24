@@ -16,7 +16,7 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         this.htmlElement = document.createElement("div");
         this.htmlElement.style.backgroundColor = this._lineColor.toHexWithAlpha();
 
-        const css3DObject = this.initializeBaseComponents(true);
+        const css3DObject = this.initializeBaseComponents(false);
 
         const angle = Math.atan2(this._point2.y - this._point1.y, this._point2.x - this._point1.x);
         css3DObject.rotation.z = angle + Math.PI / 2;

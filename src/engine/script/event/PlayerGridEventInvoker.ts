@@ -10,18 +10,8 @@ export class PlayerGridEventInvoker extends Component {
     private readonly _collideSize: number = 0.5;
     private _playerGridMovementController: PlayerGridMovementController|null = null;
     private _gridEventMaps: GridEventMap[] = [];
-    private _onMoveToTargetBind: (x: number, y: number) => void = this.onMoveToTarget.bind(this);
 
-    public awake(): void {
-        this._playerGridMovementController = this.gameObject.getComponent(PlayerGridMovementController);
-        this._playerGridMovementController!.onMoveToTarget.addListener(this._onMoveToTargetBind);
-    }
-
-    public onDestroy(): void {
-        this._playerGridMovementController!.onMoveToTarget.removeListener(this._onMoveToTargetBind);
-    }
-
-    private onMoveToTarget(x: number, y: number): void {
+    private readonly onMoveToTarget = (x: number, y: number) => {
         const gridCenter = this._playerGridMovementController!.gridCenter;
         const gridCellWidth = this._playerGridMovementController!.gridCellWidth;
         const gridCellHeight = this._playerGridMovementController!.gridCellHeight;
@@ -30,6 +20,15 @@ export class PlayerGridEventInvoker extends Component {
         this._gridEventMaps.forEach((gridEventMap) => {
             gridEventMap.tryInvokeEvent(worldX, worldY, this._collideSize, this._collideSize, this.gameObject);
         });
+    };
+
+    public awake(): void {
+        this._playerGridMovementController = this.gameObject.getComponent(PlayerGridMovementController);
+        this._playerGridMovementController!.onMoveToTarget.addListener(this.onMoveToTarget);
+    }
+
+    public onDestroy(): void {
+        this._playerGridMovementController!.onMoveToTarget.removeListener(this.onMoveToTarget);
     }
 
     public addGridEventMap(gridEventMap: GridEventMap): void {

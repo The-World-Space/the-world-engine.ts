@@ -16,8 +16,8 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     ];
     private _width = 4;
     private _height = 4;
-    private _color = Color.fromHex("#39C5BB");
-    private _borderColor = Color.fromHex("#00FF00");
+    private readonly _color = Color.fromHex("#39C5BB");
+    private readonly _borderColor = Color.fromHex("#00FF00");
     private _borderWidth = 0;
 
     protected override renderInitialize(): void {
@@ -141,12 +141,12 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         this.points = points;
     }
 
-    public get color(): Color {
+    public get color(): ReadonlyColor {
         return this._color;
     }
 
-    public set color(value: Color) {
-        this._color = value;
+    public set color(value: ReadonlyColor) {
+        this._color.copy(value);
         if (this.htmlElement) {
             this._svgElement!.style.fill = value.toHexWithAlpha();
         }

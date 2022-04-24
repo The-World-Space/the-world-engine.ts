@@ -18,11 +18,25 @@ export class Camera extends Component {
     private _near = 0.1;
     private _far = 1000;
     private _priority = 0;
-    private _backgroudColor: Color = new Color(1, 1, 1, 0);
-    private readonly _onScreenResizeBind = this.onScreenResize.bind(this);
+    private readonly _backgroudColor: Color = new Color(1, 1, 1, 0);
+
+    private readonly onScreenResize = (width: number, height: number) => {
+        const aspectRatio = width / height;
+        if (this._camera instanceof ThreePerspectiveCamera) {
+            this._camera.aspect = aspectRatio;
+            this._camera.updateProjectionMatrix();
+        } else if (this._camera instanceof ThreeOrthographicCamera) {
+            const viewSizeScalar = this._viewSize;
+            this._camera.left = -viewSizeScalar * aspectRatio;
+            this._camera.right = viewSizeScalar * aspectRatio;
+            this._camera.top = viewSizeScalar;
+            this._camera.bottom = -viewSizeScalar;
+            this._camera.updateProjectionMatrix();
+        }
+    };
 
     public onEnable(): void {
-        this.engine.screen.onResize.addListener(this._onScreenResizeBind);
+        this.engine.screen.onResize.addListener(this.onScreenResize);
         this.createOrUpdateCamera();
     }
 
@@ -107,27 +121,12 @@ export class Camera extends Component {
     }
 
     public onDisable(): void {
-        this.engine.screen.onResize.removeListener(this._onScreenResizeBind);
+        this.engine.screen.onResize.removeListener(this.onScreenResize);
         if (this._camera) this.engine.cameraContainer.removeCamera(this);
     }
 
     public onDestroy(): void {
         this._camera?.removeFromParent();
-    }
-
-    private onScreenResize(width: number, height: number): void {
-        const aspectRatio = width / height;
-        if (this._camera instanceof ThreePerspectiveCamera) {
-            this._camera.aspect = aspectRatio;
-            this._camera.updateProjectionMatrix();
-        } else if (this._camera instanceof ThreeOrthographicCamera) {
-            const viewSizeScalar = this._viewSize;
-            this._camera.left = -viewSizeScalar * aspectRatio;
-            this._camera.right = viewSizeScalar * aspectRatio;
-            this._camera.top = viewSizeScalar;
-            this._camera.bottom = -viewSizeScalar;
-            this._camera.updateProjectionMatrix();
-        }
     }
 
     public get cameraType(): CameraType {

@@ -1,9 +1,9 @@
 import { Game } from "../engine/Game";
-import { TransformTestBootstrapper } from "./asset/TransformTestBootstrapper";
+import { TestBootstrapper } from "./asset/TestBootstrapper";
 
 function startTestGame(container: HTMLElement) {
     const game = new Game(container);
-    game.run(TransformTestBootstrapper);
+    game.run(TestBootstrapper);
     game.inputHandler.startHandleEvents();
 }
 
