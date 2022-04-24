@@ -4,19 +4,20 @@ import { BufferAttribute, Euler, InterleavedBufferAttribute, MathUtils, Matrix4,
 export class ObservableQuaternion {
     public readonly isQuaternion = true;
     
-    private _internal_x: number;
-    private _internal_y: number;
-    private _internal_z: number;
-    private _internal_w: number;
+    private _internalX: number;
+    private _internalY: number;
+    private _internalZ: number;
+    private _internalW: number;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _onChangeCallback: () => void;
     private _onBeforeChangeCallback: () => void;
     private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0, w = 1) {
-        this._internal_x = x;
-        this._internal_y = y;
-        this._internal_z = z;
-        this._internal_w = w;
+        this._internalX = x;
+        this._internalY = y;
+        this._internalZ = z;
+        this._internalW = w;
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onChangeCallback = (): void => { };
@@ -138,117 +139,125 @@ export class ObservableQuaternion {
         return dst;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _x(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_x;
+        return this._internalX;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _x(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internal_x === value) return;
-        this._internal_x = value;
+        if (this._internalX === value) return;
+        this._internalX = value;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _y(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_y;
+        return this._internalY;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _y(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internal_y === value) return;
-        this._internal_y = value;
+        if (this._internalY === value) return;
+        this._internalY = value;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _z(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_z;
+        return this._internalZ;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _z(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internal_z === value) return;
-        this._internal_z = value;
+        if (this._internalZ === value) return;
+        this._internalZ = value;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _w(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_w;
+        return this._internalW;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _w(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internal_w === value) return;
-        this._internal_w = value;
+        if (this._internalW === value) return;
+        this._internalW = value;
     }
 
     public get x(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_x;
+        return this._internalX;
     }
 
     public set x(value: number) {
-        if (this._internal_x === value) return;
+        if (this._internalX === value) return;
         this._onBeforeChangeCallback();
-        this._internal_x = value;
+        this._internalX = value;
         this._onChangeCallback();
     }
 
     public get y(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_y;
+        return this._internalY;
     }
 
     public set y(value: number) {
-        if (this._internal_y === value) return;
+        if (this._internalY === value) return;
         this._onBeforeChangeCallback();
-        this._internal_y = value;
+        this._internalY = value;
         this._onChangeCallback();
     }
 
     public get z(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_z;
+        return this._internalZ;
     }
 
     public set z(value: number) {
-        if (this._internal_z === value) return;
+        if (this._internalZ === value) return;
         this._onBeforeChangeCallback();
-        this._internal_z = value;
+        this._internalZ = value;
         this._onChangeCallback();
     }
 
     public get w(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_w;
+        return this._internalW;
     }
 
     public set w(value: number) {
-        if (this._internal_w === value) return;
+        if (this._internalW === value) return;
         this._onBeforeChangeCallback();
-        this._internal_w = value;
+        this._internalW = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, w: number): ObservableQuaternion {
-        if (this._internal_x === x && this._internal_y === y && this._internal_z === z && this._internal_w === w) return this;
+        if (this._internalX === x && this._internalY === y && this._internalZ === z && this._internalW === w) return this;
         this._onBeforeChangeCallback();
-        this._internal_x = x;
-        this._internal_y = y;
-        this._internal_z = z;
-        this._internal_w = w;
+        this._internalX = x;
+        this._internalY = y;
+        this._internalZ = z;
+        this._internalW = w;
         this._onChangeCallback();
         return this;
     }
 
     public clone(): Quaternion {
         this._onBeforeGetComponentCallback();
-        return new Quaternion(this._internal_x, this._internal_y, this._internal_z, this._internal_w);
+        return new Quaternion(this._internalX, this._internalY, this._internalZ, this._internalW);
     }
 
     public copy(quaternion: ObservableQuaternion): ObservableQuaternion {
-        if (this._internal_x === quaternion.x && this._internal_y === quaternion.y && this._internal_z === quaternion.z && this._internal_w === quaternion.w) return this;
+        if (this._internalX === quaternion.x && this._internalY === quaternion.y && this._internalZ === quaternion.z && this._internalW === quaternion.w) return this;
         this._onBeforeChangeCallback();
-        this._internal_x = quaternion.x;
-        this._internal_y = quaternion.y;
-        this._internal_z = quaternion.z;
-        this._internal_w = quaternion.w;
+        this._internalX = quaternion.x;
+        this._internalY = quaternion.y;
+        this._internalZ = quaternion.z;
+        this._internalW = quaternion.w;
         this._onChangeCallback();
         return this;
     }
@@ -278,45 +287,45 @@ export class ObservableQuaternion {
         this._onBeforeChangeCallback();
         switch (order) {
         case "XYZ":
-            this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
-            this._internal_y = c1 * s2 * c3 - s1 * c2 * s3;
-            this._internal_z = c1 * c2 * s3 + s1 * s2 * c3;
-            this._internal_w = c1 * c2 * c3 - s1 * s2 * s3;
+            this._internalX = s1 * c2 * c3 + c1 * s2 * s3;
+            this._internalY = c1 * s2 * c3 - s1 * c2 * s3;
+            this._internalZ = c1 * c2 * s3 + s1 * s2 * c3;
+            this._internalW = c1 * c2 * c3 - s1 * s2 * s3;
             break;
 
         case "YXZ":
-            this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
-            this._internal_y = c1 * s2 * c3 - s1 * c2 * s3;
-            this._internal_z = c1 * c2 * s3 - s1 * s2 * c3;
-            this._internal_w = c1 * c2 * c3 + s1 * s2 * s3;
+            this._internalX = s1 * c2 * c3 + c1 * s2 * s3;
+            this._internalY = c1 * s2 * c3 - s1 * c2 * s3;
+            this._internalZ = c1 * c2 * s3 - s1 * s2 * c3;
+            this._internalW = c1 * c2 * c3 + s1 * s2 * s3;
             break;
 
         case "ZXY":
-            this._internal_x = s1 * c2 * c3 - c1 * s2 * s3;
-            this._internal_y = c1 * s2 * c3 + s1 * c2 * s3;
-            this._internal_z = c1 * c2 * s3 + s1 * s2 * c3;
-            this._internal_w = c1 * c2 * c3 - s1 * s2 * s3;
+            this._internalX = s1 * c2 * c3 - c1 * s2 * s3;
+            this._internalY = c1 * s2 * c3 + s1 * c2 * s3;
+            this._internalZ = c1 * c2 * s3 + s1 * s2 * c3;
+            this._internalW = c1 * c2 * c3 - s1 * s2 * s3;
             break;
 
         case "ZYX":
-            this._internal_x = s1 * c2 * c3 - c1 * s2 * s3;
-            this._internal_y = c1 * s2 * c3 + s1 * c2 * s3;
-            this._internal_z = c1 * c2 * s3 - s1 * s2 * c3;
-            this._internal_w = c1 * c2 * c3 + s1 * s2 * s3;
+            this._internalX = s1 * c2 * c3 - c1 * s2 * s3;
+            this._internalY = c1 * s2 * c3 + s1 * c2 * s3;
+            this._internalZ = c1 * c2 * s3 - s1 * s2 * c3;
+            this._internalW = c1 * c2 * c3 + s1 * s2 * s3;
             break;
 
         case "YZX":
-            this._internal_x = s1 * c2 * c3 + c1 * s2 * s3;
-            this._internal_y = c1 * s2 * c3 + s1 * c2 * s3;
-            this._internal_z = c1 * c2 * s3 - s1 * s2 * c3;
-            this._internal_w = c1 * c2 * c3 - s1 * s2 * s3;
+            this._internalX = s1 * c2 * c3 + c1 * s2 * s3;
+            this._internalY = c1 * s2 * c3 + s1 * c2 * s3;
+            this._internalZ = c1 * c2 * s3 - s1 * s2 * c3;
+            this._internalW = c1 * c2 * c3 - s1 * s2 * s3;
             break;
 
         case "XZY":
-            this._internal_x = s1 * c2 * c3 - c1 * s2 * s3;
-            this._internal_y = c1 * s2 * c3 - s1 * c2 * s3;
-            this._internal_z = c1 * c2 * s3 + s1 * s2 * c3;
-            this._internal_w = c1 * c2 * c3 + s1 * s2 * s3;
+            this._internalX = s1 * c2 * c3 - c1 * s2 * s3;
+            this._internalY = c1 * s2 * c3 - s1 * c2 * s3;
+            this._internalZ = c1 * c2 * s3 + s1 * s2 * c3;
+            this._internalW = c1 * c2 * c3 + s1 * s2 * s3;
             break;
 
         default:
@@ -335,10 +344,10 @@ export class ObservableQuaternion {
 
         this._onBeforeChangeCallback();
 
-        this._internal_x = axis.x * s;
-        this._internal_y = axis.y * s;
-        this._internal_z = axis.z * s;
-        this._internal_w = Math.cos(halfAngle);
+        this._internalX = axis.x * s;
+        this._internalY = axis.y * s;
+        this._internalZ = axis.z * s;
+        this._internalW = Math.cos(halfAngle);
 
         this._onChangeCallback();
         return this;
@@ -359,31 +368,31 @@ export class ObservableQuaternion {
         if (trace > 0) {
             const s = 0.5 / Math.sqrt(trace + 1.0);
 
-            this._internal_w = 0.25 / s;
-            this._internal_x = (m32 - m23) * s;
-            this._internal_y = (m13 - m31) * s;
-            this._internal_z = (m21 - m12) * s;
+            this._internalW = 0.25 / s;
+            this._internalX = (m32 - m23) * s;
+            this._internalY = (m13 - m31) * s;
+            this._internalZ = (m21 - m12) * s;
         } else if (m11 > m22 && m11 > m33) {
             const s = 2.0 * Math.sqrt(1.0 + m11 - m22 - m33);
 
-            this._internal_w = (m32 - m23) / s;
-            this._internal_x = 0.25 * s;
-            this._internal_y = (m12 + m21) / s;
-            this._internal_z = (m13 + m31) / s;
+            this._internalW = (m32 - m23) / s;
+            this._internalX = 0.25 * s;
+            this._internalY = (m12 + m21) / s;
+            this._internalZ = (m13 + m31) / s;
         } else if (m22 > m33) {
             const s = 2.0 * Math.sqrt(1.0 + m22 - m11 - m33);
 
-            this._internal_w = (m13 - m31) / s;
-            this._internal_x = (m12 + m21) / s;
-            this._internal_y = 0.25 * s;
-            this._internal_z = (m23 + m32) / s;
+            this._internalW = (m13 - m31) / s;
+            this._internalX = (m12 + m21) / s;
+            this._internalY = 0.25 * s;
+            this._internalZ = (m23 + m32) / s;
         } else {
             const s = 2.0 * Math.sqrt(1.0 + m33 - m11 - m22);
 
-            this._internal_w = (m21 - m12) / s;
-            this._internal_x = (m13 + m31) / s;
-            this._internal_y = (m23 + m32) / s;
-            this._internal_z = 0.25 * s;
+            this._internalW = (m21 - m12) / s;
+            this._internalX = (m13 + m31) / s;
+            this._internalY = (m23 + m32) / s;
+            this._internalZ = 0.25 * s;
         }
 
         this._onChangeCallback();
@@ -399,22 +408,22 @@ export class ObservableQuaternion {
             // vFrom and vTo point in opposite directions
             r = 0;
             if (Math.abs(vFrom.x) > Math.abs(vFrom.z)) {
-                this._internal_x = - vFrom.y;
-                this._internal_y = vFrom.x;
-                this._internal_z = 0;
-                this._internal_w = r;
+                this._internalX = - vFrom.y;
+                this._internalY = vFrom.x;
+                this._internalZ = 0;
+                this._internalW = r;
             } else {
-                this._internal_x = 0;
-                this._internal_y = - vFrom.z;
-                this._internal_z = vFrom.y;
-                this._internal_w = r;
+                this._internalX = 0;
+                this._internalY = - vFrom.z;
+                this._internalZ = vFrom.y;
+                this._internalW = r;
             }
         } else {
             // crossVectors( vFrom, vTo ); // inlined to avoid cyclic dependency on Vector3
-            this._internal_x = vFrom.y * vTo.z - vFrom.z * vTo.y;
-            this._internal_y = vFrom.z * vTo.x - vFrom.x * vTo.z;
-            this._internal_z = vFrom.x * vTo.y - vFrom.y * vTo.x;
-            this._internal_w = r;
+            this._internalX = vFrom.y * vTo.z - vFrom.z * vTo.y;
+            this._internalY = vFrom.z * vTo.x - vFrom.x * vTo.z;
+            this._internalZ = vFrom.x * vTo.y - vFrom.y * vTo.x;
+            this._internalW = r;
         }
 
         return this.normalize();
@@ -444,9 +453,9 @@ export class ObservableQuaternion {
     public conjugate(): ObservableQuaternion {
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
-        this._internal_x *= -1;
-        this._internal_y *= -1;
-        this._internal_z *= -1;
+        this._internalX *= -1;
+        this._internalY *= -1;
+        this._internalZ *= -1;
 
         this._onChangeCallback();
         return this;
@@ -454,17 +463,17 @@ export class ObservableQuaternion {
 
     public dot(v: ObservableQuaternion): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_x * v._x + this._internal_y * v._y + this._internal_z * v._z + this._internal_w * v._w;
+        return this._internalX * v._x + this._internalY * v._y + this._internalZ * v._z + this._internalW * v._w;
     }
 
     public lengthSq(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_x * this._internal_x + this._internal_y * this._internal_y + this._internal_z * this._internal_z + this._internal_w * this._internal_w;
+        return this._internalX * this._internalX + this._internalY * this._internalY + this._internalZ * this._internalZ + this._internalW * this._internalW;
     }
 
     public length(): number {
         this._onBeforeGetComponentCallback();
-        return Math.sqrt(this._internal_x * this._internal_x + this._internal_y * this._internal_y + this._internal_z * this._internal_z + this._internal_w * this._internal_w);
+        return Math.sqrt(this._internalX * this._internalX + this._internalY * this._internalY + this._internalZ * this._internalZ + this._internalW * this._internalW);
     }
 
     public normalize(): ObservableQuaternion {
@@ -472,19 +481,19 @@ export class ObservableQuaternion {
 
         if ( l === 0 ) {
             this._onBeforeChangeCallback();
-            this._internal_x = 0;
-            this._internal_y = 0;
-            this._internal_z = 0;
-            this._internal_w = 1;
+            this._internalX = 0;
+            this._internalY = 0;
+            this._internalZ = 0;
+            this._internalW = 1;
         } else {
             l = 1 / l;
 
             this._onBeforeGetComponentCallback();
             this._onBeforeChangeCallback();
-            this._internal_x = this._internal_x * l;
-            this._internal_y = this._internal_y * l;
-            this._internal_z = this._internal_z * l;
-            this._internal_w = this._internal_w * l;
+            this._internalX = this._internalX * l;
+            this._internalY = this._internalY * l;
+            this._internalZ = this._internalZ * l;
+            this._internalW = this._internalW * l;
         }
 
         this._onChangeCallback();
@@ -512,10 +521,10 @@ export class ObservableQuaternion {
 
         this._onBeforeChangeCallback();
 
-        this._internal_x = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
-        this._internal_y = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
-        this._internal_z = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
-        this._internal_w = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
+        this._internalX = qax * qbw + qaw * qbx + qay * qbz - qaz * qby;
+        this._internalY = qay * qbw + qaw * qby + qaz * qbx - qax * qbz;
+        this._internalZ = qaz * qbw + qaw * qbz + qax * qby - qay * qbx;
+        this._internalW = qaw * qbw - qax * qbx - qay * qby - qaz * qbz;
 
         this._onChangeCallback();
         return this;
@@ -526,17 +535,17 @@ export class ObservableQuaternion {
         if (t === 1) return this.copy(qb);
 
         this._onBeforeGetComponentCallback();
-        const x = this._internal_x, y = this._internal_y, z = this._internal_z, w = this._internal_w;
+        const x = this._internalX, y = this._internalY, z = this._internalZ, w = this._internalW;
 
         // http://www.euclideanspace.com/maths/algebra/realNormedAlgebra/quaternions/slerp/
         let cosHalfTheta = w * qb._w + x * qb._x + y * qb._y + z * qb._z;
 
         this._onBeforeChangeCallback();
         if (cosHalfTheta < 0) {
-            this._internal_w = - qb._w;
-            this._internal_x = - qb._x;
-            this._internal_y = - qb._y;
-            this._internal_z = - qb._z;
+            this._internalW = - qb._w;
+            this._internalX = - qb._x;
+            this._internalY = - qb._y;
+            this._internalZ = - qb._z;
 
             cosHalfTheta = -cosHalfTheta;
         } else {
@@ -544,10 +553,10 @@ export class ObservableQuaternion {
         }
 
         if (cosHalfTheta >= 1.0) {
-            this._internal_w = w;
-            this._internal_x = x;
-            this._internal_y = y;
-            this._internal_z = z;
+            this._internalW = w;
+            this._internalX = x;
+            this._internalY = y;
+            this._internalZ = z;
             return this;
         }
 
@@ -555,10 +564,10 @@ export class ObservableQuaternion {
 
         if (sqrSinHalfTheta <= Number.EPSILON) {
             const s = 1 - t;
-            this._internal_w = s * w + t * this._internal_w;
-            this._internal_x = s * x + t * this._internal_x;
-            this._internal_y = s * y + t * this._internal_y;
-            this._internal_z = s * z + t * this._internal_z;
+            this._internalW = s * w + t * this._internalW;
+            this._internalX = s * x + t * this._internalX;
+            this._internalY = s * y + t * this._internalY;
+            this._internalZ = s * z + t * this._internalZ;
 
             this.normalize();
             //this._onChangeCallback(); this is unnecessary
@@ -570,10 +579,10 @@ export class ObservableQuaternion {
         const ratioA = Math.sin((1 - t) * halfTheta) / sinHalfTheta,
             ratioB = Math.sin(t * halfTheta) / sinHalfTheta;
 
-        this._internal_w = (w * ratioA + this._internal_w * ratioB);
-        this._internal_x = (x * ratioA + this._internal_x * ratioB);
-        this._internal_y = (y * ratioA + this._internal_y * ratioB);
-        this._internal_z = (z * ratioA + this._internal_z * ratioB);
+        this._internalW = (w * ratioA + this._internalW * ratioB);
+        this._internalX = (x * ratioA + this._internalX * ratioB);
+        this._internalY = (y * ratioA + this._internalY * ratioB);
+        this._internalZ = (z * ratioA + this._internalZ * ratioB);
 
         this._onChangeCallback();
         return this;
@@ -604,17 +613,17 @@ export class ObservableQuaternion {
 
     public equals(quaternion: ObservableQuaternion): boolean {
         this._onBeforeGetComponentCallback();
-        return (quaternion._x === this._internal_x) && (quaternion._y === this._internal_y) && (quaternion._z === this._internal_z) && (quaternion._w === this._internal_w);
+        return (quaternion._x === this._internalX) && (quaternion._y === this._internalY) && (quaternion._z === this._internalZ) && (quaternion._w === this._internalW);
     }
 
     public fromArray(array: number[]|ArrayLike<number>, offset = 0 ): ObservableQuaternion {
-        if (this._internal_x === array[offset] && this._internal_y === array[offset + 1] && this._internal_z === array[offset + 2] && this._internal_w === array[offset + 3]) return this;
+        if (this._internalX === array[offset] && this._internalY === array[offset + 1] && this._internalZ === array[offset + 2] && this._internalW === array[offset + 3]) return this;
         this._onBeforeChangeCallback();
         
-        this._internal_x = array[offset];
-        this._internal_y = array[offset + 1];
-        this._internal_z = array[offset + 2];
-        this._internal_w = array[offset + 3];
+        this._internalX = array[offset];
+        this._internalY = array[offset + 1];
+        this._internalZ = array[offset + 2];
+        this._internalW = array[offset + 3];
 
         this._onChangeCallback();
         return this;
@@ -622,21 +631,22 @@ export class ObservableQuaternion {
 
     public toArray(array: number[] = [], offset = 0): number[] {
         this._onBeforeGetComponentCallback();
-        array[offset] = this._internal_x;
-        array[offset + 1] = this._internal_y;
-        array[offset + 2] = this._internal_z;
-        array[offset + 3] = this._internal_w;
+        array[offset] = this._internalX;
+        array[offset + 1] = this._internalY;
+        array[offset + 2] = this._internalZ;
+        array[offset + 3] = this._internalW;
         return array;
     }
 
     public fromBufferAttribute(attribute: BufferAttribute|InterleavedBufferAttribute, index: number): ObservableQuaternion { //TODO: pr to three-types
-        this._internal_x = attribute.getX(index);
-        this._internal_y = attribute.getY(index);
-        this._internal_z = attribute.getZ(index);
-        this._internal_w = attribute.getW(index);
+        this._internalX = attribute.getX(index);
+        this._internalY = attribute.getY(index);
+        this._internalZ = attribute.getZ(index);
+        this._internalW = attribute.getW(index);
         return this;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _onChange(callback: () => void): ObservableQuaternion {
         this._onChangeCallback = callback;
         return this;

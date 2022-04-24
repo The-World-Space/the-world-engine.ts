@@ -43,7 +43,7 @@ export class ContactPoint2D {
         if (relativeVelocity) {
             (this._relativeVelocity as WritableVector2).copy(relativeVelocity);
         } else {
-            const aVelocity = ContactPoint2D.tempVec.Copy(fixtureA.GetBody().GetLinearVelocity());
+            const aVelocity = ContactPoint2D._tempVec.Copy(fixtureA.GetBody().GetLinearVelocity());
             const relativeVelocity = aVelocity.SelfSub(fixtureB.GetBody().GetLinearVelocity());
             this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
         }
@@ -55,7 +55,7 @@ export class ContactPoint2D {
         this._separation = separation;
     }
     
-    private static readonly tempVec = new Vec2();
+    private static readonly _tempVec = new Vec2();
 
     public get enabled(): boolean {
         return this._contact?.IsEnabled() ?? false;

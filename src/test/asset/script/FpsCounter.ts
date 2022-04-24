@@ -7,17 +7,17 @@ import { CssTextRenderer } from "../../../engine/script/render/CssTextRenderer";
 export class FpsCounter extends Component {
     public override readonly requiredComponents = [CssTextRenderer];
 
-    private textRenderer: CssTextRenderer|null = null;
+    private _textRenderer: CssTextRenderer|null = null;
 
     public awake(): void {
-        this.textRenderer = this.gameObject.getComponent(CssTextRenderer);
+        this._textRenderer = this.gameObject.getComponent(CssTextRenderer);
         this.startCorutine(this.showFps());
     }
 
     public *showFps(): CoroutineIterator {
         for (; ;) {
             const fps = 1 / this.engine.time.unscaledDeltaTime;
-            this.textRenderer!.text = `FPS: ${fps.toFixed(2)}`;
+            this._textRenderer!.text = `FPS: ${fps.toFixed(2)}`;
             yield new WaitForSeconds(1);
         }
     }

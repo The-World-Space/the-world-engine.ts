@@ -38,12 +38,12 @@ export class Collision2D {
 
         this._contactCount = contact.GetManifold().pointCount;
 
-        const aVelocity = Collision2D.tempVec.Copy(bodyA.GetLinearVelocity());
+        const aVelocity = Collision2D._tempVec.Copy(bodyA.GetLinearVelocity());
         const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
         this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
     }
     
-    private static readonly tempVec = new Vec2();
+    private static readonly _tempVec = new Vec2();
 
     public get collider(): Collider2D {
         return this._collider!;

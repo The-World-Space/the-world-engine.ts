@@ -50,12 +50,14 @@ export class SansFightRoomPrefab extends Prefab {
                         
                         tilemap3.onload = (): void => {
                             tilemap3.onload = null;
+                            /* eslint-disable @typescript-eslint/naming-convention */
                             const F = {i:0, a:57};
                             const G = {i:0, a:58};
                             const H = {i:0, a:48};
                             const I = {i:0, a:49};
                             const J = {i:0, a:52};
                             const K = {i:0, a:53};
+                            /* eslint-enable @typescript-eslint/naming-convention */
                             c.drawTileFromTwoDimensionalArray([
                                 [G, F, G, F, G, F, G, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, G, F, G, F, G, F, G, F],
                                 [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G],
@@ -78,12 +80,14 @@ export class SansFightRoomPrefab extends Prefab {
                         tilemap3.onload = (): void => {
                             tilemap3.onload = null;
 
+                            /* eslint-disable @typescript-eslint/naming-convention */
                             const W = {i:0, a:56};
                             const X = {i:0, a:50};
                             const Y = {i:0, a:59};
                             const Z = {i:0, a:40};
                             const A = {i:0, a:51};
                             const o = null;
+                            /* eslint-enable @typescript-eslint/naming-convention */
                             c.drawTileFromTwoDimensionalArray([
                                 [W, W, W, W, W, W, W, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, W, W, W, W, W, W, W, W],
                                 [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
@@ -93,8 +97,10 @@ export class SansFightRoomPrefab extends Prefab {
                                 [Y, Y, Y, Y, Y, Y, Y, Y, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, W, W, W, W, W, W, W, W]
                             ], -2, 2);
 
+                            /* eslint-disable @typescript-eslint/naming-convention */
                             const B = {i:0, a:44};
                             const C = {i:0, a:42};
+                            /* eslint-enable @typescript-eslint/naming-convention */
                             c.drawTileFromTwoDimensionalArray([
                                 [o, o, o, o, o, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C]
                             ], -2, 7);

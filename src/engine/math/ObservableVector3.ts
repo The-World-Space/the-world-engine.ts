@@ -259,11 +259,11 @@ export class ObservableVector3 {
         if (!(euler && euler.isEuler)) {
             console.error( "THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order." );
         }
-        return this.applyQuaternion(_quaternion.setFromEuler(euler));
+        return this.applyQuaternion(tempQuaternion.setFromEuler(euler));
     }
 
     public applyAxisAngle(axis: ObservableVector3, angle: number): ObservableVector3 {
-        return this.applyQuaternion(_quaternion.setFromAxisAngle(axis as any, angle));
+        return this.applyQuaternion(tempQuaternion.setFromAxisAngle(axis as any, angle));
     }
 
     public applyMatrix3(m: Matrix3): ObservableVector3 {
@@ -516,14 +516,14 @@ export class ObservableVector3 {
     }
 
     public projectOnPlane(planeNormal: ObservableVector3): ObservableVector3 {
-        _vector.copy( this ).projectOnVector( planeNormal );
-        return this.sub( _vector );
+        tempVector.copy( this ).projectOnVector( planeNormal );
+        return this.sub( tempVector );
     }
 
     public reflect(normal: ObservableVector3): ObservableVector3 {
         // reflect incident vector off plane orthogonal to normal
         // normal is assumed to have unit length
-        return this.sub(_vector.copy(normal).multiplyScalar(2 * this.dot(normal)));
+        return this.sub(tempVector.copy(normal).multiplyScalar(2 * this.dot(normal)));
     }
 
     public angleTo(v: ObservableVector3): number {
@@ -703,5 +703,5 @@ export class ObservableVector3 {
     }
 }
 
-const _vector = /*@__PURE__*/ new ObservableVector3();
-const _quaternion = /*@__PURE__*/ new Quaternion();
+const tempVector = /*@__PURE__*/ new ObservableVector3();
+const tempQuaternion = /*@__PURE__*/ new Quaternion();

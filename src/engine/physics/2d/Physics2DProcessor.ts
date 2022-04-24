@@ -57,7 +57,7 @@ export class Physics2DProcessor implements IPhysics2D {
         this._loader = physicSetting.loader;
         this._world = new this._loader.World(new this._loader.Vec2(0, -9.81));
 
-        const ContactListener = class extends this._loader.ContactListener implements PhysicsEventDispatcher {
+        const eventProcessContactListener = class extends this._loader.ContactListener implements PhysicsEventDispatcher {
             private readonly _physicsProcessor: Physics2DProcessor;
             private readonly _collision2DPool: Collision2DPool;
 
@@ -72,7 +72,8 @@ export class Physics2DProcessor implements IPhysics2D {
                 this._triggerEventPool = new this._physicsProcessor._loader!.TriggerEventPool();
                 this._collisionEventPool = new this._physicsProcessor._loader!.CollisionEventPool();
             }
-        
+
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             public override BeginContact(contact: B2Contact<B2Shape, B2Shape>): void {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
                 const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
@@ -102,6 +103,7 @@ export class Physics2DProcessor implements IPhysics2D {
                 }
             }
         
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             public override EndContact(contact: B2Contact<B2Shape, B2Shape>): void {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
                 const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
@@ -131,6 +133,7 @@ export class Physics2DProcessor implements IPhysics2D {
                 }
             }
         
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             public override PreSolve(contact: B2Contact<B2Shape, B2Shape>, _oldManifold: B2Manifold): void {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
                 const collider2dB = contact.GetFixtureB().GetUserData() as Collider2D;
@@ -168,7 +171,7 @@ export class Physics2DProcessor implements IPhysics2D {
                 this._collisionEventPool.invoke();
             }
         };
-        const contactListener = new ContactListener(this);
+        const contactListener = new eventProcessContactListener(this);
         this._physicsEventDispatcher = contactListener;
         this._world.SetContactListener(contactListener);
 

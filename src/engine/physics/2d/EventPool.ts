@@ -72,7 +72,7 @@ class CollisionEvent {
     public colliderA: Collider2D|null = null;
     public colliderB: Collider2D|null = null;
     public collision2D: Collision2D|null = null;
-    public CollisionPool: Collision2DPool|null = null;
+    public collisionPool: Collision2DPool|null = null;
 
     public invoke(): void {
         switch (this.type) {
@@ -92,7 +92,7 @@ class CollisionEvent {
             break;
         }
 
-        this.CollisionPool?.release(this.collision2D!);
+        this.collisionPool?.release(this.collision2D!);
     }
 }
 
@@ -117,7 +117,7 @@ export class CollisionEventPool {
         collisionEvent.colliderA = colliderA;
         collisionEvent.colliderB = colliderB;
         collisionEvent.collision2D = collision2D;
-        collisionEvent.CollisionPool = collision2DPool ?? null;
+        collisionEvent.collisionPool = collision2DPool ?? null;
         this._size += 1;
     }
 

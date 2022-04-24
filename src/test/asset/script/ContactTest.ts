@@ -16,14 +16,14 @@ export class ContactTest extends Component {
         this.engine.input.onKeyDown.removeListener(this.onKeyDown);
     }
 
-    private readonly contactBuffer: ContactPoint2D[] = [];
+    private readonly _contactBuffer: ContactPoint2D[] = [];
 
     private readonly onKeyDown = (event: KeyboardEvent): void => {
         if (event.key === "a") {
             if (!this._rigidbody) return;
-            const len = this._rigidbody.getContacts(this.contactBuffer);
+            const len = this._rigidbody.getContacts(this._contactBuffer);
             for (let i = 0; i < len; i++) {
-                const contact = this.contactBuffer[i];
+                const contact = this._contactBuffer[i];
                 console.log(`${contact.rigidbody?.gameObject.name} - ${contact.otherRigidbody?.gameObject.name}`, contact.normal.x, contact.normal.y);
             }
         }

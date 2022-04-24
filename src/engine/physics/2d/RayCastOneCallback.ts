@@ -42,6 +42,7 @@ export class RayCastOneCallback extends RayCastCallback {
         return this._hit;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public override ReportFixture(
         fixture: b2Fixture,
         point: Vec2,
@@ -75,6 +76,7 @@ export class RayCastOneCallback extends RayCastCallback {
         return fraction;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public override ReportParticle(
     // system: b2ParticleSystem,
     // index: number,
@@ -84,6 +86,8 @@ export class RayCastOneCallback extends RayCastCallback {
     ): number {
         return -1; // ignore particles
     }
+    
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public override ShouldQueryParticleSystem(
     // system: b2ParticleSystem
     ): boolean {

@@ -36,6 +36,7 @@ export class CSS3DObject extends Object3D {
 /** @internal */
 export class CSS3DSprite extends CSS3DObject {
     public isCSS3DSprite = true;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     private rotation2D: number;
 
     public constructor( element: HTMLElement ) {
@@ -50,11 +51,11 @@ export class CSS3DSprite extends CSS3DObject {
     }
 }
 
-const _position = new Vector3();
-const _quaternion = new Quaternion();
-const _scale = new Vector3();
-const _matrix = new Matrix4();
-const _matrix2 = new Matrix4();
+const tempPosition = new Vector3();
+const tempQuaternion = new Quaternion();
+const tempScale = new Vector3();
+const tempMatrix = new Matrix4();
+const tempMatrix2 = new Matrix4();
 
 /** @internal */
 export class CSS3DRenderer {
@@ -169,19 +170,19 @@ export class CSS3DRenderer {
 
             if (object.isCSS3DSprite) {
                 // http://swiftcoder.wordpress.com/2008/11/25/constructing-a-billboard-matrix/
-                _matrix.copy(camera.matrixWorldInverse);
-                _matrix.transpose();
-                if (object.rotation2D !== 0) _matrix.multiply(_matrix2.makeRotationZ(object.rotation2D));
-                object.matrixWorld.decompose(_position, _quaternion, _scale);
-                _matrix.setPosition(_position);
-                _matrix.scale(_scale);
+                tempMatrix.copy(camera.matrixWorldInverse);
+                tempMatrix.transpose();
+                if (object.rotation2D !== 0) tempMatrix.multiply(tempMatrix2.makeRotationZ(object.rotation2D));
+                object.matrixWorld.decompose(tempPosition, tempQuaternion, tempScale);
+                tempMatrix.setPosition(tempPosition);
+                tempMatrix.scale(tempScale);
 
-                _matrix.elements[3] = 0;
-                _matrix.elements[7] = 0;
-                _matrix.elements[11] = 0;
-                _matrix.elements[15] = 1;
+                tempMatrix.elements[3] = 0;
+                tempMatrix.elements[7] = 0;
+                tempMatrix.elements[11] = 0;
+                tempMatrix.elements[15] = 1;
 
-                style = this.getObjectCSSMatrix(_matrix);
+                style = this.getObjectCSSMatrix(tempMatrix);
             } else {
                 style = this.getObjectCSSMatrix(object.matrixWorld);
             }

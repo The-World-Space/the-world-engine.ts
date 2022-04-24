@@ -14,7 +14,7 @@ import { EngineGlobalObject } from "../EngineGlobalObject";
 export class Transform {
     // #region fields
 
-    private static readonly TransformObject3D = class extends Object3D {
+    private static readonly _transformObject3D = class extends Object3D {
         public override updateMatrix(): void {
             (this.userData as Transform).updateLocalMatrixFromOthers();
         }
@@ -72,7 +72,7 @@ export class Transform {
         this._engineGlobalObject = engineGlobalObject;
         this._onParentChanged = _onParentChanged;
 
-        this._object3D = new Transform.TransformObject3D();
+        this._object3D = new Transform._transformObject3D();
         this._object3D.matrixAutoUpdate = true;
         this._object3D.userData = this;
         engineGlobalObject.scene.unsafeGetThreeScene().add(this._object3D);
@@ -490,9 +490,9 @@ export class Transform {
     private tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal(): boolean {
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
 
-        const object3D_children = this._object3D.children;
-        for (let i = 0, l = object3D_children.length; i < l; i++) {
-            const child = object3D_children[i];
+        const object3dChildren = this._object3D.children;
+        for (let i = 0, l = object3dChildren.length; i < l; i++) {
+            const child = object3dChildren[i];
             if (child.userData instanceof Transform) {
                 child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
             }
@@ -513,9 +513,9 @@ export class Transform {
      * @param callback 
      */
     public foreachChild(callback: (transform: Transform) => void): void {
-        const object3D_children = this._object3D.children;
-        for (let i = 0, l = object3D_children.length; i < l; i++) {
-            const child = object3D_children[i];
+        const object3dChildren = this._object3D.children;
+        for (let i = 0, l = object3dChildren.length; i < l; i++) {
+            const child = object3dChildren[i];
             if (child.userData instanceof Transform) {
                 callback(child.userData);
             }
@@ -529,9 +529,9 @@ export class Transform {
      * @param callback if return false, stop iteration
      */
     public iterateChild(callback: (transform: Transform) => boolean): void {
-        const object3D_children = this._object3D.children;
-        for (let i = 0, l = object3D_children.length; i < l; i++) {
-            const child = object3D_children[i];
+        const object3dChildren = this._object3D.children;
+        for (let i = 0, l = object3dChildren.length; i < l; i++) {
+            const child = object3dChildren[i];
             if (child.userData instanceof Transform) {
                 if (!callback(child.userData)) break;
             }
@@ -854,8 +854,8 @@ export class Transform {
      */
     public isChildOf(parent: Transform): boolean {
         if (this === parent) return true;
-        const this_parent = this.parent;
-        if (this_parent) return this_parent.isChildOf(parent);
+        const thisParent = this.parent;
+        if (thisParent) return thisParent.isChildOf(parent);
         return false;
     }
 

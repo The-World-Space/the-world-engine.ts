@@ -5,23 +5,26 @@ import { clamp } from "three/src/math/MathUtils";
 export class ObservableEuler {
     public readonly isEuler = true;
     
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public static DefaultOrder = "XYZ";
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public static RotationOrders = [ "XYZ", "YZX", "ZXY", "XZY", "YXZ", "ZYX" ];
     
-    private _internal_x: number;
-    private _internal_y: number;
-    private _internal_z: number;
-    private _internal_order: string;
+    private _internalX: number;
+    private _internalY: number;
+    private _internalZ: number;
+    private _internalOrder: string;
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _onChangeCallback: () => void;
     private _onBeforeChangeCallback: () => void;
     private _onBeforeGetComponentCallback: () => void;
 
     public constructor(x = 0, y = 0, z = 0, order = ObservableEuler.DefaultOrder) {
-        this._internal_x = x;
-        this._internal_y = y;
-        this._internal_z = z;
-        this._internal_order = order;
+        this._internalX = x;
+        this._internalY = y;
+        this._internalZ = z;
+        this._internalOrder = order;
         
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onChangeCallback = (): void => { };
@@ -39,98 +42,106 @@ export class ObservableEuler {
         this._onBeforeChangeCallback = callback;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _x(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_x;
+        return this._internalX;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _x(value: number) { // this can't be private because it's used like public in three.js
-        this._internal_x = value;
+        this._internalX = value;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _y(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_y;
+        return this._internalY;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _y(value: number) { // this can't be private because it's used like public in three.js
-        this._internal_y = value;
+        this._internalY = value;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _z(): number { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_z;
+        return this._internalZ;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _z(value: number) { // this can't be private because it's used like public in three.js
-        this._internal_z = value;
+        this._internalZ = value;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public get _order(): string { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
-        return this._internal_order;
+        return this._internalOrder;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _order(value: string) { // this can't be private because it's used like public in three.js
-        this._internal_order = value;
+        this._internalOrder = value;
     }
 
     public get x(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_x;
+        return this._internalX;
     }
 
     public set x(value: number) {
-        if (this._internal_x === value) return;
+        if (this._internalX === value) return;
         this._onBeforeChangeCallback();
-        this._internal_x = value;
+        this._internalX = value;
         this._onChangeCallback();
     }
 
     public get y(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_y;
+        return this._internalY;
     }
 
     public set y(value: number) {
-        if (this._internal_y === value) return;
+        if (this._internalY === value) return;
         this._onBeforeChangeCallback();
-        this._internal_y = value;
+        this._internalY = value;
         this._onChangeCallback();
     }
 
     public get z(): number {
         this._onBeforeGetComponentCallback();
-        return this._internal_z;
+        return this._internalZ;
     }
 
     public set z(value: number) {
-        if (this._internal_z === value) return;
+        if (this._internalZ === value) return;
         this._onBeforeChangeCallback();
-        this._internal_z = value;
+        this._internalZ = value;
         this._onChangeCallback();
     }
 
     public get order(): string {
         this._onBeforeGetComponentCallback();
-        return this._internal_order;
+        return this._internalOrder;
     }
 
     public set order(value: string) {
-        if (this._internal_order === value) return;
+        if (this._internalOrder === value) return;
         this._onBeforeChangeCallback();
-        this._internal_order = value;
+        this._internalOrder = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, order?: string): ObservableEuler {
-        if (x === this._internal_x && y === this._internal_y && z === this._internal_z && order === this._internal_order) return this;
+        if (x === this._internalX && y === this._internalY && z === this._internalZ && order === this._internalOrder) return this;
         this._onBeforeChangeCallback();
-        this._internal_x = x;
-        this._internal_y = y;
-        this._internal_z = z;
+        this._internalX = x;
+        this._internalY = y;
+        this._internalZ = z;
         if (order) {
-            this._internal_order = order;
+            this._internalOrder = order;
         }
         this._onChangeCallback();
         return this;
@@ -138,16 +149,16 @@ export class ObservableEuler {
 
     public clone(): Euler {
         this._onBeforeGetComponentCallback();
-        return new Euler(this._internal_x, this._internal_y, this._internal_z, this._internal_order);
+        return new Euler(this._internalX, this._internalY, this._internalZ, this._internalOrder);
     }
 
     public copy(euler: ObservableEuler): ObservableEuler {
-        if (this._internal_x === euler._internal_x && this._internal_y === euler._internal_y && this._internal_z === euler._internal_z && this._internal_order === euler._internal_order) return this;
+        if (this._internalX === euler._internalX && this._internalY === euler._internalY && this._internalZ === euler._internalZ && this._internalOrder === euler._internalOrder) return this;
         this._onBeforeChangeCallback();
-        this._internal_x = euler._x;
-        this._internal_y = euler._y;
-        this._internal_z = euler._z;
-        this._internal_order = euler._order;
+        this._internalX = euler._x;
+        this._internalY = euler._y;
+        this._internalZ = euler._z;
+        this._internalOrder = euler._order;
         this._onChangeCallback();
         return this;
     }
@@ -161,88 +172,88 @@ export class ObservableEuler {
         const m21 = te[1], m22 = te[5], m23 = te[9];
         const m31 = te[2], m32 = te[6], m33 = te[10];
 
-        if (!order) order = this._internal_order;
+        if (!order) order = this._internalOrder;
 
         this._onBeforeChangeCallback();
         switch (order) {
         case "XYZ":
-            this._internal_y = Math.asin(clamp(m13, -1, 1));
+            this._internalY = Math.asin(clamp(m13, -1, 1));
             if (Math.abs(m13) < 0.9999999) {
-                this._internal_x = Math.atan2(-m23, m33);
-                this._internal_z = Math.atan2(-m12, m11);
+                this._internalX = Math.atan2(-m23, m33);
+                this._internalZ = Math.atan2(-m12, m11);
             } else {
-                this._internal_x = Math.atan2(m32, m22);
-                this._internal_z = 0;
+                this._internalX = Math.atan2(m32, m22);
+                this._internalZ = 0;
             }
             break;
 
         case "YXZ":
-            this._internal_x = Math.asin(-clamp(m23, -1, 1));
+            this._internalX = Math.asin(-clamp(m23, -1, 1));
             if ( Math.abs(m23) < 0.9999999) {
-                this._internal_y = Math.atan2(m13, m33);
-                this._internal_z = Math.atan2(m21, m22);
+                this._internalY = Math.atan2(m13, m33);
+                this._internalZ = Math.atan2(m21, m22);
             } else {
-                this._internal_y = Math.atan2(-m31, m11);
-                this._internal_z = 0;
+                this._internalY = Math.atan2(-m31, m11);
+                this._internalZ = 0;
             }
             break;
 
         case "ZXY":
-            this._internal_x = Math.asin(clamp(m32, -1, 1));
+            this._internalX = Math.asin(clamp(m32, -1, 1));
             if (Math.abs(m32) < 0.9999999) {
-                this._internal_y = Math.atan2(-m31, m33);
-                this._internal_z = Math.atan2(-m12, m22);
+                this._internalY = Math.atan2(-m31, m33);
+                this._internalZ = Math.atan2(-m12, m22);
             } else {
-                this._internal_y = 0;
-                this._internal_z = Math.atan2(m21, m11);
+                this._internalY = 0;
+                this._internalZ = Math.atan2(m21, m11);
             }
             break;
 
         case "ZYX":
-            this._internal_y = Math.asin(-clamp(m31, -1, 1));
+            this._internalY = Math.asin(-clamp(m31, -1, 1));
             if ( Math.abs(m31) < 0.9999999) {
-                this._internal_x = Math.atan2(m32, m33);
-                this._internal_z = Math.atan2(m21, m11);
+                this._internalX = Math.atan2(m32, m33);
+                this._internalZ = Math.atan2(m21, m11);
             } else {
-                this._internal_x = 0;
-                this._internal_z = Math.atan2(-m12, m22);
+                this._internalX = 0;
+                this._internalZ = Math.atan2(-m12, m22);
             }
             break;
 
         case "YZX":
-            this._internal_z = Math.asin(clamp(m21, -1, 1));
+            this._internalZ = Math.asin(clamp(m21, -1, 1));
             if (Math.abs(m21) < 0.9999999) {
-                this._internal_x = Math.atan2(-m23, m22);
-                this._internal_y = Math.atan2(-m31, m11);
+                this._internalX = Math.atan2(-m23, m22);
+                this._internalY = Math.atan2(-m31, m11);
             } else {
-                this._internal_x = 0;
-                this._internal_y = Math.atan2(m13, m33);
+                this._internalX = 0;
+                this._internalY = Math.atan2(m13, m33);
             }
             break;
 
         case "XZY":
-            this._internal_z = Math.asin(-clamp(m12, -1, 1));
+            this._internalZ = Math.asin(-clamp(m12, -1, 1));
             if (Math.abs(m12) < 0.9999999) {
-                this._internal_x = Math.atan2(m32, m22);
-                this._internal_y = Math.atan2(m13, m11);
+                this._internalX = Math.atan2(m32, m22);
+                this._internalY = Math.atan2(m13, m11);
             } else {
-                this._internal_x = Math.atan2(-m23, m33);
-                this._internal_y = 0;
+                this._internalX = Math.atan2(-m23, m33);
+                this._internalY = 0;
             }
             break;
 
         default:
             console.warn("THREE.Euler: .setFromRotationMatrix() encountered an unknown order: " + order);
         }
-        this._internal_order = order;
+        this._internalOrder = order;
 
         if (update === true) this._onChangeCallback();
         return this;
     }
 
     public setFromQuaternion(q: Quaternion, order?: string, update?: boolean): ObservableEuler {
-        _matrix.makeRotationFromQuaternion(q);
-        return this.setFromRotationMatrix(_matrix, order, update);
+        tempMatrix.makeRotationFromQuaternion(q);
+        return this.setFromRotationMatrix(tempMatrix, order, update);
     }
 
     public setFromVector3(v: Vector3, order?: string): ObservableEuler {
@@ -251,22 +262,22 @@ export class ObservableEuler {
 
     public reorder(newOrder: string): ObservableEuler {
         // WARNING: this discards revolution information -bhouston
-        _quaternion.setFromEuler(this);
-        return this.setFromQuaternion(_quaternion, newOrder);
+        tempQuaternion.setFromEuler(this);
+        return this.setFromQuaternion(tempQuaternion, newOrder);
     }
 
     public equals(euler: ObservableEuler): boolean {
         this._onBeforeGetComponentCallback();
-        return (euler._x === this._internal_x) && (euler._y === this._internal_y) && (euler._z === this._internal_z) && (euler._order === this._internal_order);
+        return (euler._x === this._internalX) && (euler._y === this._internalY) && (euler._z === this._internalZ) && (euler._order === this._internalOrder);
     }
 
     public fromArray(array: any[]): ObservableEuler {
-        if(this._internal_x === array[0] && this._internal_y === array[1] && this._internal_z === array[2] && this._internal_order === array[3]) return this;
+        if(this._internalX === array[0] && this._internalY === array[1] && this._internalZ === array[2] && this._internalOrder === array[3]) return this;
         this._onBeforeChangeCallback();
-        this._internal_x = array[0];
-        this._internal_y = array[1];
-        this._internal_z = array[2];
-        if (array[3] !== undefined) this._internal_order = array[3];
+        this._internalX = array[0];
+        this._internalY = array[1];
+        this._internalZ = array[2];
+        if (array[3] !== undefined) this._internalOrder = array[3];
 
         this._onChangeCallback();
         return this;
@@ -274,18 +285,19 @@ export class ObservableEuler {
 
     public toArray(array: any[] = [], offset = 0): any[] {
         this._onBeforeGetComponentCallback();
-        array[offset] = this._internal_x;
-        array[offset + 1] = this._internal_y;
-        array[offset + 2] = this._internal_z;
-        array[offset + 3] = this._internal_order;
+        array[offset] = this._internalX;
+        array[offset + 1] = this._internalY;
+        array[offset + 2] = this._internalZ;
+        array[offset + 3] = this._internalOrder;
         return array;
     }
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _onChange(callback: () => void): ObservableEuler {
         this._onChangeCallback = callback;
         return this;
     }
 }
 
-const _matrix = /*@__PURE__*/ new Matrix4();
-const _quaternion = /*@__PURE__*/ new Quaternion();
+const tempMatrix = /*@__PURE__*/ new Matrix4();
+const tempQuaternion = /*@__PURE__*/ new Quaternion();

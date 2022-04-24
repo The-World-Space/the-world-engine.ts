@@ -34,9 +34,9 @@ export class Scene {
      * @param callback 
      */
     public foreachChild(callback: (transform: Transform) => void): void {
-        const object3D_children = this._threeScene.children;
-        for (let i = 0, l = object3D_children.length; i < l; i++) {
-            const child = object3D_children[i];
+        const object3DChildren = this._threeScene.children;
+        for (let i = 0, l = object3DChildren.length; i < l; i++) {
+            const child = object3DChildren[i];
             if (child.userData instanceof Transform) {
                 callback(child.userData);
             }
@@ -50,9 +50,9 @@ export class Scene {
      * @param callback if return false, stop iteration
      */
     public iterateChild(callback: (transform: Transform) => boolean): void {
-        const object3D_children = this._threeScene.children;
-        for (let i = 0, l = object3D_children.length; i < l; i++) {
-            const child = object3D_children[i];
+        const object3DChildren = this._threeScene.children;
+        for (let i = 0, l = object3DChildren.length; i < l; i++) {
+            const child = object3DChildren[i];
             if (child.userData instanceof Transform) {
                 if (!callback(child.userData)) break;
             }

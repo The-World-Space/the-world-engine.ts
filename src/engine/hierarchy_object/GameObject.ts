@@ -17,6 +17,7 @@ export class GameObject {
     private readonly _transform: Transform;
     
     /** @internal */
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _initialized: boolean;
     /** @internal */
     public readonly components: Component[];

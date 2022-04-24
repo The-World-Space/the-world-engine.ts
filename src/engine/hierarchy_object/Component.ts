@@ -34,8 +34,10 @@ export abstract class Component {
     private readonly _runningCoroutines: Coroutine[] = [];
     
     /** @internal */
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public readonly _engine_internal_componentEventContainer: ComponentEventContainer;
     /** @internal */
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public _engine_internal_destroyed = false;
 
     public constructor(gameObject: GameObject) {
@@ -46,6 +48,7 @@ export abstract class Component {
     }
 
     /** @internal */
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     public engine_internal_constructAfterProcess(): void {
         Object.defineProperties(this, {
             disallowMultipleComponent: {

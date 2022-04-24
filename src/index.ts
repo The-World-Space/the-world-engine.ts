@@ -73,7 +73,7 @@ export type { IReadonlyGameState } from "./engine/GameState";
 export { GameStateKind } from "./engine/GameState";
 export { Instantiater } from "./engine/Instantiater";
 
-export { GlobalConfig } from "./GlobalConfig";
+export { GlobalConfig as GlobalConfig } from "./GlobalConfig";
 
 
 //engine_internal_script

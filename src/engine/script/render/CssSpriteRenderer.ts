@@ -50,11 +50,11 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
 
         image.style.width = (this._imageWidth / this.viewScale) + "px";
         image.style.height = (this._imageHeight / this.viewScale) + "px";
-        const x_scalar = this._imageFlipX ? -1 : 1;
-        const y_scalar = this._imageFlipY ? -1 : 1;
+        const xScalar = this._imageFlipX ? -1 : 1;
+        const yScalar = this._imageFlipY ? -1 : 1;
         this.css3DObject.scale.set(
-            value * x_scalar,
-            value * y_scalar,
+            value * xScalar,
+            value * yScalar,
             value
         );
 

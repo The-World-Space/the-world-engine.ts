@@ -89,11 +89,11 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             
             //image.style.width = (this._croppedImageWidth / value) + "px";
             //image.style.height = (this._croppedImageHeight / value) + "px";
-            const x_scalar = this._imageFlipX ? -1 : 1;
-            const y_scalar = this._imageFlipY ? -1 : 1;
+            const xScalar = this._imageFlipX ? -1 : 1;
+            const yScalar = this._imageFlipY ? -1 : 1;
             this.css3DObject.scale.set(
-                this._imageWidth / this._croppedImageWidth * value * x_scalar,
-                this._imageHeight / this._croppedImageHeight * value * y_scalar,
+                this._imageWidth / this._croppedImageWidth * value * xScalar,
+                this._imageHeight / this._croppedImageHeight * value * yScalar,
                 1
             );
 
@@ -107,11 +107,11 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
             
             image.style.width = (this._imageWidth * this._columnCount / value) + "px";
             image.style.height = (this._imageHeight * this._rowCount / value) + "px";
-            const x_scalar = this._imageFlipX ? -1 : 1;
-            const y_scalar = this._imageFlipY ? -1 : 1;
+            const xScalar = this._imageFlipX ? -1 : 1;
+            const yScalar = this._imageFlipY ? -1 : 1;
             this.css3DObject.scale.set(
-                value * x_scalar,
-                value * y_scalar,
+                value * xScalar,
+                value * yScalar,
                 value
             );
 

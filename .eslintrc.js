@@ -55,6 +55,51 @@ module.exports = {
                 }
             }
         ],
+        "@typescript-eslint/naming-convention": [
+            "error",
+            {
+                "selector": "variableLike",
+                "format": ["camelCase"]
+            },
+            {
+                "selector": "memberLike",
+                "modifiers": ["private"],
+                "format": ["camelCase"]
+            },
+            {
+                "selector": "memberLike",
+                "modifiers": ["public"],
+                "format": ["camelCase"]
+            },
+            {
+                "selector": "property",
+                "modifiers": ["private"],
+                "format": ["camelCase"],
+                "leadingUnderscore": "require"
+            },
+            {
+                "selector": "property",
+                "modifiers": ["public"],
+                "format": ["camelCase"]
+            },
+            {
+                "selector": "parameter",
+                "format": ["camelCase"],
+                "leadingUnderscore": "allow"
+            },
+            {
+                "selector": "class",
+                "format": ["PascalCase"]
+            },
+            {
+                "selector": "interface",
+                "format": ["PascalCase"]
+            },
+            {
+                "selector": "enum",
+                "format": ["PascalCase"]
+            }
+        ],
         "no-debugger": "warn",
         "indent": [
             "error",

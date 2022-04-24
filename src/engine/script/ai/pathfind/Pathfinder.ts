@@ -13,14 +13,14 @@ export class Pathfinder {
     private static readonly _checkCollisionScale: number = 8;
     private static readonly _iterationLimit: number = 1000;
 
-    private readonly collideMaps: IGridCollidable[];
+    private readonly _collideMaps: IGridCollidable[];
 
     /**
      * 
      * @param collideMaps collide maps to use for collision detection
      */
     public constructor(collideMaps?: IGridCollidable[]) {
-        this.collideMaps = collideMaps?.slice() ?? [];
+        this._collideMaps = collideMaps?.slice() ?? [];
     }
 
     /**
@@ -28,7 +28,7 @@ export class Pathfinder {
      * @param collideMap 
      */
     public addCollideMap(collideMap: IGridCollidable): void {
-        this.collideMaps.push(collideMap);
+        this._collideMaps.push(collideMap);
     }
 
     /**
@@ -129,7 +129,7 @@ export class Pathfinder {
     }
 
     private checkCollision(x: number, y: number): boolean {
-        const collideMaps = this.collideMaps;
+        const collideMaps = this._collideMaps;
         for (let i = 0; i < collideMaps.length; i++) {
             const collideMap = collideMaps[i];
             if (collideMap.checkCollision(
