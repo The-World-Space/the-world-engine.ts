@@ -3,6 +3,10 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { GridEventMap } from "./GridEventMap";
 import { PlayerGridMovementController } from "../controller/PlayerGridMovementController";
 
+/**
+ * for player interact with GridEventMap you should add this component to your player
+ * and use PlayerGridEventInvoker.addGridEventMap to register your grid event map
+ */
 export class PlayerGridEventInvoker extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
@@ -31,6 +35,10 @@ export class PlayerGridEventInvoker extends Component {
         this._playerGridMovementController!.onMoveToTarget.removeListener(this.onMoveToTarget);
     }
 
+    /**
+     * add GridEventMap to this player, you should add GridEventMap for interaction
+     * @param gridEventMap grid event map
+     */
     public addGridEventMap(gridEventMap: GridEventMap): void {
         this._gridEventMaps.push(gridEventMap);
     }

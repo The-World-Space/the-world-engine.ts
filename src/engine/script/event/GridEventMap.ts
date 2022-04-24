@@ -5,6 +5,14 @@ import { IGridCoordinatable } from "../helper/IGridCoordinatable";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 
+/**
+ * event map for grid system
+ * 
+ * coordinate system is same as world coordinate system (positive x is right, positive y is up)
+ * 
+ * important: grid position data is stored as string ("x_y" format)
+ * so this component might not work properly if this component's gameObject.position is not integer
+ */
 export class GridEventMap extends Component implements IGridCoordinatable {
     private readonly _eventMap: Map<`${number}_${number}`, (gridX: number, gridY: number, target: GameObject) => void> = new Map();
     private _gridCellWidth = 1;
@@ -34,6 +42,13 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         }
     }
 
+    /**
+     * add event from two dimensional array. array left bottom is (0, 0) in grid coordinate system
+     * @param array array that contains event callback
+     * @param xOffset array x offset, if you want to add event from array[1][3] to (2, 3) you should set xOffset = 1
+     * @param yOffset array y offset, if you want to add event from array[3][1] to (3, 2) you should set yOffset = 1
+     * @returns 
+     */
     public addEventsFromTwoDimensionalArray(
         array: (((gridX: number, gridY: number, target: GameObject) => void)|null)[][],
         xOffset: number,
@@ -79,6 +94,15 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         this._eventVisualizeImages.push(gameObjectRef.ref!);
     }
 
+    /**
+     * invoke event callback if there is event at grid position
+     * @param x grid x position
+     * @param y grid y position
+     * @param width aabb collision width
+     * @param height aabb collision height
+     * @param target target game object
+     * @returns true if there is event at grid position
+     */
     public tryInvokeEvent(x: number, y: number, width: number, height: number, target: GameObject): boolean {
         const worldPosition = this.transform.position;
         x -= worldPosition.x;
@@ -89,36 +113,56 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         const top = Math.floor(y / this.gridCellHeight);
         const bottom = Math.floor((y + height) / this.gridCellHeight);
         
+        let invoked = false;
         for (let y = top; y <= bottom; y++) {
             for (let x = left; x <= right; x++) {
                 if (this._eventMap.has(`${x}_${y}`)) {
                     this._eventMap.get(`${x}_${y}`)!(x, y, target);
+                    invoked = true;
                 }
             }
         }
-        return false;
+        return invoked;
     }
 
+    /**
+     * grid cell width, if this value is not integer, might not work properly
+     */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
+    /**
+     * grid cell width, if this value is not integer, might not work properly
+     */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
+    /**
+     * grid cell height, if this value is not integer, might not work properly
+     */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
+    /**
+     * grid cell height, if this value is not integer, might not work properly
+     */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
 
+    /**
+     * if this value is true, grid event map will visualized as debug image
+     */
     public get showEvents(): boolean {
         return this._showCollider;
     }
 
+    /**
+     * if this value is true, grid event map will visualized as debug image
+     */
     public set showEvents(value: boolean) {
         this._showCollider = value;
         if (this._showCollider) {
@@ -128,16 +172,25 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         }
     }
 
+    /**
+     * grid coordinate center position
+     */
     public get gridCenter(): Vector2 {
         const worldPosition = this.transform.position;
         return new Vector2(worldPosition.x, worldPosition.y);
     }
 
+    /**
+     * grid coordinate center position x
+     */
     public get gridCenterX(): number {
         const worldPosition = this.transform.position;
         return worldPosition.x;
     }
 
+    /**
+     * grid coordinate center position y
+     */
     public get gridCenterY(): number {
         const worldPosition = this.transform.position;
         return worldPosition.y;

@@ -4,6 +4,16 @@ import { CssCollideTilemapRenderer } from "./CssCollideTilemapRenderer";
 import { TileAtlasItem } from "../render/CssTilemapRenderer";
 import { IGridCollidable } from "./IGridCollidable";
 
+/**
+ * collision map with tilemap for grid system
+ * 
+ * this component will auto generate collision map from tilemap
+ * 
+ * coordinate system is same as world coordinate system (positive x is right, positive y is up)
+ * 
+ * important: grid position data is stored as string ("x_y" format)
+ * so this component might not work properly if this component's gameObject.position is not integer
+ */
 export class CssCollideTilemapChunkRenderer extends Component implements IGridCollidable {
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssCollideTilemapRenderer> = new Map();
     //key is chunk position in string format "x_y"
@@ -96,6 +106,14 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         return cssTilemapRenderer;
     }
 
+    /**
+     * draw tile at position. collide info will be automatically added
+     * @param x x position in grid
+     * @param y y position in grid
+     * @param imageIndex index of image in imageSources
+     * @param atlasIndex index of atlas in imageSources
+     * @returns 
+     */
     public drawTile(x: number, y: number, imageIndex: number, atlasIndex?: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -114,6 +132,13 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         cssTilemapRenderer!.drawTile(drawPosition.x + drawOffsetX, this._chunkSize - drawPosition.y - 1 + drawOffsetY, imageIndex, atlasIndex);
     }
 
+    /**
+     * draw tile from two dimensional array. array left bottom is (0, 0) in grid coordinate system
+     * @param array array of image index. { i: 0, a: 1 } means imageSources[0] in atlas[1]
+     * @param xOffset array x offset, if you want to add event from array[1][3] to (2, 3) you should set xOffset = 1
+     * @param yOffset array y offset, if you want to add event from array[3][1] to (3, 2) you should set yOffset = 1
+     * @returns 
+     */
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -130,6 +155,12 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         }
     }
 
+    /**
+     * clear tile at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @returns 
+     */
     public clearTile(x: number, y: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -147,6 +178,12 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         cssTilemapRenderer!.clearTile(drawPosition.x + drawOffsetX, this._chunkSize - drawPosition.y - 1 + drawOffsetY);   
     }
 
+    /**
+     * add collider at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @returns 
+     */
     public addCollider(x: number, y: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -163,6 +200,14 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         cssTilemapRenderer!.addCollider(drawPosition.x + drawOffsetX, this._chunkSize - drawPosition.y - 1 + drawOffsetY);
     }
 
+    /**
+     * query that collides at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @param width collison width
+     * @param height collision height
+     * @returns if collides, return true. otherwise, return false
+     */
     public checkCollision(x: number, y: number, width: number, height: number): boolean {
         if (!this._collideEnabled) return false;
         const worldPosition = this.transform.position;
@@ -176,10 +221,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         return cssTilemapRenderer!.checkCollision(x, y, width, height);
     }
 
+    /**
+     * chunk size. default is 16
+     */
     public get chunkSize(): number {
         return this._chunkSize;
     }
 
+    /**
+     * chunk size. default is 16
+     */
     public set chunkSize(value: number) {
         this._chunkSize = value;
         this.updateTilemapPosition();
@@ -189,6 +240,9 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         });
     }
 
+    /**
+     * image sources for drawing
+     */
     public set imageSources(value: TileAtlasItem[]) {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -200,10 +254,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         this._imageSources = value;
     }
 
+    /**
+     * if this value is true, this object will be rendered with css style pointer-events: "auto" it means that this object can be clicked.
+     */
     public get pointerEvents(): boolean {
         return this._pointerEvents;
     }
 
+    /**
+     * if this value is true, this object will be rendered with css style pointer-events: "auto" it means that this object can be clicked.
+     */
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
         this._cssTilemapRendererMap.forEach((renderer, _key) => {
@@ -211,10 +271,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         });
     }
 
+    /**
+     * grid cell width. default is 1
+     */
     public get gridCellWidth(): number {
         return this._tileWidth;
     }
 
+    /**
+     * grid cell width. default is 1
+     */
     public set gridCellWidth(value: number) {
         if (this._tileWidth === value) return;
         this._tileWidth = value;
@@ -224,10 +290,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         });
     }
 
+    /**
+     * grid cell height. default is 1
+     */
     public get gridCellHeight(): number {
         return this._tileHeight;
     }
 
+    /**
+     * grid cell height. default is 1
+     */
     public set gridCellHeight(value: number) {
         if (this._tileHeight === value) return;
         this._tileHeight = value;
@@ -237,10 +309,18 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         });
     }
 
+    /**
+     * tile resolution x. default is 16.
+     * higher value means higher quality of rendering.
+     */
     public get tileResolutionX(): number {
         return this._tileResolutionX;
     }
 
+    /**
+     * tile resolution x. default is 16.
+     * higher value means higher quality of rendering.
+     */
     public set tileResolutionX(value: number) {
         if (this._tileResolutionX === value) return;
         this._tileResolutionX = value;
@@ -249,10 +329,18 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         });
     }
 
+    /**
+     * tile resolution y. default is 16.
+     * higher value means higher quality of rendering.
+     */
     public get tileResolutionY(): number {
         return this._tileResolutionY;
     }
 
+    /**
+     * tile resolution y. default is 16.
+     * higher value means higher quality of rendering.
+     */
     public set tileResolutionY(value: number) {
         if (this._tileResolutionY === value) return;
         this._tileResolutionY = value;
@@ -261,6 +349,9 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         });
     }
 
+    /**
+     * grid coordinate center position
+     */
     public get gridCenter(): Vector2 {
         const worldPosition = this.transform.position;
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
@@ -268,12 +359,18 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         return new Vector2(worldPosition.x + offsetX, worldPosition.y + offsetY);
     }
 
+    /**
+     * grid coordinate center position x
+     */
     public get gridCenterX(): number {
         const worldPosition = this.transform.position;
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
         return worldPosition.x + offsetX;
     }
 
+    /**
+     * grid coordinate center position y
+     */
     public get gridCenterY(): number {
         const worldPosition = this.transform.position;
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
