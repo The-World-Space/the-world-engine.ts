@@ -92,6 +92,7 @@ export { GridEventMap } from "./engine/script/event/GridEventMap";
 export { PlayerGridEventInvoker } from "./engine/script/event/PlayerGridEventInvoker";
 
 //helper
+export { AsyncImageLoader } from "./engine/script/helper/AsyncImageLoader";
 export { Direction, Directionable } from "./engine/script/helper/Directionable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
