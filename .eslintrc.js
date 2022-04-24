@@ -10,7 +10,8 @@ module.exports = {
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
         "ecmaVersion": 13,
-        "sourceType": "module"
+        "sourceType": "module",
+        "project": "./tsconfig.json"
     },
     "plugins": [
         "@typescript-eslint"
@@ -29,6 +30,28 @@ module.exports = {
                     "methods": "explicit",
                     "properties": "explicit",
                     "parameterProperties": "explicit"
+                }
+            }
+        ],
+        "@typescript-eslint/prefer-readonly": [ "error" ],
+        "@typescript-eslint/explicit-function-return-type": [ "error" ],
+        "@typescript-eslint/array-type": [ "error" ],
+        "@typescript-eslint/brace-style": [
+            "error",
+            "1tbs"
+        ],
+        "@typescript-eslint/prefer-includes": [ "error" ],
+        "@typescript-eslint/space-before-blocks": [ "error" ],
+        "@typescript-eslint/type-annotation-spacing": [
+            "error",
+            {
+                "before": false,
+                "after": true,
+                "overrides": {
+                    "arrow": {
+                        "before": true,
+                        "after": true
+                    }
                 }
             }
         ],

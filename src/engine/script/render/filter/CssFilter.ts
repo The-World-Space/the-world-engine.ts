@@ -1,7 +1,7 @@
 import { CssDropShadow, ICssDropShadow } from "./CssDropShadow";
 
 export class CssFilter {
-    private _onChange: (() => void)|null;
+    private readonly _onChange: (() => void)|null;
     
     private _blur = 0;
     private _brightness = 1;

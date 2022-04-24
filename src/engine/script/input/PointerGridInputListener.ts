@@ -43,11 +43,11 @@ export class PointerGridInputListener extends Component {
     private _inputWidth = 64;
     private _inputHeight = 64;
     private _zindex = 0;
-    private _onPointerDownEvent = new EventContainer<(event: PointerGridEvent) => void>();
-    private _onPointerUpEvent = new EventContainer<(event: PointerGridEvent) => void>();
-    private _onPointerEnterEvent = new EventContainer<(event: PointerGridEvent) => void>();
-    private _onPointerLeaveEvent = new EventContainer<(event: PointerGridEvent) => void>();
-    private _onPointerMoveEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private readonly _onPointerDownEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private readonly _onPointerUpEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private readonly _onPointerEnterEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private readonly _onPointerLeaveEvent = new EventContainer<(event: PointerGridEvent) => void>();
+    private readonly _onPointerMoveEvent = new EventContainer<(event: PointerGridEvent) => void>();
     private _onTouchStartFunc: (() => void)|null = null;
     private _touchMoveOccured = false;
     private _started = false;

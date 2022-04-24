@@ -6,12 +6,12 @@ import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 
 export class RaycastHit2D {
-    private _centroid: Vector2 = new Vector2();
+    private readonly _centroid: Vector2 = new Vector2();
     private _collider: Collider2D|null = null;
     private _distance = 0;
     private _fraction = 0;
-    private _normal: Vector2 = new Vector2();
-    private _point: Vector2 = new Vector2();
+    private readonly _normal: Vector2 = new Vector2();
+    private readonly _point: Vector2 = new Vector2();
     private _rigidbody: RigidBody2D|null = null;
     private _transform: Transform|null = null;
 

@@ -102,7 +102,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this._text = value;
 
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.setTextInternal(value);
+            this._initializeFunction = (): void => this.setTextInternal(value);
             return;
         }
 

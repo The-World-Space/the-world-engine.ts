@@ -35,16 +35,16 @@ class TestItem {
 export function mutIteratableCollectionTest1(): void {
     const mutIteratableCollection = new MutIteratableCollection<TestItem>(TestItem.comparator);
 
-    const item2 = new TestItem(() => {
+    const item2 = new TestItem((): void => {
         console.log("2");
     }, 2);
 
-    mutIteratableCollection.insert(new TestItem(() => {
+    mutIteratableCollection.insert(new TestItem((): void => {
         console.log("1");
-        mutIteratableCollection.insert(new TestItem(() => {
+        mutIteratableCollection.insert(new TestItem((): void => {
             console.log("3");
         }, -1));
-        mutIteratableCollection.insert(new TestItem(() => {
+        mutIteratableCollection.insert(new TestItem((): void => {
             console.log("4");
         }, -2));
         mutIteratableCollection.delete(item2);

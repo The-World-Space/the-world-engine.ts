@@ -4,11 +4,11 @@ import Set from "js-sdsl/dist/esm/Set/Set";
 /** @internal */
 export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     private _iterateCollection: SetType<T>|null = null;
-    private _collection: SetType<T>;
+    private readonly _collection: SetType<T>;
 
     private _insertBuffer: SetType<T>;
     private _insertBufferSwap: SetType<T>;
-    private _deleteBuffer: SetType<T>;
+    private readonly _deleteBuffer: SetType<T>;
 
     public constructor(comparator: (a: T, b: T) => number) {
         this._collection = new Set<T>(undefined, comparator);

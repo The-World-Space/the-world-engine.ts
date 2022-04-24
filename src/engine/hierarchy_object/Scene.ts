@@ -8,7 +8,7 @@ import { Transform } from "./Transform";
  * do not drive this class
  */
 export class Scene {
-    private _threeScene: ThreeScene;
+    private readonly _threeScene: ThreeScene;
 
     /** @internal */
     public constructor() {

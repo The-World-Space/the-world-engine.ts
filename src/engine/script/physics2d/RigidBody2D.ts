@@ -283,7 +283,7 @@ export class RigidBody2D extends Component {
         return this.engine.physics.collisionLayerMask.layerToName(this._collisionLayer);
     }
 
-    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>) {
+    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>): void {
         this._collisionLayer = this.engine.physics.collisionLayerMask.nameToLayer(value);
         this.updateCollidersFilter();
     }
@@ -448,7 +448,7 @@ export class RigidBody2D extends Component {
         return colliders.length;
     }
     
-    private _worldManifold: WorldManifold = new WorldManifold();
+    private readonly _worldManifold: WorldManifold = new WorldManifold();
 
     public getContacts(out: ContactPoint2D[]): number {
         let insertPos = 0;

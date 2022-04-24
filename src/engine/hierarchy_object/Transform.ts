@@ -172,14 +172,14 @@ export class Transform {
         this.setHasChangedRecursively();
     }
 
-    private onLocalEulerRotationChanged() {
+    private onLocalEulerRotationChanged(): void {
         if (this._ignoreObservableEvent) return;
 
         //for override Object3D.onRotationChange()
         this._object3D.quaternion.setFromEuler(this._object3D.rotation, false);
     }
 
-    private onLocalRotationChanged() {
+    private onLocalRotationChanged(): void {
         if (this._ignoreObservableEvent) return;
 
         //for override Object3D.onQuaternionChange()

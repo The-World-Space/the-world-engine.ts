@@ -11,7 +11,7 @@ export class RayCastOneCallback extends RayCastCallback {
     private readonly _physics2d: IPhysics2D;
     private _hit = false;
     private _raycastHit2D: RaycastHit2D|null = null;
-    private _startPosition: Vec2 = new Vec2();
+    private readonly _startPosition: Vec2 = new Vec2();
     private _layerMask = 0;
     private _minDepth = 0;
     private _maxDepth = 0;

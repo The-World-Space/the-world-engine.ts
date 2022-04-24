@@ -13,7 +13,7 @@ export class Pathfinder {
     private static readonly _checkCollisionScale: number = 8;
     private static readonly _iterationLimit: number = 1000;
 
-    private collideMaps: IGridCollidable[];
+    private readonly collideMaps: IGridCollidable[];
 
     /**
      * 

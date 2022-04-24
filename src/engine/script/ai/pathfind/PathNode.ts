@@ -1,6 +1,6 @@
 export class PathNode {
-    private _x: number;
-    private _y: number;
+    private readonly _x: number;
+    private readonly _y: number;
     
     private _gCost: number;
     private _hCost: number;

@@ -18,7 +18,7 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
     private _height = 4;
     private readonly _edgeColor = Color.fromHex("#00FF00");
     private _edgeWidth = 0;
-    private static _safebound = 0.1;
+    private static readonly _safebound = 0.1;
 
     protected override renderInitialize(): void {
         if (!this.htmlElement) {

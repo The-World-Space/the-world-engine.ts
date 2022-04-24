@@ -20,7 +20,7 @@ export class Camera extends Component {
     private _priority = 0;
     private readonly _backgroudColor: Color = new Color(1, 1, 1, 0);
 
-    private readonly onScreenResize = (width: number, height: number) => {
+    private readonly onScreenResize = (width: number, height: number): void => {
         const aspectRatio = width / height;
         if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.aspect = aspectRatio;

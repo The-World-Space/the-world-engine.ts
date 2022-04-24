@@ -107,21 +107,21 @@ export class GridCollider extends Component {
         }
     }
 
-    private addColliderImages() {
+    private addColliderImages(): void {
         this._collideMap.forEach((_value, key) => {
             const [x, y] = key.split("_").map(Number);
             this.addDebugImage(x, y);
         });
     }
 
-    private removeColliderImages() {
+    private removeColliderImages(): void {
         this._colliderImages.forEach(image => {
             image.destroy();
         });
         this._colliderImages.clear();
     }
     
-    private addDebugImage(x: number, y: number) {
+    private addDebugImage(x: number, y: number): void {
         if (!this._gridObjectCollideMap) return;
         const gridCellWidth = this._gridObjectCollideMap.gridCellWidth;
         const gridCellHeight = this._gridObjectCollideMap.gridCellHeight;
@@ -139,7 +139,7 @@ export class GridCollider extends Component {
         this._colliderImages.set(`${x}_${y}`, gameObjectRef.ref!);
     }
 
-    private removeDebugImage(x: number, y: number) {
+    private removeDebugImage(x: number, y: number): void {
         const image = this._colliderImages.get(`${x}_${y}`);
         if (image) {
             image.destroy();
@@ -147,7 +147,7 @@ export class GridCollider extends Component {
         }
     }
 
-    private addCollideInfoToMap(x: number, y: number) {
+    private addCollideInfoToMap(x: number, y: number): void {
         if (!this._gridObjectCollideMap) return;
         
         const worldPosition = this.transform.position;
@@ -160,7 +160,7 @@ export class GridCollider extends Component {
         this._gridObjectCollideMap!.addCollider(GridObjectCollideMapX, GridObjectCollideMapY);
     }
 
-    private addAllCollideInfoToMap() {
+    private addAllCollideInfoToMap(): void {
         if (!this._gridObjectCollideMap) return;
 
         const worldPosition = this.transform.position;
@@ -177,7 +177,7 @@ export class GridCollider extends Component {
         });
     }
     
-    private removeCollideInfoFromMap(x: number, y: number) {
+    private removeCollideInfoFromMap(x: number, y: number): void {
         if (!this._gridObjectCollideMap) return;
         
         const worldPosition = this.transform.position;
@@ -191,7 +191,7 @@ export class GridCollider extends Component {
         this._gridObjectCollideMap!.removeCollider(GridObjectCollideMapX, GridObjectCollideMapY);
     }
 
-    private removeAllCollideInfoFromMap() {
+    private removeAllCollideInfoFromMap(): void {
         if (!this._gridObjectCollideMap) return;
 
         const worldPosition = this.transform.position;

@@ -16,9 +16,9 @@ export class ContactTest extends Component {
         this.engine.input.onKeyDown.removeListener(this.onKeyDown);
     }
 
-    private contactBuffer: ContactPoint2D[] = [];
+    private readonly contactBuffer: ContactPoint2D[] = [];
 
-    private onKeyDown = (event: KeyboardEvent): void => {
+    private readonly onKeyDown = (event: KeyboardEvent): void => {
         if (event.key === "a") {
             if (!this._rigidbody) return;
             const len = this._rigidbody.getContacts(this.contactBuffer);

@@ -35,9 +35,9 @@ export class Game {
     private _gameSetting: DeepReadonly<GameSettingObject>|null = null;
     private _animationFrameId: number|null;
     private _isDisposed: boolean;
-    private _autoResize: boolean;
-    private _resizeFrameBufferBind: () => void;
-    private _loopBind: () => void;
+    private readonly _autoResize: boolean;
+    private readonly _resizeFrameBufferBind: () => void;
+    private readonly _loopBind: () => void;
 
     /**
      * 
@@ -52,12 +52,12 @@ export class Game {
         this._css3DRenderer.setSize(container.clientWidth, container.clientHeight);
         this._css3DRenderer.domElement.style.width = "100%";
         this._css3DRenderer.domElement.style.height = "100%";
-        this._css3DRenderer.domElement.onscroll = () => { //block scroll to prevent camera bug
+        this._css3DRenderer.domElement.onscroll = (): void => { //block scroll to prevent camera bug
             this._css3DRenderer.domElement.scrollLeft = 0;
             this._css3DRenderer.domElement.scrollTop = 0;
         };
 
-        this._cameraContainer = new CameraContainer((color: ReadonlyColor) => {
+        this._cameraContainer = new CameraContainer((color: ReadonlyColor): void => {
             this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
         });
         

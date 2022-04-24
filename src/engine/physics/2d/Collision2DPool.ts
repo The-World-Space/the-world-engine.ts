@@ -2,7 +2,7 @@ import { Collision2D } from "./Collision2D";
 
 /** @internal */
 export class Collision2DPool {
-    private _pool: Collision2D[] = [];
+    private readonly _pool: Collision2D[] = [];
 
     public getInstance(): Collision2D {
         if (this._pool.length > 0) {

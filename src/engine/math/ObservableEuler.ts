@@ -24,18 +24,18 @@ export class ObservableEuler {
         this._internal_order = order;
         
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onChangeCallback = () => { };
+        this._onChangeCallback = (): void => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onBeforeChangeCallback = () => { };
+        this._onBeforeChangeCallback = (): void => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onBeforeGetComponentCallback = () => { };
+        this._onBeforeGetComponentCallback = (): void => { };
     }
 
-    public onBeforeGetComponent(callback: () => void) {
+    public onBeforeGetComponent(callback: () => void): void {
         this._onBeforeGetComponentCallback = callback;
     }
 
-    public onBeforeChange(callback: () => void) {
+    public onBeforeChange(callback: () => void): void {
         this._onBeforeChangeCallback = callback;
     }
 
@@ -75,7 +75,7 @@ export class ObservableEuler {
         this._internal_order = value;
     }
 
-    public get x() {
+    public get x(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_x;
     }
@@ -87,7 +87,7 @@ export class ObservableEuler {
         this._onChangeCallback();
     }
 
-    public get y() {
+    public get y(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_y;
     }
@@ -99,7 +99,7 @@ export class ObservableEuler {
         this._onChangeCallback();
     }
 
-    public get z() {
+    public get z(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_z;
     }
@@ -111,7 +111,7 @@ export class ObservableEuler {
         this._onChangeCallback();
     }
 
-    public get order() {
+    public get order(): string {
         this._onBeforeGetComponentCallback();
         return this._internal_order;
     }

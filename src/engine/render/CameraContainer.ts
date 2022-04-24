@@ -10,9 +10,9 @@ import { ReadonlyColor } from "./ReadonlyColor";
  */
 export class CameraContainer {
     private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null; 
-    private _cameraInfoMap: Map<Camera, CameraInfo>;
-    private _cameraQueue: SetType<{camera: Camera, info: CameraInfo}>;
-    private _onChangeBackgroundColor: (color: ReadonlyColor) => void;
+    private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
+    private readonly _cameraQueue: SetType<{camera: Camera, info: CameraInfo}>;
+    private readonly _onChangeBackgroundColor: (color: ReadonlyColor) => void;
 
     /** @internal */
     public constructor(onChangeBackgroundColor: (color: ReadonlyColor) => void) {

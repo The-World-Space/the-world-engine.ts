@@ -3,9 +3,9 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
 export class TileAtlasItem {
-    private _htmlImageElement: HTMLImageElement;
-    private _columnCount: number;
-    private _rowCount: number;
+    private readonly _htmlImageElement: HTMLImageElement;
+    private readonly _columnCount: number;
+    private readonly _rowCount: number;
 
     public constructor(htmlImageElement: HTMLImageElement);
 

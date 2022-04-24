@@ -5,7 +5,7 @@ import { IReadonlyGameScreen } from "./IReadonlyGameScreen";
 export class GameScreen implements IReadonlyGameScreen {
     private _width: number;
     private _height: number;
-    private _onResizeEvent: EventContainer<(width: number, height: number) => void>;
+    private readonly _onResizeEvent: EventContainer<(width: number, height: number) => void>;
 
     public constructor(width: number, height: number) {
         this._width = width;

@@ -6,9 +6,9 @@ import { YieldInstruction } from "./YieldInstruction";
  * do not drive this class
  */
 export class Coroutine {
-    private _component: Component;
+    private readonly _component: Component;
     private _elapsedTime: number;
-    private _coroutineIterator: CoroutineIterator;
+    private readonly _coroutineIterator: CoroutineIterator;
     private _currentYieldInstruction: YieldInstruction|null;
     private _isCurrenYieldInstructionExist: boolean;
     private _onFinish: (() => void)|null;

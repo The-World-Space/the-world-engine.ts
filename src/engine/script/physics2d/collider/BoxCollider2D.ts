@@ -10,7 +10,7 @@ import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
 import { Object2DAttacher } from "../Object2DAttacher";
 
 export class BoxCollider2D extends Collider2D {
-    private _size: Vector2 = new Vector2(1, 1);
+    private readonly _size: Vector2 = new Vector2(1, 1);
     private _edgeRadius = 0;
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;
@@ -50,7 +50,7 @@ export class BoxCollider2D extends Collider2D {
         }
     }
 
-    private _shapeArray: PolygonShape[] = [ new PolygonShape() ];
+    private readonly _shapeArray: PolygonShape[] = [ new PolygonShape() ];
 
     protected override createShapes(): Shape[] {
         const shape = this._shapeArray[0];

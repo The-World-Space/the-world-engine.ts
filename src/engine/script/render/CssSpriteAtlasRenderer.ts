@@ -22,7 +22,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     };
     
-    private _filter: CssFilter = new CssFilter(this.onFilterUpdate);
+    private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
 
     private _rowCount = 1;
     private _columnCount = 1;
@@ -147,14 +147,14 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
 
     public asyncSetImageFromPath(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.asyncSetImageFromPath(path, rowCount, columnCount, onComplete);
+            this._initializeFunction = (): void => this.asyncSetImageFromPath(path, rowCount, columnCount, onComplete);
             return;
         }
 
         const image = this.htmlElement ?? new Image();
         image.src = path;
 
-        const onLoad = (_e: Event) => {
+        const onLoad = (_e: Event): void => {
             if (!this.exists) return;
             image.removeEventListener("load", onLoad);
             this.setImage(image, rowCount, columnCount);

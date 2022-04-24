@@ -16,7 +16,7 @@ export class CssDropShadow implements ICssDropShadow {
     private _offsetX: number;
     private _offsetY: number;
     private _blur: number;
-    private _color: Color;
+    private readonly _color: Color;
 
     public constructor(offsetX?: number, offsetY?: number, blur?: number, color?: Color);
 

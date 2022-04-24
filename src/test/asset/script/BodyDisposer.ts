@@ -7,7 +7,7 @@ export class BodyDisposer extends Component {
     public override readonly requiredComponents = [Collider2D];
     private _playerLayer = 0;
     
-    public awake() {
+    public awake(): void {
         this._playerLayer = this.engine.physics.collisionLayerMask.nameToLayer<TestLayer>("player");
     }
 

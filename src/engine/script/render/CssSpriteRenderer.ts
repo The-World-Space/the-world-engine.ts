@@ -16,7 +16,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         }
     };
 
-    private _filter: CssFilter = new CssFilter(this.onFilterUpdate);
+    private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -70,14 +70,14 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
 
     public asyncSetImageFromPath(path: string, onComplete?: () => void): void {
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.asyncSetImageFromPath(path, onComplete);
+            this._initializeFunction = (): void => this.asyncSetImageFromPath(path, onComplete);
             return;
         }
 
         const image = this.htmlElement ?? new Image();
         image.src = path;
 
-        const onLoad = (_e: Event) => {
+        const onLoad = (_e: Event): void => {
             if (!this.exists) return;
             image.removeEventListener("load", onLoad);
             this.setImage(image);
@@ -92,7 +92,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         this.htmlElement = image;
 
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.setImage(image);
+            this._initializeFunction = (): void => this.setImage(image);
             return;
         }
 

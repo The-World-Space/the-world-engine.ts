@@ -21,7 +21,7 @@ export class PlayerGridMovementController extends Directionable
     private _speed = 8;
     private _gridCellHeight = 1;
     private _gridCellWidth = 1;
-    private _collideMaps: IGridCollidable[] = [];
+    private readonly _collideMaps: IGridCollidable[] = [];
     private readonly _collideSize: number = 0.5;
     private readonly _gridCenter: Vector2 = new Vector2();
     private readonly _currentGridPosition: Vector2 = new Vector2();
@@ -30,14 +30,13 @@ export class PlayerGridMovementController extends Directionable
     private readonly _onMoveToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
     private readonly _onMovedToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
 
-    private _onPointerDownBind = this.onPointerDown.bind(this);
     private _gridPointer: GridPointer|null = null;
     private _pathfinder: Pathfinder|null = null;
     private _movingByPathfinder = false;
     private _findedPath: Vector2[]|null = null;
     private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
-    private _cachedParentWorldPosition: Vector2 = new Vector2();
+    private readonly _cachedParentWorldPosition: Vector2 = new Vector2();
 
     private readonly _tempVector2 = new Vector2();
 
@@ -223,7 +222,7 @@ export class PlayerGridMovementController extends Directionable
         y += this._cachedParentWorldPosition.y;
         
         for (let i = 0; i < this._collideMaps.length; i++) {
-            if (this._collideMaps[i].checkCollision(x, y, this._collideSize, this._collideSize)){
+            if (this._collideMaps[i].checkCollision(x, y, this._collideSize, this._collideSize)) {
                 return true;
             }
         }
@@ -232,9 +231,9 @@ export class PlayerGridMovementController extends Directionable
 
     private _lastPointerDownTime = -1;
     private readonly _lastPointerDownPosition: Vector2 = new Vector2();
-    private _doubleClickTime = 0.3;
+    private readonly _doubleClickTime = 0.3;
 
-    private onPointerDown(event: PointerGridEvent): void {
+    private readonly onPointerDown = (event: PointerGridEvent): void => {
         if (event.button !== 0) return;
         this._movingByPathfinder = false;
         const currentElapsedTime = this.engine.time.unscaledTime;
@@ -247,15 +246,15 @@ export class PlayerGridMovementController extends Directionable
             this._lastPointerDownTime = currentElapsedTime;
             this._lastPointerDownPosition.copy(event.gridPosition);
         }
-    }
+    };
 
     private onDoubleClick(event: PointerGridEvent): void {
         if (this._movingByPathfinder) {
             this._movingByPathfinder = false;
-            this._pathfindStartFunction = () => this.tryStartPathfind(event.gridPosition);
+            this._pathfindStartFunction = (): void => this.tryStartPathfind(event.gridPosition);
             return;
         }
-        this._pathfindStartFunction = () => this.tryStartPathfind(event.gridPosition);
+        this._pathfindStartFunction = (): void => this.tryStartPathfind(event.gridPosition);
     }
 
     private tryStartPathfind(targetGridPosition: Vector2): void {
@@ -350,11 +349,11 @@ export class PlayerGridMovementController extends Directionable
      */
     public set gridPointer(value: GridPointer|null) {
         if (this._gridPointer) {
-            this._gridPointer.onPointerDown.removeListener(this._onPointerDownBind);
+            this._gridPointer.onPointerDown.removeListener(this.onPointerDown);
         }
         this._gridPointer = value;
         if (this._gridPointer) {
-            this._gridPointer.onPointerDown.addListener(this._onPointerDownBind);
+            this._gridPointer.onPointerDown.addListener(this.onPointerDown);
         }
     }
 

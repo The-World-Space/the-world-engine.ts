@@ -16,9 +16,9 @@ export class ContactPoint2D {
     private _otherCollider: Collider2D|null = null;
     private _otherRigidbody: RigidBody2D|null = null;
 
-    private _relativeVelocity: Vector2 = new Vector2();
-    private _point: Vector2 = new Vector2();
-    private _normal: Vector2 = new Vector2();
+    private readonly _relativeVelocity: Vector2 = new Vector2();
+    private readonly _point: Vector2 = new Vector2();
+    private readonly _normal: Vector2 = new Vector2();
     private _normalImpulse = 0;
     private _tangentImpulse = 0;
     private _separation = 0;
@@ -55,7 +55,7 @@ export class ContactPoint2D {
         this._separation = separation;
     }
     
-    private static tempVec = new Vec2();
+    private static readonly tempVec = new Vec2();
 
     public get enabled(): boolean {
         return this._contact?.IsEnabled() ?? false;

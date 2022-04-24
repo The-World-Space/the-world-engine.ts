@@ -3,9 +3,9 @@ import type { IPhysicsObject2D } from "./PhysicsObject2D";
 
 /** @internal */
 export class FixtureGroup {
-    private _body: Body;
-    private _physicObject: IPhysicsObject2D;
-    private _fixtures: Set<Fixture> = new Set();
+    private readonly _body: Body;
+    private readonly _physicObject: IPhysicsObject2D;
+    private readonly _fixtures: Set<Fixture> = new Set();
 
     public constructor(body: Body, physicObject: IPhysicsObject2D) {
         this._body = body;

@@ -16,14 +16,14 @@ export class OptimizedCSS3DRenderer {
     private _height = 0;
     private _widthHalf = 0;
     private _heightHalf = 0;
-    private _cache = {
+    private readonly _cache = {
         camera: {
             fov: 0,
             style: ""
         }
         //objects: new WeakMap()
     };
-    private _cameraElement: HTMLElement;
+    private readonly _cameraElement: HTMLElement;
 
     public constructor() {
         const domElement = document.createElement("div");

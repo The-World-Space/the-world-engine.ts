@@ -8,10 +8,10 @@ import { DeepReadonly } from "../type/DeepReadonly";
  * make game scene with interop object and scene builder
  */
 export abstract class Bootstrapper<T = any> {
-    private _instantiater: Instantiater;
-    private _interopObject: T|null;
-    private _sceneBuilder: SceneBuilder;
-    private _gameSetting: GameSetting;
+    private readonly _instantiater: Instantiater;
+    private readonly _interopObject: T|null;
+    private readonly _sceneBuilder: SceneBuilder;
+    private readonly _gameSetting: GameSetting;
 
     public constructor(engineGlobalObject: EngineGlobalObject, interopObject?: T) {
         this._instantiater = engineGlobalObject.instantiater;

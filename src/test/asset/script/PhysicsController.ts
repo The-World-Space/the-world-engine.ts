@@ -12,7 +12,7 @@ export class PhysicsController extends Component {
         this._rigidbody = this.gameObject.getComponent(RigidBody2D);
     }
 
-    private _tempVector2 = new Vector2();
+    private readonly _tempVector2 = new Vector2();
 
     public update(): void {
         const inputMap = this.engine.input.map;

@@ -5,8 +5,8 @@ import { GameObject } from "./hierarchy_object/GameObject";
 
 /** @internal */
 export class SceneProcessor {
-    private readonly _nonSyncedEvents : MutIteratableCollection<ComponentEvent>;
-    private readonly _syncedEvents : MutIteratableCollection<ComponentEvent>;
+    private readonly _nonSyncedEvents: MutIteratableCollection<ComponentEvent>;
+    private readonly _syncedEvents: MutIteratableCollection<ComponentEvent>;
     private _processingSyncedEvent: boolean;
 
     private readonly _removeGameObjects: GameObject[];
@@ -46,15 +46,15 @@ export class SceneProcessor {
         this._processingSyncedEvent = false;
     }
 
-    public addRemoveGameObject(object: GameObject) {
+    public addRemoveGameObject(object: GameObject): void {
         this._removeGameObjects.push(object);
     }
 
-    public addRemoveComponent(component: Component) {
+    public addRemoveComponent(component: Component): void {
         this._removeComponents.push(component);
     }
 
-    public processRemoveObject() {
+    public processRemoveObject(): void {
         const removeComponents = this._removeComponents;
         for (let i = 0; i < removeComponents.length; i++) {
             removeComponents[i].gameObject.removeComponent(removeComponents[i]);

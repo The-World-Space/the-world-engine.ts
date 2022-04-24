@@ -94,8 +94,7 @@ export class GameObjectBuilder {
     public getComponents<T extends Component>(componentsRef: PrefabRef<T[]>, componentCtor?: ComponentConstructor<T>): GameObjectBuilder {
         if (componentCtor) {
             componentsRef.ref = this._gameObject.getComponents(componentCtor);
-        }
-        else {
+        } else {
             componentsRef.ref = this._gameObject.getComponents() as T[];
         }
         return this;
@@ -136,8 +135,7 @@ export class GameObjectBuilder {
     public getComponentsInChildren<T extends Component>(componentsRef: PrefabRef<T[]>, componentCtor?: ComponentConstructor<T>): GameObjectBuilder {
         if (componentCtor) {
             componentsRef.ref = this._gameObject.getComponentsInChildren(componentCtor);
-        }
-        else {
+        } else {
             componentsRef.ref = this._gameObject.getComponentsInChildren() as T[];
         }
         return this;

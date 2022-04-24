@@ -15,16 +15,16 @@ export class ObservableVector3 {
         this._y = y;
         this._z = z;
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onBeforeChangeCallback = () => { };
+        this._onBeforeChangeCallback = (): void => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onBeforeGetComponentCallback = () => { };
+        this._onBeforeGetComponentCallback = (): void => { };
     }
 
-    public onBeforeChange(callback: () => void) {
+    public onBeforeChange(callback: () => void): void {
         this._onBeforeChangeCallback = callback;
     }
 
-    public onBeforeGetComponent(callback: () => void) {
+    public onBeforeGetComponent(callback: () => void): void {
         this._onBeforeGetComponentCallback = callback;
     }
 
@@ -150,7 +150,7 @@ export class ObservableVector3 {
         return this;
     }
 
-    public add(v: ObservableVector3, w: undefined) {
+    public add(v: ObservableVector3, w: undefined): ObservableVector3 {
         if (w !== undefined) {
             console.warn( "THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead." );
             return this.addVectors(v, w);
@@ -481,7 +481,7 @@ export class ObservableVector3 {
         return this;
     }
 
-    public lerpVectors(v1: ObservableVector3, v2: ObservableVector3, alpha: number) {
+    public lerpVectors(v1: ObservableVector3, v2: ObservableVector3, alpha: number): ObservableVector3 {
         this._onBeforeChangeCallback();
         this._x = v1.x + (v2.x - v1.x) * alpha;
         this._y = v1.y + (v2.y - v1.y) * alpha;
@@ -691,12 +691,16 @@ export class ObservableVector3 {
      *
      * @deprecated Use {@link Vector3#manhattanLength .manhattanLength()} instead.
      */
-    public lengthManhattan(): number { throw new Error("deprecated"); }
+    public lengthManhattan(): number {
+        throw new Error("deprecated");
+    }
 
     /**
      * @deprecated Use {@link Vector3#manhattanDistanceTo .manhattanDistanceTo()} instead.
      */
-    public distanceToManhattan(_v: ObservableVector3): number { throw new Error("deprecated"); }
+    public distanceToManhattan(_v: ObservableVector3): number {
+        throw new Error("deprecated");
+    }
 }
 
 const _vector = /*@__PURE__*/ new ObservableVector3();

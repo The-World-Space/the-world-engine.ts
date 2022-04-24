@@ -319,15 +319,15 @@ export class Color implements ReadonlyColor {
         ));
     }
 
-    public brightness(value = 1) {
+    public brightness(value = 1): void {
         this.linear(value);
     }
 
-    public contrast(value = 1) {
+    public contrast(value = 1): void {
         this.linear(value, -(0.5 * value) + 0.5);
     }
 
-    public invert(value = 1) {
+    public invert(value = 1): void {
         let newR = value + this._r * (1 - 2 * value);
         let newG = value + this._g * (1 - 2 * value);
         let newB = value + this._b * (1 - 2 * value);
@@ -392,7 +392,7 @@ export class Color implements ReadonlyColor {
         return this;
     }
 
-    public hsl() : { h: number, s: number, l: number } {
+    public hsl(): { h: number, s: number, l: number } {
         // Code taken from https://stackoverflow.com/a/9493060/2688027, licensed under CC BY-SA.
         const r = this._r;
         const g = this._g;

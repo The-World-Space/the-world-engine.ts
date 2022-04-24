@@ -38,7 +38,7 @@ export class RenderTestPrefab extends Prefab {
                     button.innerText = "click me!";
                     const counter = document.createElement("span");
                     counter.innerText = "0";
-                    button.onclick = () => {
+                    button.onclick = (): void => {
                         counter.innerText = (parseInt(counter.innerText) + 1).toString();
                     };
                     element.appendChild(button);

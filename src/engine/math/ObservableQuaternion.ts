@@ -19,18 +19,18 @@ export class ObservableQuaternion {
         this._internal_w = w;
 
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onChangeCallback = () => { };
+        this._onChangeCallback = (): void => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onBeforeChangeCallback = () => { };
+        this._onBeforeChangeCallback = (): void => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
-        this._onBeforeGetComponentCallback = () => { };
+        this._onBeforeGetComponentCallback = (): void => { };
     }
 
-    public onBeforeGetComponent(callback: () => void) {
+    public onBeforeGetComponent(callback: () => void): void {
         this._onBeforeGetComponentCallback = callback;
     }
 
-    public onBeforeChange(callback: () => void) {
+    public onBeforeChange(callback: () => void): void {
         this._onBeforeChangeCallback = callback;
     }
 
@@ -178,7 +178,7 @@ export class ObservableQuaternion {
         this._internal_w = value;
     }
 
-    public get x() {
+    public get x(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_x;
     }
@@ -190,7 +190,7 @@ export class ObservableQuaternion {
         this._onChangeCallback();
     }
 
-    public get y() {
+    public get y(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_y;
     }
@@ -202,7 +202,7 @@ export class ObservableQuaternion {
         this._onChangeCallback();
     }
 
-    public get z() {
+    public get z(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_z;
     }
@@ -214,7 +214,7 @@ export class ObservableQuaternion {
         this._onChangeCallback();
     }
 
-    public get w() {
+    public get w(): number {
         this._onBeforeGetComponentCallback();
         return this._internal_w;
     }
@@ -620,7 +620,7 @@ export class ObservableQuaternion {
         return this;
     }
 
-    public toArray(array: number[] = [], offset = 0) {
+    public toArray(array: number[] = [], offset = 0): number[] {
         this._onBeforeGetComponentCallback();
         array[offset] = this._internal_x;
         array[offset + 1] = this._internal_y;
@@ -645,10 +645,14 @@ export class ObservableQuaternion {
     /**
      * @deprecated Use {@link Vector#applyQuaternion vector.applyQuaternion( quaternion )} instead.
      */
-    public multiplyVector3(_v: any): any { throw new Error("deprecated"); }
+    public multiplyVector3(_v: any): any {
+        throw new Error("deprecated");
+    }
 
     /**
      * @deprecated Use {@link Quaternion#invert .invert()} instead.
      */
-    public inverse(): Quaternion { throw new Error("deprecated"); }
+    public inverse(): Quaternion {
+        throw new Error("deprecated");
+    }
 }

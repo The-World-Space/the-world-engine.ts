@@ -48,7 +48,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.imageSources = [new TileAtlasItem(tilemap3, 3, 20)];
                         c.pointerEvents = false;
                         
-                        tilemap3.onload = () => {
+                        tilemap3.onload = (): void => {
                             tilemap3.onload = null;
                             const F = {i:0, a:57};
                             const G = {i:0, a:58};
@@ -75,7 +75,7 @@ export class SansFightRoomPrefab extends Prefab {
                         ];
                         c.pointerEvents = false;
 
-                        tilemap3.onload = () => {
+                        tilemap3.onload = (): void => {
                             tilemap3.onload = null;
 
                             const W = {i:0, a:56};

@@ -36,7 +36,7 @@ class TriggerEvent {
 
 /** @internal */
 export class TriggerEventPool {
-    private _triggerEvent: TriggerEvent[] = [];
+    private readonly _triggerEvent: TriggerEvent[] = [];
     private _size = 0;
 
     public insert(type: TriggerType, colliderA: Collider2D, colliderB: Collider2D): void {
@@ -98,7 +98,7 @@ class CollisionEvent {
 
 /** @internal */
 export class CollisionEventPool {
-    private _collisionEvent: CollisionEvent[] = [];
+    private readonly _collisionEvent: CollisionEvent[] = [];
     private _size = 0;
 
     public insert(

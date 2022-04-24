@@ -33,7 +33,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         this._collideEnabled = false;
     }
 
-    private updateTilemapPosition() {
+    private updateTilemapPosition(): void {
         this._cssTilemapRendererMap.forEach((renderer, key) => {
             const chunkIndexX = this.getIndexXFromKey(key) * this._chunkSize * this._tileWidth;
             const chunkIndexY = this.getIndexYFromKey(key) * this._chunkSize * this._tileHeight;

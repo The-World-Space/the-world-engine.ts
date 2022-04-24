@@ -15,7 +15,7 @@ export class Collider2D extends Component {
     private _density = 1;
     private _material: PhysicsMaterial2D|null = null;
     private _isTrigger = false;
-    private _offset: Vector2 = new Vector2();
+    private readonly _offset: Vector2 = new Vector2();
     private _collisionLayer: number|null = null;
 
     public onEnable(): void {
@@ -101,7 +101,7 @@ export class Collider2D extends Component {
     }
 
     /** @internal */
-    public readonly updateFixturesMaterialInfo = () => {
+    public readonly updateFixturesMaterialInfo = (): void => {
         if (this._fixtureGroup) {
             let material: PhysicsMaterial2D|null = null;
             if (this._material) {
@@ -227,7 +227,7 @@ export class Collider2D extends Component {
         return this._collisionLayer ? this.engine.physics.collisionLayerMask.layerToName<T>(this._collisionLayer) : null;
     }
 
-    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>|null) {
+    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>|null): void {
         this._collisionLayer = value ? this.engine.physics.collisionLayerMask.nameToLayer(value) : null;
         this.updateFixturesFilter();
     }
@@ -261,7 +261,7 @@ export class Collider2D extends Component {
     // ClosestPoint	Returns a point on the perimeter of this Collider that is closest to the specified position.
     // Distance	Calculates the minimum separation of this collider against another collider.
     
-    private _worldManifold: WorldManifold = new WorldManifold();
+    private readonly _worldManifold: WorldManifold = new WorldManifold();
 
     public getContacts(out: ContactPoint2D[]): number {
         if (!this._fixtureGroup) return 0;

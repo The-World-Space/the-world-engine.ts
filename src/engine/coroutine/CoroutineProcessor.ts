@@ -4,7 +4,7 @@ import { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./Yield
 
 /** @internal */
 export class CoroutineProcessor {
-    private _time: Time;
+    private readonly _time: Time;
     private _coroutines: (Coroutine|null)[];
     private _coroutineCount: number;
 

@@ -138,7 +138,7 @@ export class ComponentEvent<T extends (...params: any[]) => void = () => void> {
     //     this._eventFunc(...params);
     // }
 
-    public get invoke() : T {
+    public get invoke(): T {
         return this._eventFunc;
     }
 

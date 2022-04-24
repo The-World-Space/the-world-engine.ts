@@ -8,7 +8,9 @@ export class YieldInstruction { }
  */
 export class WaitForEndOfFrame extends YieldInstruction { 
     private static readonly _instance: WaitForEndOfFrame = new WaitForEndOfFrame();
-    public get instance(): WaitForEndOfFrame { return WaitForEndOfFrame._instance; }
+    public get instance(): WaitForEndOfFrame {
+        return WaitForEndOfFrame._instance;
+    }
 }
 
 /**
@@ -20,7 +22,9 @@ export class WaitForSeconds extends YieldInstruction {
         super();
         this._seconds = seconds;
     }
-    public get seconds(): number { return this._seconds; }
+    public get seconds(): number {
+        return this._seconds;
+    }
 }
 
 /**
@@ -32,7 +36,9 @@ export class WaitUntil extends YieldInstruction {
         super();
         this._predicate = predicate;
     }
-    public get predicate(): () => boolean { return this._predicate; }
+    public get predicate(): () => boolean {
+        return this._predicate;
+    }
 }
 
 /**
@@ -44,5 +50,7 @@ export class WaitWhile extends YieldInstruction {
         super();
         this._predicate = predicate;
     }
-    public get predicate(): () => boolean { return this._predicate; }
+    public get predicate(): () => boolean {
+        return this._predicate;
+    }
 }

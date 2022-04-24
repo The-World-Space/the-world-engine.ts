@@ -10,7 +10,7 @@ import { RaycastHit2D } from "./RaycastHit2D";
 export class RayCastFilterCallback extends RayCastCallback {
     private _hitCount = 0;
     private _raycastHit2DList: RaycastHit2D[]|null = null;
-    private _startPosition: Vec2 = new Vec2();
+    private readonly _startPosition: Vec2 = new Vec2();
     private _filter: ContactFilter2D|null = null;
 
     private static readonly _tempVec2: Vec2 = new Vec2();

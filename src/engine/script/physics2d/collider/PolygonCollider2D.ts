@@ -55,7 +55,7 @@ export class PolygonCollider2D extends Collider2D {
         }
     }
 
-    private _shapeArray: PolygonShape[] = [ new PolygonShape() ];
+    private readonly _shapeArray: PolygonShape[] = [ new PolygonShape() ];
 
     protected override createShapes(): Shape[] {
         const shape = this._shapeArray[0];

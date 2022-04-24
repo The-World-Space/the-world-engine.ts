@@ -7,7 +7,7 @@ import { ReadonlyColor } from "./ReadonlyColor";
  */
 export class CameraInfo {
     private _priority: number;
-    private _backgroundColor: Color;
+    private readonly _backgroundColor: Color;
 
     /**
      * 

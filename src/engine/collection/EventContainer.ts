@@ -94,7 +94,7 @@ export interface IEventContainer<T extends (...args: any[]) => void> {
 }
 
 export class EventContainer<T extends (...args: any[]) => void> {
-    private _listeners: LinkedList<T>;
+    private readonly _listeners: LinkedList<T>;
 
     public constructor() {
         this._listeners = new LinkedList<T>();

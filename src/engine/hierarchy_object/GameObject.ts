@@ -197,8 +197,7 @@ export class GameObject {
                 components.push(...child.gameObject.getComponentsInChildren());
             });
             return components as T[];
-        }
-        else {
+        } else {
             const components: T[] = this.getComponents(componentCtor);
             this._transform.foreachChild(child => {
                 const childComponents = child.gameObject.getComponentsInChildren(componentCtor);
@@ -335,12 +334,12 @@ export class GameObject {
     }
 
     /** @internal */
-    public removeFromParent() {
+    public removeFromParent(): void {
         this._transform.unsafeGetObject3D().removeFromParent();
     }
 
     /** @internal */
-    public removeComponent(component: Component) {
+    public removeComponent(component: Component): void {
         const index = this.components.indexOf(component);
         if (index >= 0) {
             this.components.splice(index, 1);
@@ -405,7 +404,7 @@ export class GameObject {
         });
     }
 
-    private setActiveInHierarchyWithEvent(value: boolean) {
+    private setActiveInHierarchyWithEvent(value: boolean): void {
         if (this._activeInHierarchy === value) return;
         this.activeInHierarchy = value;
         if (this._initialized) this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();

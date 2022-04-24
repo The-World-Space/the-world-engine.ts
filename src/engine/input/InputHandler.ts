@@ -6,17 +6,17 @@ import { IInputEventHandleable } from "./IInputEventHandleable";
  * do not drive this class
  */
 export class InputHandler implements IInputEventHandleable {
-    private _map: Map<string, boolean>;
+    private readonly _map: Map<string, boolean>;
     private _isDisposed: boolean;
-    private _renderTargetDom: HTMLElement;
-    private _onKeyDownEvent = new EventContainer<((event: KeyboardEvent) => void)>();
-    private _onKeyUpEvent = new EventContainer<((event: KeyboardEvent) => void)>();
-    private _onWheelEvent = new EventContainer<((event: WheelEvent) => void)>();
-    private _onPointerDownEvent = new EventContainer<((event: MouseEvent) => void)>();
-    private _onPointerUpEvent = new EventContainer<((event: MouseEvent) => void)>();
-    private _onPointerEnterEvent = new EventContainer<((event: MouseEvent) => void)>();
-    private _onPointerLeaveEvent = new EventContainer<((event: MouseEvent) => void)>();
-    private _onPointerMoveEvent = new EventContainer<((event: MouseEvent) => void)>();
+    private readonly _renderTargetDom: HTMLElement;
+    private readonly _onKeyDownEvent = new EventContainer<((event: KeyboardEvent) => void)>();
+    private readonly _onKeyUpEvent = new EventContainer<((event: KeyboardEvent) => void)>();
+    private readonly _onWheelEvent = new EventContainer<((event: WheelEvent) => void)>();
+    private readonly _onPointerDownEvent = new EventContainer<((event: MouseEvent) => void)>();
+    private readonly _onPointerUpEvent = new EventContainer<((event: MouseEvent) => void)>();
+    private readonly _onPointerEnterEvent = new EventContainer<((event: MouseEvent) => void)>();
+    private readonly _onPointerLeaveEvent = new EventContainer<((event: MouseEvent) => void)>();
+    private readonly _onPointerMoveEvent = new EventContainer<((event: MouseEvent) => void)>();
     private _touchMoveOccured = false;
     private _onTouchStartFunc: (() => void)|null = null;
     private _lastMouseDownEvent: MouseEvent|null = null;
@@ -98,60 +98,60 @@ export class InputHandler implements IInputEventHandleable {
         touch.target.dispatchEvent(simulatedEvent);
     }
 
-    private handleKeyDown = (event: KeyboardEvent): void => {
+    private readonly handleKeyDown = (event: KeyboardEvent): void => {
         this._map.set(event.key, true);
         this._onKeyDownEvent.invoke(event);
     };
     
-    private handleKeyUp = (event: KeyboardEvent): void => {
+    private readonly handleKeyUp = (event: KeyboardEvent): void => {
         this._map.set(event.key, false);
         this._onKeyUpEvent.invoke(event);
     };
 
-    private handleWheel = (event: WheelEvent): void => {
+    private readonly handleWheel = (event: WheelEvent): void => {
         this._onWheelEvent.invoke(event);
     };
 
-    private handleMouseDown = (event: MouseEvent): void => {
+    private readonly handleMouseDown = (event: MouseEvent): void => {
         this._lastMouseDownEvent = event;
         this._onPointerDownEvent.invoke(event);
     };
 
-    private handleMouseUp = (event: MouseEvent): void => {
+    private readonly handleMouseUp = (event: MouseEvent): void => {
         this._lastMouseDownEvent = null;
         this._onPointerUpEvent.invoke(event);
     };
 
-    private handleMouseEnter = (event: MouseEvent): void => {
+    private readonly handleMouseEnter = (event: MouseEvent): void => {
         this._lastMouseEnterEvent = event;
         this._onPointerEnterEvent.invoke(event);
     };
 
-    private handleMouseLeave = (event: MouseEvent): void => {
+    private readonly handleMouseLeave = (event: MouseEvent): void => {
         this._lastMouseEnterEvent = null;
         this._onPointerLeaveEvent.invoke(event);
     };
 
-    private handleMouseMove = (event: MouseEvent): void => {
+    private readonly handleMouseMove = (event: MouseEvent): void => {
         this._lastMouseDownEvent = event;
         this._onPointerMoveEvent.invoke(event);
     };
 
-    private handleTouchStart = (event: TouchEvent): void => {
-        this._onTouchStartFunc = () => {
+    private readonly handleTouchStart = (event: TouchEvent): void => {
+        this._onTouchStartFunc = (): void => {
             this.simulateMouseEvent("mouseenter", event.touches[0]);
             this.simulateMouseEvent("mousedown", event.touches[0]);
         };
     };
 
-    private handleTouchEnd = (event: TouchEvent): void => {
+    private readonly handleTouchEnd = (event: TouchEvent): void => {
         if (!this._touchMoveOccured) return;
         this._touchMoveOccured = false;
         this.simulateMouseEvent("mouseup", event.changedTouches[0]);
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);
     };
 
-    private handleTouchMove = (event: TouchEvent): void => {
+    private readonly handleTouchMove = (event: TouchEvent): void => {
         if (this._onTouchStartFunc) {
             this._onTouchStartFunc();
             this._onTouchStartFunc = null;
@@ -160,7 +160,7 @@ export class InputHandler implements IInputEventHandleable {
         this._touchMoveOccured = true;
     };
 
-    private handleTouchCancel = (event: TouchEvent): void => {
+    private readonly handleTouchCancel = (event: TouchEvent): void => {
         if (!this._touchMoveOccured) return;
         this._touchMoveOccured = false;
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);

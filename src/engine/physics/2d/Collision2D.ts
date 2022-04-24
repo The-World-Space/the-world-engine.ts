@@ -9,7 +9,7 @@ import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 
 export class Collision2D {
     private _contact: Contact|null = null;
-    private _worldManifold: WorldManifold = new WorldManifold();
+    private readonly _worldManifold: WorldManifold = new WorldManifold();
 
     private _collider: Collider2D|null = null;
     private _rigidbody: RigidBody2D|null = null;
@@ -18,10 +18,10 @@ export class Collision2D {
     private _otherRigidbody: RigidBody2D|null = null;
 
     private _contactCount = 0;
-    private _relativeVelocity: Vector2 = new Vector2();
+    private readonly _relativeVelocity: Vector2 = new Vector2();
 
     /** @internal */
-    public setData(contact: Contact) {
+    public setData(contact: Contact): void {
         this._contact = contact;
         
         const fixtureA = contact.GetFixtureA();
@@ -43,7 +43,7 @@ export class Collision2D {
         this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
     }
     
-    private static tempVec = new Vec2();
+    private static readonly tempVec = new Vec2();
 
     public get collider(): Collider2D {
         return this._collider!;

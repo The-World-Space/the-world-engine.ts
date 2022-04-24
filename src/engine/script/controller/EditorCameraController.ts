@@ -50,7 +50,7 @@ export class EditorCameraController extends Component {
         input.onPointerLeave.removeListener(this.onPointerLeave);
     }
 
-    private onKeyDown = (event: KeyboardEvent): void => {
+    private readonly onKeyDown = (event: KeyboardEvent): void => {
         if (event.key === " ") {
             this._currentViewSize = this._defaultViewSize;
             this.resize();
@@ -58,7 +58,7 @@ export class EditorCameraController extends Component {
         }
     };
 
-    private onWheel = (event: WheelEvent): void => {
+    private readonly onWheel = (event: WheelEvent): void => {
         this._currentViewSize += event.deltaY * 0.01;
         if (this._currentViewSize < this._minViewSize) {
             this._currentViewSize = this._minViewSize;
@@ -68,7 +68,7 @@ export class EditorCameraController extends Component {
         this.resize();
     };
 
-    private onPointerDown = (event: MouseEvent): void => {
+    private readonly onPointerDown = (event: MouseEvent): void => {
         this._lastOffset.set(
             event.clientX / this.engine.screen.width,
             event.clientY / this.engine.screen.height
@@ -78,13 +78,13 @@ export class EditorCameraController extends Component {
         }
     };
 
-    private onPointerUp = (event: MouseEvent): void => {
+    private readonly onPointerUp = (event: MouseEvent): void => {
         if (event.button === this._mouseMoveButton) {
             this._mouseMoveButtonDown = false;
         }
     };
 
-    private onPointerMove = (event: MouseEvent): void => {
+    private readonly onPointerMove = (event: MouseEvent): void => {
         if (!this._mouseMoveButtonDown) return;
 
         const clientOffsetX = event.clientX / this.engine.screen.width;
@@ -101,7 +101,7 @@ export class EditorCameraController extends Component {
         this._lastOffset.set(clientOffsetX, clientOffsetY);
     };
 
-    private onPointerLeave = (_event: MouseEvent): void => {
+    private readonly onPointerLeave = (_event: MouseEvent): void => {
         this._mouseMoveButtonDown = false;
     };
 
@@ -149,10 +149,16 @@ export class EditorCameraController extends Component {
         }
     }
 
+    /**
+     * mouse button number to move camera e.g. 1 for left mouse button
+     */
     public get mouseMoveButton(): number {
         return this._mouseMoveButton;
     }
 
+    /**
+     * mouse button number to move camera e.g. 1 for left mouse button
+     */
     public set mouseMoveButton(value: number) {
         this._mouseMoveButton = value;
     }

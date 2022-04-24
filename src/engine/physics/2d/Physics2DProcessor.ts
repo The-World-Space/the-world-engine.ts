@@ -58,11 +58,11 @@ export class Physics2DProcessor implements IPhysics2D {
         this._world = new this._loader.World(new this._loader.Vec2(0, -9.81));
 
         const ContactListener = class extends this._loader.ContactListener implements PhysicsEventDispatcher {
-            private _physicsProcessor: Physics2DProcessor;
-            private _collision2DPool: Collision2DPool;
+            private readonly _physicsProcessor: Physics2DProcessor;
+            private readonly _collision2DPool: Collision2DPool;
 
-            private _triggerEventPool: TriggerEventPool;
-            private _collisionEventPool: CollisionEventPool;
+            private readonly _triggerEventPool: TriggerEventPool;
+            private readonly _collisionEventPool: CollisionEventPool;
         
             public constructor(physicsProcessor: Physics2DProcessor) {
                 super();
@@ -160,11 +160,11 @@ export class Physics2DProcessor implements IPhysics2D {
                 }
             }
 
-            public onTriggerInvoke() {
+            public onTriggerInvoke(): void {
                 this._triggerEventPool.invoke();
             }
 
-            public onCollisionInvoke() {
+            public onCollisionInvoke(): void {
                 this._collisionEventPool.invoke();
             }
         };

@@ -9,7 +9,7 @@ import { PrefabConstructor } from "../../../engine/hierarchy_object/PrefabConstr
 export class Spawner extends Component {
     public prefabCtor: PrefabConstructor|null = null;
     public initSpawnCount = 0;
-    private _queue: QueueType<GameObject> = new Queue();
+    private readonly _queue: QueueType<GameObject> = new Queue();
     private _objectCounter = 0;
 
     public awake(): void {
@@ -42,7 +42,7 @@ export class Spawner extends Component {
         }
     };
 
-    private *spawninitObjects() : CoroutineIterator {
+    private *spawninitObjects(): CoroutineIterator {
         for (let i = 0; i < this.initSpawnCount; i++) {
             this._queue.push(this.gameObject.addChildFromBuilder(
                 this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()

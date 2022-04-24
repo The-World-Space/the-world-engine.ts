@@ -20,10 +20,10 @@ export interface IPhysicsObject2D {
 export class PhysicsObject2D implements IPhysicsObject2D {
     public readonly gameObject: GameObject;
     public readonly body: Body;
-    private _onDestroy: () => void;
+    private readonly _onDestroy: () => void;
     private _sharedMaterial: PhysicsMaterial2D|null = null;
     private _rigidBody: RigidBody2D|null = null;
-    private _colliders: Collider2D[] = [];
+    private readonly _colliders: Collider2D[] = [];
 
     public constructor(gameObject: GameObject, body: Body, onDestroy: () => void) {
         this.gameObject = gameObject;
@@ -82,7 +82,7 @@ export class PhysicsObject2D implements IPhysicsObject2D {
         this.updateMaterialInfo();
     }
 
-    private updateMaterialInfo = () => {
+    private readonly updateMaterialInfo = (): void => {
         for (let i = 0; i < this._colliders.length; i++) {
             this._colliders[i].updateFixturesMaterialInfo();
         }

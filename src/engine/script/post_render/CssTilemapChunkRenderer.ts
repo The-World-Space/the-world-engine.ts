@@ -23,8 +23,8 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         this._initializeFunctions = [];
     }
 
-    private updateTilemapPosition() {
-        this._cssTilemapRendererMap.forEach((renderer, key) => {
+    private updateTilemapPosition(): void {
+        this._cssTilemapRendererMap.forEach((renderer, key): void => {
             const chunkIndexX = this.getIndexXFromKey(key) * this._chunkSize * this._tileWidth;
             const chunkIndexY = this.getIndexYFromKey(key) * this._chunkSize * this._tileHeight;
             renderer.gameObject.transform.localPosition.set(chunkIndexX, chunkIndexY, 0);

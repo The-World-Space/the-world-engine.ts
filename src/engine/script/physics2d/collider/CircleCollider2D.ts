@@ -47,7 +47,7 @@ export class CircleCollider2D extends Collider2D {
         }
     }
 
-    private _shapeArray: CircleShape[] = [ new CircleShape() ];
+    private readonly _shapeArray: CircleShape[] = [ new CircleShape() ];
 
     protected override createShapes(): Shape[] {
         const shape = this._shapeArray[0];

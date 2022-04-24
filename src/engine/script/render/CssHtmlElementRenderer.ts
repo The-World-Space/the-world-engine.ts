@@ -80,7 +80,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         const element = this.htmlElement = value ?? document.createElement("div");
 
         if (!this.readyToDraw) {
-            this._initializeFunction = () => this.setElementInternal(element);
+            this._initializeFunction = (): void => this.setElementInternal(element);
             return;
         }
         
