@@ -187,6 +187,9 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
 
         this._imageSources = value;
+        for (let i = 0; i < value.length; i++) {
+            if (!value[i].htmlImageElement.complete) throw new Error(`Image ${value[i].htmlImageElement.src} is not loaded.`);
+        }
     }
 
     public get columnCount(): number {
