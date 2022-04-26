@@ -50,6 +50,7 @@ export class SansFightRoomPrefab extends Prefab {
                         
                         tilemap3.onload = (): void => {
                             tilemap3.onload = null;
+                            if (!c.exists) return;
                             /* eslint-disable @typescript-eslint/naming-convention */
                             const F = {i:0, a:57};
                             const G = {i:0, a:58};
@@ -79,6 +80,7 @@ export class SansFightRoomPrefab extends Prefab {
 
                         tilemap3.onload = (): void => {
                             tilemap3.onload = null;
+                            if (!c.exists) return;
 
                             /* eslint-disable @typescript-eslint/naming-convention */
                             const W = {i:0, a:56};

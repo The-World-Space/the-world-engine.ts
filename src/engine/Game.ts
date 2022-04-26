@@ -140,7 +140,6 @@ export class Game {
     }
 
     private loop(): void {
-        this._animationFrameId = requestAnimationFrame(this._loopBind);
         this._time.update();
         this._sceneProcessor.startProcessNonSyncedEvent();
         this._physics2DProcessor.update(this._time.deltaTime);
@@ -154,6 +153,7 @@ export class Game {
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
+        this._animationFrameId = requestAnimationFrame(this._loopBind);
     }
 
     /**

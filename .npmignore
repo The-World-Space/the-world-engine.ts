@@ -11,3 +11,4 @@ package.json
 testbundle
 tsconfig.json
 webpack.config.js
+gulpfile.js

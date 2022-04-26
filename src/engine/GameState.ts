@@ -28,7 +28,7 @@ export class GameState implements IReadonlyGameState {
 /**
  * game state kind
  */
-export const enum GameStateKind {
+export enum GameStateKind {
     WaitingForStart,
     Initializing,
     Running,

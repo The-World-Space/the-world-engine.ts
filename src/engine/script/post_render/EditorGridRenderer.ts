@@ -44,11 +44,11 @@ export class EditorGridRenderer extends Component {
     }
 
     public onEnable(): void {
-        this._cssHtmlRendererObject!.activeSelf = true;
+        if (this._cssHtmlRendererObject!.exists) this._cssHtmlRendererObject!.activeSelf = true;
     }
 
     public onDisable(): void {
-        this._cssHtmlRendererObject!.activeSelf = false;
+        if (this._cssHtmlRendererObject!.exists) this._cssHtmlRendererObject!.activeSelf = false;
     }
 
     private readonly _lastPosition: Vector3 = new Vector3(NaN, NaN, NaN);
@@ -71,7 +71,7 @@ export class EditorGridRenderer extends Component {
     }
 
     public onDestroy(): void {
-        this._cssHtmlRendererObject!.destroy();
+        this._cssHtmlRendererObject?.destroy();
     }
 
     public get gridCellWidth(): number {

@@ -306,11 +306,18 @@ export class GameObject {
      * destroy the GameObject
      */
     public destroy(): void {
-        if (this._destroyed) return;
-        this._destroyed = true;
-        this.destroyEventProcess();
+        GameObject.destroyRecursively(this);
         this._engineGlobalObject.sceneProcessor.tryStartProcessSyncedEvent();
         this._engineGlobalObject.sceneProcessor.addRemoveGameObject(this);
+    }
+
+    private static destroyRecursively(gameObject: GameObject): void {
+        if (gameObject._destroyed) return;
+        gameObject._destroyed = true;
+        gameObject.destroyEventProcess();
+        gameObject._transform.children.forEach(child => { // modified values in foreach but array is not modified
+            if (child instanceof Transform) GameObject.destroyRecursively(child.gameObject);
+        });
     }
 
     private destroyEventProcess(): void {
@@ -329,9 +336,6 @@ export class GameObject {
 
             component._engine_internal_destroyed = true;
         }
-        this._transform.children.forEach(child => { // modified values in foreach but array is not modified
-            if (child instanceof Transform) child.gameObject.destroyEventProcess();
-        });
     }
 
     /** @internal */
