@@ -96,8 +96,8 @@ export class GridEventMap extends Component implements IGridCoordinatable {
 
     /**
      * invoke event callback if there is event at grid position
-     * @param x grid x position
-     * @param y grid y position
+     * @param x world position x
+     * @param y world position y
      * @param width aabb collision width
      * @param height aabb collision height
      * @param target target game object

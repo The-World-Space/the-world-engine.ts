@@ -6,6 +6,7 @@ import { IGridCollidable } from "./IGridCollidable";
 
 /**
  * collision map with tilemap for grid system
+ * there is no limitation of tilemap size, it use multiple tilemap as chunk
  * 
  * this component will auto generate collision map from tilemap
  * 
@@ -133,10 +134,12 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * draw tile from two dimensional array. array left bottom is (0, 0) in grid coordinate system
+     * draw tile from two dimensional array. collide info will be automatically added
+     * 
+     * array left bottom is (0, 0) in grid coordinate system
      * @param array array of image index. { i: 0, a: 1 } means imageSources[0] in atlas[1]
-     * @param xOffset array x offset, if you want to add event from array[1][3] to (2, 3) you should set xOffset = 1
-     * @param yOffset array y offset, if you want to add event from array[3][1] to (3, 2) you should set yOffset = 1
+     * @param xOffset array x offset, if you want to add tile from array[1][3] to (2, 3) you should set xOffset = 1
+     * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
      * @returns 
      */
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
@@ -156,7 +159,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * clear tile at position
+     * clear tile at position. collide info will be automatically removed
      * @param x x position in grid
      * @param y y position in grid
      * @returns 
@@ -202,8 +205,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * query that collides at position
-     * @param x x position in grid
-     * @param y y position in grid
+     * @param x world position x
+     * @param y world position y
      * @param width collison width
      * @param height collision height
      * @returns if collides, return true. otherwise, return false
