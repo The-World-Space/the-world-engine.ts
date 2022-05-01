@@ -1,5 +1,5 @@
 export class AsyncImageLoader {
-    static loadImageFromPath(url: string): Promise<HTMLImageElement> {
+    public static loadImageFromPath(url: string): Promise<HTMLImageElement> {
         return new Promise<HTMLImageElement>((resolve, reject) => {
             const image = new Image();
             image.onload = () => {
@@ -12,11 +12,11 @@ export class AsyncImageLoader {
         });
     }
 
-    static loadImagesFromPath(urls: string[]): Promise<HTMLImageElement[]> {
+    public static loadImagesFromPath(urls: string[]): Promise<HTMLImageElement[]> {
         return Promise.all(urls.map(url => AsyncImageLoader.loadImageFromPath(url)));
     }
 
-    static loadImage(image: HTMLImageElement): Promise<HTMLImageElement> {
+    public static loadImage(image: HTMLImageElement): Promise<HTMLImageElement> {
         return new Promise<HTMLImageElement>((resolve, reject) => {
             image.onload = () => {
                 resolve(image);
@@ -27,7 +27,7 @@ export class AsyncImageLoader {
         });
     }
 
-    static loadImages(images: HTMLImageElement[]): Promise<HTMLImageElement[]> {
+    public static loadImages(images: HTMLImageElement[]): Promise<HTMLImageElement[]> {
         return Promise.all(images.map(image => AsyncImageLoader.loadImage(image)));
     }
 }
