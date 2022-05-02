@@ -35,7 +35,7 @@
         "gulp-typescript": "^6.0.0-alpha.1",
         "html-webpack-plugin": "^5.5.0",
         "terser-webpack-plugin": "^5.3.1",
-        "ts-loader": "^9.2.9",
+        "ts-loader": "^9.3.0",
         "ts-transformer-minify-privates": "^0.4.0",
         "typescript": "^4.6.4",
         "webpack": "^5.72.0",
@@ -44,7 +44,7 @@
         "webpack-dev-server": "^4.8.1"
     },
     "dependencies": {
-        "js-sdsl": "^2.1.4"
+        "js-sdsl": "^3.0.0-beta.0"
     },
     "sideEffects": false
 }
