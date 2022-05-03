@@ -35,7 +35,7 @@ export abstract class Component {
     
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    public readonly _engine_internal_componentEventContainer: ComponentEventContainer;
+    public _engine_internal_componentEventContainer: ComponentEventContainer;
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public _engine_internal_destroyed = false;
@@ -44,12 +44,13 @@ export abstract class Component {
         this._enabled = true;
         this._gameObject = gameObject;
         this._instanceId = gameObject.engine.instantiater.generateId();
-        this._engine_internal_componentEventContainer = new ComponentEventContainer(this);
+        this._engine_internal_componentEventContainer = null!;
     }
 
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public engine_internal_constructAfterProcess(): void {
+        this._engine_internal_componentEventContainer = new ComponentEventContainer(this);
         Object.defineProperties(this, {
             disallowMultipleComponent: {
                 configurable: false,
