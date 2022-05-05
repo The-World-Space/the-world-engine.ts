@@ -2,8 +2,6 @@ import { IGridCoordinatable } from "../helper/IGridCoordinatable";
 
 /**
  * Interface for objects that has grid coordinate system and can be collided with other objects
- * 
- * coordinate system is same as world coordinate system (positive x is right, positive y is up)
  */
 export interface IGridCollidable extends IGridCoordinatable {
     /**
