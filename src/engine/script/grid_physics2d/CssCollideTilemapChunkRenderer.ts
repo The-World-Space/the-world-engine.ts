@@ -225,14 +225,14 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * chunk size. default is 16
+     * chunk size. (default: 16)
      */
     public get chunkSize(): number {
         return this._chunkSize;
     }
 
     /**
-     * chunk size. default is 16
+     * chunk size. (default: 16)
      */
     public set chunkSize(value: number) {
         this._chunkSize = value;
@@ -244,7 +244,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * image sources for drawing
+     * image sources for drawing.
      */
     public set imageSources(value: TileAtlasItem[]) {
         if (!this._started) {
@@ -258,14 +258,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * if this value is true, this object will be rendered with css style pointer-events: "auto" it means that this object can be clicked.
+     * if this value is true, this object will be rendered with css style pointer-events: "auto"
+     * it means that this object can be clicked. (default: true)
      */
     public get pointerEvents(): boolean {
         return this._pointerEvents;
     }
 
     /**
-     * if this value is true, this object will be rendered with css style pointer-events: "auto" it means that this object can be clicked.
+     * if this value is true, this object will be rendered with css style pointer-events: "auto"
+     * it means that this object can be clicked. (default: true)
      */
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
@@ -275,14 +277,14 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * grid cell width. default is 1
+     * grid cell width. (default: 1)
      */
     public get gridCellWidth(): number {
         return this._tileWidth;
     }
 
     /**
-     * grid cell width. default is 1
+     * grid cell width. (default: 1)
      */
     public set gridCellWidth(value: number) {
         if (this._tileWidth === value) return;
@@ -294,14 +296,14 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * grid cell height. default is 1
+     * grid cell height. (default: 1)
      */
     public get gridCellHeight(): number {
         return this._tileHeight;
     }
 
     /**
-     * grid cell height. default is 1
+     * grid cell height. (default: 1)
      */
     public set gridCellHeight(value: number) {
         if (this._tileHeight === value) return;
@@ -313,7 +315,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * tile resolution x. default is 16.
+     * tile resolution x. (default: 16)
+     * 
      * higher value means higher quality of rendering.
      */
     public get tileResolutionX(): number {
@@ -321,7 +324,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * tile resolution x. default is 16.
+     * tile resolution x. (default: 16)
+     * 
      * higher value means higher quality of rendering.
      */
     public set tileResolutionX(value: number) {
@@ -333,7 +337,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * tile resolution y. default is 16.
+     * tile resolution y. (default: 16)
+     * 
      * higher value means higher quality of rendering.
      */
     public get tileResolutionY(): number {
@@ -341,7 +346,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     }
 
     /**
-     * tile resolution y. default is 16.
+     * tile resolution y. (default: 16)
+     * 
      * higher value means higher quality of rendering.
      */
     public set tileResolutionY(value: number) {

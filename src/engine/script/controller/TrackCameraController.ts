@@ -65,84 +65,84 @@ export class TrackCameraController extends Component {
     }
 
     /**
-     * target position offset
+     * target position offset (default: (0, 0))
      */
     public get targetOffset(): Vector2 {
         return this._targetOffset;
     }
 
     /**
-     * target position offset
+     * target position offset (default: (0, 0))
      */
     public set targetOffset(value: Vector2) {
         this._targetOffset.copy(value);
     }
 
     /**
-     * z distance from camera to target
+     * z distance from camera to target (default: 20)
      */
     public get cameraDistanceOffset(): number {
         return this._cameraDistanceOffset;
     }
 
     /**
-     * z distance from camera to target
+     * z distance from camera to target (default: 20)
      */
     public set cameraDistanceOffset(value: number) {
         this._cameraDistanceOffset = value;
     }
 
     /**
-     * pixel perfect unit
+     * pixel perfect unit (default: 1)
      */
     public get pixelPerfectUnit(): number {
         return this._pixelPerfectUnit;
     }
 
     /**
-     * pixel perfect unit
+     * pixel perfect unit (default: 1)
      */
     public set pixelPerfectUnit(value: number) {
         this._pixelPerfectUnit = value;
     }
 
     /**
-     * use pixel perfect
+     * use pixel perfect (default: false)
      */
     public get pixelPerfect(): boolean {
         return this._pixelPerfect;
     }
 
     /**
-     * use pixel perfect
+     * use pixel perfect (default: false)
      */
     public set pixelPerfect(value: boolean) {
         this._pixelPerfect = value;
     }
 
     /**
-     * use lerp to track
+     * use lerp to track (default: false)
      */
     public get lerpTrack(): boolean {
         return this._lerpTrack;
     }
 
     /**
-     * use lerp to track
+     * use lerp to track (default: false)
      */
     public set lerpTrack(value: boolean) {
         this._lerpTrack = value;
     }
 
     /**
-     * lerp alpha
+     * lerp alpha (default: 0.1)
      */
     public get lerpAlpha(): number {
         return this._lerpAlpha;
     }
 
     /**
-     * lerp alpha
+     * lerp alpha (default: 0.1)
      */
     public set lerpAlpha(value: number) {
         this._lerpAlpha = value;

@@ -8,6 +8,9 @@ import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class
 //import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 
+/**
+ * pointer grid event object
+ */
 export class PointerGridEvent {
     private _gridPosition: Vector2;
     private _position: Vector2;
@@ -19,19 +22,40 @@ export class PointerGridEvent {
         this._button = button;
     }
 
+    /**
+     * grid position
+     */
     public get gridPosition(): Vector2 {
         return this._gridPosition;
     }
 
+    /**
+     * world position
+     */
     public get position(): Vector2 {
         return this._position;
     }
 
+    /**
+     * pressed button number (0: left, 1: middle, 2: right)
+     */
     public get button(): number {
         return this._button;
     }
 }
 
+/**
+ * pointer grid input listener
+ * 
+ * this component create div element and receive pointer events
+ * 
+ * when use this component on orthographic camera, i recommend to attach this component to camera
+ * 
+ * when event does not fired, increase z coordinate of transform and expend inputWidth and inputHeight
+ * 
+ * 
+ * disallow multiple component
+ */
 export class PointerGridInputListener extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
 
@@ -207,46 +231,79 @@ export class PointerGridInputListener extends Component {
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);
     };
 
+    /**
+     * on pointer down event
+     */
     public get onPointerDown(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerDownEvent;
     }
 
+    /**
+     * on pointer up event
+     */
     public get onPointerUp(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerUpEvent;
     }
 
+    /**
+     * on pointer enter event
+     */
     public get onPointerEnter(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerEnterEvent;
     }
 
+    /**
+     * on pointer leave event
+     */
     public get onPointerLeave(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerLeaveEvent;
     }
 
+    /**
+     * on pointer move event
+     */
     public get onPointerMove(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerMoveEvent;
     }
 
+    /**
+     * grid center (default: (0, 0))
+     */
     public get gridCenter(): ReadonlyVector2 {
         return this._gridCenter;
     }
 
+    /**
+     * grid center (default: (0, 0))
+     */
     public set gridCenter(value: ReadonlyVector2) {
         (this._gridCenter as WritableVector2).copy(value);
     }
     
+    /**
+     * grid cell width (default: 16)
+     */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
+    /**
+     * grid cell width (default: 16)
+     */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
+    /**
+     * grid cell height (default: 16)
+     */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
+    /**
+     * grid cell height (default: 16)
+     */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }

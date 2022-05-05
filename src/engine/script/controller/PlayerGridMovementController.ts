@@ -285,63 +285,64 @@ export class PlayerGridMovementController extends Directionable
     }
 
     /**
-     * move speed
+     * move speed (default: 8)
      */
     public get speed(): number {
         return this._speed;
     }
 
     /**
-     * move speed
+     * move speed (default: 8)
      */
     public set speed(value: number) {
         this._speed = value;
     }
 
     /**
-     * grid center position
+     * grid center position (default: (0, 0))
      */
     public get gridCenter(): ReadonlyVector2 {
         return this._gridCenter;
     }
 
     /**
-     * grid center position
+     * grid center position (default: (0, 0))
      */
     public set gridCenter(value: ReadonlyVector2) {
         (this._gridCenter as WritableVector2).copy(value);
     }
 
     /**
-     * grid cell height
+     * grid cell height (default: 1)
      */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
     /**
-     * grid cell height
+     * grid cell height (default: 1)
      */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
 
     /**
-     * grid cell width
+     * grid cell width (default: 1)
      */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
     /**
-     * grid cell width
+     * grid cell width (default: 1)
      */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
     /**
-     * initial grid position
+     * initial grid position (default: (0, 0))
+     * 
      * this option is valid only when evaluated before PlayerGridMovementController.start()
      */
     public set initPosition(value: ReadonlyVector2) {
@@ -349,7 +350,7 @@ export class PlayerGridMovementController extends Directionable
     }
 
     /**
-     * grid pointer for pathfinding
+     * grid pointer for pathfinding (default: null)
      */
     public set gridPointer(value: GridPointer|null) {
         if (this._gridPointer) {
@@ -362,7 +363,7 @@ export class PlayerGridMovementController extends Directionable
     }
 
     /**
-     * grid pointer for pathfinding
+     * grid pointer for pathfinding (default: null)
      */
     public get gridPointer(): GridPointer|null {
         return this._gridPointer;

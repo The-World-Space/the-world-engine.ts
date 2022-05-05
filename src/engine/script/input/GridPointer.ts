@@ -140,7 +140,7 @@ export class GridPointer extends Component {
     }
 
     /**
-     * pointer z offset from gameObject.transform.position.z. default: 0
+     * pointer z offset from gameObject.transform.position.z. (default: 0)
      * 
      * if cursor is not visible, set this to a big positive value
      */

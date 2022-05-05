@@ -133,42 +133,42 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     }
 
     /**
-     * grid cell width, if this value is not integer, might not work properly
+     * grid cell width, if this value is not integer, might not work properly (default: 1)
      */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
     /**
-     * grid cell width, if this value is not integer, might not work properly
+     * grid cell width, if this value is not integer, might not work properly (default: 1)
      */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
     /**
-     * grid cell height, if this value is not integer, might not work properly
+     * grid cell height, if this value is not integer, might not work properly (default: 1)
      */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
     /**
-     * grid cell height, if this value is not integer, might not work properly
+     * grid cell height, if this value is not integer, might not work properly (default: 1)
      */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
 
     /**
-     * if this value is true, grid event map will visualized as debug image
+     * if this value is true, grid event map will visualized as debug image (default: false)
      */
     public get showEvents(): boolean {
         return this._showCollider;
     }
 
     /**
-     * if this value is true, grid event map will visualized as debug image
+     * if this value is true, grid event map will visualized as debug image (default: false)
      */
     public set showEvents(value: boolean) {
         this._showCollider = value;

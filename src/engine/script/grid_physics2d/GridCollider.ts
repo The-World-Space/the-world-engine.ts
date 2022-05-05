@@ -232,7 +232,7 @@ export class GridCollider extends Component {
     }
 
     /**
-     * `GridObjectCollideMap` component is used to store collider information in a grid.
+     * `GridObjectCollideMap` component is used to store collider information in a grid. (default: null)
      * 
      * when set this property, it will automatically add collider information to grid.
      */
@@ -241,7 +241,7 @@ export class GridCollider extends Component {
     }
 
     /**
-     * `GridObjectCollideMap` component is used to store collider information in a grid.
+     * `GridObjectCollideMap` component is used to store collider information in a grid. (default: null)
      * 
      * when set this property, it will automatically add collider information to grid.
      */
@@ -260,14 +260,14 @@ export class GridCollider extends Component {
     }
     
     /**
-     * if this property is true, collider will be displayed.
+     * if this property is true, collider will be displayed. (default: false)
      */
     public get showCollideSpot(): boolean {
         return this._showCollideSpot;
     }
 
     /**
-     * if this property is true, collider will be displayed.
+     * if this property is true, collider will be displayed. (default: false)
      */
     public set showCollideSpot(value: boolean) {
         if (this._showCollideSpot === value) return;

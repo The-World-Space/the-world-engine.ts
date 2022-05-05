@@ -119,14 +119,14 @@ export class EditorCameraController extends Component {
     }
 
     /**
-     * min view size
+     * min view size (default: 1)
      */
     public get minViewSize(): number {
         return this._minViewSize;
     }
 
     /**
-     * min view size
+     * min view size (default: 1)
      */
     public set minViewSize(value: number) {
         this._minViewSize = value;
@@ -138,14 +138,14 @@ export class EditorCameraController extends Component {
     }
 
     /**
-     * max view size
+     * max view size (default: 10)
      */
     public get maxViewSize(): number {
         return this._maxViewSize;
     }
 
     /**
-     * max view size
+     * max view size (default: 10)
      */
     public set maxViewSize(value: number) {
         this._maxViewSize = value;
@@ -157,14 +157,14 @@ export class EditorCameraController extends Component {
     }
 
     /**
-     * mouse button number to move camera e.g. 1 for left mouse button
+     * mouse button number to move camera e.g. 1 for left mouse button (default: 1)
      */
     public get mouseMoveButton(): number {
         return this._mouseMoveButton;
     }
 
     /**
-     * mouse button number to move camera e.g. 1 for left mouse button
+     * mouse button number to move camera e.g. 1 for left mouse button (default: 1)
      */
     public set mouseMoveButton(value: number) {
         this._mouseMoveButton = value;

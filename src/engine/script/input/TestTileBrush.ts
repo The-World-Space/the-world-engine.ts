@@ -51,18 +51,30 @@ export class TestTileBrush extends Component {
         }
     };
 
+    /**
+     * grid pointer (default: null)
+     */
     public get gridPointer(): GridPointer|null {
         return this._gridPointer;
     }
 
+    /**
+     * grid pointer (default: null)
+     */
     public set gridPointer(value: GridPointer|null) {
         this._gridPointer = value;
     }
 
+    /**
+     * colide tilemap chunk renderer for drawing tiles (default: null)
+     */
     public get colideTilemapChunk(): CssCollideTilemapChunkRenderer|null {
         return this._colideTilemapChunk;
     }
 
+    /**
+     * colide tilemap chunk renderer for drawing tiles (default: null)
+     */
     public set colideTilemapChunk(value: CssCollideTilemapChunkRenderer|null) {
         this._colideTilemapChunk = value;
     }
