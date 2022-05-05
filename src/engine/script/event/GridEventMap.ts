@@ -29,6 +29,13 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         this._initializeFunctions = [];
     }
 
+    /**
+     * add event at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @param callback event callback
+     * @returns 
+     */
     public addEvent(x: number, y: number, callback: (gridX: number, gridY: number, target: GameObject) => void): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {

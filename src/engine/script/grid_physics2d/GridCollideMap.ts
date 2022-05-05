@@ -6,6 +6,14 @@ import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { IGridCollidable } from "./IGridCollidable";
 
+/**
+ * collide map for grid system
+ * 
+ * coordinate system is same as world coordinate system (positive x is right, positive y is up)
+ * 
+ * important: grid position data is stored as string ("x_y" format)
+ * so this component might not work properly if this component's gameObject.position is not integer
+ */
 export class GridCollideMap extends Component implements IGridCollidable {
     private readonly _collideMap: Map<`${number}_${number}`, boolean> = new Map();
     private _gridCellWidth = 1;
@@ -38,6 +46,12 @@ export class GridCollideMap extends Component implements IGridCollidable {
         this._collideEnabled = false;
     }
 
+    /**
+     * add collider at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @returns 
+     */
     public addCollider(x: number, y: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -52,6 +66,13 @@ export class GridCollideMap extends Component implements IGridCollidable {
         }
     }
 
+    /**
+     * add collider from two dimensional array. array left bottom is (0, 0) in grid coordinate system
+     * @param array array that contains 1 or 0. 1 means collider is there
+     * @param xOffset array x offset, if you want to add collider from array[1][3] to (2, 3) you should set xOffset = 1
+     * @param yOffset array y offset, if you want to add collider from array[3][1] to (3, 2) you should set yOffset = 1
+     * @returns 
+     */
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -69,6 +90,12 @@ export class GridCollideMap extends Component implements IGridCollidable {
         }
     }
 
+    /**
+     * remove collider at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @returns 
+     */
     public removeCollider(x: number, y: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -83,6 +110,9 @@ export class GridCollideMap extends Component implements IGridCollidable {
         }
     }
 
+    /**
+     * remove all collider
+     */
     public removeAllColliders(): void {
         this._collideMap.clear();
         this.removeColliderImages();
@@ -124,6 +154,14 @@ export class GridCollideMap extends Component implements IGridCollidable {
         }
     }
 
+    /**
+     * query that collides at position
+     * @param x world position x
+     * @param y world position y
+     * @param width collison width
+     * @param height collision height
+     * @returns if collides, return true. otherwise, return false
+     */
     public checkCollision(x: number, y: number, width: number, height: number): boolean {
         if (!this._collideEnabled) return false;
         const worldPosition = this.transform.position;
@@ -145,6 +183,10 @@ export class GridCollideMap extends Component implements IGridCollidable {
         return false;
     }
 
+    /**
+     * get colliders grid position to vector2 array
+     * @returns vector2 array that contains grid position
+     */
     public getCollidersToArray(): Vector2[] {
         const colliders: Vector2[] = [];
         this._collideMap.forEach((_value, key) => {
@@ -154,26 +196,44 @@ export class GridCollideMap extends Component implements IGridCollidable {
         return colliders;
     }
 
+    /**
+     * grid cell width, if this value is not integer, might not work properly
+     */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
-
+    
+    /**
+     * grid cell width, if this value is not integer, might not work properly
+     */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
-
+    
+    /**
+     * grid cell height, if this value is not integer, might not work properly
+     */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
+    /**
+     * grid cell height, if this value is not integer, might not work properly
+     */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
 
+    /**
+     * if this value is true, grid collide map will visualized as debug image
+     */
     public get showCollider(): boolean {
         return this._showCollider;
     }
 
+    /**
+     * if this value is true, grid collide map will visualized as debug image
+     */
     public set showCollider(value: boolean) {
         if (this._showCollider === value) return;
         this._showCollider = value;
@@ -186,15 +246,24 @@ export class GridCollideMap extends Component implements IGridCollidable {
         }
     }
 
+    /**
+     * grid coordinate center position
+     */
     public get gridCenter(): Vector2 {
         const worldPosition = this.transform.position;
         return new Vector2(worldPosition.x, worldPosition.y);
     }
 
+    /**
+     * grid coordinate center position x
+     */
     public get gridCenterX(): number {
         return this.transform.position.x;
     }
 
+    /**
+     * grid coordinate center position y
+     */
     public get gridCenterY(): number {
         return this.transform.position.y;
     }
