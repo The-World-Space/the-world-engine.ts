@@ -5,6 +5,16 @@ import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { GridObjectCollideMap } from "./GridObjectCollideMap";
 
+/**
+ * collider work with `GridObjectCollideMap`
+ * 
+ * coordinate system is same as world coordinate system (positive x is right, positive y is up)
+ * 
+ * important: grid position data is stored as string ("x_y" format)
+ * so this component might not work properly if this component's gameObject.position is not integer
+ * 
+ * don't use this component on dynamic gameObject you can only use this component on static gameObject (don't move your gameObject)
+ */
 export class GridCollider extends Component {
     private readonly _collideMap: Map<`${number}_${number}`, boolean> = new Map();
     private _showCollideSpot = false;
@@ -50,8 +60,8 @@ export class GridCollider extends Component {
 
     /**
      * add collider, relative to object space center
-     * @param x grid unit x
-     * @param y grid unit y
+     * @param x x position in object space grid
+     * @param y y position in object space grid
      * @returns 
      */
     public addCollider(x: number, y: number): void {
@@ -73,6 +83,13 @@ export class GridCollider extends Component {
         }
     }
 
+    /**
+     * add collider from two dimensional array. array left bottom is (0, 0) in object space grid coordinate system
+     * @param array array that contains 1 or 0. 1 means collider is there
+     * @param xOffset array x offset, if you want to add collider from array[1][3] to (2, 3) you should set xOffset = 1
+     * @param yOffset array y offset, if you want to add collider from array[3][1] to (3, 2) you should set yOffset = 1
+     * @returns 
+     */
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -90,6 +107,12 @@ export class GridCollider extends Component {
         }
     }
 
+    /**
+     * remove collider at position
+     * @param x x position in grid
+     * @param y y position in grid
+     * @returns 
+     */
     public removeCollider(x: number, y: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
@@ -208,10 +231,20 @@ export class GridCollider extends Component {
         });
     }
 
+    /**
+     * `GridObjectCollideMap` component is used to store collider information in a grid.
+     * 
+     * when set this property, it will automatically add collider information to grid.
+     */
     public get gridObjectCollideMap(): GridObjectCollideMap|null {
         return this._gridObjectCollideMap;
     }
 
+    /**
+     * `GridObjectCollideMap` component is used to store collider information in a grid.
+     * 
+     * when set this property, it will automatically add collider information to grid.
+     */
     public set gridObjectCollideMap(value: GridObjectCollideMap|null) {
         if (this._collideInfoAddedToMap) {
             this.removeAllCollideInfoFromMap();
@@ -226,10 +259,16 @@ export class GridCollider extends Component {
         }
     }
     
+    /**
+     * if this property is true, collider will be displayed.
+     */
     public get showCollideSpot(): boolean {
         return this._showCollideSpot;
     }
 
+    /**
+     * if this property is true, collider will be displayed.
+     */
     public set showCollideSpot(value: boolean) {
         if (this._showCollideSpot === value) return;
         this._showCollideSpot = value;
