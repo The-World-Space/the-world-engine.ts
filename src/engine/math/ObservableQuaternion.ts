@@ -665,4 +665,15 @@ export class ObservableQuaternion {
     public inverse(): Quaternion {
         throw new Error("deprecated");
     }
+
+    public *[Symbol.iterator](): Generator<number, void> {
+        this._onBeforeGetComponentCallback();
+        yield this._internalX;
+        this._onBeforeGetComponentCallback();
+        yield this._internalY;
+        this._onBeforeGetComponentCallback();
+        yield this._internalZ;
+        this._onBeforeGetComponentCallback();
+        yield this._internalW;
+    }
 }

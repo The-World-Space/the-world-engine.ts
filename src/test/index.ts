@@ -1,9 +1,9 @@
 import { Game } from "../engine/Game";
-import { EventTestBootstrapper } from "./asset/EventTestBootstrapper";
+import { TestBootstrapper } from "./asset/TestBootstrapper";
 
 function startTestGame(container: HTMLElement): void {
     const game = new Game(container);
-    game.run(EventTestBootstrapper);
+    game.run(TestBootstrapper);
     game.inputHandler.startHandleEvents();
 }
 

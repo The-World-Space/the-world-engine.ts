@@ -297,6 +297,17 @@ export class ObservableEuler {
         this._onChangeCallback = callback;
         return this;
     }
+
+    public *[Symbol.iterator](): Generator<string | number, void> {
+        this._onBeforeGetComponentCallback();
+        yield this._internalX;
+        this._onBeforeGetComponentCallback();
+        yield this._internalY;
+        this._onBeforeGetComponentCallback();
+        yield this._internalZ;
+        this._onBeforeGetComponentCallback();
+        yield this._internalOrder;
+    }
 }
 
 const tempMatrix = /*@__PURE__*/ new Matrix4();

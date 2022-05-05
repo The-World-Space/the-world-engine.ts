@@ -21,8 +21,8 @@
     },
     "homepage": "https://github.com/noname0310/the-world-engine.ts#readme",
     "peerDependencies": {
-        "@types/three": "^0.139.0",
-        "three": "^0.139.2"
+        "@types/three": "^0.140.0",
+        "three": "^0.140.0"
     },
     "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^5.22.0",
@@ -41,7 +41,7 @@
         "webpack": "^5.72.0",
         "webpack-bundle-analyzer": "^4.5.0",
         "webpack-cli": "^4.9.2",
-        "webpack-dev-server": "^4.8.1"
+        "webpack-dev-server": "^4.9.0"
     },
     "dependencies": {
         "js-sdsl": "^3.0.0-beta.0"
