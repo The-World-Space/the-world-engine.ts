@@ -11,6 +11,9 @@ import { PrefabRef } from "../../../hierarchy_object/PrefabRef";
 import { Color } from "../../../render/Color";
 import { DEG2RAD } from "three/src/math/MathUtils";
 
+/**
+ * Collider for 2D physics representing an arbitrary polygon defined by its vertices.
+ */
 export class PolygonCollider2D extends Collider2D {
     private _points: Vector2[] = [
         new Vector2(-2, -2),
@@ -63,10 +66,16 @@ export class PolygonCollider2D extends Collider2D {
         return this._shapeArray;
     }
 
+    /**
+     * Corner points that define the collider's shape in local space. (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     */
     public get points(): readonly ReadonlyVector2[] {
         return this._points;
     }
 
+    /**
+     * Corner points that define the collider's shape in local space. (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
         for (let i = 0; i < value.length; i++) {
@@ -78,6 +87,11 @@ export class PolygonCollider2D extends Collider2D {
         }
     }
     
+    /**
+     * set shape to regular polygon with given number of sides and radius
+     * @param sides number of sides
+     * @param radius radius
+     */
     public setShapeToRegularPolygon(sides: number, radius: number): void {
         const points = [];
         const angle = DEG2RAD * 360 / sides;
@@ -90,10 +104,16 @@ export class PolygonCollider2D extends Collider2D {
         this.points = points;
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public get debugDraw(): boolean {
         return this._debugDraw;
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public set debugDraw(value: boolean) {
         this._debugDraw = value;
     }

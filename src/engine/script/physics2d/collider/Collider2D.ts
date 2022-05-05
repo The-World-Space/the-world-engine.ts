@@ -10,6 +10,11 @@ import type { CollisionLayer, CollisionLayerParm } from "../../../physics/Collis
 import type { FixtureGroup } from "../../../physics/2d/FixtureGroup";
 import { ContactPoint2D } from "../../../physics/2d/ContactPoint2D";
 
+/**
+ * collider2d base component
+ * 
+ * you can't create collider2d component directly. use drived class. e.g. BoxCollider2D
+ */
 export class Collider2D extends Component {
     private _fixtureGroup: FixtureGroup|null = null;
     private _density = 1;
@@ -167,10 +172,16 @@ export class Collider2D extends Component {
         throw new Error("You should not use Collider2D directly but one of its subclasses. e.g. BoxCollider2D");
     }
     
+    /**
+     * The density of the collider used to calculate its mass (when auto mass is enabled). (default: 1)
+     */
     public get density(): number {
         return this._density;
     }
 
+    /**
+     * The density of the collider used to calculate its mass (when auto mass is enabled). (default: 1)
+     */
     public set density(value: number) {
         if (this._fixtureGroup) {
             const physicsObject = this._fixtureGroup.physicObject;
@@ -184,10 +195,16 @@ export class Collider2D extends Component {
         }
     }
 
+    /**
+     * The PhysicsMaterial2D that is applied to this collider. (default: null)
+     */
     public get material(): PhysicsMaterial2D|null {
         return this._material;
     }
 
+    /**
+     * The PhysicsMaterial2D that is applied to this collider. (default: null)
+     */
     public set material(value: PhysicsMaterial2D|null) {
         if (value) {
             if (!this._material) {
@@ -203,10 +220,16 @@ export class Collider2D extends Component {
         this.updateFixturesMaterialInfo();
     }
 
+    /**
+     * Is this collider configured as a trigger? (default: false)
+     */
     public get isTrigger(): boolean {
         return this._isTrigger;
     }
 
+    /**
+     * Is this collider configured as a trigger? (default: false)
+     */
     public set isTrigger(value: boolean) {
         this._isTrigger = value;
         if (this._fixtureGroup) {
@@ -214,33 +237,57 @@ export class Collider2D extends Component {
         }
     }
 
+    /**
+     * The local offset of the collider geometry. (default: (0, 0))
+     */
     public get offset(): ReadonlyVector2 {
         return this._offset;
     }
 
+    /**
+     * The local offset of the collider geometry. (default: (0, 0))
+     */
     public set offset(value: ReadonlyVector2) {
         (this._offset as WritableVector2).copy(value);
         this.updateFixture();
     }
 
+    /**
+     * get collision layer of this collider as string.
+     * @returns layer name
+     */
     public getLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T>|null {
         return this._collisionLayer ? this.engine.physics.collisionLayerMask.layerToName<T>(this._collisionLayer) : null;
     }
 
+    /**
+     * set collision layer of this collider from string.
+     * @param value layer name
+     */
     public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>|null): void {
         this._collisionLayer = value ? this.engine.physics.collisionLayerMask.nameToLayer(value) : null;
         this.updateFixturesFilter();
     }
 
+    /**
+     * collision layer of this collider. (default: null)
+     */
     public get layer(): number|null {
         return this._collisionLayer;
     }
 
+    /**
+     * collision layer of this collider. (default: null)
+     */
     public set layer(value: number|null) {
         this._collisionLayer = value;
         this.updateFixturesFilter();
     }
 
+    /**
+     * get collision layer as string. if collider collision layer is not set, it will return the rigidbody collision layer.
+     * @returns layer name
+     */
     public getThisOrRigidBodyLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T> {
         if (this._collisionLayer) {
             return this.engine.physics.collisionLayerMask.layerToName<T>(this._collisionLayer);
@@ -249,6 +296,10 @@ export class Collider2D extends Component {
         }
     }
 
+    /**
+     * get collision layer. if collider collision layer is not set, it will return the rigidbody collision layer.
+     * @returns layer
+     */
     public getThisOrRigidBodyLayer(): number {
         if (this._collisionLayer) {
             return this._collisionLayer;
@@ -263,6 +314,11 @@ export class Collider2D extends Component {
     
     private readonly _worldManifold: WorldManifold = new WorldManifold();
 
+    /**
+     * Retrieves all contact points for this Collider.
+     * @param out The array to store the contact points in.
+     * @returns The number of contact points retrieved.
+     */
     public getContacts(out: ContactPoint2D[]): number {
         if (!this._fixtureGroup) return 0;
         let insertPos = 0;

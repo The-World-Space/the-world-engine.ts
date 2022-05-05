@@ -10,6 +10,9 @@ import { PrefabRef } from "../../../hierarchy_object/PrefabRef";
 import { Color } from "../../../render/Color";
 import { Css2DEdgeRenderer } from "../../render/Css2DEdgeRenderer";
 
+/**
+ * Collider for 2D physics representing an arbitrary set of connected edges (lines) defined by its vertices.
+ */
 export class EdgeCollider2D extends Collider2D {
     private _points: Vector2[] = [
         new Vector2(-2, 0),
@@ -63,10 +66,16 @@ export class EdgeCollider2D extends Collider2D {
         return shapes;
     }
 
+    /**
+     * Get the points defining multiple continuous edges. (default: [(-2, 0), (2, 0)])
+     */
     public get points(): readonly ReadonlyVector2[] {
         return this._points;
     }
 
+    /**
+     * Set the points defining multiple continuous edges. (default: [(-2, 0), (2, 0)])
+     */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
         for (let i = 0; i < value.length; i++) {
@@ -78,19 +87,31 @@ export class EdgeCollider2D extends Collider2D {
         }
     }
 
+    /**
+     * Controls the radius of all edges created by the collider.
+     */
     public get edgeRadius(): number {
         return this._edgeRadius;
     }
 
+    /**
+     * Controls the radius of all edges created by the collider.
+     */
     public set edgeRadius(value: number) {
         this._edgeRadius = value;
         this.updateFixture();
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public get debugDraw(): boolean {
         return this._debugDraw;
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public set debugDraw(value: boolean) {
         this._debugDraw = value;
     }

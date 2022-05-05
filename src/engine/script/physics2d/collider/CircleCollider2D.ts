@@ -7,6 +7,9 @@ import type { GameObject } from "../../../hierarchy_object/GameObject";
 import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
 import { Object2DAttacher } from "../Object2DAttacher";
 
+/**
+ * Collider for 2D physics representing an circle.
+ */
 export class CircleCollider2D extends Collider2D {
     private _radius = 1;
     private _debugDraw = true;
@@ -55,19 +58,31 @@ export class CircleCollider2D extends Collider2D {
         return this._shapeArray;
     }
 
+    /**
+     * Radius of the circle. (default: 1)
+     */
     public get radius(): number {
         return this._radius;
     }
 
+    /**
+     * Radius of the circle. (default: 1)
+     */
     public set radius(value: number) {
         this._radius = value;
         this.updateFixture();
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public get debugDraw(): boolean {
         return this._debugDraw;
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public set debugDraw(value: boolean) {
         this._debugDraw = value;
     }

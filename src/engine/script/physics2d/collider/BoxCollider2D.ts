@@ -9,6 +9,9 @@ import type { WritableVector2 } from "../../../math/WritableVector2";
 import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
 import { Object2DAttacher } from "../Object2DAttacher";
 
+/**
+ * Collider for 2D physics representing an axis-aligned rectangle.
+ */
 export class BoxCollider2D extends Collider2D {
     private readonly _size: Vector2 = new Vector2(1, 1);
     private _edgeRadius = 0;
@@ -63,29 +66,47 @@ export class BoxCollider2D extends Collider2D {
         return this._shapeArray;
     }
 
+    /**
+     * The width and height of the rectangle. (default: (1, 1))
+     */
     public get size(): ReadonlyVector2 {
         return this._size;
     }
 
+    /**
+     * The width and height of the rectangle. (default: (1, 1))
+     */
     public set size(value: ReadonlyVector2) {
         if (value.x <= 0 || value.y <= 0) throw new Error("size must be greater than 0");
         (this._size as WritableVector2).copy(value);
         this.updateFixture();
     }
 
+    /**
+     * Controls the radius of all edges created by the collider. (default: 0)
+     */
     public get edgeRadius(): number {
         return this._edgeRadius;
     }
 
+    /**
+     * Controls the radius of all edges created by the collider. (default: 0)
+     */
     public set edgeRadius(value: number) {
         this._edgeRadius = value;
         this.updateFixture();
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public get debugDraw(): boolean {
         return this._debugDraw;
     }
 
+    /**
+     * if true, the collider will be rendered (default: false)
+     */
     public set debugDraw(value: boolean) {
         this._debugDraw = value;
     }
