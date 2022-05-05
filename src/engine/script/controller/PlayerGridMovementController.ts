@@ -11,8 +11,12 @@ import { EventContainer, IEventContainer } from "../../collection/EventContainer
 
 /**
  * make gameobject moves on grid coordinates
+ * 
  * supports keyboard wasd and arrow keys input
+ * 
  * supports pathfinding as optional feature
+ * 
+ * disallow multiple component
  */
 export class PlayerGridMovementController extends Directionable
     implements IGridPositionable {

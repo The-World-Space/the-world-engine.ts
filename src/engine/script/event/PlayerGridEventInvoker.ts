@@ -6,6 +6,11 @@ import { PlayerGridMovementController } from "../controller/PlayerGridMovementCo
 /**
  * for player interact with GridEventMap you should add this component to your player
  * and use PlayerGridEventInvoker.addGridEventMap to register your grid event map
+ * 
+ * 
+ * disallow multiple component
+ * 
+ * require components: `PlayerGridMovementController`
  */
 export class PlayerGridEventInvoker extends Component {
     public override readonly disallowMultipleComponent: boolean = true;

@@ -6,8 +6,15 @@ import { Camera } from "../render/Camera";
 
 /**
  * controller for 2D track camera
+ * 
  * it requires a camera component to control
+ * 
  * it supports pixel perfect and lerp movement
+ * 
+ * 
+ * disallow multiple component
+ * 
+ * require components: `Camera`
  */
 export class TrackCameraController extends Component {
     public override readonly disallowMultipleComponent: boolean = true;

@@ -7,6 +7,16 @@ import { PointerGridEvent, PointerGridInputListener } from "./PointerGridInputLi
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 import { EventContainer, IEventContainer } from "../../collection/EventContainer";
 
+/**
+ * grid pointer
+ * 
+ * draw grid aligned rectangle cursor and receive pointer events
+ * 
+ * 
+ * disallow multiple component
+ * 
+ * require components: `PointerGridInputListener`
+ */
 export class GridPointer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
@@ -99,22 +109,41 @@ export class GridPointer extends Component {
         this._pointerObject!.transform.localPosition.set(positionX, positionY, this._pointerZoffset);
     }
 
+    /**
+     * on pointer down event
+     */
     public get onPointerDown(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerDownEvent;
     }
 
+    /**
+     * on pointer up event
+     */
     public get onPointerUp(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerUpEvent;
     }
 
+    /**
+     * on pointer move event
+     */
     public get onPointerMove(): IEventContainer<(event: PointerGridEvent) => void> {
         return this._onPointerMoveEvent;
     }
 
+    /**
+     * pointer z offset from gameObject.transform.position.z. default: 0
+     * 
+     * if cursor is not visible, set this to a big positive value
+     */
     public get pointerZoffset(): number {
         return this._pointerZoffset;
     }
 
+    /**
+     * pointer z offset from gameObject.transform.position.z. default: 0
+     * 
+     * if cursor is not visible, set this to a big positive value
+     */
     public set pointerZoffset(value: number) {
         this._pointerZoffset = value;
     }
