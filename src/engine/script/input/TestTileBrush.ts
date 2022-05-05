@@ -3,6 +3,9 @@ import { CssCollideTilemapChunkRenderer } from "../grid_physics2d/CssCollideTile
 import { GridPointer } from "./GridPointer";
 import { PointerGridEvent } from "./PointerGridInputListener";
 
+/**
+ * tile brush for test purpose
+ */
 export class TestTileBrush extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     
@@ -33,16 +36,16 @@ export class TestTileBrush extends Component {
         }
     }
 
-    private onPointerDown = (event: PointerGridEvent) => {
+    private readonly onPointerDown = (event: PointerGridEvent) => {
         this._pointerDown = true;
         this._colideTilemapChunk!.drawTile(event.gridPosition.x, event.gridPosition.y, 0, 10);
     };
 
-    private onPointerUp = (_: PointerGridEvent) => {
+    private readonly onPointerUp = (_: PointerGridEvent) => {
         this._pointerDown = false;
     };
 
-    private onPointerMove = (event: PointerGridEvent) => {
+    private readonly onPointerMove = (event: PointerGridEvent) => {
         if (this._pointerDown) {
             this._colideTilemapChunk!.drawTile(event.gridPosition.x, event.gridPosition.y, 0, 10);
         }

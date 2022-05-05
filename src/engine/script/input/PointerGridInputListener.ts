@@ -143,27 +143,27 @@ export class PointerGridInputListener extends Component {
         );
     }
 
-    private onMouseDown = (event: MouseEvent): void => {
+    private readonly onMouseDown = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerDownEvent.invoke(gridEvent);
     };
     
-    private onMouseUp = (event: MouseEvent): void => {
+    private readonly onMouseUp = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerUpEvent.invoke(gridEvent);
     };
 
-    private onMouseEnter = (event: MouseEvent): void => {
+    private readonly onMouseEnter = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerEnterEvent.invoke(gridEvent);
     };
 
-    private onMouseLeave = (event: MouseEvent): void => {
+    private readonly onMouseLeave = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerLeaveEvent.invoke(gridEvent);
     };
 
-    private onMouseMove = (event: MouseEvent): void => {
+    private readonly onMouseMove = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerMoveEvent.invoke(gridEvent);
     };
@@ -178,21 +178,21 @@ export class PointerGridInputListener extends Component {
         touch.target.dispatchEvent(simulatedEvent);
     }
 
-    private onTouchStart = (event: TouchEvent): void => {
+    private readonly onTouchStart = (event: TouchEvent): void => {
         this._onTouchStartFunc = () => {
             this.simulateMouseEvent("mouseenter", event.touches[0]);
             this.simulateMouseEvent("mousedown", event.touches[0]);
         };
     };
 
-    private onTouchEnd = (event: TouchEvent): void => {
+    private readonly onTouchEnd = (event: TouchEvent): void => {
         if (!this._touchMoveOccured) return;
         this._touchMoveOccured = false;
         this.simulateMouseEvent("mouseup", event.changedTouches[0]);
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);
     };
 
-    private onTouchMove = (event: TouchEvent): void => {
+    private readonly onTouchMove = (event: TouchEvent): void => {
         if (this._onTouchStartFunc) {
             this._onTouchStartFunc();
             this._onTouchStartFunc = null;
@@ -201,7 +201,7 @@ export class PointerGridInputListener extends Component {
         this._touchMoveOccured = true;
     };
 
-    private onTouchCancel = (event: TouchEvent): void => {
+    private readonly onTouchCancel = (event: TouchEvent): void => {
         if (!this._touchMoveOccured) return;
         this._touchMoveOccured = false;
         this.simulateMouseEvent("mouseleave", event.changedTouches[0]);

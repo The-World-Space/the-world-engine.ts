@@ -59,17 +59,17 @@ export class GridPointer extends Component {
         }
     }
 
-    private onPointerEnterBind = (event: PointerGridEvent): void => {
+    private readonly onPointerEnterBind = (event: PointerGridEvent): void => {
         this._pointerObject!.activeSelf = true;
         this.onPointerMoveBind(event);
     };
 
-    private onPointerLeaveBind = (event: PointerGridEvent): void => {
+    private readonly onPointerLeaveBind = (event: PointerGridEvent): void => {
         if (this._isMouseDown) this.onPointerUpBind(event);
         this._pointerObject!.activeSelf = false;
     };
 
-    private onPointerDownBind = (event: PointerGridEvent): void => {
+    private readonly onPointerDownBind = (event: PointerGridEvent): void => {
         this._isMouseDown = true;
         this.updatePointerPosition(event);
         const container = this._pointerRenderer?.element;
@@ -77,7 +77,7 @@ export class GridPointer extends Component {
         this._onPointerDownEvent.invoke(event);
     };
 
-    private onPointerUpBind = (event: PointerGridEvent): void => {
+    private readonly onPointerUpBind = (event: PointerGridEvent): void => {
         this._isMouseDown = false;
         this.updatePointerPosition(event);
         const container = this._pointerRenderer?.element;
@@ -85,7 +85,7 @@ export class GridPointer extends Component {
         this._onPointerUpEvent.invoke(event);
     };
 
-    private onPointerMoveBind = (event: PointerGridEvent): void => {
+    private readonly onPointerMoveBind = (event: PointerGridEvent): void => {
         this.updatePointerPosition(event);
         this._onPointerMoveEvent.invoke(event);
     };
