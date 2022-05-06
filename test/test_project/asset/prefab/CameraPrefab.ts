@@ -1,11 +1,11 @@
 import { Vector2 } from "three/src/Three";
-import { GameObject } from "src/engine/hierarchy_object/GameObject";
-import { GameObjectBuilder } from "src/engine/hierarchy_object/GameObjectBuilder";
-import { Prefab } from "src/engine/hierarchy_object/Prefab";
-import { PrefabRef } from "src/engine/hierarchy_object/PrefabRef";
-import { Color } from "src/engine/render/Color";
-import { TrackCameraController } from "src/engine/script/controller/TrackCameraController";
-import { Camera, CameraType } from "src/engine/script/render/Camera";
+import { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import { Prefab } from "@src/engine/hierarchy_object/Prefab";
+import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
+import { Color } from "@src/engine/render/Color";
+import { TrackCameraController } from "@src/engine/script/controller/TrackCameraController";
+import { Camera, CameraType } from "@src/engine/script/render/Camera";
 
 /** @internal */
 export class CameraPrefab extends Prefab {

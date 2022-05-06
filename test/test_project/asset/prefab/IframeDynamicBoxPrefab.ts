@@ -1,10 +1,10 @@
 import { Vector2 } from "three/src/Three";
-import { GameObjectBuilder } from "src/engine/hierarchy_object/GameObjectBuilder";
-import { Prefab } from "src/engine/hierarchy_object/Prefab";
-import { PrefabRef } from "src/engine/hierarchy_object/PrefabRef";
-import { BoxCollider2D } from "src/engine/script/physics2d/collider/BoxCollider2D";
-import { RigidBody2D } from "src/engine/script/physics2d/RigidBody2D";
-import { CssIframeRenderer } from "src/engine/script/render/CssIframeRenderer";
+import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import { Prefab } from "@src/engine/hierarchy_object/Prefab";
+import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
+import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";
+import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
+import { CssIframeRenderer } from "@src/engine/script/render/CssIframeRenderer";
 
 /** @internal */
 export class IframeDynamicBoxPrefab extends Prefab {

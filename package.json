@@ -7,7 +7,7 @@
         "start": "webpack serve --mode development",
         "build": "gulp",
         "tsc": "tsc",
-        "test": "jest --coverage",
+        "test": "jest",
         "webpack": "webpack --mode production",
         "lint": "eslint -c .eslintrc.js src/**/*.ts test/**/*.ts --fix"
     },

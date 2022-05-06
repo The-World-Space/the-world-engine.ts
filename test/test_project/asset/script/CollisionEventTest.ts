@@ -1,6 +1,6 @@
-import { Component } from "src/engine/hierarchy_object/Component";
-import { Collision2D } from "src/engine/physics/2d/Collision2D";
-import { ContactPoint2D } from "src/engine/physics/2d/ContactPoint2D";
+import { Component } from "@src/engine/hierarchy_object/Component";
+import { Collision2D } from "@src/engine/physics/2d/Collision2D";
+import { ContactPoint2D } from "@src/engine/physics/2d/ContactPoint2D";
 
 /** @internal */
 export class CollisionEventTest extends Component {

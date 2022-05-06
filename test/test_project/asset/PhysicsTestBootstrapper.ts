@@ -1,13 +1,13 @@
 import { Vector2, Vector3 } from "three/src/Three";
-import { Bootstrapper } from "src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "src/engine/bootstrap/SceneBuilder";
-import { Physics2DLoader } from "src/engine/physics/2d/Physics2DLoader";
-import { Color } from "src/engine/render/Color";
-import { EditorCameraController } from "src/engine/script/controller/EditorCameraController";
-import { BoxCollider2D } from "src/engine/script/physics2d/collider/BoxCollider2D";
-import { RigidBody2D } from "src/engine/script/physics2d/RigidBody2D";
-import { Camera } from "src/engine/script/render/Camera";
-import { CssHtmlElementRenderer } from "src/engine/script/render/CssHtmlElementRenderer";
+import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
+import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
+import { Color } from "@src/engine/render/Color";
+import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";
+import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";
+import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
+import { Camera } from "@src/engine/script/render/Camera";
+import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
 import { CollisionEventTest } from "./script/CollisionEventTest";
 import { PhysicsController } from "./script/PhysicsController";
 

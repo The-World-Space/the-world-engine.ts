@@ -1,4 +1,4 @@
-import { Component } from "src/engine/hierarchy_object/Component";
+import { Component } from "@src/engine/hierarchy_object/Component";
 
 /** @internal */
 export class EventTest2 extends Component {

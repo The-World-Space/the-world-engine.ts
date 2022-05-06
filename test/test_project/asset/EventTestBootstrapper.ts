@@ -1,7 +1,7 @@
-import { Bootstrapper } from "src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "src/engine/bootstrap/SceneBuilder";
-import { Component } from "src/engine/hierarchy_object/Component";
-import { Camera } from "src/engine/script/render/Camera";
+import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
+import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import { Component } from "@src/engine/hierarchy_object/Component";
+import { Camera } from "@src/engine/script/render/Camera";
 
 // class Script1 extends Component {
 //     public start(): void {

@@ -137,7 +137,7 @@ module.exports = {
         "import/resolver": {
             alias: {
                 map: [
-                    ['src', './src']
+                    ['@src', './src']
                 ]
             }
         }

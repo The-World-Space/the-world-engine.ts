@@ -1,4 +1,4 @@
-import { Component } from "src/engine/hierarchy_object/Component";
+import { Component } from "@src/engine/hierarchy_object/Component";
 
 /** @internal */
 export class TransformTest extends Component {

@@ -1,7 +1,7 @@
-import { CoroutineIterator } from "src/engine/coroutine/CoroutineIterator";
-import { WaitForSeconds } from "src/engine/coroutine/YieldInstruction";
-import { Component } from "src/engine/hierarchy_object/Component";
-import { CssTextRenderer } from "src/engine/script/render/CssTextRenderer";
+import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
+import { Component } from "@src/engine/hierarchy_object/Component";
+import { CssTextRenderer } from "@src/engine/script/render/CssTextRenderer";
 
 /** @internal */
 export class FpsCounter extends Component {

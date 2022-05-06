@@ -1,6 +1,6 @@
-import { Component } from "src/engine/hierarchy_object/Component";
-import { ContactPoint2D } from "src/engine/physics/2d/ContactPoint2D";
-import { RigidBody2D } from "src/engine/script/physics2d/RigidBody2D";
+import { Component } from "@src/engine/hierarchy_object/Component";
+import { ContactPoint2D } from "@src/engine/physics/2d/ContactPoint2D";
+import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
 
 /** @internal */
 export class ContactTest extends Component {

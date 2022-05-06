@@ -1,7 +1,7 @@
 import { Vector3 } from "three/src/Three";
-import { Component } from "src/engine/hierarchy_object/Component";
-import { GameObject } from "src/engine/hierarchy_object/GameObject";
-import { PrefabConstructor } from "src/engine/hierarchy_object/PrefabConstructor";
+import { Component } from "@src/engine/hierarchy_object/Component";
+import { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
 
 export class HorizontalObjectsAnimator extends Component {
     private _prefab: PrefabConstructor|null = null;
