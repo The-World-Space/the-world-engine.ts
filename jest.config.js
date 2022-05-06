@@ -23,7 +23,7 @@ const config = {
     modulePathIgnorePatterns: [
         "node_modules"
     ],
-    // collectCoverage: true,
+    collectCoverage: true,
     // collectCoverageFrom: [
     //     "src/**/*.ts",
     //     "!src/**/*.d.ts",

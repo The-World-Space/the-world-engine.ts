@@ -44,10 +44,21 @@ describe("GameSetting Test", () => {
         const setting = new GameSetting(settingObject);
 
         setting.physics
-            .gravity(new Vector2(1, 2));
+            .gravity(new Vector2(1, 2))
+            .layerCollisionMatrix<["default", "player", "level"]>({
+                default: { level: true, player: true, default: true },
+                player:  { level: true, player: true },
+                level:   { level: true }
+            });
 
         const readonlySetting = setting.make();
 
         expect(readonlySetting.physics.gravity).toEqual(new Vector2(1, 2));
+
+        expect(readonlySetting.physics.collisionLayerMaskMatrix).toEqual({
+            default: { level: true, player: true, default: true },
+            player:  { level: true, player: true },
+            level:   { level: true }
+        });
     });
 });
