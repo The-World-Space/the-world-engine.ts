@@ -4,7 +4,7 @@ import { RenderSetting } from "@src/engine/bootstrap/setting/RenderSetting";
 import { Vector2 } from "three";
 
 describe("GameSetting Test", () => {
-    it("GameSetting.constructor", () => {
+    it("GameSetting.constructor()", () => {
         const settingObject = GameSetting.createDefaultObject();
         const setting = new GameSetting(settingObject);
 
