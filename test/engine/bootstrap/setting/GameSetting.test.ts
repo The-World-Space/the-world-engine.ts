@@ -1,8 +1,15 @@
 import { GameSetting } from "src/engine/bootstrap/setting/GameSetting";
 
 describe("GameSetting Test", () => {
-    test("GameSetting", () => {
-        const setting = new GameSetting(GameSetting.createDefaultObject());
-        expect(setting.render.useCss3DRenderer).toBe(true);
+    test("GameSetting.createDefaultObject()", () => {
+        const settingObject = GameSetting.createDefaultObject();
+        
+        expect(settingObject).toEqual({
+            render: {
+                useCss3DRenderer: true
+            },
+            physics: {
+            }
+        });
     });
 });

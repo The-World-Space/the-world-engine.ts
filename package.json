@@ -5,10 +5,10 @@
     "main": "dist/index.js",
     "scripts": {
         "start": "webpack serve --mode development",
-        "build": "tsc",
-        "webpack": "webpack --mode production",
-        "gulp": "gulp",
+        "build": "gulp",
+        "tsc": "tsc",
         "test": "jest",
+        "webpack": "webpack --mode production",
         "lint": "eslint -c .eslintrc.js src/**/*.ts test/**/*.ts --fix"
     },
     "repository": {
@@ -45,7 +45,7 @@
         "gulp-typescript": "^6.0.0-alpha.1",
         "html-webpack-plugin": "^5.5.0",
         "jest": "^28.0.3",
-        "jest-puppeteer": "^6.1.0",
+        "jest-environment-node": "^28.0.2",
         "puppeteer": "^13.7.0",
         "terser-webpack-plugin": "^5.3.1",
         "ts-jest": "^28.0.1",

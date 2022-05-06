@@ -1,9 +1,11 @@
 /** @type {import("@jest/types").Config.InitialOptions} */
 const config = {
-    preset: "jest-puppeteer",
+    globalSetup: './test/setup.js',
+    globalTeardown: './test/teardown.js',
+    testEnvironment: './test/puppeteer_environment.js',
     testMatch: ["**/*.test.ts"],
     transform: {
-      "^.+\\.ts?$": "ts-jest",
+        "^.+\\.ts?$": "ts-jest",
     },
     moduleNameMapper: {
         "src/(.*)": "<rootDir>/src/$1"
