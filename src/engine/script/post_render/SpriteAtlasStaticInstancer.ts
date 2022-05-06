@@ -9,13 +9,13 @@ import { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 
 export class SpriteAtlasInstance {
-    private _width: number;
-    private _height: number;
-    private _atlasIndex: number;
-    private _position: Vector3;
-    private _rotation?: Quaternion;
-    private _scale?: Vector3;
-    private _centerOffset?: Vector2;
+    private readonly _width: number;
+    private readonly _height: number;
+    private readonly _atlasIndex: number;
+    private readonly _position: Vector3;
+    private readonly _rotation?: Quaternion;
+    private readonly _scale?: Vector3;
+    private readonly _centerOffset?: Vector2;
 
     public constructor(
         width: number,
@@ -80,9 +80,9 @@ export class SpriteAtlasStaticInstancer extends Component {
         this._initializeFunction?.call(this);
     }
 
-    public setInstances(instances: SpriteAtlasInstance[]) {
+    public setInstances(instances: SpriteAtlasInstance[]): void {
         if (!this._started) {
-            this._initializeFunction = () => this.setInstances(instances);
+            this._initializeFunction = (): void => this.setInstances(instances);
             return;
         }
 
@@ -115,7 +115,7 @@ export class SpriteAtlasStaticInstancer extends Component {
         this.destroy();
     }
 
-    public setSliceCount(rowCount: number, columnCount: number) {
+    public setSliceCount(rowCount: number, columnCount: number): void {
         this._rowCount = rowCount;
         this._columnCount = columnCount;
     }

@@ -6,12 +6,12 @@ import { ZaxisSorter } from "../render/ZaxisSorter";
 import { GlobalConfig } from "../../../GlobalConfig";
 
 export class SpriteInstance {
-    private _width: number;
-    private _height: number;
-    private _position: Vector3;
-    private _rotation?: Quaternion;
-    private _scale?: Vector3;
-    private _centerOffset?: Vector2;
+    private readonly _width: number;
+    private readonly _height: number;
+    private readonly _position: Vector3;
+    private readonly _rotation?: Quaternion;
+    private readonly _scale?: Vector3;
+    private readonly _centerOffset?: Vector2;
     
     public constructor(
         width: number,
@@ -68,9 +68,9 @@ export class SpriteStaticInstancer extends Component {
         this._initializeFunction?.call(this);
     }
 
-    public setInstances(instances: SpriteInstance[]) {
+    public setInstances(instances: SpriteInstance[]): void {
         if (!this._started) {
-            this._initializeFunction = () => this.setInstances(instances);
+            this._initializeFunction = (): void => this.setInstances(instances);
             return;
         }
 

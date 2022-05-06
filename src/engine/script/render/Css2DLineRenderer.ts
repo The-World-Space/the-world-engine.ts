@@ -7,7 +7,7 @@ import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
 export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
-    private _lineColor = Color.fromHex("#00FF00");
+    private readonly _lineColor = Color.fromHex("#00FF00");
     private _lineWidth = 1;
     private readonly _point1 = new Vector2(-2, -2);
     private readonly _point2 = new Vector2(2, 2);

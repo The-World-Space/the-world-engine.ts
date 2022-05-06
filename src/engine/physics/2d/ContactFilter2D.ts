@@ -14,10 +14,10 @@ export class ContactFilter2D {
     public maxDepth = 0;
     public minNormalAngle = 0;
     public maxNormalAngle = 0;
-    public static NormalAngleUpperLimit = 359.9999;
+    public static normalAngleUpperLimit = 359.9999;
     public static noFilter: ContactFilter2D = new ContactFilter2D().noFilter();
 
-    public noFilter(): ContactFilter2D{
+    public noFilter(): ContactFilter2D {
         this.useTriggers = true;
         this.useLayerMask = false;
         this.layerMask = 0xffffffff;
@@ -54,7 +54,7 @@ export class ContactFilter2D {
         this.useLayerMask = true;
     }
 
-    public clearDepth() {
+    public clearDepth(): void {
         this.useDepth = false;
     }
 

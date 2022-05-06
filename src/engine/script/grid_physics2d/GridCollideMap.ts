@@ -20,7 +20,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
     private _gridCellHeight = 1;
     private _showCollider = false;
     private _colliderIsShowing = false;
-    private _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
+    private readonly _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
     private _collideEnabled = false;
     
     private _initializeFunctions: ((() => void))[] = [];
@@ -118,21 +118,21 @@ export class GridCollideMap extends Component implements IGridCollidable {
         this.removeColliderImages();
     }
 
-    private addColliderImages() {
+    private addColliderImages(): void {
         this._collideMap.forEach((_value, key) => {
             const [x, y] = key.split("_").map(Number);
             this.addDebugImage(x * this.gridCellWidth, y * this.gridCellHeight);
         });
     }
 
-    private removeColliderImages() {
+    private removeColliderImages(): void {
         this._colliderImages.forEach(image => {
             image.destroy();
         });
         this._colliderImages.clear();
     }
     
-    private addDebugImage(x: number, y: number) {
+    private addDebugImage(x: number, y: number): void {
         const gameObjectRef = new PrefabRef<GameObject>();
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
@@ -146,7 +146,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
         this._colliderImages.set(`${x}_${y}`, gameObjectRef.ref!);
     }
 
-    private removeDebugImage(x: number, y: number) {
+    private removeDebugImage(x: number, y: number): void {
         const image = this._colliderImages.get(`${x}_${y}`);
         if (image) {
             image.destroy();

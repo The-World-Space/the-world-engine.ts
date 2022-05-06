@@ -4,9 +4,9 @@ import { MutIteratableCollection } from "./MutIteratableCollection";
 class TestItem {
     public isRemoved = false;
     private static _idGenerator = 0;
-    private _id: number;
-    private _func: () => void;
-    private _executionOrder: number;
+    private readonly _id: number;
+    private readonly _func: () => void;
+    private readonly _executionOrder: number;
 
     public constructor(func: () => void, executionOrder: number) {
         this._id = TestItem._idGenerator;
@@ -87,15 +87,15 @@ export function mutIteratableCollectionTest2(): void {
 export function eventContainerTest1(): void {
     const eventContainer = new EventContainer<() => void>();
 
-    const f2 = () => {
+    const f2 = (): void => {
         console.log("f2");
     };
 
-    const f3 = () => {
+    const f3 = (): void => {
         console.log("f3");
     };
 
-    const f1 = () => {
+    const f1 = (): void => {
         console.log("f1");
         eventContainer.removeListener(f2);
         eventContainer.addListener(f3);

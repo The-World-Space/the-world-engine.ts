@@ -25,9 +25,9 @@ export class GridPointer extends Component {
     private _pointerZoffset = 0;
     private _pointerObject: GameObject|null = null;
     private _pointerRenderer: CssHtmlElementRenderer|null = null;
-    private _onPointerDownEvent = new EventContainer<((event: PointerGridEvent) => void)>();
-    private _onPointerUpEvent = new EventContainer<((event: PointerGridEvent) => void)>();
-    private _onPointerMoveEvent = new EventContainer<((event: PointerGridEvent) => void)>();
+    private readonly _onPointerDownEvent = new EventContainer<((event: PointerGridEvent) => void)>();
+    private readonly _onPointerUpEvent = new EventContainer<((event: PointerGridEvent) => void)>();
+    private readonly _onPointerMoveEvent = new EventContainer<((event: PointerGridEvent) => void)>();
     private _isMouseDown = false;
     private _started = false;
 

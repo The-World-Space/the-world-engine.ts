@@ -8,7 +8,7 @@ export class SpriteAnimator extends Component {
     public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
     
     private _spriteRenderer: CssSpriteRenderer|null = null;
-    private _animations: Map<string, HTMLImageElement[]> = new Map();
+    private readonly _animations: Map<string, HTMLImageElement[]> = new Map();
     private _playingAnimationName: string|null = null;
     private _playingAnimation: HTMLImageElement[]|null = null;
     private _playingAnimationFrame = 0;

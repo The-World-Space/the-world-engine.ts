@@ -12,9 +12,9 @@ import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
  * pointer grid event object
  */
 export class PointerGridEvent {
-    private _gridPosition: Vector2;
-    private _position: Vector2;
-    private _button: number;
+    private readonly _gridPosition: Vector2;
+    private readonly _position: Vector2;
+    private readonly _button: number;
 
     public constructor(gridPosition: Vector2, position: Vector2, button: number) {
         this._gridPosition = new Vector2(gridPosition.x, gridPosition.y);
@@ -203,7 +203,7 @@ export class PointerGridInputListener extends Component {
     }
 
     private readonly onTouchStart = (event: TouchEvent): void => {
-        this._onTouchStartFunc = () => {
+        this._onTouchStartFunc = (): void => {
             this.simulateMouseEvent("mouseenter", event.touches[0]);
             this.simulateMouseEvent("mousedown", event.touches[0]);
         };

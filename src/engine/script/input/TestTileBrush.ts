@@ -11,7 +11,7 @@ export class TestTileBrush extends Component {
     
     private _gridPointer: GridPointer|null = null;
     private _colideTilemapChunk: CssCollideTilemapChunkRenderer|null = null;
-    private _pointerDown: boolean = false;
+    private _pointerDown = false;
 
     public start(): void {
         if (!this._colideTilemapChunk) {
@@ -36,16 +36,16 @@ export class TestTileBrush extends Component {
         }
     }
 
-    private readonly onPointerDown = (event: PointerGridEvent) => {
+    private readonly onPointerDown = (event: PointerGridEvent): void => {
         this._pointerDown = true;
         this._colideTilemapChunk!.drawTile(event.gridPosition.x, event.gridPosition.y, 0, 10);
     };
 
-    private readonly onPointerUp = (_: PointerGridEvent) => {
+    private readonly onPointerUp = (_: PointerGridEvent): void => {
         this._pointerDown = false;
     };
 
-    private readonly onPointerMove = (event: PointerGridEvent) => {
+    private readonly onPointerMove = (event: PointerGridEvent): void => {
         if (this._pointerDown) {
             this._colideTilemapChunk!.drawTile(event.gridPosition.x, event.gridPosition.y, 0, 10);
         }

@@ -26,6 +26,7 @@ export type WritableEuler = {
     order: string;
     readonly isEuler: true;
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     _onChangeCallback: () => void;
 
     set(x: number, y: number, z: number, order?: string): WritableEuler;
@@ -39,5 +40,6 @@ export type WritableEuler = {
     fromArray(xyzo: any[]): WritableEuler;
     toArray(array?: any[], offset?: number): any[];
     toVector3(optionalResult?: Vector3): Vector3;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     _onChange(callback: () => void): WritableEuler;
 }

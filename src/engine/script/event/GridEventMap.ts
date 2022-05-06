@@ -76,21 +76,21 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         }
     }
 
-    private addVisualizeImages() {
+    private addVisualizeImages(): void {
         this._eventMap.forEach((_value, key) => {
             const [x, y] = key.split("_").map(Number);
             this.addDebugImage(x * this.gridCellWidth, y * this.gridCellHeight);
         });
     }
 
-    private removeVisualizeImages() {
+    private removeVisualizeImages(): void {
         this._eventVisualizeImages.forEach(image => {
             image.destroy();
         });
         this._eventVisualizeImages = [];
     }
     
-    private addDebugImage(x: number, y: number) {
+    private addDebugImage(x: number, y: number): void {
         const gameObjectRef: {ref: GameObject|null} = {ref: null};
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(

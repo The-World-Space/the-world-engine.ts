@@ -56,5 +56,5 @@ export interface ReadonlyColor {
      */
     toArray(): number[];
 
-    hsl() : { h: number, s: number, l: number };
+    hsl(): { h: number, s: number, l: number };
 }

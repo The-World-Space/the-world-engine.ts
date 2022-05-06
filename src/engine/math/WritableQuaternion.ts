@@ -121,7 +121,9 @@ export type WritableQuaternion = {
      */
     toArray(array: ArrayLike<number>, offset?: number): ArrayLike<number>;
 
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     _onChange(callback: () => void): WritableQuaternion;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
     _onChangeCallback: () => void;
 
     random(): WritableQuaternion;

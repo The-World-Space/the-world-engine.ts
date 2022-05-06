@@ -10,10 +10,10 @@ export class AsyncImageLoader {
     public static loadImageFromPath(url: string): Promise<HTMLImageElement> {
         return new Promise<HTMLImageElement>((resolve, reject) => {
             const image = new Image();
-            image.onload = () => {
+            image.onload = (): void => {
                 resolve(image);
             };
-            image.onerror = () => {
+            image.onerror = (): void => {
                 reject(new Error(`Failed to load image "${url}".`));
             };
             image.src = url;
@@ -36,11 +36,11 @@ export class AsyncImageLoader {
      */
     public static loadImage(image: HTMLImageElement): Promise<HTMLImageElement> {
         return new Promise<HTMLImageElement>((resolve, reject) => {
-            image.onload = () => {
+            image.onload = (): void => {
                 resolve(image);
             };
-            image.onerror = () => {
-                reject(new Error(`Failed to load image.`));
+            image.onerror = (): void => {
+                reject(new Error("Failed to load image."));
             };
         });
     }

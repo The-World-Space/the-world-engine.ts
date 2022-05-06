@@ -18,9 +18,9 @@ export class PlayerGridEventInvoker extends Component {
 
     private readonly _collideSize: number = 0.5;
     private _playerGridMovementController: PlayerGridMovementController|null = null;
-    private _gridEventMaps: GridEventMap[] = [];
+    private readonly _gridEventMaps: GridEventMap[] = [];
 
-    private readonly onMoveToTarget = (x: number, y: number) => {
+    private readonly onMoveToTarget = (x: number, y: number): void => {
         const gridCenter = this._playerGridMovementController!.gridCenter;
         const gridCellWidth = this._playerGridMovementController!.gridCellWidth;
         const gridCellHeight = this._playerGridMovementController!.gridCellHeight;

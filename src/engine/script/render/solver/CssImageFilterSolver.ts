@@ -1,3 +1,4 @@
+import { ReadonlyColor } from "src/engine/render/ReadonlyColor";
 import { Color } from "../../../render/Color";
 
 //code from https://stackoverflow.com/a/43960991
@@ -12,17 +13,17 @@ type FilterValue = [
 ];
 
 export class CssImageFilterSolver {
-    private target: Color;
-    private targetHSL: { h: number, s: number, l: number };
-    private reusedColor: Color;
+    private readonly _target: Color;
+    private readonly _targetHSL: { h: number, s: number, l: number };
+    private readonly _reusedColor: Color;
 
-    public constructor(target: Color) {
-        this.target = target;
-        this.targetHSL = target.hsl();
-        this.reusedColor = new Color(0, 0, 0);
+    public constructor(target: ReadonlyColor) {
+        this._target = target.clone();
+        this._targetHSL = target.hsl();
+        this._reusedColor = new Color(0, 0, 0);
     }
 
-    public solve() : { values: FilterValue, loss: number } {
+    public solve(): { values: FilterValue, loss: number } {
         const result = this.solveNarrow(this.solveWide());
         return {
             values: result.values,
@@ -31,14 +32,14 @@ export class CssImageFilterSolver {
     }
 
     private solveWide(): { values: FilterValue, loss: number } {
-        const A = 5;
+        const aa = 5;
         const c = 15;
         const a: FilterValue = [60, 180, 18000, 600, 1.2, 1.2];
 
         let best: { values: FilterValue|null, loss: number } = { values: null, loss: Infinity };
         for (let i = 0; best.loss > 25 && i < 3; i++) {
             const initial: FilterValue = [50, 20, 3750, 50, 100, 100];
-            const result = this.spsa(A, a, c, initial, 1000);
+            const result = this.spsa(aa, a, c, initial, 1000);
             if (result.loss < best.loss) {
                 best = result;
             }
@@ -46,15 +47,18 @@ export class CssImageFilterSolver {
         return best as { values: FilterValue, loss: number };
     }
 
-    private solveNarrow(wide: { loss: number, values: FilterValue }) {
-        const A = wide.loss;
+    private solveNarrow(wide: { loss: number, values: FilterValue }): {
+        values: FilterValue;
+        loss: number;
+    } {
+        const aa = wide.loss;
         const c = 2;
-        const A1 = A + 1;
-        const a: FilterValue = [0.25 * A1, 0.25 * A1, A1, 0.25 * A1, 0.2 * A1, 0.2 * A1];
-        return this.spsa(A, a, c, wide.values, 500);
+        const aa1 = aa + 1;
+        const a: FilterValue = [0.25 * aa1, 0.25 * aa1, aa1, 0.25 * aa1, 0.2 * aa1, 0.2 * aa1];
+        return this.spsa(aa, a, c, wide.values, 500);
     }
 
-    private spsa(A: number, a: FilterValue, c: number, values: FilterValue, iters: number) : { values: FilterValue, loss: number } {
+    private spsa(aa: number, a: FilterValue, c: number, values: FilterValue, iters: number): { values: FilterValue, loss: number } {
         const alpha = 1;
         const gamma = 0.16666666666666666;
 
@@ -75,7 +79,7 @@ export class CssImageFilterSolver {
             const lossDiff = this.loss(highArgs) - this.loss(lowArgs);
             for (let i = 0; i < 6; i++) {
                 const g = lossDiff / (2 * ck) * deltas[i];
-                const ak = a[i] / Math.pow(A + k + 1, alpha);
+                const ak = a[i] / Math.pow(aa + k + 1, alpha);
                 values[i] = fix(values[i] - ak * g, i);
             }
 
@@ -87,7 +91,7 @@ export class CssImageFilterSolver {
         }
         return { values: best!, loss: bestLoss };
 
-        function fix(value: number, idx: number) {
+        function fix(value: number, idx: number): number {
             let max = 100;
             if (idx === 2 /* saturate */) {
                 max = 7500;
@@ -110,9 +114,9 @@ export class CssImageFilterSolver {
         }
     }
 
-    private loss(filters: FilterValue) {
+    private loss(filters: FilterValue): number {
         // Argument is array of percentages.
-        const color = this.reusedColor;
+        const color = this._reusedColor;
         color.set(0, 0, 0);
 
         color.invert(filters[0] / 100);
@@ -124,12 +128,12 @@ export class CssImageFilterSolver {
 
         const colorHSL = color.hsl();
         return (
-            Math.abs(color.r - this.target.r) +
-            Math.abs(color.g - this.target.g) +
-            Math.abs(color.b - this.target.b) +
-            Math.abs(colorHSL.h - this.targetHSL.h) +
-            Math.abs(colorHSL.s - this.targetHSL.s) +
-            Math.abs(colorHSL.l - this.targetHSL.l)
+            Math.abs(color.r - this._target.r) +
+            Math.abs(color.g - this._target.g) +
+            Math.abs(color.b - this._target.b) +
+            Math.abs(colorHSL.h - this._targetHSL.h) +
+            Math.abs(colorHSL.s - this._targetHSL.s) +
+            Math.abs(colorHSL.l - this._targetHSL.l)
         );
     }
 }

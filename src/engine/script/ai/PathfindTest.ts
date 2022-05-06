@@ -49,7 +49,7 @@ export class PathfindTest extends Component {
         });
     }
     
-    private addDebugImage(x: number, y: number) {
+    private addDebugImage(x: number, y: number): void {
         const gameObjectRef: {ref: GameObject|null} = {ref: null};
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
@@ -60,7 +60,7 @@ export class PathfindTest extends Component {
         this._debugImages.push(gameObjectRef.ref!);
     }
 
-    private removeDebugImages() {
+    private removeDebugImages(): void {
         this._debugImages.forEach(image => {
             image.destroy();
         });
