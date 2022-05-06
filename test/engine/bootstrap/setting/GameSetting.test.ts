@@ -8,8 +8,7 @@ describe("GameSetting Test", () => {
             render: {
                 useCss3DRenderer: true
             },
-            physics: {
-            }
+            physics: { }
         });
     });
 });
