@@ -17,7 +17,7 @@
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "stripInternal": true,
-        "isolatedModules": true,
+        //"isolatedModules": true,
         //"noEmit": true,
         "noEmitOnError": true,
         "noImplicitAny": true,
@@ -29,13 +29,18 @@
         "declaration": true,
         "outDir": "dist/",
         "typeRoots": [
-            "src/types"
-        ]
+            "src/types",
+            "node_modules/@types"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "src/*": [
+                "src/*"
+            ]
+        }
     },
     "include": [
-        "src"
-    ],
-    "exclude": [
-        "node_modules"
+        "src",
+        "test"
     ]
 }

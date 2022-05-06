@@ -7,7 +7,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 //const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 
 module.exports = {
-    entry: "./src/test/index.ts",
+    entry: "./test/test_project/index.ts",
     output: {
         path: path.join(__dirname, "/testbundle"),
         filename: "[name].bundle.js",
@@ -59,10 +59,13 @@ module.exports = {
     resolve: {
         modules: [path.join(__dirname, "src"), "node_modules"],
         extensions: [".ts", ".js"],
+        alias: {
+            "src": path.join(__dirname, "src")
+        }
     },
     plugins: [
         new HtmlWebpackPlugin({
-            template: "./src/test/index.html",
+            template: "./test/test_project/index.html",
         }),
         new ESLintPlugin({
             extensions: "ts",

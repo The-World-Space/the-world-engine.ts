@@ -1,11 +1,21 @@
 module.exports = {
     "env": {
         "browser": true,
-        "es2021": true
+        "es2021": true,
+        "jest": true
+    },
+    "globals": {
+        "page": true,
+        "browser": true,
+        "context": true,
+        "jestPuppeteer": true,
     },
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
+    ],
+    "ignorePatterns": [
+        "**/box2d.ts/*"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -14,7 +24,8 @@ module.exports = {
         "project": "./tsconfig.json"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "jest"
     ],
     "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -33,15 +44,15 @@ module.exports = {
                 }
             }
         ],
-        "@typescript-eslint/prefer-readonly": [ "error" ],
-        "@typescript-eslint/explicit-function-return-type": [ "error" ],
-        "@typescript-eslint/array-type": [ "error" ],
+        "@typescript-eslint/prefer-readonly": ["error"],
+        "@typescript-eslint/explicit-function-return-type": ["error"],
+        "@typescript-eslint/array-type": ["error"],
         "@typescript-eslint/brace-style": [
             "error",
             "1tbs"
         ],
-        "@typescript-eslint/prefer-includes": [ "error" ],
-        "@typescript-eslint/space-before-blocks": [ "error" ],
+        "@typescript-eslint/prefer-includes": ["error"],
+        "@typescript-eslint/space-before-blocks": ["error"],
         "@typescript-eslint/type-annotation-spacing": [
             "error",
             {
@@ -121,5 +132,14 @@ module.exports = {
             "error",
             "never"
         ],
+    },
+    "settings": {
+        "import/resolver": {
+            alias: {
+                map: [
+                    ['src', './src']
+                ]
+            }
+        }
     }
 };

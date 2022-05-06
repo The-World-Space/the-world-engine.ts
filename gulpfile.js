@@ -3,10 +3,15 @@ const ts = require("gulp-typescript");
 const terser = require('gulp-terser');
 const filter = require('gulp-filter');
 const merge = require('merge2');
+const alias = require('@gulp-plugin/alias');
 //const propertiesRenameTransformer = require('ts-transformer-properties-rename').default;
 const minifyPrivatesTransformer = require('ts-transformer-minify-privates').default;
 
 const tsProject = ts.createProject("tsconfig.json");
+
+tsProject.config.include = [
+    "src"
+];
 
 const tsSettings = {
     stripInternal: true,
@@ -24,6 +29,7 @@ const tsSettings = {
 
 gulp.task("tsBuild", () => {
     const tsResult = tsProject.src()
+        .pipe(alias(tsProject.config))
         .pipe(ts(tsSettings));
 
     return merge([
@@ -34,6 +40,7 @@ gulp.task("tsBuild", () => {
 
 gulp.task("tsMangleBuild", () => {
     const tsMangleResult = tsProject.src()
+        .pipe(alias(tsProject.config))
         .pipe(ts({
             ...tsSettings,
             getCustomTransformers: program => ({
