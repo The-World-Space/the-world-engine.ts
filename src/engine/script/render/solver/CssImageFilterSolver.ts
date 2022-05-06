@@ -1,4 +1,4 @@
-import { ReadonlyColor } from "src/engine/render/ReadonlyColor";
+import { ReadonlyColor } from "../../../render/ReadonlyColor";
 import { Color } from "../../../render/Color";
 
 //code from https://stackoverflow.com/a/43960991
