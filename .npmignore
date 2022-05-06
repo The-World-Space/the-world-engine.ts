@@ -13,3 +13,4 @@ tsconfig.json
 webpack.config.js
 gulpfile.js
 test
+coverage
