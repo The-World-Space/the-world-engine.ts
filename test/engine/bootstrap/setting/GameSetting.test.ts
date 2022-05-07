@@ -1,7 +1,7 @@
 import { GameSetting } from "@src/engine/bootstrap/setting/GameSetting";
 import { PhysicsSetting } from "@src/engine/bootstrap/setting/PhysicsSetting";
 import { RenderSetting } from "@src/engine/bootstrap/setting/RenderSetting";
-import { Vector2 } from "three";
+import { Vector2 } from "three/src/Three";
 
 describe("GameSetting Test", () => {
     it("GameSetting.constructor()", () => {
