@@ -32,7 +32,7 @@
             "src/types",
             "node_modules/@types"
         ],
-        "baseUrl": ".",
+        "baseUrl": "./",
         "paths": {
             "@src/*": [
                 "src/*"
