@@ -1,0 +1,54 @@
+{
+  "name": "@flyover/box2d",
+  "version": "1.0.1",
+  "description": "A TypeScript port of Box2D",
+  "main": "./dist/box2d.umd.js",
+  "types": "./build/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "clean": "npm run clean-box2d",
+    "build": "npm run build-box2d",
+    "watch": "npm run watch-box2d",
+    "start": "npm run start-testbed",
+    "dist": "npm run dist-all",
+    "clean-all": "npm run clean-box2d && npm run clean-unit-test && npm run clean-testbed",
+    "build-all": "npm run build-box2d && npm run build-unit-test && npm run build-testbed",
+    "dist-all": "npm run dist-box2d && npm run dist-unit-test && npm run dist-testbed",
+    "clean-box2d": "rm -rf build",
+    "build-box2d": "tsc",
+    "watch-box2d": "tsc --watch",
+    "build-box2d-module": "tsc --module ES2015 --outDir build/esm",
+    "watch-box2d-module": "tsc --module ES2015 --outDir build/esm --watch",
+    "dist-box2d": "rollup -c",
+    "clean-unit-test": "rm -rf unit-test/build",
+    "build-unit-test": "tsc -p unit-test",
+    "watch-unit-test": "tsc -p unit-test --watch",
+    "start-unit-test": "http-server -c-1 -o unit-test/index.html",
+    "dist-unit-test": "(cd unit-test && rollup -c)",
+    "clean-testbed": "rm -rf testbed/build",
+    "build-testbed": "tsc -p testbed",
+    "watch-testbed": "tsc -p testbed --watch",
+    "start-testbed": "http-server -c-1 -o testbed/index.html",
+    "dist-testbed": "(cd testbed && rollup -c)",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/flyover/box2d.ts.git"
+  },
+  "author": "Isaac Burns <isaacburns@gmail.com>",
+  "license": "Zlib",
+  "bugs": {
+    "url": "https://github.com/flyover/box2d.ts/issues"
+  },
+  "homepage": "https://github.com/flyover/box2d.ts#readme",
+  "dependencies": {
+    "@types/systemjs": "^6.1.0"
+  },
+  "devDependencies": {
+    "http-server": "^14.0.0",
+    "rollup": "^2.32.1",
+    "rollup-plugin-typescript2": "^0.31.1",
+    "typescript": "^4.5.2"
+  }
+}

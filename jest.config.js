@@ -4,31 +4,26 @@ const config = {
     // globalSetup: "./test/setup.js",
     // globalTeardown: "./test/teardown.js",
     // testEnvironment: "./test/puppeteer_environment.js",
-    testMatch: ["**/*.test.ts"],
     transform: {
         "^.+\\.tsx?$": "ts-jest"
     },
     moduleNameMapper: {
-        "@src/(.*)": "<rootDir>/src/$1"
+        "@src/(.*)": "<rootDir>/src/$1",
+        "three/src/Three": "<rootDir>/node_modules/three/src/Three.js"
     },
-    moduleDirectories: [
-        "node_modules",
-        "src"
-    ],
-    moduleFileExtensions: [
-        "ts",
-        "js",
-        "json"
-    ],
-    modulePathIgnorePatterns: [
-        "node_modules"
-    ],
+    extensionsToTreatAsEsm: [".ts", ".tsx"],
+    globals: {
+        "ts-jest": {
+            useESM: true
+        },
+    },
     collectCoverage: true,
-    // collectCoverageFrom: [
-    //     "src/**/*.ts",
-    //     "!src/**/*.d.ts",
-    //     "!src/**/*.test.ts",
-    // ],
+    collectCoverageFrom: [
+        "src/**/*.ts",
+        "!src/**/*.d.ts",
+        "!src/**/*.test.ts",
+        "!src/box2d.ts/*",
+    ],
     // coverageDirectory: "coverage"
 };
 

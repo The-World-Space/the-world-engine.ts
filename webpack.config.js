@@ -60,7 +60,7 @@ module.exports = {
         modules: [path.join(__dirname, "src"), "node_modules"],
         extensions: [".ts", ".js"],
         alias: {
-            "src": path.join(__dirname, "src")
+            "@src": path.join(__dirname, "src")
         }
     },
     plugins: [
