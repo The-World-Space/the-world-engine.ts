@@ -71,19 +71,27 @@ class LinkedList<T> {
         this._head = null;
         this._tail = null;
         this._length = 0;
-        this._terminateForEach = true;
+        this._tryTerminateForEach = true;
     }
 
-    private _terminateForEach = false;
+    private _tryTerminateForEach = false;
 
     public forEach(callback: (value: T) => void): void {
-        this._terminateForEach = false;
+        this._tryTerminateForEach = false;
         let current = this._head;
 
         while (current !== null) {
             callback(current.value);
-            if (this._terminateForEach) return;
-            current = current.next;
+            if (this._tryTerminateForEach) {
+                if (this._head === null) {
+                    return;
+                } else {
+                    current = this._head;
+                    this._tryTerminateForEach = false;
+                }
+            } else {
+                current = current.next;
+            }
         }
     }
 }
@@ -116,5 +124,9 @@ export class EventContainer<T extends (...args: any[]) => void> {
         this._listeners.forEach((listener) => {
             listener(...args);
         });
+    }
+
+    public get length(): number {
+        return this._listeners.length;
     }
 }

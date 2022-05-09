@@ -10,7 +10,7 @@ import { Vector2 } from "three/src/Three";
 
 const createEngineGlobalObject = jest.fn<() => EngineGlobalObject>(() => {
     return {
-        instantiater: new Instantiater({} as any),
+        instantiater: new Instantiater({} as any)
     } as EngineGlobalObject;
 });
 

@@ -22,19 +22,55 @@ describe("SceneBuilder Test", () => {
     });
 
     it("SceneBuilder.withChild()", () => {
-        const instantiater = new Instantiater(createEngineGlobalObject());
+        const engineGlobalObject = createEngineGlobalObject();
+        const instantiater = new Instantiater(engineGlobalObject);
         const builder = new SceneBuilder(new SceneProcessor());
 
         builder.withChild(instantiater.buildGameObject("object1"));
+
+        expect(engineGlobalObject.scene.children.length).toBe(1);
     });
 
     it("SceneBuilder.withChild() chain", () => {
-        const instantiater = new Instantiater(createEngineGlobalObject());
+        const engineGlobalObject = createEngineGlobalObject();
+        const instantiater = new Instantiater(engineGlobalObject);
         const builder = new SceneBuilder(new SceneProcessor());
 
         builder
             .withChild(instantiater.buildGameObject("object1"))
             .withChild(instantiater.buildGameObject("object2"))
             .withChild(instantiater.buildGameObject("object3"));
+
+        expect(engineGlobalObject.scene.children.length).toBe(3);
+    });
+
+    it("SceneBuilder.build()", () => {
+        const engineGlobalObject = createEngineGlobalObject();
+        const instantiater = new Instantiater(engineGlobalObject);
+        const builder = new SceneBuilder(new SceneProcessor());
+
+        builder
+            .withChild(instantiater.buildGameObject("object1"))
+            .withChild(instantiater.buildGameObject("object2"))
+            .withChild(instantiater.buildGameObject("object3"));
+
+        builder.build();
+    });
+
+    it("SceneBuilder.build() same object multiple times", () => {
+        const engineGlobalObject = createEngineGlobalObject();
+        const instantiater = new Instantiater(engineGlobalObject);
+        const builder = new SceneBuilder(new SceneProcessor());
+
+        const gameObjectBuilder = instantiater.buildGameObject("object1");
+
+        builder
+            .withChild(gameObjectBuilder)
+            .withChild(gameObjectBuilder)
+            .withChild(gameObjectBuilder);
+
+        expect(() => {
+            builder.build();
+        }).toThrowError("GameObjectBuilder is already built");
     });
 });

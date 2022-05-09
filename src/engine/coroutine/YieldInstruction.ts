@@ -8,7 +8,7 @@ export class YieldInstruction { }
  */
 export class WaitForEndOfFrame extends YieldInstruction { 
     private static readonly _instance: WaitForEndOfFrame = new WaitForEndOfFrame();
-    public get instance(): WaitForEndOfFrame {
+    public static get instance(): WaitForEndOfFrame {
         return WaitForEndOfFrame._instance;
     }
 }
