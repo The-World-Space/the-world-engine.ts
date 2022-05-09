@@ -11,18 +11,18 @@ const config = {
     moduleNameMapper: {
         "@src/(.*)": "<rootDir>/src/$1",
         "three/src/Three": "<rootDir>/node_modules/three/src/Three.js",
-        "three/src/math/MathUtils": "<rootDir>/node_modules/three/src/math/MathUtils.js",
-        "js-sdsl": "<rootDir>/node_modules/js-sdsl/dist/esm/index.js"
+        "three/src/math/MathUtils": "<rootDir>/node_modules/three/src/math/MathUtils.js"
     },
     transformIgnorePatterns: [
-        "<rootDir>/node_modules/(?!js-sdsl)",
-        "<rootDir>/src/box2d.ts"
+        "<rootDir>/node_modules/(?!three|js-sdsl)"
     ],
+    moduleDirectories: ["node_modules", "src"],
+    moduleFileExtensions: ["ts", "tsx", "js", "jsx"],
     extensionsToTreatAsEsm: [".ts", ".tsx"],
     globals: {
         "ts-jest": {
-            useESM: true
-        },
+            module: "commonjs"
+        }
     },
     collectCoverage: true,
     collectCoverageFrom: [
@@ -30,8 +30,7 @@ const config = {
         "!src/**/*.d.ts",
         "!src/**/*.test.ts",
         "!src/box2d.ts/*",
-    ],
-    // coverageDirectory: "coverage"
+    ]
 };
 
 module.exports = config;
