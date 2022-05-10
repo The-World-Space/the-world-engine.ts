@@ -14,7 +14,7 @@ export class Spawner extends Component {
 
     public awake(): void {
         this.engine.input.onKeyDown.addListener(this.onKeyDown);
-        this.startCorutine(this.spawninitObjects());
+        this.startCoroutine(this.spawninitObjects());
     }
 
     public onDestroy(): void {

@@ -11,7 +11,7 @@ export class FpsCounter extends Component {
 
     public awake(): void {
         this._textRenderer = this.gameObject.getComponent(CssTextRenderer);
-        this.startCorutine(this.showFps());
+        this.startCoroutine(this.showFps());
     }
 
     public *showFps(): CoroutineIterator {

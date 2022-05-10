@@ -70,9 +70,9 @@ export abstract class Component {
     /**
      * starts a coroutine
      * @param coroutineIterator coroutine iterator
-     * @returns corutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
+     * @returns coroutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
      */
-    public startCorutine(coroutineIterator: CoroutineIterator): Coroutine {
+    public startCoroutine(coroutineIterator: CoroutineIterator): Coroutine {
         this.checkComponentIsExist();
         const coroutine = new Coroutine(this, coroutineIterator, () => {
             const index = this._runningCoroutines.indexOf(coroutine);

@@ -9,7 +9,7 @@ export class ChangeParentTest extends Component {
     public parent2: GameObject|null = null;
 
     public start(): void {
-        this.startCorutine(this.changeParent());
+        this.startCoroutine(this.changeParent());
     }
 
     private *changeParent(): CoroutineIterator {
