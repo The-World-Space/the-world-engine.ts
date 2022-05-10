@@ -9,7 +9,6 @@ import { Scene } from "@src/engine/hierarchy_object/Scene";
 import { Instantiater } from "@src/engine/Instantiater";
 import { TransformMatrixProcessor } from "@src/engine/render/TransformMatrixProcessor";
 import { Time } from "@src/engine/time/Time";
-import { Browser } from "puppeteer";
 
 const engineGlobalObject = {
     instantiater: new Instantiater({} as EngineGlobalObject),
@@ -227,5 +226,17 @@ describe("Component Test", () => {
         component.enabled = false;
 
         expect(component.enabled).toBe(false);
+    });
+
+    it.only("document.createElement()", async () => {
+        const browser = (globalThis as any).__BROWSER_GLOBAL__ as import("puppeteer").Browser;
+
+        const page = await browser.newPage();
+
+        await page.evaluate(() => {
+            document.createElement("div");
+        });
+
+        await page.close();
     });
 });

@@ -1,9 +1,9 @@
 /** @type {import("@jest/types").Config.InitialOptions} */
 const config = {
     preset: "ts-jest",
-    // globalSetup: "./test/setup.js",
-    // globalTeardown: "./test/teardown.js",
-    // testEnvironment: "./test/puppeteer_environment.js",
+    globalSetup: "./test/setup.js",
+    globalTeardown: "./test/teardown.js",
+    testEnvironment: "./test/puppeteer_environment.js",
     transform: {
         "^.+\\.tsx?$": "ts-jest",
         "^.+\\.jsx?$": "babel-jest"
