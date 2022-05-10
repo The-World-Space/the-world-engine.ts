@@ -19,7 +19,7 @@ describe("CoroutineProcessor Test", () => {
     it("CoroutineProcessor.addCoroutine()", () => {
         const coroutineProcessor = new CoroutineProcessor(new Time());
         
-        function *testIterator() {
+        function *testIterator(): CoroutineIterator {
             yield null;
         }
 
@@ -33,7 +33,7 @@ describe("CoroutineProcessor Test", () => {
     it("CoroutineProcessor.removeCoroutine()", () => {
         const coroutineProcessor = new CoroutineProcessor(new Time());
         
-        function *testIterator() {
+        function *testIterator(): CoroutineIterator {
             yield null;
         }
 
@@ -49,7 +49,7 @@ describe("CoroutineProcessor Test", () => {
     it("CoroutineProcessor.tryCompact()", () => {
         const coroutineProcessor = new CoroutineProcessor(new Time());
 
-        function *testIterator() {
+        function *testIterator(): CoroutineIterator {
             yield null;
         }
 
@@ -76,7 +76,7 @@ describe("CoroutineProcessor Test", () => {
         const time = new Time();
         const coroutineProcessor = new CoroutineProcessor(time);
 
-        function *testIterator() {
+        function *testIterator(): CoroutineIterator {
             yield null;
             result.push(1);
             yield new WaitForSeconds(0);
@@ -122,7 +122,7 @@ describe("CoroutineProcessor Test", () => {
         const time = new Time();
         const coroutineProcessor = new CoroutineProcessor(time);
 
-        function *testIterator() {
+        function *testIterator(): CoroutineIterator {
             yield new WaitForEndOfFrame();
             result.push(1);
         }
@@ -143,7 +143,7 @@ describe("CoroutineProcessor Test", () => {
         const time = new Time();
         const coroutineProcessor = new CoroutineProcessor(time);
 
-        function *testIterator() {
+        function *testIterator(): CoroutineIterator {
             yield null;
             result.push(1);
         }

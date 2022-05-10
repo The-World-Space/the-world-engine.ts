@@ -14,7 +14,7 @@ const engineGlobalObject = {
     instantiater: new Instantiater({} as EngineGlobalObject),
     scene: new Scene(),
     transformMatrixProcessor: new TransformMatrixProcessor(),
-    coroutineProcessor: new CoroutineProcessor(new Time()),
+    coroutineProcessor: new CoroutineProcessor(new Time())
 } as EngineGlobalObject;
 
 const createGameObject = jest.fn<() => GameObject>(() => {
@@ -96,14 +96,14 @@ describe("Component Test", () => {
         const result: number[] = [];
 
         class TestComponent extends Component {
-            private *_testCoroutine(): CoroutineIterator {
+            private *testCoroutine(): CoroutineIterator {
                 result.push(1);
                 yield null;
                 result.push(2);
             }
 
             public testRunCoroutine(): void {
-                this.startCoroutine(this._testCoroutine());
+                this.startCoroutine(this.testCoroutine());
             }
         }
 
@@ -124,7 +124,7 @@ describe("Component Test", () => {
         const result: number[] = [];
 
         class TestComponent extends Component {
-            private *_testCoroutine(): CoroutineIterator {
+            private *testCoroutine(): CoroutineIterator {
                 result.push(1);
                 yield null;
                 result.push(2);
@@ -133,7 +133,7 @@ describe("Component Test", () => {
             }
 
             public testRunCoroutine(): void {
-                this.startCoroutine(this._testCoroutine());
+                this.startCoroutine(this.testCoroutine());
             }
         }
 
@@ -157,7 +157,7 @@ describe("Component Test", () => {
         const result: number[] = [];
 
         class TestComponent extends Component {
-            private *_testCoroutine(): CoroutineIterator {
+            private *testCoroutine(): CoroutineIterator {
                 result.push(1);
                 yield null;
                 result.push(2);
@@ -166,7 +166,7 @@ describe("Component Test", () => {
             }
 
             public testRunCoroutine(): Coroutine {
-                return this.startCoroutine(this._testCoroutine());
+                return this.startCoroutine(this.testCoroutine());
             }
         }
 
@@ -188,12 +188,12 @@ describe("Component Test", () => {
 
     it("Component.stopCoroutine() throw error", () => {
         class TestComponent extends Component {
-            private *_testCoroutine(): CoroutineIterator {
+            private *testCoroutine(): CoroutineIterator {
                 yield null;
             }
 
             public testRunCoroutine(): Coroutine {
-                return this.startCoroutine(this._testCoroutine());
+                return this.startCoroutine(this.testCoroutine());
             }
         }
 

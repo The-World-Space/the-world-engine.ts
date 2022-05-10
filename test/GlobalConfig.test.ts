@@ -1,4 +1,4 @@
-import { GlobalConfig } from "@src/GlobalConfig"
+import { GlobalConfig } from "@src/GlobalConfig";
 
 describe("GlobalConfig Test", () => {
     it("defaultSpriteSrc must be url", () => {
