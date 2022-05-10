@@ -27,6 +27,9 @@ class PuppeteerEnvironment extends NodeEnvironment {
 
     async teardown() {
         await super.teardown();
+
+        // disconnect puppeteer
+        await this.global.__BROWSER_GLOBAL__.disconnect();
     }
 
     getVmContext() {
