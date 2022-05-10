@@ -227,16 +227,4 @@ describe("Component Test", () => {
 
         expect(component.enabled).toBe(false);
     });
-
-    it.only("document.createElement()", async () => {
-        const browser = (globalThis as any).__BROWSER_GLOBAL__ as import("puppeteer").Browser;
-
-        const page = await browser.newPage();
-
-        await page.evaluate(() => {
-            document.createElement("div");
-        });
-
-        await page.close();
-    });
 });
