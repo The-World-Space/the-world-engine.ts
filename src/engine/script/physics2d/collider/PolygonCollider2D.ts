@@ -25,29 +25,38 @@ export class PolygonCollider2D extends Collider2D {
     private _debugObject: GameObject|null = null;
     private _debugRenderer: Css2DPolygonRenderer|null = null;
 
+    private updateDebugDraw(): void {
+        if (this._debugDraw) {
+            let objectAttacher = this.gameObject.getComponent(Object2DAttacher);
+            if (!objectAttacher) objectAttacher = this.gameObject.addComponent(Object2DAttacher)!;
+
+            if (this._debugObject) {
+                this._debugRenderer!.points = this._points;
+            } else {
+                const physicsDebugRenderObject = getOrCreatePhysicsDebugRenderObject(this.engine);
+                const debugRenderer = new PrefabRef<Css2DPolygonRenderer>();
+                this._debugObject = physicsDebugRenderObject.addChildFromBuilder(
+                    this.engine.instantiater.buildGameObject(this.gameObject.name + "_debug_polygon")
+                        .withChild(this.engine.instantiater.buildGameObject("debug_polygon", new Vector3(this.offset.x, this.offset.y, 200))
+                            .withComponent(Css2DPolygonRenderer, c => {
+                                c.points = this._points;
+                                c.viewScale = 0.01;
+                                c.color = new Color(0, 0, 0, 0);
+                                c.borderWidth = 2;
+                                c.borderColor = new Color(1, 1, 0, 0.3);
+                                c.pointerEvents = false;
+                            })
+                            .getComponent(Css2DPolygonRenderer, debugRenderer)));
+                
+                this._debugRenderer = debugRenderer.ref;
+                objectAttacher!.target = this._debugObject;
+            }
+        }
+    }
+
     public override onEnable(): void {
         super.onEnable();
-        if (this._debugDraw) {
-            const objectAttacher = this.gameObject.addComponent(Object2DAttacher);
-
-            const physicsDebugRenderObject = getOrCreatePhysicsDebugRenderObject(this.engine);
-            const debugRenderer = new PrefabRef<Css2DPolygonRenderer>();
-            this._debugObject = physicsDebugRenderObject.addChildFromBuilder(
-                this.engine.instantiater.buildGameObject(this.gameObject.name + "_debug_polygon")
-                    .withChild(this.engine.instantiater.buildGameObject("debug_polygon", new Vector3(this.offset.x, this.offset.y, 200))
-                        .withComponent(Css2DPolygonRenderer, c => {
-                            c.points = this._points;
-                            c.viewScale = 0.01;
-                            c.color = new Color(0, 0, 0, 0);
-                            c.borderWidth = 2;
-                            c.borderColor = new Color(1, 1, 0, 0.3);
-                            c.pointerEvents = false;
-                        })
-                        .getComponent(Css2DPolygonRenderer, debugRenderer)));
-            
-            this._debugRenderer = debugRenderer.ref;
-            objectAttacher!.target = this._debugObject;
-        }
+        this.updateDebugDraw();
     }
 
     public override onDisable(): void {
@@ -82,9 +91,7 @@ export class PolygonCollider2D extends Collider2D {
             this._points.push(value[i].clone());
         }
         this.updateFixture();
-        if (this._debugRenderer) {
-            this._debugRenderer.points = this._points;
-        }
+        this.updateDebugDraw();
     }
     
     /**
@@ -116,5 +123,16 @@ export class PolygonCollider2D extends Collider2D {
      */
     public set debugDraw(value: boolean) {
         this._debugDraw = value;
+
+        if (this.enabled && this.gameObject.activeInHierarchy) {
+            if (value) {
+                this.updateDebugDraw();
+            } else {
+                if (this._debugObject) {
+                    this._debugObject.destroy();
+                    this._debugObject = null;
+                }
+            }
+        }
     }
 }
