@@ -9,6 +9,7 @@ import { Component } from "@src/engine/hierarchy_object/Component";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Scene } from "@src/engine/hierarchy_object/Scene";
+import { Transform } from "@src/engine/hierarchy_object/Transform";
 import { Instantiater } from "@src/engine/Instantiater";
 import { TransformMatrixProcessor } from "@src/engine/render/TransformMatrixProcessor";
 import { Camera } from "@src/engine/script/render/Camera";
@@ -25,12 +26,29 @@ const createGameObject = jest.fn<() => GameObject>(() => {
     return new GameObject(engineGlobalObject, "test");
 });
 
+let requestAnimationFrameCount = 1;
+
 describe("Component Test", () => {
     beforeEach(() => {
         (engineGlobalObject.instantiater as Instantiater) = new Instantiater({} as EngineGlobalObject);
         (engineGlobalObject.scene as Scene) = new Scene();
         (engineGlobalObject.transformMatrixProcessor as TransformMatrixProcessor) = new TransformMatrixProcessor();
         (engineGlobalObject.coroutineProcessor as CoroutineProcessor) = new CoroutineProcessor(new Time());
+
+        let requestAnimationFrameCallCount = 0;
+        jest.spyOn(window, "requestAnimationFrame")
+            .mockImplementation(
+                (callback: FrameRequestCallback) => {
+                    requestAnimationFrameCallCount += 1;
+                    if (requestAnimationFrameCallCount === requestAnimationFrameCount) return 0;
+                    callback(0);
+                    return 0;
+                }
+            );
+    });
+
+    afterEach(() => {
+        (window.requestAnimationFrame as jest.Mock).mockRestore();
     });
 
     it("override disallowMultipleComponent to true", () => {
@@ -233,17 +251,7 @@ describe("Component Test", () => {
     });
 
     it("Component.enabled getter on engine", () => {
-        const requestAnimationFrameCount = 1;
-        let requestAnimationFrameCallCount = 0;
-        jest.spyOn(window, "requestAnimationFrame")
-            .mockImplementation(
-                (callback: FrameRequestCallback) => {
-                    requestAnimationFrameCallCount += 1;
-                    if (requestAnimationFrameCallCount === requestAnimationFrameCount) return 0;
-                    callback(0);
-                    return 0;
-                }
-            );
+        requestAnimationFrameCount = 1;
 
         class TestComponent extends Component { }
 
@@ -259,7 +267,270 @@ describe("Component Test", () => {
         }, interopObject);
 
         expect(interopObject.testComponent.ref!.enabled).toBe(true);
+    });
 
-        (window.requestAnimationFrame as jest.Mock).mockRestore();
+    it("Component.enabled setter call on builder", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+                
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent, c => c.enabled = false)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(interopObject.testComponent.ref!.enabled).toBe(false);
+    });
+
+    it("Component.enabled setter call after built", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+                
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.enabled = false;
+        expect(interopObject.testComponent.ref!.enabled).toBe(false);
+    });
+
+    it("Component.enabled setter call twice after built", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+                
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.enabled = false;
+        interopObject.testComponent.ref!.enabled = false;
+        expect(interopObject.testComponent.ref!.enabled).toBe(false);
+    });
+
+    it("Component.enabled setter call after built 2", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+                
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.enabled = false;
+        interopObject.testComponent.ref!.enabled = true;
+        expect(interopObject.testComponent.ref!.enabled).toBe(true);
+    });
+
+    it("Destroyed Component throws error when accessing", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+                
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+        
+        interopObject.testComponent.ref!.destroy();
+        expect(() => {
+            interopObject.testComponent.ref!.enabled = false;
+        }).toThrowError("Component TestComponent is destroyed");
+    });
+
+    it("Component.gameObject getter", () => {
+        class TestComponent extends Component { }
+        const component = new TestComponent(createGameObject());
+        component.engine_internal_constructAfterProcess();
+
+        expect(component.gameObject).toBeInstanceOf(GameObject);
+    });
+
+    it("Component.transform getter", () => {
+        class TestComponent extends Component { }
+        const component = new TestComponent(createGameObject());
+        component.engine_internal_constructAfterProcess();
+
+        expect(component.transform).toBeInstanceOf(Transform);
+    });
+
+    it("Component.engine getter", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(interopObject.testComponent.ref!.engine).toBeInstanceOf(EngineGlobalObject);
+    });
+
+    it("Component.instanceId getter", () => {
+        class TestComponent extends Component { }
+        const component = new TestComponent(createGameObject());
+        component.engine_internal_constructAfterProcess();
+
+        expect(component.instanceId).toBeGreaterThan(0);
+    });
+
+    it("Component.initialized getter when not initialized", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        new Game(document.body).run(class extends Bootstrapper {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent, c => {
+                        expect(c.initialized).toBe(false);
+                    }));
+        });
+    });
+    
+    it("Component.initialized getter when initialized", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(interopObject.testComponent.ref!.initialized).toBe(true);
+    });
+
+    it("Component.exists getter when exists", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(interopObject.testComponent.ref!.exists).toBe(true);
+    });
+
+    it("Component.exists getter when not exists", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.destroy();
+        expect(interopObject.testComponent.ref!.exists).toBe(false);
+    });
+
+    it("Component.destroy()", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+        
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(() => {
+            interopObject.testComponent.ref!.destroy();
+        }).not.toThrow();
+    });
+
+    it("Component.destroy() twice", () => {
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component { }
+        
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(() => {
+            interopObject.testComponent.ref!.destroy();
+            interopObject.testComponent.ref!.destroy();
+        }).not.toThrow();
     });
 });
