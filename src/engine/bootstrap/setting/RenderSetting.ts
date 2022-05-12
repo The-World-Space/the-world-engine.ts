@@ -15,6 +15,13 @@ export class RenderSetting {
         };
     }
 
+    /**
+     * if true, use css3d renderer. (default: true)
+     * 
+     * for now, engine only support css3d renderer. this setting is for future.
+     * @param value if true, use css3d renderer.
+     * @returns this
+     */
     public useCss3DRenderer(value: boolean): this {
         this._renderSettingObject.useCss3DRenderer = value;
         return this;

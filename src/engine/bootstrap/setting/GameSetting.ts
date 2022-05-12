@@ -27,10 +27,16 @@ export class GameSetting {
         };
     }
 
+    /**
+     * render setting
+     */
     public get render(): RenderSetting {
         return this._renderSetting;
     }
 
+    /**
+     * physics setting
+     */
     public get physics(): PhysicsSetting {
         return this._physicsSetting;
     }
