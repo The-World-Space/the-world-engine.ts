@@ -51,6 +51,7 @@
         "html-webpack-plugin": "^5.5.0",
         "jest": "^28.0.3",
         "jest-dev-server": "^6.0.3",
+        "jest-environment-jsdom": "^28.1.0",
         "jest-environment-node": "^28.0.2",
         "puppeteer": "^13.7.0",
         "terser-webpack-plugin": "^5.3.1",

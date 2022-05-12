@@ -1,13 +1,17 @@
 import { jest } from "@jest/globals";
+import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { Coroutine } from "@src/engine/coroutine/Coroutine";
 import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { CoroutineProcessor } from "@src/engine/coroutine/CoroutineProcessor";
 import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
+import { Game } from "@src/engine/Game";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Scene } from "@src/engine/hierarchy_object/Scene";
 import { Instantiater } from "@src/engine/Instantiater";
 import { TransformMatrixProcessor } from "@src/engine/render/TransformMatrixProcessor";
+import { Camera } from "@src/engine/script/render/Camera";
 import { Time } from "@src/engine/time/Time";
 
 const engineGlobalObject = {
@@ -226,5 +230,36 @@ describe("Component Test", () => {
         component.enabled = false;
 
         expect(component.enabled).toBe(false);
+    });
+
+    it("Component.enabled getter on engine", () => {
+        const requestAnimationFrameCount = 1;
+        let requestAnimationFrameCallCount = 0;
+        jest.spyOn(window, "requestAnimationFrame")
+            .mockImplementation(
+                (callback: FrameRequestCallback) => {
+                    requestAnimationFrameCallCount += 1;
+                    if (requestAnimationFrameCallCount === requestAnimationFrameCount) return 0;
+                    callback(0);
+                    return 0;
+                }
+            );
+
+        class TestComponent extends Component { }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = () => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+                
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        expect(interopObject.testComponent.ref!.enabled).toBe(true);
+
+        (window.requestAnimationFrame as jest.Mock).mockRestore();
     });
 });
