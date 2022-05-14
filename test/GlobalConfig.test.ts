@@ -7,4 +7,3 @@ describe("GlobalConfig Test", () => {
         expect(src).toMatch(/^data:image\/png;base64,/);
     });
 });
- 
