@@ -26,7 +26,7 @@
         "noImplicitOverride": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        "declaration": true,
+        //"declaration": true,
         "outDir": "dist/",
         "typeRoots": [
             "src/types",
