@@ -14,6 +14,7 @@ import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElement
 import { Vector3 } from "three/src/Three";
 import { NonPhysicsTestBootstrapper } from "./test_project/asset/NonPhysicsTestBootstrapper";
 import { PhysicsTestBootstrapper } from "./test_project/asset/PhysicsTestBootstrapper";
+import { TestBootstrapper } from "./test_project/asset/TestBootstrapper";
 import { TransformTestBootstrapper } from "./test_project/asset/TransformTestBootstrapper";
 
 let requestAnimationFrameCount = 1;
@@ -151,5 +152,11 @@ describe("GameCreate Test", () => {
 
     it("Game Scene Test6", () => {
         createAndRunGame(TransformTestBootstrapper)
+    });
+
+    it("Game Scene Test7", () => {
+        jest.spyOn(console, "clear");
+        createAndRunGame(TestBootstrapper);
+        (console.clear as jest.Mock).mockRestore();
     });
 });
