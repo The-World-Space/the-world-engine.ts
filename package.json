@@ -15,7 +15,7 @@
         "type": "git",
         "url": "git+https://github.com/noname0310/the-world-engine.ts.git"
     },
-    "keywords": [],
+    "keywords": [ "three.js", "three", "engine", "game", "unity", "browser", "web" ],
     "author": "noname0310",
     "license": "MIT",
     "bugs": {
