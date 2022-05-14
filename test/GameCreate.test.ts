@@ -50,7 +50,7 @@ describe("GameCreate Test", () => {
             public run(): SceneBuilder {
                 return this.sceneBuilder
                     .withChild(this.instantiater.buildGameObject("camera")
-                        .withComponent(Camera))
+                        .withComponent(Camera));
             }
         });
     });
@@ -58,7 +58,7 @@ describe("GameCreate Test", () => {
     it("Game Scene Test2", () => {
         const interopObject = {
             object1: new PrefabRef<GameObject>()
-        }
+        };
 
         createAndRunGame(class extends Bootstrapper<typeof interopObject> {
             public run(): SceneBuilder {
@@ -85,9 +85,9 @@ describe("GameCreate Test", () => {
                 ;
             }
         }, interopObject, 2, 
-            (o?: typeof interopObject) => {
-                expect(o!.object1.ref!.transform.position.y).toBeLessThan(0);
-            }
+        (o?: typeof interopObject) => {
+            expect(o!.object1.ref!.transform.position.y).toBeLessThan(0);
+        }
         );
     });
 
@@ -147,11 +147,11 @@ describe("GameCreate Test", () => {
     });
 
     it("Game Scene Test5", () => {
-        createAndRunGame(PhysicsTestBootstrapper)
+        createAndRunGame(PhysicsTestBootstrapper);
     });
 
     it("Game Scene Test6", () => {
-        createAndRunGame(TransformTestBootstrapper)
+        createAndRunGame(TransformTestBootstrapper);
     });
 
     it("Game Scene Test7", () => {

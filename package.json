@@ -8,13 +8,22 @@
         "build": "gulp",
         "test": "jest",
         "webpack": "webpack --mode production",
-        "lint": "eslint -c .eslintrc.js src/**/*.ts test/**/*.ts --fix"
+        "lint": "eslint -c .eslintrc.js src/**/*.ts test/**/*.ts --fix",
+        "prepare": "husky install"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/noname0310/the-world-engine.ts.git"
     },
-    "keywords": [ "three.js", "three", "engine", "game", "unity", "browser", "web" ],
+    "keywords": [
+        "three.js",
+        "three",
+        "engine",
+        "game",
+        "unity",
+        "browser",
+        "web"
+    ],
     "author": "noname0310",
     "license": "MIT",
     "bugs": {
@@ -30,6 +39,8 @@
         "@babel/plugin-transform-modules-commonjs": "^7.17.9",
         "@babel/plugin-transform-runtime": "^7.17.10",
         "@babel/preset-env": "^7.17.10",
+        "@commitlint/cli": "^16.3.0",
+        "@commitlint/config-conventional": "^16.2.4",
         "@gulp-plugin/alias": "^2.2.2",
         "@types/expect-puppeteer": "^4.4.7",
         "@types/jest": "^27.5.1",
@@ -48,6 +59,7 @@
         "gulp-terser": "^2.1.0",
         "gulp-typescript": "^6.0.0-alpha.1",
         "html-webpack-plugin": "^5.5.0",
+        "husky": "^8.0.1",
         "jest": "^28.1.0",
         "jest-dev-server": "^6.0.3",
         "jest-environment-jsdom": "^28.1.0",
