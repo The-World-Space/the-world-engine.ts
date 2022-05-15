@@ -1,14 +1,14 @@
-import { PrefabRef } from "./PrefabRef";
 import { EngineGlobalObject } from "../EngineGlobalObject";
-import { GameObject } from "./GameObject";
-import { Component } from "./Component";
-import { ComponentConstructor } from "./ComponentConstructor";
-import { SceneProcessor } from "../SceneProcessor";
-import { Transform } from "./Transform";
 import { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
 import { ReadonlyVector3 } from "../math/ReadonlyVector3";
-import { WritableVector3 } from "../math/WritableVector3";
 import { WritableQuaternion } from "../math/WritableQuaternion";
+import { WritableVector3 } from "../math/WritableVector3";
+import { SceneProcessor } from "../SceneProcessor";
+import { Component } from "./Component";
+import { ComponentConstructor } from "./ComponentConstructor";
+import { GameObject } from "./GameObject";
+import { PrefabRef } from "./PrefabRef";
+import { Transform } from "./Transform";
 
 /**
  * builder for GameObject

@@ -1,4 +1,3 @@
-import { Vector2, Vector3 } from "three/src/Three";
 import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
@@ -13,6 +12,8 @@ import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/sc
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { TileAtlasItem } from "@src/engine/script/render/CssTilemapRenderer";
 import { ZaxisSorter } from "@src/engine/script/render/ZaxisSorter";
+import { Vector2, Vector3 } from "three/src/Three";
+
 import SansFightRoomTileAtlas from "../source/room_sanscorridor.png";
 import SansBlack from "../source/Sans black.png";
 import Pillar from "../source/spr_foregroundpillar.png";

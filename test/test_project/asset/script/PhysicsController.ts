@@ -1,6 +1,6 @@
-import { Vector2 } from "three/src/Three";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
+import { Vector2 } from "three/src/Three";
 
 /** @internal */
 export class PhysicsController extends Component {

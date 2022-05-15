@@ -1,33 +1,34 @@
+import { Vector2 } from "three/src/Three";
+
 import type {
+    BodyDef as B2BodyDef,
     Contact as B2Contact,
     Manifold as B2Manifold,
     Shape as B2Shape,
-    BodyDef as B2BodyDef,
     World as B2World
 } from "../../../box2d.ts/build/index";
-import { Vector2 } from "three/src/Three";
-import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
-import type { PhysicsObject2D } from "./PhysicsObject2D";
-import type { Collision2DPool } from "./Collision2DPool";
-import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
-import type { DeepReadonly } from "../../type/DeepReadonly";
-import type { GameObject } from "../../hierarchy_object/GameObject";
-import type { IPhysics2D } from "./IPhysics2D";
-import type { IPhysicsObject2D } from "./PhysicsObject2D";
-import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import type { PhysicsSettingObject } from "../../bootstrap/setting/PhysicsSetting";
+import type { GameObject } from "../../hierarchy_object/GameObject";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
+import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
-import type { Physics2DLoader } from "./Physics2DLoader";
-import type { PhysicsEventDispatcher } from "./PhysicsEventDispatcher";
+import type { DeepReadonly } from "../../type/DeepReadonly";
+import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
+import type { Collision2DPool } from "./Collision2DPool";
+import type { ContactFilter2D } from "./ContactFilter2D";
 import type { CollisionEventPool, TriggerEventPool } from "./EventPool";
 import { CollisionType, TriggerType } from "./EventPool";
 import type { FixtureGroup } from "./FixtureGroup";
-import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import type { RaycastHit2D } from "./RaycastHit2D";
-import type { WritableVector2 } from "../../math/WritableVector2";
-import type { RayCastOneCallback } from "./RayCastOneCallback";
-import type { ContactFilter2D } from "./ContactFilter2D";
+import type { IPhysics2D } from "./IPhysics2D";
+import type { Physics2DLoader } from "./Physics2DLoader";
+import type { PhysicsEventDispatcher } from "./PhysicsEventDispatcher";
+import type { PhysicsMaterial2D } from "./PhysicsMaterial2D";
+import type { PhysicsObject2D } from "./PhysicsObject2D";
+import type { IPhysicsObject2D } from "./PhysicsObject2D";
 import type { RayCastFilterCallback } from "./RayCastFilterCallback";
+import type { RaycastHit2D } from "./RaycastHit2D";
+import type { RayCastOneCallback } from "./RayCastOneCallback";
 
 /** @internal */
 export class Physics2DProcessor implements IPhysics2D {

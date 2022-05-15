@@ -1,6 +1,6 @@
 import { DeepReadonly } from "../../type/DeepReadonly";
-import { RenderSetting, RenderSettingObject } from "./RenderSetting";
 import { PhysicsSetting, PhysicsSettingObject } from "./PhysicsSetting";
+import { RenderSetting, RenderSettingObject } from "./RenderSetting";
 
 export type GameSettingObject = {
     render: RenderSettingObject;

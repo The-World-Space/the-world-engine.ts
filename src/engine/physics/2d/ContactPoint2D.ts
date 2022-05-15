@@ -1,11 +1,12 @@
+import { Vector2 } from "three/src/Three";
+
 import type { Contact, ManifoldPoint } from "../../../box2d.ts/build/index";
 import { Vec2 } from "../../../box2d.ts/build/index";
-import { Vector2 } from "three/src/Three";
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
-import type { WritableVector2 } from "../../math/WritableVector2";
 
 export class ContactPoint2D {
     private _contact: Contact|null = null;

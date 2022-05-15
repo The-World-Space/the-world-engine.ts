@@ -1,5 +1,6 @@
 import type { SetType } from "js-sdsl/dist/esm/Set/Set";
 import Set from "js-sdsl/dist/esm/Set/Set";
+
 import { Camera } from "../script/render/Camera";
 import { CameraInfo } from "./CameraInfo";
 import { ReadonlyColor } from "./ReadonlyColor";

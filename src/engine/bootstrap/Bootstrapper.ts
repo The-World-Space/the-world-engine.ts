@@ -1,8 +1,8 @@
-import { SceneBuilder } from "./SceneBuilder";
 import { EngineGlobalObject } from "../EngineGlobalObject";
-import { GameSetting, GameSettingObject } from "./setting/GameSetting";
 import { Instantiater } from "../Instantiater";
 import { DeepReadonly } from "../type/DeepReadonly";
+import { SceneBuilder } from "./SceneBuilder";
+import { GameSetting, GameSettingObject } from "./setting/GameSetting";
 
 /**
  * make game scene with interop object and scene builder

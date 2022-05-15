@@ -1,4 +1,5 @@
 import { Vector2, Vector3 } from "three/src/Three";
+
 import { Component } from "../../hierarchy_object/Component";
 
 export class ParallaxTranslater extends Component {

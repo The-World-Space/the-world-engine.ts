@@ -1,4 +1,5 @@
-import { Camera as ThreeCamera, PerspectiveCamera as ThreePerspectiveCamera, OrthographicCamera as ThreeOrthographicCamera } from "three/src/Three";
+import { Camera as ThreeCamera, OrthographicCamera as ThreeOrthographicCamera, PerspectiveCamera as ThreePerspectiveCamera } from "three/src/Three";
+
 import { Transform } from "../../../engine/hierarchy_object/Transform";
 import { Component } from "../../hierarchy_object/Component";
 import { CameraInfo } from "../../render/CameraInfo";

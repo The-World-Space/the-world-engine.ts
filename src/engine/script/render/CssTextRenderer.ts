@@ -1,7 +1,7 @@
 import { Transform } from "../../hierarchy_object/Transform";
-import { CssRenderer } from "./CssRenderer";
 import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
+import { CssRenderer } from "./CssRenderer";
 
 export enum TextAlign {
     Left = "left",

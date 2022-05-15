@@ -1,14 +1,15 @@
+import { Vector2, Vector3 } from "three/src/Three";
+
 import type { Shape } from "../../../../box2d.ts/build/index";
 import { EdgeShape } from "../../../../box2d.ts/build/index";
-import { Vector2, Vector3 } from "three/src/Three";
-import { Collider2D } from "./Collider2D";
 import type { GameObject } from "../../../hierarchy_object/GameObject";
-import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
-import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
-import { Object2DAttacher } from "../Object2DAttacher";
 import { PrefabRef } from "../../../hierarchy_object/PrefabRef";
+import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import { Color } from "../../../render/Color";
 import { Css2DEdgeRenderer } from "../../render/Css2DEdgeRenderer";
+import { Object2DAttacher } from "../Object2DAttacher";
+import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
+import { Collider2D } from "./Collider2D";
 
 /**
  * Collider for 2D physics representing an arbitrary set of connected edges (lines) defined by its vertices.

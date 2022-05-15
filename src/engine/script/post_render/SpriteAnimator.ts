@@ -1,7 +1,7 @@
 import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
-import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { AsyncImageLoader } from "../helper/AsyncImageLoader";
+import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
 export class SpriteAnimator extends Component {
     public override readonly disallowMultipleComponent: boolean = true;

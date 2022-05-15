@@ -1,7 +1,7 @@
 import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
-import { GridEventMap } from "./GridEventMap";
 import { PlayerGridMovementController } from "../controller/PlayerGridMovementController";
+import { GridEventMap } from "./GridEventMap";
 
 /**
  * for player interact with GridEventMap you should add this component to your player

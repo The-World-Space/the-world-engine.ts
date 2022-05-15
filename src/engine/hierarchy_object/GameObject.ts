@@ -1,9 +1,9 @@
+import { EngineGlobalObject } from "../EngineGlobalObject";
 import { Component } from "./Component";
 import { ComponentConstructor } from "./ComponentConstructor";
-import { EngineGlobalObject } from "../EngineGlobalObject";
-import { Transform } from "./Transform";
 import { GameObjectBuilder } from "./GameObjectBuilder";
 import { GameObjectEventContainer } from "./GameObjectEventContainer";
+import { Transform } from "./Transform";
 
 /**
  * base class for all entities in scenes

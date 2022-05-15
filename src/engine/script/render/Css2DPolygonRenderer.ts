@@ -1,10 +1,11 @@
+import { DEG2RAD } from "three/src/math/MathUtils";
 import { Vector2 } from "three/src/Three";
+
+import { Transform } from "../../hierarchy_object/Transform";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Color } from "../../render/Color";
-import { Transform } from "../../hierarchy_object/Transform";
-import { CssRenderer } from "./CssRenderer";
-import { DEG2RAD } from "three/src/math/MathUtils";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
+import { CssRenderer } from "./CssRenderer";
 
 export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolygonElement|null = null;

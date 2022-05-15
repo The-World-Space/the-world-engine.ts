@@ -1,4 +1,5 @@
 import { Scene as ThreeScene } from "three/src/Three";
+
 import { GameObject } from "./GameObject";
 import { GameObjectBuilder } from "./GameObjectBuilder";
 import { Transform } from "./Transform";

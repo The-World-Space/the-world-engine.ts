@@ -1,4 +1,3 @@
-import { Vector2, Vector3 } from "three/src/Three";
 import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PlayerGridMovementController } from "@src/engine/script/controller/PlayerGridMovementController";
@@ -8,6 +7,8 @@ import { EdgeCollider2D } from "@src/engine/script/physics2d/collider/EdgeCollid
 import { PolygonCollider2D } from "@src/engine/script/physics2d/collider/PolygonCollider2D";
 import { RigidBody2D, RigidbodyType2D } from "@src/engine/script/physics2d/RigidBody2D";
 import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRenderer";
+import { Vector2, Vector3 } from "three/src/Three";
+
 import { RaycastTest } from "../script/RaycastTest";
 import { TestLayer } from "../TestLayer";
 

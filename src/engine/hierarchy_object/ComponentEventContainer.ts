@@ -1,10 +1,10 @@
+import { Instantiater } from "../Instantiater";
+import { Collision2D } from "../physics/2d/Collision2D";
 import { SceneProcessor } from "../SceneProcessor";
+import { Collider2D } from "../script/physics2d/collider/Collider2D";
 import { Component } from "./Component";
 import { ComponentEvent } from "./ComponentEvent";
 import { ComponentEventState } from "./ComponentEventState";
-import { Instantiater } from "../Instantiater";
-import { Collision2D } from "../physics/2d/Collision2D";
-import { Collider2D } from "../script/physics2d/collider/Collider2D";
 
 /**
  * awake is called when the script instance is being loaded.

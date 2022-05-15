@@ -1,16 +1,16 @@
-import { Time } from "./time/Time";
-import { InputHandler } from "./input/InputHandler";
-import { Instantiater } from "./Instantiater";
-import { IReadonlyGameState } from "./GameState";
-import { Scene } from "./hierarchy_object/Scene";
-import { CameraContainer } from "./render/CameraContainer";
-import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
-import { SceneProcessor } from "./SceneProcessor";
-import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
-import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
-import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { IPhysics2D } from "..";
 import { GameSettingObject } from "./bootstrap/setting/GameSetting";
+import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
+import { IReadonlyGameState } from "./GameState";
+import { Scene } from "./hierarchy_object/Scene";
+import { InputHandler } from "./input/InputHandler";
+import { Instantiater } from "./Instantiater";
+import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
+import { CameraContainer } from "./render/CameraContainer";
+import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
+import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
+import { SceneProcessor } from "./SceneProcessor";
+import { Time } from "./time/Time";
 import { DeepReadonly } from "./type/DeepReadonly";
 
 /** 

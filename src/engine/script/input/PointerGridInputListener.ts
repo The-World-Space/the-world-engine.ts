@@ -1,4 +1,5 @@
 import { Vector2, Vector3 } from "three/src/Three";
+
 import { EventContainer, IEventContainer } from "../../collection/EventContainer";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";

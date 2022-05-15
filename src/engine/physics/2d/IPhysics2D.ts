@@ -1,4 +1,5 @@
 import type { Vector2 } from "three/src/Three";
+
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
 import type { ContactFilter2D } from "./ContactFilter2D";

@@ -1,9 +1,10 @@
-import { Vector3 } from "three/src/Three";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
+import { Vector3 } from "three/src/Three";
+
 import { ChangeParentTest } from "../script/ChangeParentTest";
 import { Rotator2 } from "../script/Rotator2";
 

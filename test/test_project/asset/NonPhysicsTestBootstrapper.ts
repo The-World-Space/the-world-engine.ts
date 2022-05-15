@@ -1,10 +1,10 @@
-import { Vector3 } from "three/src/Three";
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Color } from "@src/engine/render/Color";
 import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";
 import { Camera } from "@src/engine/script/render/Camera";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
+import { Vector3 } from "three/src/Three";
 
 /** @internal */
 export class NonPhysicsTestBootstrapper extends Bootstrapper {
