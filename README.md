@@ -1,6 +1,11 @@
 # the-world-engine.ts
  three.js based, unity like game engine for browser.
 
+![language](https://img.shields.io/github/languages/top/The-World-Space/the-world-engine.ts)
+
+![last commit](https://img.shields.io/github/last-commit/The-World-Space/the-world-engine.ts)
+
+
 #### [Demo](https://the-world-space.github.io/the-world-engine-examples/build/sans-fight-room/index.html)
 
 ![sans-fight-room](docs/image/sans-fight-room.png)
