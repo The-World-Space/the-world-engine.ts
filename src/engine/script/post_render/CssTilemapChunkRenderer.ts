@@ -1,7 +1,8 @@
 import { Vector2, Vector3 } from "three/src/Three";
+
 import { Component } from "../../hierarchy_object/Component";
-import { CssTilemapRenderer, TileAtlasItem } from "../render/CssTilemapRenderer";
 import { IGridCoordinatable } from "../helper/IGridCoordinatable";
+import { CssTilemapRenderer, TileAtlasItem } from "../render/CssTilemapRenderer";
 
 export class CssTilemapChunkRenderer extends Component implements IGridCoordinatable {
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssTilemapRenderer> = new Map();

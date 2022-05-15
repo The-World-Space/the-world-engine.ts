@@ -1,10 +1,10 @@
-import { ComponentConstructor } from "./ComponentConstructor";
-import { GameObject } from "./GameObject";
-import { EngineGlobalObject } from "../EngineGlobalObject";
 import { Coroutine } from "../coroutine/Coroutine";
 import { CoroutineIterator } from "../coroutine/CoroutineIterator";
-import { Transform } from "./Transform";
+import { EngineGlobalObject } from "../EngineGlobalObject";
+import { ComponentConstructor } from "./ComponentConstructor";
 import { ComponentEventContainer } from "./ComponentEventContainer";
+import { GameObject } from "./GameObject";
+import { Transform } from "./Transform";
 
 /**
  * component is the base class from which every engine script derives

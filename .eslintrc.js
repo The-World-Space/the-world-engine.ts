@@ -25,7 +25,8 @@ module.exports = {
     },
     "plugins": [
         "@typescript-eslint",
-        "jest"
+        "jest",
+        "simple-import-sort"
     ],
     "rules": {
         "@typescript-eslint/no-non-null-assertion": "off",
@@ -132,12 +133,14 @@ module.exports = {
             "error",
             "never"
         ],
+        "simple-import-sort/imports": "error",
+        "simple-import-sort/exports": "error"
     },
     "settings": {
         "import/resolver": {
             alias: {
                 map: [
-                    ['@src', './src']
+                    ["@src", "./src"]
                 ]
             }
         }

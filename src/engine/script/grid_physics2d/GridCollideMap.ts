@@ -1,4 +1,5 @@
 import { Vector2, Vector3 } from "three/src/Three";
+
 import { Component } from "../../hierarchy_object/Component";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";

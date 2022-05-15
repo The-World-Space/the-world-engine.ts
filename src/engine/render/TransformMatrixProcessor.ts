@@ -1,4 +1,5 @@
 import { Object3D } from "three/src/Three";
+
 import { Transform } from "../hierarchy_object/Transform";
 
 /** @internal */

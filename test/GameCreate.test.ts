@@ -12,6 +12,7 @@ import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
 import { Camera } from "@src/engine/script/render/Camera";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
 import { Vector3 } from "three/src/Three";
+
 import { NonPhysicsTestBootstrapper } from "./test_project/asset/NonPhysicsTestBootstrapper";
 import { PhysicsTestBootstrapper } from "./test_project/asset/PhysicsTestBootstrapper";
 import { TestBootstrapper } from "./test_project/asset/TestBootstrapper";

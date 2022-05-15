@@ -1,4 +1,3 @@
-import { Vector2, Vector3 } from "three/src/Three";
 import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
@@ -9,10 +8,12 @@ import { CssTilemapChunkRenderer } from "@src/engine/script/post_render/CssTilem
 import { ParallaxTranslater } from "@src/engine/script/post_render/ParallaxTranslater";
 import { CameraRelativeZaxisSorter } from "@src/engine/script/render/CameraRelativeZaxisSorter";
 import { CssIframeRenderer } from "@src/engine/script/render/CssIframeRenderer";
-import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteAtlasRenderer,CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { TileAtlasItem } from "@src/engine/script/render/CssTilemapRenderer";
 import { ZaxisSorter } from "@src/engine/script/render/ZaxisSorter";
+import { Vector2, Vector3 } from "three/src/Three";
+
 import SansFightRoomTileAtlas from "../source/room_sanscorridor.png";
 import SansBlack from "../source/Sans black.png";
 import Pillar from "../source/spr_foregroundpillar.png";

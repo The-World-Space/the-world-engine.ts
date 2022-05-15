@@ -1,15 +1,16 @@
-import type { Body } from "../../../box2d.ts/build/index";
-import { BodyType, BodyDef, MassData, Vec2, WorldManifold } from "../../../box2d.ts/build/index";
 import { Vector2 } from "three/src/Three";
+
+import type { Body } from "../../../box2d.ts/build/index";
+import { BodyDef, BodyType, MassData, Vec2, WorldManifold } from "../../../box2d.ts/build/index";
 import { Component } from "../../hierarchy_object/Component";
-import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
-import { ContactPoint2D } from "../../physics/2d/ContactPoint2D";
-import type { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../math/WritableVector2";
+import { ContactPoint2D } from "../../physics/2d/ContactPoint2D";
+import type { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
 import type { IPhysicsObject2D } from "../../physics/2d/PhysicsObject2D";
-import type { Collider2D } from "./collider/Collider2D";
 import type { CollisionLayer, CollisionLayerParm } from "../../physics/CollisionLayer";
+import { CollisionLayerConst } from "../../physics/CollisionLayerConst";
+import type { Collider2D } from "./collider/Collider2D";
 
 /**
  * The physical behaviour type of the Rigidbody2D.

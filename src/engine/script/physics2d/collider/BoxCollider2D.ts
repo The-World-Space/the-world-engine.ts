@@ -1,13 +1,14 @@
+import { Vector2, Vector3 } from "three/src/Three";
+
 import type { Shape } from "../../../../box2d.ts/build/index";
 import { PolygonShape } from "../../../../box2d.ts/build/index";
-import { Vector2, Vector3 } from "three/src/Three";
-import { Collider2D } from "./Collider2D";
-import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
 import type { GameObject } from "../../../hierarchy_object/GameObject";
 import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../../math/WritableVector2";
-import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
+import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
 import { Object2DAttacher } from "../Object2DAttacher";
+import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
+import { Collider2D } from "./Collider2D";
 
 /**
  * Collider for 2D physics representing an axis-aligned rectangle.

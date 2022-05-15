@@ -1,4 +1,5 @@
 import { Vector2 } from "three/src/Three";
+
 import type { b2Vec2 } from "../../../box2d.ts/build/box2d";
 import type { Transform } from "../../hierarchy_object/Transform";
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";

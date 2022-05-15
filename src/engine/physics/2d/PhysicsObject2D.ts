@@ -1,10 +1,10 @@
 import type { Body } from "../../../box2d.ts/build/index";
 import { BodyType } from "../../../box2d.ts/build/index";
-import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 import type { GameObject } from "../../hierarchy_object/GameObject";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import { FixtureGroup } from "./FixtureGroup";
+import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 
 /** @internal */
 export interface IPhysicsObject2D {

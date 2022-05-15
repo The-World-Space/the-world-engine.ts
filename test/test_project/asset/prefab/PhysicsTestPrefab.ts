@@ -1,4 +1,3 @@
-import { Quaternion, Vector2, Vector3 } from "three/src/Three";
 import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";
@@ -8,6 +7,8 @@ import { PolygonCollider2D } from "@src/engine/script/physics2d/collider/Polygon
 import { RigidBody2D, RigidbodyType2D } from "@src/engine/script/physics2d/RigidBody2D";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRenderer";
+import { Quaternion, Vector2, Vector3 } from "three/src/Three";
+
 import { BodyDisposer } from "../script/BodyDisposer";
 import { ContactTest } from "../script/ContactTest";
 import { PhysicsController } from "../script/PhysicsController";

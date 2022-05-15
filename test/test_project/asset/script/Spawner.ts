@@ -1,9 +1,9 @@
-import Queue, { QueueType } from "js-sdsl/dist/esm/Queue/Queue";
 import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
+import Queue, { QueueType } from "js-sdsl/dist/esm/Queue/Queue";
 
 /** @internal */
 export class Spawner extends Component {

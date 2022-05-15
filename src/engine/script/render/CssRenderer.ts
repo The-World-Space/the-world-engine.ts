@@ -1,10 +1,11 @@
 import { Vector2 } from "three/src/Three";
-//import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
+
 import { ReadonlyVector2 } from "../../../engine/math/ReadonlyVector2";
 import { WritableVector2 } from "../../../engine/math/WritableVector2";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
+//import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
+import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
 export const enum CssRendererConst {

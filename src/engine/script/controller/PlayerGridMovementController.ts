@@ -1,13 +1,14 @@
 import { Vector2 } from "three/src/Three";
+
+import { EventContainer, IEventContainer } from "../../collection/EventContainer";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import { WritableVector2 } from "../../math/WritableVector2";
 import { Pathfinder } from "../ai/pathfind/Pathfinder";
-import { GridPointer } from "../input/GridPointer";
-import { PointerGridEvent } from "../input/PointerGridInputListener";
 import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 import { Direction, Directionable } from "../helper/Directionable";
 import { IGridPositionable } from "../helper/IGridPositionable";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../math/WritableVector2";
-import { EventContainer, IEventContainer } from "../../collection/EventContainer";
+import { GridPointer } from "../input/GridPointer";
+import { PointerGridEvent } from "../input/PointerGridInputListener";
 
 /**
  * make gameobject moves on grid coordinates

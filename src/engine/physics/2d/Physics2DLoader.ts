@@ -1,32 +1,31 @@
 import {
     angularSleepTolerance,
     baumgarte,
+    BodyDef,
+    BodyType,
+    ContactListener,
+    Filter,
+    FixtureDef,
     linearSleepTolerance,
+    MassData,
     maxAngularCorrection,
     maxLinearCorrection,
     maxRotation,
     maxTranslation,
+    PolygonShape,
     timeToSleep,
     toiBaumgarte,
-    BodyType,
-    BodyDef,
-    ContactListener,
-    FixtureDef,
-    Filter,
-    MassData,
-    PolygonShape,
-    WorldManifold,
+    Vec2,
     World,
-    Vec2
-} from "../../../box2d.ts/build/index";
+    WorldManifold} from "../../../box2d.ts/build/index";
 import { CollisionLayerMaskConverter } from "../CollisionLayerMaskConverter";
-import { Collision2DPool } from "./Collision2DPool";
 import { Collision2D } from "./Collision2D";
-import { PhysicsObject2D } from "./PhysicsObject2D";
+import { Collision2DPool } from "./Collision2DPool";
 import { CollisionEventPool, TriggerEventPool } from "./EventPool";
+import { PhysicsObject2D } from "./PhysicsObject2D";
+import { RayCastFilterCallback } from "./RayCastFilterCallback";
 import { RaycastHit2D } from "./RaycastHit2D";
 import { RayCastOneCallback } from "./RayCastOneCallback";
-import { RayCastFilterCallback } from "./RayCastFilterCallback";
 
 export class Physics2DLoader {
     /** @internal */

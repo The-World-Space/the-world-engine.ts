@@ -1,4 +1,5 @@
 import { Vector2 } from "three/src/Three";
+
 import { Transform } from "../../hierarchy_object/Transform";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";

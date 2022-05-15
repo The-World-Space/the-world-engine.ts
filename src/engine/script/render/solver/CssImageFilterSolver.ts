@@ -1,5 +1,5 @@
-import { ReadonlyColor } from "../../../render/ReadonlyColor";
 import { Color } from "../../../render/Color";
+import { ReadonlyColor } from "../../../render/ReadonlyColor";
 
 //code from https://stackoverflow.com/a/43960991
 

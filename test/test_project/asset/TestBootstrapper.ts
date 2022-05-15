@@ -1,17 +1,18 @@
-import { Vector2, Vector3 } from "three/src/Three";
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
-import { FpsCounter } from "./script/FpsCounter";
-import { TestLayer } from "./TestLayer";
-import { Camera, CameraType } from "@src/engine/script/render/Camera";
+import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
+import { Color } from "@src/engine/render/Color";
 import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";
 import { EditorGridRenderer } from "@src/engine/script/post_render/EditorGridRenderer";
+import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssTextRenderer } from "@src/engine/script/render/CssTextRenderer";
-import { Color } from "@src/engine/render/Color";
-import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
+import { Vector2, Vector3 } from "three/src/Three";
+
 import { PhysicsTestPrefab } from "./prefab/PhysicsTestPrefab";
-import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
+import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
+import { FpsCounter } from "./script/FpsCounter";
+import { TestLayer } from "./TestLayer";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {

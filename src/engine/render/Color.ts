@@ -1,4 +1,5 @@
 import { Matrix3 } from "three/src/Three";
+
 import { ReadonlyMatrix3 } from "../math/ReadonlyMatrix3";
 import { ReadonlyColor } from "./ReadonlyColor";
 

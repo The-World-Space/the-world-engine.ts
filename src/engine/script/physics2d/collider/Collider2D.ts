@@ -1,14 +1,15 @@
-import type { Shape } from "../../../../box2d.ts/build/index";
-import { FixtureDef, Filter, WorldManifold } from "../../../../box2d.ts/build/index";
 import { Vector2 } from "three/src/Three";
+
+import type { Shape } from "../../../../box2d.ts/build/index";
+import { Filter, FixtureDef, WorldManifold } from "../../../../box2d.ts/build/index";
 import { Component } from "../../../hierarchy_object/Component";
-import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
-import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../../math/WritableVector2";
-import type { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
-import type { FixtureGroup } from "../../../physics/2d/FixtureGroup";
 import { ContactPoint2D } from "../../../physics/2d/ContactPoint2D";
+import type { FixtureGroup } from "../../../physics/2d/FixtureGroup";
+import { PhysicsMaterial2D } from "../../../physics/2d/PhysicsMaterial2D";
+import type { CollisionLayer, CollisionLayerParm } from "../../../physics/CollisionLayer";
+import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 
 /**
  * collider2d base component
