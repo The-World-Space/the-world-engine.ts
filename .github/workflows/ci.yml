@@ -2,12 +2,12 @@ name: ci
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, dev ]
     paths-ignore:
       - 'docs/**'
       
   pull_request:
-    branches: [ main ]
+    branches: [ main, dev ]
     paths-ignore:
       - 'docs/**'
 
@@ -49,7 +49,7 @@ jobs:
         
       - name: run test
         run: npm run test
-        
+
       - name: codecov
         uses: codecov/codecov-action@v2
         with:
