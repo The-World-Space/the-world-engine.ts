@@ -1,7 +1,7 @@
 # the-world-engine.ts
  three.js based, unity like game engine for browser.
 
-[![npm](https://img.shields.io/npm/v/the-world-engine)](https://www.npmjs.com/package/the-world-engine)[![coverage](https://img.shields.io/codecov/c/github/The-World-Space/the-world-engine.ts/main)](https://app.codecov.io/gh/The-World-Space/the-world-engine.ts/)[![last commit](https://img.shields.io/github/last-commit/The-World-Space/the-world-engine.ts)](https://github.com/The-World-Space/the-world-engine.ts/commits/dev)[![language](https://img.shields.io/github/languages/top/The-World-Space/the-world-engine.ts)](https://www.typescriptlang.org/)[![license](https://img.shields.io/github/license/The-World-Space/the-world-engine.ts)](https://opensource.org/licenses/MIT)
+[![npm](https://img.shields.io/npm/v/the-world-engine)](https://www.npmjs.com/package/the-world-engine) [![coverage](https://img.shields.io/codecov/c/github/The-World-Space/the-world-engine.ts/main)](https://app.codecov.io/gh/The-World-Space/the-world-engine.ts/) [![last commit](https://img.shields.io/github/last-commit/The-World-Space/the-world-engine.ts)](https://github.com/The-World-Space/the-world-engine.ts/commits/dev) [![language](https://img.shields.io/github/languages/top/The-World-Space/the-world-engine.ts)](https://www.typescriptlang.org/) [![license](https://img.shields.io/github/license/The-World-Space/the-world-engine.ts)](https://opensource.org/licenses/MIT)
 
 ```shell
 npm i the-world-engine
