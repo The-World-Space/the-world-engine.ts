@@ -8,7 +8,7 @@ import { CssTilemapChunkRenderer } from "@src/engine/script/post_render/CssTilem
 import { ParallaxTranslater } from "@src/engine/script/post_render/ParallaxTranslater";
 import { CameraRelativeZaxisSorter } from "@src/engine/script/render/CameraRelativeZaxisSorter";
 import { CssIframeRenderer } from "@src/engine/script/render/CssIframeRenderer";
-import { CssSpriteAtlasRenderer,CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { TileAtlasItem } from "@src/engine/script/render/CssTilemapRenderer";
 import { ZaxisSorter } from "@src/engine/script/render/ZaxisSorter";

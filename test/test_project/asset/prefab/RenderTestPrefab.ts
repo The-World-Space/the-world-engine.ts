@@ -4,7 +4,7 @@ import { Color } from "@src/engine/render/Color";
 import { Css2DEdgeRenderer } from "@src/engine/script/render/Css2DEdgeRenderer";
 import { Css2DPolygonRenderer } from "@src/engine/script/render/Css2DPolygonRenderer";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
-import { CssSpriteAtlasRenderer,CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRenderer";
 import { GlobalConfig } from "@src/GlobalConfig";
 import { Vector2, Vector3 } from "three/src/Three";

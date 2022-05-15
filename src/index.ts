@@ -10,7 +10,7 @@ export { EventContainer } from "./engine/collection/EventContainer";
 //coroutine
 export { Coroutine } from "./engine/coroutine/Coroutine";
 export type { CoroutineIterator } from "./engine/coroutine/CoroutineIterator";
-export { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile,YieldInstruction } from "./engine/coroutine/YieldInstruction";
+export { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile, YieldInstruction } from "./engine/coroutine/YieldInstruction";
 
 //hierarchy_object
 export { Component } from "./engine/hierarchy_object/Component";
@@ -126,7 +126,7 @@ export { SpriteAtlasInstance, SpriteAtlasStaticInstancer } from "./engine/script
 export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_render/SpriteStaticInstancer";
 
 //render
-export { Camera,CameraType } from "./engine/script/render/Camera";
+export { Camera, CameraType } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
 export { Css2DEdgeRenderer } from "./engine/script/render/Css2DEdgeRenderer";
 export { Css2DLineRenderer } from "./engine/script/render/Css2DLineRenderer";
@@ -136,8 +136,8 @@ export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
 export { CssRenderer } from "./engine/script/render/CssRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
 export { CssSpriteRenderer } from "./engine/script/render/CssSpriteRenderer";
-export { CssTextRenderer,FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
-export { CssTilemapRenderer,TileAtlasItem } from "./engine/script/render/CssTilemapRenderer";
+export { CssTextRenderer, FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
+export { CssTilemapRenderer, TileAtlasItem } from "./engine/script/render/CssTilemapRenderer";
 export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssFilter } from "./engine/script/render/filter/CssFilter";

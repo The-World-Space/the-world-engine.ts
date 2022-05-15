@@ -133,6 +133,9 @@ module.exports = {
             "error",
             "never"
         ],
+        "comma-spacing": [
+            "error"
+        ],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error"
     },

@@ -3,7 +3,7 @@ import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { PlayerGridMovementController } from "@src/engine/script/controller/PlayerGridMovementController";
 import { CssCollideTilemapChunkRenderer } from "@src/engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
-import { CssSpriteAtlasRenderer,CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
+import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRenderer";
 import { ZaxisSorter } from "@src/engine/script/render/ZaxisSorter";
 import { GlobalConfig } from "@src/GlobalConfig";
