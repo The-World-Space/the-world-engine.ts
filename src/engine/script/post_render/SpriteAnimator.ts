@@ -3,6 +3,16 @@ import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructo
 import { AsyncImageLoader } from "../helper/AsyncImageLoader";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
+/**
+ * simple sprite animator
+ * 
+ * this component will switch sprite image every interval time
+ * 
+ * 
+ * disallow multiple component
+ * 
+ * require components: `CssSpriteRenderer`
+ */
 export class SpriteAnimator extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
@@ -40,6 +50,11 @@ export class SpriteAnimator extends Component {
         }
     }
 
+    /**
+     * play animation by name
+     * @param name animation name
+     * @returns 
+     */
     public playAnimation(name: string): void {
         if (this._spriteRenderer === null) {
             this._pendingPlayAnimation = name;
@@ -58,11 +73,20 @@ export class SpriteAnimator extends Component {
         this._playing = true;
     }
 
+    /**
+     * stop current animation
+     */
     public stopAnimation(): void {
         this._playing = false;
         this._pendingPlayAnimation = null;
     }
     
+    /**
+     * add animation from image array
+     * @param name animation name
+     * @param animationFrames animation frames
+     * @returns 
+     */
     public addAnimation(name: string, animationFrames: HTMLImageElement[]): void {
         if (animationFrames.length === 0) {
             console.warn(`Animation "${name}" has no frames.`);
@@ -71,6 +95,11 @@ export class SpriteAnimator extends Component {
         this._animations.set(name, animationFrames);
     }
 
+    /**
+     * add animation from image url array
+     * @param name animation name
+     * @param animationFrames animation frames url
+     */
     public addAnimationFromPath(name: string, animationFrames: string[]): void {
         const animationFramesArray: HTMLImageElement[] = [];
         for (let i = 0; i < animationFrames.length; i++) {
@@ -84,10 +113,20 @@ export class SpriteAnimator extends Component {
         });
     }
 
+    /**
+     * frame duration (default: 2)
+     * 
+     * larger value means slower animation
+     */
     public get frameDuration(): number {
         return this._frameDuration;
     }
 
+    /**
+     * frame duration (default: 2)
+     * 
+     * larger value means slower animation
+     */
     public set frameDuration(value: number) {
         this._frameDuration = value;
     }
