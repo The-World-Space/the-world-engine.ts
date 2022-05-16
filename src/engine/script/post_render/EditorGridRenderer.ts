@@ -8,6 +8,16 @@ import { Camera } from "../render/Camera";
 import { CssHtmlElementRenderer } from "../render/CssHtmlElementRenderer";
 import { CssRendererConst } from "../render/CssRenderer";
 
+/**
+ * editor grid renderer for debug
+ * 
+ * just add this component to your camera it will render grid
+ * 
+ * 
+ * disallow multiple component
+ * 
+ * require components: `Camera`
+ */
 export class EditorGridRenderer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [Camera];
@@ -75,42 +85,84 @@ export class EditorGridRenderer extends Component {
         this._cssHtmlRendererObject?.destroy();
     }
 
+    /**
+     * grid cell width. (default: 1)
+     */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
+    /**
+     * grid cell width. (default: 1)
+     */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
+    /**
+     * grid cell height. (default: 1)
+     */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
+    /**
+     * grid cell height. (default: 1)
+     */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
 
+    /**
+     * render width. (default: 18)
+     * 
+     * if grid does not cover the whole screen, you must increase this value
+     */
     public get renderWidth(): number {
         return this._renderWidth;
     }
 
+    /**
+     * render width. (default: 18)
+     * 
+     * if grid does not cover the whole screen, you must increase this value
+     */
     public set renderWidth(value: number) {
         this._renderWidth = value;
     }
 
+    /**
+     * render height. (default: 10)
+     * 
+     * if grid does not cover the whole screen, you must increase this value
+     */
     public get renderHeight(): number {
         return this._renderHeight;
     }
 
+    /**
+     * render height. (default: 10)
+     * 
+     * if grid does not cover the whole screen, you must increase this value
+     */
     public set renderHeight(value: number) {
         this._renderHeight = value;
     }
 
+    /**
+     * grid line width. (default: 0.2)
+     * 
+     * if line width is too small, grid will not be visible on screen
+     */
     public get lineWidth(): number {
         return this._lineWidth;
     }
 
+    /**
+     * grid line width. (default: 0.2)
+     * 
+     * if line width is too small, grid will not be visible on screen
+     */
     public set lineWidth(value: number) {
         this._lineWidth = value;
     }

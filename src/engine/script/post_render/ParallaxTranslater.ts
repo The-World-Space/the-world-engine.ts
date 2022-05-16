@@ -2,6 +2,16 @@ import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
 
+/**
+ * this component will translate gameObject's position to parallax effect relative to camera
+ * 
+ * This effect allows 2D objects to move as if they were 3D.
+ * 
+ * important: This component is only available for static objects. (Moving game objects does not guarantee normal operation)
+ * 
+ * 
+ * disallow multiple component
+ */
 export class ParallaxTranslater extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
 
@@ -34,34 +44,58 @@ export class ParallaxTranslater extends Component {
         this.transform.localPosition.y = this._center.y + offsetY;
     }
 
+    /**
+     * translate center offset x (default: 1.5)
+     */
     public get offsetX(): number {
         return this._offsetX;
     }
 
+    /**
+     * translate center offset x (default: 1.5)
+     */
     public set offsetX(value: number) {
         this._offsetX = value;
     }
 
+    /**
+     * translate center offset y (default: 1.5)
+     */
     public get offsetY(): number {
         return this._offsetY;
     }
 
+    /**
+     * translate center offset y (default: 1.5)
+     */
     public set offsetY(value: number) {
         this._offsetY = value;
     }
 
+    /**
+     * if this value is true, the center will be initialized from transform.localPosition (default: true)
+     */
     public get initializeCenterFromPosition(): boolean {
         return this._initializeCenterFromPosition;
     }
 
+    /**
+     * if this value is true, the center will be initialized from transform.localPosition (default: true)
+     */
     public set initializeCenterFromPosition(value: boolean) {
         this._initializeCenterFromPosition = value;
     }
 
+    /**
+     * center of parallax effect
+     */
     public get center(): Vector2 {
         return this._center;
     }
 
+    /**
+     * center of parallax effect
+     */
     public set center(value: Vector2) {
         this._center.copy(value);
     }

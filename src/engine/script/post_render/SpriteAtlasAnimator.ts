@@ -2,6 +2,16 @@ import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 
+/**
+ * simple sprite atlas animator
+ * 
+ * this component will switch sprite atlas index every interval time
+ * 
+ * 
+ * disallow multiple component
+ * 
+ * require components: `CssSpriteAtlasRenderer`
+ */
 export class SpriteAtlasAnimator extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteAtlasRenderer];
@@ -40,6 +50,11 @@ export class SpriteAtlasAnimator extends Component {
         }
     }
 
+    /**
+     * play animation by name
+     * @param name animation name
+     * @returns 
+     */
     public playAnimation(name: string): void {
         if (this._spriteAtlasRenderer === null) {
             this._pendingPlayAnimation = name;
@@ -55,11 +70,20 @@ export class SpriteAtlasAnimator extends Component {
         this._playing = true;
     }
 
+    /**
+     * stop current animation
+     */
     public stopAnimation(): void {
         this._playing = false;
         this._pendingPlayAnimation = null;
     }
     
+    /**
+     * add animation from atlas index array
+     * @param name animation name
+     * @param animationFrames animation frames
+     * @returns 
+     */
     public addAnimation(name: string, animationFrames: number[]): void {
         if (animationFrames.length === 0) {
             console.warn(`Animation "${name}" has no frames.`);
@@ -68,10 +92,20 @@ export class SpriteAtlasAnimator extends Component {
         this._animations[name] = animationFrames;
     }
 
+    /**
+     * frame duration (default: 2)
+     * 
+     * larger value means slower animation
+     */
     public get frameDuration(): number {
         return this._frameDuration;
     }
 
+    /**
+     * frame duration (default: 2)
+     * 
+     * larger value means slower animation
+     */
     public set frameDuration(value: number) {
         this._frameDuration = value;
     }
