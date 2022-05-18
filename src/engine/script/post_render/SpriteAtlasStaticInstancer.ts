@@ -9,6 +9,11 @@ import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
+/**
+ * represents a sprite atlas instance
+ * 
+ * this class is used from the SpriteAtlasStaticInstancer
+ */
 export class SpriteAtlasInstance {
     private readonly _width: number;
     private readonly _height: number;
@@ -36,35 +41,61 @@ export class SpriteAtlasInstance {
         this._centerOffset = centerOffset;
     }
 
+    /**
+     * sprite atlas instance width
+     */
     public get width(): number {
         return this._width;
     }
 
+    /**
+     * sprite atlas instance height
+     */
     public get height(): number {
         return this._height;
     }
     
+    /**
+     * sprite atlas instance atlas index
+     */
     public get atlasIndex(): number {
         return this._atlasIndex;
     }
 
+    /**
+     * sprite atlas instance position
+     */
     public get position(): ReadonlyVector3 {
         return this._position;
     }
 
+    /**
+     * sprite atlas instance rotation
+     */
     public get rotation(): ReadonlyQuaternion|undefined {
         return this._rotation;
     }
 
+    /**
+     * sprite atlas instance scale
+     */
     public get scale(): ReadonlyVector3|undefined {
         return this._scale;
     }
 
+    /**
+     * sprite atlas instance center offset
+     */
     public get centerOffset(): ReadonlyVector2|undefined {
         return this._centerOffset;
     }
 }
 
+/**
+ * this component draws multiple sprite atlas instances
+ * 
+ * drawcall optimization is not yet available
+ */
 export class SpriteAtlasStaticInstancer extends Component {
     private _imageSource: string = GlobalConfig.defaultSpriteSrc;
     private _useZaxisSorter = false;
@@ -81,6 +112,11 @@ export class SpriteAtlasStaticInstancer extends Component {
         this._initializeFunction?.call(this);
     }
 
+    /**
+     * set instances to be drawn
+     * @param instances instances to be drawn
+     * @returns 
+     */
     public setInstances(instances: SpriteAtlasInstance[]): void {
         if (!this._started) {
             this._initializeFunction = (): void => this.setInstances(instances);
@@ -116,47 +152,106 @@ export class SpriteAtlasStaticInstancer extends Component {
         this.destroy();
     }
 
+    /**
+     * set the number of rows and columns of the sprite atlas
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     * @param rowCount number of rows
+     * @param columnCount number of columns
+     */
     public setSliceCount(rowCount: number, columnCount: number): void {
         this._rowCount = rowCount;
         this._columnCount = columnCount;
     }
 
+    /**
+     * image source of the sprite atlas
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get imageSource(): string {
         return this._imageSource;
     }
 
+    /**
+     * image source of the sprite atlas
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set imageSource(value: string) {
         this._imageSource = value;
     }
 
+    /**
+     * row count of the sprite atlas
+     */
     public get rowCount(): number {
         return this._rowCount;
     }
 
+    /**
+     * column count of the sprite atlas
+     */
     public get columnCount(): number {
         return this._columnCount;
     }
 
+    /**
+     * if this is true, the zaxis sorter will be attached to the sprite atlas instances
+     * otherwise the zaxis initializer will be attached
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get useZindexSorter(): boolean {
         return this._useZaxisSorter;
     }
 
+    /**
+     * if this is true, the zaxis sorter will be attached to the sprite atlas instances
+     * otherwise the zaxis initializer will be attached
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set useZindexSorter(value: boolean) {
         this._useZaxisSorter = value;
     }
 
+    /**
+     * offset of the zaxis sorter
+     * 
+     * this is only used if useZindexSorter is true
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get zindexSortOffset(): number {
         return this._zaxisSortOffset;
     }
 
+    /**
+     * offset of the zaxis sorter
+     * 
+     * this is only used if useZindexSorter is true
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set zindexSortOffset(value: number) {
         this._zaxisSortOffset = value;
     }
 
+    /**
+     * if this is true, the sprite atlas instances can be clicked
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get pointerEvents(): boolean {
         return this._pointerEvents;
     }
 
+    /**
+     * if this is true, the sprite atlas instances can be clicked
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
     }
