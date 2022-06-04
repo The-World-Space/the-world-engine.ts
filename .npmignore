@@ -16,3 +16,5 @@ test
 coverage
 babel.config.js
 jest.config.js
+.github
+.husky

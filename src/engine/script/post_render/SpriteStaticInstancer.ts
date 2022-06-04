@@ -6,6 +6,11 @@ import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
+/**
+ * represents a sprite instance
+ * 
+ * this class is used from the SpriteStaticInstancer
+ */
 export class SpriteInstance {
     private readonly _width: number;
     private readonly _height: number;
@@ -30,31 +35,54 @@ export class SpriteInstance {
         this._centerOffset = centerOffset;
     }
 
+    /**
+     * sprite instance width
+     */
     public get width(): number {
         return this._width;
     }
 
+    /**
+     * sprite instance height
+     */
     public get height(): number {
         return this._height;
     }
 
+    /**
+     * sprite instance position
+     */
     public get position(): Vector3 {
         return this._position.clone();
     }
 
+    /**
+     * sprite instance rotation
+     */
     public get rotation(): Quaternion|undefined {
         return this._rotation?.clone();
     }
 
+    /**
+     * sprite instance scale
+     */
     public get scale(): Vector3|undefined {
         return this._scale?.clone();
     }
 
+    /**
+     * sprite instance center offset
+     */
     public get centerOffset(): Vector2|undefined {
         return this._centerOffset?.clone();
     }
 }
 
+/**
+ * this component draws multiple sprite instances
+ * 
+ * drawcall optimization is not yet available
+ */
 export class SpriteStaticInstancer extends Component {
     private _imageSource: string = GlobalConfig.defaultSpriteSrc;
     private _useZaxisSorter = false;
@@ -69,6 +97,11 @@ export class SpriteStaticInstancer extends Component {
         this._initializeFunction?.call(this);
     }
 
+    /**
+     * set instances to be drawn
+     * @param instances instances to be drawn
+     * @returns 
+     */
     public setInstances(instances: SpriteInstance[]): void {
         if (!this._started) {
             this._initializeFunction = (): void => this.setInstances(instances);
@@ -103,34 +136,80 @@ export class SpriteStaticInstancer extends Component {
         this.destroy();
     }
 
+    /**
+     * image source of the sprite
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get imageSource(): string {
         return this._imageSource;
     }
 
+    /**
+     * image source of the sprite
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set imageSource(value: string) {
         this._imageSource = value;
     }
 
+    /**
+     * if this is true, the zaxis sorter will be attached to the sprite atlas instances
+     * otherwise the zaxis initializer will be attached
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get useZindexSorter(): boolean {
         return this._useZaxisSorter;
     }
 
+    /**
+     * if this is true, the zaxis sorter will be attached to the sprite atlas instances
+     * otherwise the zaxis initializer will be attached
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set useZindexSorter(value: boolean) {
         this._useZaxisSorter = value;
     }
 
+    /**
+     * offset of the zaxis sorter
+     * 
+     * this is only used if useZindexSorter is true
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get zindexSortOffset(): number {
         return this._zaxisSortOffset;
     }
 
+    /**
+     * offset of the zaxis sorter
+     * 
+     * this is only used if useZindexSorter is true
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set zindexSortOffset(value: number) {
         this._zaxisSortOffset = value;
     }
 
+    /**
+     * if this is true, the sprite atlas instances can be clicked
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public get pointerEvents(): boolean {
         return this._pointerEvents;
     }
 
+    /**
+     * if this is true, the sprite atlas instances can be clicked
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
     }
