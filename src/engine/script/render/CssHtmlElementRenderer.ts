@@ -1,7 +1,7 @@
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
-export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
+export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
     private _elementWidth = 1;
     private _elementHeight = 1;
     private _autoSize = false;
@@ -72,11 +72,11 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
-    public get element(): HTMLDivElement|null {
+    public get element(): HTMLElement|null {
         return this.htmlElement;
     }
 
-    public set element(value: HTMLDivElement|null) {
+    public set element(value: HTMLElement|null) {
         const element = this.htmlElement = value ?? document.createElement("div");
 
         if (!this.readyToDraw) {
@@ -87,7 +87,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLDivElement> {
         this.setElementInternal(element);
     }
 
-    private setElementInternal(htmlElement: HTMLDivElement): void {
+    private setElementInternal(htmlElement: HTMLElement): void {
         if (this._autoSize) {
             htmlElement.style.width = "auto";
             htmlElement.style.height = "auto";
