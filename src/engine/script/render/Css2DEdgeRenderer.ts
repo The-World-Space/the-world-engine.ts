@@ -36,7 +36,10 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
             svgElement.appendChild(svgPolyLine);
             this.htmlElement.appendChild(svgElement);
             this._svgElement = svgPolyLine;
-            this.initializeBaseComponents(false);
+            const css3DObject = this.initializeBaseComponents(false);
+            
+            Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(css3DObject);
         }
     }
 

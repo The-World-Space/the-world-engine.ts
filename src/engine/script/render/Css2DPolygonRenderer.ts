@@ -51,7 +51,10 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
             svgElement.appendChild(svgPolygon);
             this.htmlElement.appendChild(svgElement);
             this._svgElement = svgPolygon;
-            this.initializeBaseComponents(false);
+            const css3DObject = this.initializeBaseComponents(false);
+            
+            Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(css3DObject);
         }
     }
 
