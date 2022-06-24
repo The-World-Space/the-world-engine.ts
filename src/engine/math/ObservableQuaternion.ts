@@ -148,7 +148,6 @@ export class ObservableQuaternion {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _x(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internalX === value) return;
         this._internalX = value;
     }
 
@@ -160,7 +159,6 @@ export class ObservableQuaternion {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _y(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internalY === value) return;
         this._internalY = value;
     }
 
@@ -172,7 +170,6 @@ export class ObservableQuaternion {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _z(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internalZ === value) return;
         this._internalZ = value;
     }
 
@@ -184,7 +181,6 @@ export class ObservableQuaternion {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public set _w(value: number) { // this can't be private because it's used like public in three.js
-        if (this._internalW === value) return;
         this._internalW = value;
     }
 
@@ -194,7 +190,7 @@ export class ObservableQuaternion {
     }
 
     public set x(value: number) {
-        if (this._internalX === value) return;
+        // if (this._internalX === value) return;
         this._onBeforeChangeCallback();
         this._internalX = value;
         this._onChangeCallback();
@@ -206,7 +202,7 @@ export class ObservableQuaternion {
     }
 
     public set y(value: number) {
-        if (this._internalY === value) return;
+        // if (this._internalY === value) return;
         this._onBeforeChangeCallback();
         this._internalY = value;
         this._onChangeCallback();
@@ -218,7 +214,7 @@ export class ObservableQuaternion {
     }
 
     public set z(value: number) {
-        if (this._internalZ === value) return;
+        // if (this._internalZ === value) return;
         this._onBeforeChangeCallback();
         this._internalZ = value;
         this._onChangeCallback();
@@ -230,14 +226,14 @@ export class ObservableQuaternion {
     }
 
     public set w(value: number) {
-        if (this._internalW === value) return;
+        // if (this._internalW === value) return;
         this._onBeforeChangeCallback();
         this._internalW = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, w: number): ObservableQuaternion {
-        if (this._internalX === x && this._internalY === y && this._internalZ === z && this._internalW === w) return this;
+        // if (this._internalX === x && this._internalY === y && this._internalZ === z && this._internalW === w) return this;
         this._onBeforeChangeCallback();
         this._internalX = x;
         this._internalY = y;
@@ -253,7 +249,7 @@ export class ObservableQuaternion {
     }
 
     public copy(quaternion: ObservableQuaternion): ObservableQuaternion {
-        if (this._internalX === quaternion.x && this._internalY === quaternion.y && this._internalZ === quaternion.z && this._internalW === quaternion.w) return this;
+        // if (this._internalX === quaternion.x && this._internalY === quaternion.y && this._internalZ === quaternion.z && this._internalW === quaternion.w) return this;
         this._onBeforeChangeCallback();
         this._internalX = quaternion.x;
         this._internalY = quaternion.y;

@@ -51,13 +51,13 @@ export class ObjectPoolTestBootstrapper extends Bootstrapper {
                             const gameObject = this.createSprite();
                             this._activeObjects.push(gameObject);
 
-                            gameObject.transform.localPosition.x = i * 2;
+                            gameObject.transform.position.x = i * 2;
                         }
                     }
                 }))
 
-            .withChild(instantiater.buildGameObject("test-object")
-                .withComponent(CssSpriteRenderer))
+        // .withChild(instantiater.buildGameObject("test-object")
+        //     .withComponent(CssSpriteRenderer))
         ;
     }
 }

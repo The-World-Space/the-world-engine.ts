@@ -92,7 +92,7 @@ export class ObservableEuler {
     }
 
     public set x(value: number) {
-        if (this._internalX === value) return;
+        // if (this._internalX === value) return;
         this._onBeforeChangeCallback();
         this._internalX = value;
         this._onChangeCallback();
@@ -104,7 +104,7 @@ export class ObservableEuler {
     }
 
     public set y(value: number) {
-        if (this._internalY === value) return;
+        // if (this._internalY === value) return;
         this._onBeforeChangeCallback();
         this._internalY = value;
         this._onChangeCallback();
@@ -116,7 +116,7 @@ export class ObservableEuler {
     }
 
     public set z(value: number) {
-        if (this._internalZ === value) return;
+        // if (this._internalZ === value) return;
         this._onBeforeChangeCallback();
         this._internalZ = value;
         this._onChangeCallback();
@@ -128,14 +128,14 @@ export class ObservableEuler {
     }
 
     public set order(value: string) {
-        if (this._internalOrder === value) return;
+        // if (this._internalOrder === value) return;
         this._onBeforeChangeCallback();
         this._internalOrder = value;
         this._onChangeCallback();
     }
 
     public set(x: number, y: number, z: number, order?: string): ObservableEuler {
-        if (x === this._internalX && y === this._internalY && z === this._internalZ && order === this._internalOrder) return this;
+        // if (x === this._internalX && y === this._internalY && z === this._internalZ && order === this._internalOrder) return this;
         this._onBeforeChangeCallback();
         this._internalX = x;
         this._internalY = y;
@@ -153,7 +153,7 @@ export class ObservableEuler {
     }
 
     public copy(euler: ObservableEuler): ObservableEuler {
-        if (this._internalX === euler._internalX && this._internalY === euler._internalY && this._internalZ === euler._internalZ && this._internalOrder === euler._internalOrder) return this;
+        // if (this._internalX === euler._internalX && this._internalY === euler._internalY && this._internalZ === euler._internalZ && this._internalOrder === euler._internalOrder) return this;
         this._onBeforeChangeCallback();
         this._internalX = euler._x;
         this._internalY = euler._y;
