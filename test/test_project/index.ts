@@ -1,9 +1,9 @@
 import { Game } from "../../src/engine/Game";
-import { ObjectPoolTestBootstrapper } from "./asset/ObjectPoolTestBootstrapper";
+import { Topdown2dTestBootstrapper } from "./asset/Topdown2dTestBootstrapper";
 
 function startTestGame(container: HTMLElement): void {
     const game = new Game(container);
-    game.run(ObjectPoolTestBootstrapper);
+    game.run(Topdown2dTestBootstrapper);
     game.inputHandler.startHandleEvents();
 }
 
