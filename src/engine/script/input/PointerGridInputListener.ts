@@ -62,8 +62,8 @@ export class PointerGridInputListener extends Component {
 
     private _css3DObject: CSS3DObject|null = null;
     private _htmlDivElement: HTMLDivElement|null = null;
-    private _gridCellWidth = 16;
-    private _gridCellHeight = 16;
+    private _gridCellWidth = 1;
+    private _gridCellHeight = 1;
     private readonly _gridCenter: Vector2 = new Vector2();
     private _inputWidth = 64;
     private _inputHeight = 64;
@@ -282,28 +282,28 @@ export class PointerGridInputListener extends Component {
     }
     
     /**
-     * grid cell width (default: 16)
+     * grid cell width (default: 1)
      */
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
 
     /**
-     * grid cell width (default: 16)
+     * grid cell width (default: 1)
      */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
 
     /**
-     * grid cell height (default: 16)
+     * grid cell height (default: 1)
      */
     public get gridCellHeight(): number {
         return this._gridCellHeight;
     }
 
     /**
-     * grid cell height (default: 16)
+     * grid cell height (default: 1)
      */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
