@@ -256,18 +256,27 @@ export class PlayerGridMovementController extends Directionable
     private onDoubleClick(event: PointerGridEvent): void {
         if (this._movingByPathfinder) {
             this._movingByPathfinder = false;
-            this._pathfindStartFunction = (): void => this.tryStartPathfind(event.gridPosition);
+            this._pathfindStartFunction = (): void => { this.tryStartPathfind(event.gridPosition) };
             return;
         }
-        this._pathfindStartFunction = (): void => this.tryStartPathfind(event.gridPosition);
+        this._pathfindStartFunction = (): void => { this.tryStartPathfind(event.gridPosition) };
     }
 
-    private tryStartPathfind(targetGridPosition: Vector2): void {
-        if (this._movingByPathfinder) return;
+    /**
+     * try to move to target grid position
+     * @param targetGridPosition 
+     * @returns if object already moving by pathfinder return false,
+     * 
+     * if object can't move to target grid position return false,
+     * 
+     * if object can move to target grid position return true
+     */
+    public tryStartPathfind(targetGridPosition: Vector2): boolean {
+        if (this._movingByPathfinder) return false;
         this._pathfindStartFunction = null;
         
         this._findedPath = this._pathfinder!.findPath(this.positionInGrid, targetGridPosition);
-        if (!this._findedPath || this._findedPath.length <= 1) return;
+        if (!this._findedPath || this._findedPath.length <= 1) return false;
         this._findedPath.forEach((path) => {
             path.x = path.x * this._gridCellWidth + this._gridCenter.x;
             path.y = path.y * this._gridCellHeight + this._gridCenter.y;
@@ -275,6 +284,15 @@ export class PlayerGridMovementController extends Directionable
         this._currentPathIndex = 1;
         this.isMoving = true;
         this._movingByPathfinder = true;
+
+        return true;
+    }
+
+    /**
+     * cancel moving by pathfinder
+     */
+    public cancelPathfind(): void {
+        this._movingByPathfinder = false;
     }
 
     public get onMoveToTarget(): IEventContainer<(x: number, y: number) => void> {
