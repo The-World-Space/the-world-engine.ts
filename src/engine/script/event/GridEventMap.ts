@@ -95,9 +95,13 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         const gameObjectRef: {ref: GameObject|null} = {ref: null};
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
-                "debugImage", new Vector3(x, y, 10000))
+                "debug-image", new Vector3(x, y, 10000))
                 .withComponent(ZaxisInitializer)
-                .withComponent(CssSpriteRenderer, c => c.opacity = 0.5)
+                .withComponent(CssSpriteRenderer, c => {
+                    c.opacity = 0.5;
+                    c.imageWidth = this.gridCellWidth;
+                    c.imageHeight = this.gridCellHeight;
+                })
                 .getGameObject(gameObjectRef));
         this._eventVisualizeImages.push(gameObjectRef.ref!);
     }

@@ -11,17 +11,33 @@ import { PathNode } from "./PathNode";
  * it has iteration limits to prevent infinite loops.
  */
 export class Pathfinder {
-    private static readonly _checkCollisionScale: number = 8;
-    private static readonly _iterationLimit: number = 1000;
+    private readonly _checkCollisionWidth: number;
+    private readonly _checkCollisionHeight: number;
+    private readonly _iterationLimit: number;
 
     private readonly _collideMaps: IGridCollidable[];
 
     /**
      * 
      * @param collideMaps collide maps to use for collision detection
+     * @param checkCollisioWidth width of the collision check,
+     * this value should be set to "gridCellWidth / 2",
+     * if character is bigger than one grid cell you can increase the value accordingly.  
+     * @param checkCollisionHeight height of the collision check,
+     * this value should be set to "gridCellHeight / 2",
+     * if character is bigger than one grid cell you can increase the value accordingly.
+     * @param iterationLimit maximum number of pathfinding iterations, If you want to passfind further, you need to increase the value
      */
-    public constructor(collideMaps?: IGridCollidable[]) {
+    public constructor(
+        collideMaps?: IGridCollidable[],
+        checkCollisionWidth = 0.5,
+        checkCollisionHeight = 0.5,
+        iterationLimit = 1000
+    ) {
         this._collideMaps = collideMaps?.slice() ?? [];
+        this._checkCollisionWidth = checkCollisionWidth;
+        this._checkCollisionHeight = checkCollisionHeight;
+        this._iterationLimit = iterationLimit;
     }
 
     /**
@@ -55,7 +71,7 @@ export class Pathfinder {
         openList.push(startNode);
 
         let iterations = 0;
-        while (openList.length > 0 && iterations < Pathfinder._iterationLimit) {
+        while (openList.length > 0 && iterations < this._iterationLimit) {
             iterations++;
             const currentNode = this.getLowestFcostNode(openList);
             if (currentNode.equals(endNode)) {
@@ -136,7 +152,7 @@ export class Pathfinder {
             if (collideMap.checkCollision(
                 x * collideMap.gridCellWidth + collideMap.gridCenterX,
                 y * collideMap.gridCellHeight + collideMap.gridCenterY,
-                Pathfinder._checkCollisionScale, Pathfinder._checkCollisionScale)
+                this._checkCollisionWidth, this._checkCollisionHeight)
             ) {
                 return true;
             }

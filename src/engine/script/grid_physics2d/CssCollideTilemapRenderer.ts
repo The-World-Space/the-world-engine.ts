@@ -101,7 +101,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
     // private addDebugImage(x: number, y: number) {
     //     if (this.transform.parentTransform instanceof GameObject) {
     //         this.transform.parentTransform.addChildFromBuilder(
-    //             this.engine.instantlater.buildGameObject("debugImage", new Vector3(x, y, 10000), new Quaternion(), new Vector3(0.5, 0.5, 0.5))
+    //             this.engine.instantlater.buildGameObject("debug-image", new Vector3(x, y, 10000), new Quaternion(), new Vector3(0.5, 0.5, 0.5))
     //                 .withComponent(ZaxisInitializer)
     //                 .withComponent(CssSpriteRenderer));
     //     }
