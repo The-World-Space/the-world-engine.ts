@@ -1,10 +1,13 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import { Component } from "@src/engine/hierarchy_object/Component";
+import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Color } from "@src/engine/render/Color";
 import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";
 import { MovementAnimationController } from "@src/engine/script/controller/MovementAnimationController";
 import { PlayerGridMovementController } from "@src/engine/script/controller/PlayerGridMovementController";
+import { TrackCameraController } from "@src/engine/script/controller/TrackCameraController";
 import { GridCollideMap } from "@src/engine/script/grid_physics2d/GridCollideMap";
 import { GridObjectCollideMap } from "@src/engine/script/grid_physics2d/GridObjectCollideMap";
 import { GridPointer } from "@src/engine/script/input/GridPointer";
@@ -13,9 +16,11 @@ import { CssTilemapChunkRenderer } from "@src/engine/script/post_render/CssTilem
 import { SpriteAtlasAnimator } from "@src/engine/script/post_render/SpriteAtlasAnimator";
 import { Camera } from "@src/engine/script/render/Camera";
 import { CameraRelativeZaxisSorter } from "@src/engine/script/render/CameraRelativeZaxisSorter";
+import { CssIframeRenderer } from "@src/engine/script/render/CssIframeRenderer";
 import { CssSpriteAtlasRenderer } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { TileAtlasItem } from "@src/engine/script/render/CssTilemapRenderer";
-import { Vector3 } from "three/src/Three";
+import { ZaxisSorter } from "@src/engine/script/render/ZaxisSorter";
+import { Vector2, Vector3 } from "three/src/Three";
 
 /** @internal */
 export class Topdown2dTestBootstrapper extends Bootstrapper {
@@ -24,17 +29,23 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
 
         const gridCellSize = 1;
         const gridPointer = new PrefabRef<GridPointer>();
+        const gridCollideMap = new PrefabRef<GridCollideMap>();
+        const gridObjectCollideMap = new PrefabRef<GridObjectCollideMap>();
+        const player = new PrefabRef<GameObject>();
         
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
                     c.backgroundColor = new Color(0.5, 0.5, 0.5);
                 })
-                .withComponent(EditorCameraController))
+                .withComponent(EditorCameraController, c => c.enabled = true)
+                .withComponent(TrackCameraController, c => {
+                    if (player.ref) c.setTrackTarget(player.ref);
+                }))
 
             .withChild(instantiater.buildGameObject("cursor")
                 .withComponent(CameraRelativeZaxisSorter, c => {
-                    c.offset = 0;
+                    c.offset = -100;
                 })
                 .withComponent(PointerGridInputListener, c => {
                     c.gridCellHeight = gridCellSize;
@@ -46,7 +57,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
             
             .withChild(instantiater.buildGameObject("world")
                 .withComponent(CameraRelativeZaxisSorter, c => {
-                    c.offset = -100;
+                    c.offset = -200;
                 })
 
                 .withChild(instantiater.buildGameObject("collide-map")
@@ -54,14 +65,20 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                         c.gridCellWidth = gridCellSize;
                         c.gridCellHeight = gridCellSize;
                         c.showCollider = true;
-                    }))
+
+                        c.addColliderFromTwoDimensionalArray([
+                            [1, 1]
+                        ], 0, 0);
+                    })
+                    .getComponent(GridCollideMap, gridCollideMap))
                 
                 .withChild(instantiater.buildGameObject("object-collide-map")
                     .withComponent(GridObjectCollideMap, c => {
                         c.gridCellHeight = gridCellSize;
                         c.gridCellWidth = gridCellSize;
                         c.showCollider = true;
-                    }))
+                    })
+                    .getComponent(GridObjectCollideMap, gridObjectCollideMap))
 
                 .withChild(instantiater.buildGameObject("tile-map", new Vector3(gridCellSize * 0.5, gridCellSize * 0.5, 0))
                     .withComponent(CssTilemapChunkRenderer, c => {
@@ -126,9 +143,33 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
 
                     c.speed = 6;
                     c.gridPointer = gridPointer.ref;
+
+                    if (gridCollideMap.ref) c.addCollideMap(gridCollideMap.ref);
+                    if (gridObjectCollideMap.ref) c.addCollideMap(gridObjectCollideMap.ref);
                 })
                 .withComponent(MovementAnimationController)
+                .withComponent(ZaxisSorter, c => {
+                    c.runOnce = false;
+                })
+                .getGameObject(player)
             )
+
+            .withChild(instantiater.buildGameObject("iframe", new Vector3(0.5 + 1, 0.5, 0))
+                .withComponent(CssIframeRenderer, c => {
+                    c.iframeSource = "https://www.youtube.com/embed/p9wmCeqB0eA";
+                    c.width = 4 * 2;
+                    c.height = 2.25 * 2;
+                    c.viewScale = 0.01;
+                    c.centerOffset = new Vector2(0, 0.5);
+                })
+                .withComponent(ZaxisSorter))
+
+            .withChild(instantiater.buildGameObject("test-object")
+                .withComponent(class StartInvoke extends Component {
+                    public start(): void {
+                        // do something
+                    }
+                }))
         ;
     }
 }
