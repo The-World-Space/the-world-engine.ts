@@ -46,7 +46,11 @@ export class PlayerGridMovementController extends Directionable
     private readonly _tempVector2 = new Vector2();
 
     public start(): void {
-        this._pathfinder = new Pathfinder(this._collideMaps);
+        this._pathfinder = new Pathfinder(
+            this._collideMaps, 
+            this._gridCellWidth * this._collideSize,
+            this._gridCellHeight * this._collideSize
+        );
 
         const transform = this.transform;
         const position = transform.position;
