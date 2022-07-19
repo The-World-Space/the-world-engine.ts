@@ -260,10 +260,14 @@ export class PlayerGridMovementController extends Directionable
     private onDoubleClick(event: PointerGridEvent): void {
         if (this._movingByPathfinder) {
             this._movingByPathfinder = false;
-            this._pathfindStartFunction = (): void => { this.tryStartPathfind(event.gridPosition) };
+            this._pathfindStartFunction = (): void => {
+                this.tryStartPathfind(event.gridPosition); 
+            };
             return;
         }
-        this._pathfindStartFunction = (): void => { this.tryStartPathfind(event.gridPosition) };
+        this._pathfindStartFunction = (): void => {
+            this.tryStartPathfind(event.gridPosition); 
+        };
     }
 
     /**
