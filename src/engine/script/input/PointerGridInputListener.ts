@@ -65,6 +65,7 @@ export class PointerGridInputListener extends Component {
     private _gridCellWidth = 1;
     private _gridCellHeight = 1;
     private readonly _gridCenter: Vector2 = new Vector2();
+    private _viewScale = 0.1;
     private _inputWidth = 64;
     private _inputHeight = 64;
     private _zindex = 0;
@@ -80,8 +81,10 @@ export class PointerGridInputListener extends Component {
     public start(): void {
         this._htmlDivElement = document.createElement("div");
         this._css3DObject = new CSS3DObject(this._htmlDivElement);
-        this._htmlDivElement.style.width = this._inputWidth + "px";
-        this._htmlDivElement.style.height = this._inputHeight + "px";
+        this._css3DObject.scale.setScalar(this._viewScale);
+
+        this._htmlDivElement.style.width = this._inputWidth / this._viewScale + "px";
+        this._htmlDivElement.style.height = this._inputHeight / this._viewScale + "px";
         this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
         this._htmlDivElement.addEventListener("mousedown", this.onMouseDown);
         this._htmlDivElement.addEventListener("mouseup", this.onMouseUp);
@@ -151,16 +154,19 @@ export class PointerGridInputListener extends Component {
     }
 
     private createPointerGridEventFromOffset(offsetX: number, offsetY: number, button: number): PointerGridEvent {
+        offsetX = offsetX * this._viewScale;
+        offsetY = offsetY * this._viewScale;
+
         const worldPosition = this.transform.position;
         
         const positionX = this._css3DObject!.position.x + worldPosition.x - this._inputWidth / 2 + 
             offsetX - this._gridCenter.x;
         const positionY = this._css3DObject!.position.y + worldPosition.y - this._inputHeight / 2 + 
             (this._inputHeight - offsetY) - this._gridCenter.y;
-        
-        const gridPositionX = Math.floor((positionX + this._gridCellWidth / 2) / this._gridCellWidth);
-        const gridPositionY = Math.floor((positionY + this._gridCellHeight / 2) / this._gridCellHeight);
-        
+
+        const gridPositionX = Math.floor((positionX + this._gridCellWidth * 0.5) / this._gridCellWidth);
+        const gridPositionY = Math.floor((positionY + this._gridCellHeight * 0.5) / this._gridCellHeight);
+
         return new PointerGridEvent(
             new Vector2(gridPositionX, gridPositionY),
             new Vector2(positionX, positionY),
@@ -322,7 +328,7 @@ export class PointerGridInputListener extends Component {
     public set inputWidth(value: number) {
         this._inputWidth = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.width = this._inputWidth + "px";
+            this._htmlDivElement.style.width = this._inputWidth / this._viewScale + "px";
         }
     }
 
@@ -333,7 +339,26 @@ export class PointerGridInputListener extends Component {
     public set inputHeight(value: number) {
         this._inputHeight = value;
         if (this._htmlDivElement) {
-            this._htmlDivElement.style.height = this._inputHeight + "px";
+            this._htmlDivElement.style.height = this._inputHeight / this._viewScale + "px";
+        }
+    }
+
+    public get viewScale(): number {
+        return this._viewScale;
+    }
+
+    public set viewScale(value: number) {
+        this._viewScale = value;
+        if (this._htmlDivElement) {
+            this._htmlDivElement.style.width = this._inputWidth / this._viewScale + "px";
+            this._htmlDivElement.style.height = this._inputHeight / this._viewScale + "px";
+        }
+
+        if (this._css3DObject) {
+            this._css3DObject.scale.setScalar(this._viewScale);
+
+            Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
+            this.transform.enqueueRenderAttachedObject3D(this._css3DObject);
         }
     }
 }

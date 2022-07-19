@@ -40,6 +40,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                 })
                 .withComponent(EditorCameraController, c => c.enabled = true)
                 .withComponent(TrackCameraController, c => {
+                    c.enabled = false;
                     if (player.ref) c.setTrackTarget(player.ref);
                 }))
 
@@ -50,6 +51,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                 .withComponent(PointerGridInputListener, c => {
                     c.gridCellHeight = gridCellSize;
                     c.gridCellWidth = gridCellSize;
+                    c.viewScale = 0.01;
                 })
                 .withComponent(GridPointer)
                 .getComponent(GridPointer, gridPointer))
