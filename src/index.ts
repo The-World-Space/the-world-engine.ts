@@ -83,6 +83,7 @@ export { PathfindTest } from "./engine/script/ai/PathfindTest";
 
 //controller
 export { EditorCameraController } from "./engine/script/controller/EditorCameraController";
+export { MovementAnimationController } from "./engine/script/controller/MovementAnimationController";
 export { PlayerGridMovementController } from "./engine/script/controller/PlayerGridMovementController";
 export { TrackCameraController } from "./engine/script/controller/TrackCameraController";
 
