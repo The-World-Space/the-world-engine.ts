@@ -42,6 +42,7 @@ export class Game {
     /**
      * 
      * @param container html element that mount the game view
+     * @param autoResize if true, the game view will be resized when the window is resized. (default: true)
      */
     public constructor(container: HTMLElement, autoResize = true) {
         this._rootScene = new Scene();
@@ -90,6 +91,9 @@ export class Game {
         this._loopBind = this.loop.bind(this);
     }
 
+    /**
+     * resize the game view, update the camera matrix
+     */
     public resizeFramebuffer(): void {
         const width = this._container.clientWidth;
         const height = this._container.clientHeight;
@@ -102,8 +106,8 @@ export class Game {
 
     /**
      * run game
-     * @param bootstrapperCtor 
-     * @param interopObject 
+     * @param bootstrapperCtor bootstrapper constructor is used to initialize the game.
+     * @param interopObject interop object passed to the bootstrapper.
      */
     public run<T, U extends Bootstrapper<T> = Bootstrapper<T>>(bootstrapperCtor: BootstrapperConstructor<T, U>, interopObject?: T): void {
         if (this._isDisposed) throw new Error("Game is disposed.");
@@ -179,6 +183,12 @@ export class Game {
 
     /**
      * dispose game
+     * 
+     * dispose game will dispose all resources used by game.
+     * 
+     * game will be unmounted from the dom.
+     * 
+     * after dispose, you can't use game anymore.
      */
     public dispose(): void {
         if (this._isDisposed) return;
