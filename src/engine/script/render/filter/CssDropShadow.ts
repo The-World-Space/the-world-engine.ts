@@ -10,6 +10,9 @@ export interface ICssDropShadow {
     toString(): string;
 }
 
+/**
+ * css drop shadow record for use in CssRenderer
+ */
 export class CssDropShadow implements ICssDropShadow {
     private _onChange: (() => void)|null;
 
@@ -41,42 +44,70 @@ export class CssDropShadow implements ICssDropShadow {
         this._onChange = value;
     }
 
+    /**
+     * dropshadow offset x in pixels
+     */
     public get offsetX(): number {
         return this._offsetX;
     }
 
+    /**
+     * dropshadow offset x in pixels
+     */
     public set offsetX(value: number) {
         this._offsetX = value;
         this._onChange?.();
     }
 
+    /**
+     * dropshadow offset y in pixels
+     */
     public get offsetY(): number {
         return this._offsetY;
     }
 
+    /**
+     * dropshadow offset y in pixels
+     */
     public set offsetY(value: number) {
         this._offsetY = value;
         this._onChange?.();
     }
 
+    /**
+     * dropshadow blur radius in pixels
+     */
     public get blur(): number {
         return this._blur;
     }
 
+    /**
+     * dropshadow blur radius in pixels
+     */
     public set blur(value: number) {
         this._blur = value;
         this._onChange?.();
     }
 
+    /**
+     * dropshadow color
+     */
     public get color(): ReadonlyColor {
         return this._color;
     }
 
+    /**
+     * dropshadow color
+     */
     public set color(value: ReadonlyColor) {
         this._color.copy(value);
         this._onChange?.();
     }
 
+    /**
+     * copies the values to this dropshadow
+     * @param value dropshadow to copy from
+     */
     public copy(value: ICssDropShadow): void {
         this._offsetX = value.offsetX;
         this._offsetY = value.offsetY;
@@ -85,6 +116,10 @@ export class CssDropShadow implements ICssDropShadow {
         this._onChange?.();
     }
 
+    /**
+     * clones this dropshadow
+     * @returns 
+     */
     public clone(): CssDropShadow {
         return new CssDropShadow(this._offsetX, this._offsetY, this._blur, this._color.clone(), this._onChange);
     }
