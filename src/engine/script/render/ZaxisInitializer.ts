@@ -1,6 +1,17 @@
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { ZaxisSortable } from "./ZaxisSortable";
 
+/**
+ * Components that synchronize the z-index with the z-axis value of the object
+ * 
+ * It applies to all renderers with child objects in the game object with this component
+ * 
+ * If any object in the game uses either ZaxisSorter or CameraRelativeZaxisSorter,
+ * ZaxisInitializer must be applied to renderers which do not use both to render.
+ * 
+ * This component exists to resolve a bug in a chromium-based browser,
+ * which has recently been fixed so this component will soon be removed.
+ */
 export class ZaxisInitializer extends ZaxisSortable {
     public override readonly disallowMultipleComponent: boolean = true;
 
@@ -40,10 +51,20 @@ export class ZaxisInitializer extends ZaxisSortable {
         }
     }   
 
+    /**
+     * Whether to run this component only once at start (default: true)
+     * 
+     * if gameObject is moveable, you should set this to false for update the z-index
+     */
     public get runOnce(): boolean {
         return this._runOnce;
     }
 
+    /**
+     * Whether to run this component only once at start (default: true)
+     * 
+     * if gameObject is moveable, you should set this to false for update the z-index
+     */
     public set runOnce(value: boolean) {
         this._runOnce = value;
     }
