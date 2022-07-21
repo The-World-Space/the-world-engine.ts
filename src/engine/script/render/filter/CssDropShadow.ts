@@ -30,7 +30,7 @@ export class CssDropShadow implements ICssDropShadow {
     private readonly _color: Color;
 
     /**
-     * constructs a new dropshadow record
+     * 
      * @param offsetX dropshadow offset x in pixels (default: 0)
      * @param offsetY dropshadow offset y in pixels (default: 0)
      * @param blur dropshadow blur radius in pixels (default: 0)
