@@ -121,7 +121,7 @@ export class CssDropShadow implements ICssDropShadow {
      * @returns 
      */
     public clone(): CssDropShadow {
-        return new CssDropShadow(this._offsetX, this._offsetY, this._blur, this._color.clone(), this._onChange);
+        return new CssDropShadow(this._offsetX, this._offsetY, this._blur, this._color.clone());
     }
 
     public toString(): string {
