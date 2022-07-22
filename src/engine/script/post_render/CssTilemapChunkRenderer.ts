@@ -310,10 +310,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     /**
      * grid coordinate center position
      * 
-     * 
-     * if columnCount is even, The center position will be skewed by half the tile width.
-     * 
-     * if rowCount is even, The center position will be skewed by half the tile height.
+     * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenter(): Vector2 {
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
@@ -324,7 +321,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     /**
      * grid coordinate center position x
      * 
-     * if columnCount is even, The center position will be skewed by half the tile width.
+     * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterX(): number {
         const offsetX = this._chunkSize % 2 === 1 ? 0 : this._tileWidth / 2;
@@ -334,7 +331,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     /**
      * grid coordinate center position y
      * 
-     * if rowCount is even, The center position will be skewed by half the tile height.
+     * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterY(): number {
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
