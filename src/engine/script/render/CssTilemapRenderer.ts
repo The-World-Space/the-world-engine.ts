@@ -19,8 +19,8 @@ export class TileAtlasItem {
      */
     public constructor(htmlImageElement: HTMLImageElement, columnCount = 1, rowCount = 1) {
         this._htmlImageElement = htmlImageElement;
-        this._rowCount = rowCount || 1;
-        this._columnCount = columnCount || 1;
+        this._rowCount = rowCount;
+        this._columnCount = columnCount;
     }
 
     /**
