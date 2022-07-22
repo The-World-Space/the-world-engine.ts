@@ -19,7 +19,7 @@ export class TileAtlasItem {
      */
     public constructor(htmlImageElement: HTMLImageElement, columnCount = 1, rowCount = 1) {
         if (!htmlImageElement.complete) {
-            throw new Error("image is not loaded");
+            throw new Error(`Image {${htmlImageElement.src}} is not loaded.`);
         }
 
         this._htmlImageElement = htmlImageElement;
