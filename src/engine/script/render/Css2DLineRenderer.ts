@@ -7,6 +7,11 @@ import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * css2d line renderer
+ * 
+ * this renderer use div tag to render single line
+ */
 export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
     private readonly _lineColor = Color.fromHex("#00FF00");
     private _lineWidth = 1;
@@ -60,10 +65,16 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * line color (default: #00FF00)
+     */
     public get lineColor(): ReadonlyColor {
         return this._lineColor;
     }
 
+    /**
+     * line color (default: #00FF00)
+     */
     public set lineColor(value: ReadonlyColor) {
         this._lineColor.copy(value);
         if (this.htmlElement) {
@@ -71,10 +82,16 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * line width (default: 1)
+     */
     public get lineWidth(): number {
         return this._lineWidth;
     }
 
+    /**
+     * line width (default: 1)
+     */
     public set lineWidth(value: number) {
         this._lineWidth = value;
         if (this.htmlElement) {
@@ -82,10 +99,16 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * point1 (default: (-2, -2))
+     */
     public get point1(): ReadonlyVector2 {
         return this._point1;
     }
 
+    /**
+     * point1 (default: (-2, -2))
+     */
     public set point1(value: ReadonlyVector2) {
         (this._point1 as WritableVector2).copy(value);
 
@@ -98,10 +121,16 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * point2 (default: (2, 2))
+     */
     public get point2(): ReadonlyVector2 {
         return this._point2;
     }
 
+    /**
+     * point2 (default: (2, 2))
+     */
     public set point2(value: ReadonlyVector2) {
         (this._point2 as WritableVector2).copy(value);
 
@@ -114,6 +143,11 @@ export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * set point1 and point2
+     * @param point1 point1
+     * @param point2 point2
+     */
     public setPoints(point1: ReadonlyVector2, point2: ReadonlyVector2): void {
         (this._point1 as WritableVector2).copy(point1);
         (this._point2 as WritableVector2).copy(point2);

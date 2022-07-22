@@ -1,6 +1,11 @@
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * css iframe renderer
+ * 
+ * you can use this renderer to render iframe tag
+ */
 export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
     private _width = 4;
     private _height = 4;
@@ -48,10 +53,16 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         }
     }
 
+    /**
+     * iframe width (default: 4)
+     */
     public get width(): number {
         return this._width;
     }
 
+    /**
+     * iframe width (default: 4)
+     */
     public set width(value: number) {
         this._width = value;
 
@@ -61,10 +72,16 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * iframe height (default: 4)
+     */
     public get height(): number {
         return this._height;
     }
 
+    /**
+     * iframe height (default: 4)
+     */
     public set height(value: number) {
         this._height = value;
 
@@ -74,10 +91,16 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * iframe src (default: "")
+     */
     public get iframeSource(): string {
         return this._iframeSource;
     }
 
+    /**
+     * iframe src (default: "")
+     */
     public set iframeSource(value: string) {
         this._iframeSource = value;
 
@@ -86,6 +109,11 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         }
     }
 
+    /**
+     * get iframe element
+     * 
+     * this method is experimental. it may be removed in the future.
+     */
     public get element(): HTMLIFrameElement|null {
         return this.htmlElement;
     }

@@ -222,6 +222,8 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     /**
      * element viewScale
      * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -231,6 +233,8 @@ export class CssRenderer<T extends HTMLElement> extends Component {
 
     /**
      * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
      * 
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value

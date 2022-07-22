@@ -7,6 +7,11 @@ import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * css 2d edge renderer
+ * 
+ * this renderer use svg tag to render edge
+ */
 export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolylineElement|null = null;
     private _points: Vector2[] = [
@@ -101,10 +106,16 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
         return points;
     }
 
+    /**
+     * edge points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     */
     public get points(): readonly ReadonlyVector2[] {
         return this._points;
     }
 
+    /**
+     * edge points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
         for (let i = 0; i < value.length; i++) {
@@ -118,6 +129,11 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * set edge points to regular polygon
+     * @param sides number of sides
+     * @param radius radius of polygon
+     */
     public setShapeToRegularPolygon(sides: number, radius: number): void {
         const points = [];
         const angle = DEG2RAD * 360 / sides;
@@ -130,10 +146,16 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
         this.points = points;
     }
 
+    /**
+     * edge color (default: "#00FF00")
+     */
     public get edgeColor(): ReadonlyColor {
         return this._edgeColor;
     }
 
+    /**
+     * edge color (default: "#00FF00")
+     */
     public set edgeColor(value: ReadonlyColor) {
         this._edgeColor.copy(value);
         if (this.htmlElement) {
@@ -141,10 +163,16 @@ export class Css2DEdgeRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * edge width (default: 0)
+     */
     public get edgeWidth(): number {
         return this._edgeWidth;
     }
 
+    /**
+     * edge width (default: 0)
+     */
     public set edgeWidth(value: number) {
         this._edgeWidth = value;
         if (this.htmlElement) {
