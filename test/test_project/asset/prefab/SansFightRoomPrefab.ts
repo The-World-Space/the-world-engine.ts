@@ -4,6 +4,7 @@ import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { CssCollideTilemapChunkRenderer } from "@src/engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
 import { GridCollider } from "@src/engine/script/grid_physics2d/GridCollider";
 import { GridObjectCollideMap } from "@src/engine/script/grid_physics2d/GridObjectCollideMap";
+import { AsyncImageLoader } from "@src/engine/script/helper/AsyncImageLoader";
 import { CssTilemapChunkRenderer } from "@src/engine/script/post_render/CssTilemapChunkRenderer";
 import { ParallaxTranslater } from "@src/engine/script/post_render/ParallaxTranslater";
 import { CameraRelativeZaxisSorter } from "@src/engine/script/render/CameraRelativeZaxisSorter";
@@ -43,15 +44,14 @@ export class SansFightRoomPrefab extends Prefab {
 
                 .withChild(instantiater.buildGameObject("floor", new Vector3(0, 0, -1))
                     .withComponent(CssTilemapChunkRenderer, c => {
-                        const tilemap3 = new Image();
-                        tilemap3.src = SansFightRoomTileAtlas;
 
-                        c.imageSources = [new TileAtlasItem(tilemap3, 3, 20)];
                         c.pointerEvents = false;
-                        
-                        tilemap3.onload = (): void => {
-                            tilemap3.onload = null;
+
+                        AsyncImageLoader.loadImageFromPath(SansFightRoomTileAtlas).then(tilemap3 => {
                             if (!c.exists) return;
+
+                            c.imageSources = [new TileAtlasItem(tilemap3, 3, 20)];
+
                             /* eslint-disable @typescript-eslint/naming-convention */
                             const F = {i:0, a:57};
                             const G = {i:0, a:58};
@@ -66,22 +66,19 @@ export class SansFightRoomPrefab extends Prefab {
                                 [G, F, G, F, G, F, G, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, G, F, G, F, G, F, G, F],
                                 [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G]
                             ], -2, -2);
-                        };
+                        });
                     }))
 
                 .withChild(instantiater.buildGameObject("wall")
                     .withComponent(CssCollideTilemapChunkRenderer, c => {
-                        const tilemap3 = new Image();
-                        tilemap3.src = SansFightRoomTileAtlas;
-
-                        c.imageSources = [
-                            new TileAtlasItem(tilemap3, 3, 20)
-                        ];
                         c.pointerEvents = false;
 
-                        tilemap3.onload = (): void => {
-                            tilemap3.onload = null;
+                        AsyncImageLoader.loadImageFromPath(SansFightRoomTileAtlas).then(tilemap3 => {
                             if (!c.exists) return;
+                            
+                            c.imageSources = [
+                                new TileAtlasItem(tilemap3, 3, 20)
+                            ];
 
                             /* eslint-disable @typescript-eslint/naming-convention */
                             const W = {i:0, a:56};
@@ -157,7 +154,7 @@ export class SansFightRoomPrefab extends Prefab {
                                     [{i: 0, a: 36}, {i: 0, a: 37}, {i: 0, a: 38}]
                                 ], p.x, p.y);
                             });
-                        };
+                        });
                     })
                     .getComponent(CssCollideTilemapChunkRenderer, this._colideTilemapChunkRenderer)))
 
