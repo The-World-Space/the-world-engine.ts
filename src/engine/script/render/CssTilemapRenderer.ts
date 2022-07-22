@@ -13,18 +13,22 @@ export class TileAtlasItem {
 
     /**
      * 
-     * @param htmlImageElement image source
+     * @param htmlImageElement image source, this image must be loaded before this class is created
      * @param columnCount sprite atlas column count (default: 1)
      * @param rowCount sprite atlas row count (default: 1)
      */
     public constructor(htmlImageElement: HTMLImageElement, columnCount = 1, rowCount = 1) {
+        if (!htmlImageElement.complete) {
+            throw new Error("image is not loaded");
+        }
+
         this._htmlImageElement = htmlImageElement;
         this._rowCount = rowCount;
         this._columnCount = columnCount;
     }
 
     /**
-     * image source
+     * image source, guaranteed to be loaded before this class is created
      */
     public get htmlImageElement(): HTMLImageElement {
         return this._htmlImageElement;
