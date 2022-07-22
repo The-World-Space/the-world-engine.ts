@@ -11,11 +11,13 @@ export class TileAtlasItem {
     private readonly _columnCount: number;
     private readonly _rowCount: number;
 
-    public constructor(htmlImageElement: HTMLImageElement);
-
-    public constructor(htmlImageElement: HTMLImageElement, columnCount: number, rowCount: number);
-
-    public constructor(htmlImageElement: HTMLImageElement, columnCount?: number, rowCount?: number) {
+    /**
+     * 
+     * @param htmlImageElement image source
+     * @param columnCount sprite atlas column count (default: 1)
+     * @param rowCount sprite atlas row count (default: 1)
+     */
+    public constructor(htmlImageElement: HTMLImageElement, columnCount = 1, rowCount = 1) {
         this._htmlImageElement = htmlImageElement;
         this._rowCount = rowCount || 1;
         this._columnCount = columnCount || 1;
