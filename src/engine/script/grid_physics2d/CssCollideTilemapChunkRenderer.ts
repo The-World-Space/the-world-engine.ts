@@ -361,6 +361,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * grid coordinate center position
+     * 
+     * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenter(): Vector2 {
         const worldPosition = this.transform.position;
@@ -371,6 +373,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * grid coordinate center position x
+     * 
+     * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterX(): number {
         const worldPosition = this.transform.position;
@@ -380,6 +384,8 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * grid coordinate center position y
+     * 
+     * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterY(): number {
         const worldPosition = this.transform.position;

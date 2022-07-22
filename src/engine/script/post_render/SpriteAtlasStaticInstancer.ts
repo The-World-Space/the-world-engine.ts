@@ -165,7 +165,7 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * image source of the sprite atlas
+     * image source of the sprite atlas (default: `GlobalConfig.defaultSpriteSrc`)
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
@@ -174,7 +174,7 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * image source of the sprite atlas
+     * image source of the sprite atlas (default: `GlobalConfig.defaultSpriteSrc`)
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
@@ -183,14 +183,14 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * row count of the sprite atlas
+     * row count of the sprite atlas (default: 1)
      */
     public get rowCount(): number {
         return this._rowCount;
     }
 
     /**
-     * column count of the sprite atlas
+     * column count of the sprite atlas (default: 1)
      */
     public get columnCount(): number {
         return this._columnCount;
@@ -198,7 +198,7 @@ export class SpriteAtlasStaticInstancer extends Component {
 
     /**
      * if this is true, the zaxis sorter will be attached to the sprite atlas instances
-     * otherwise the zaxis initializer will be attached
+     * otherwise the zaxis initializer will be attached (default: false)
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
@@ -208,7 +208,7 @@ export class SpriteAtlasStaticInstancer extends Component {
 
     /**
      * if this is true, the zaxis sorter will be attached to the sprite atlas instances
-     * otherwise the zaxis initializer will be attached
+     * otherwise the zaxis initializer will be attached (default: false)
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
@@ -217,7 +217,7 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * offset of the zaxis sorter
+     * offset of the zaxis sorter (default: 0)
      * 
      * this is only used if useZindexSorter is true
      * 
@@ -228,7 +228,7 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * offset of the zaxis sorter
+     * offset of the zaxis sorter (default: 0)
      * 
      * this is only used if useZindexSorter is true
      * 
@@ -239,7 +239,7 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * if this is true, the sprite atlas instances can be clicked
+     * if this is true, the sprite atlas instances can be clicked (default: true)
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
@@ -248,7 +248,7 @@ export class SpriteAtlasStaticInstancer extends Component {
     }
 
     /**
-     * if this is true, the sprite atlas instances can be clicked
+     * if this is true, the sprite atlas instances can be clicked (default: true)
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */

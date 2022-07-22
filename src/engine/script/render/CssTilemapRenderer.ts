@@ -3,6 +3,9 @@ import { Vector2 } from "three/src/Three";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * represents a sprite atlas that is used by tilemap
+ */
 export class TileAtlasItem {
     private readonly _htmlImageElement: HTMLImageElement;
     private readonly _columnCount: number;
@@ -18,19 +21,34 @@ export class TileAtlasItem {
         this._columnCount = columnCount || 1;
     }
 
+    /**
+     * image source
+     */
     public get htmlImageElement(): HTMLImageElement {
         return this._htmlImageElement;
     }
 
+    /**
+     * sprite atlas column count
+     */
     public get columnCount(): number {
         return this._columnCount;
     }
 
+    /**
+     * sprite atlas row count
+     */
     public get rowCount(): number {
         return this._rowCount;
     }
 }
 
+/**
+ * tilemap for grid system
+ * there is limitation of tilemap size
+ * 
+ * coordinate system is row column (positive x is right, positive y is down)
+ */
 export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
     private _columnCount = 10;
     private _rowCount = 10;
@@ -103,6 +121,14 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
+    /**
+     * draw tile at position.
+     * @param column column in tilemap
+     * @param row row in tilemap
+     * @param imageIndex index of image in imageSources
+     * @param atlasIndex index of atlas in imageSources
+     * @returns 
+     */
     public drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
         if (!this.readyToDraw) {
             this._initializeFunctions.push(() => this.drawTile(column, row, imageIndex, atlasIndex));
@@ -133,7 +159,15 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
-    //i is imageIndex and a is atlasIndex
+    /**
+     * draw tile from two dimensional array.
+     * 
+     * array left upper corner is (0, 0) in tilemap
+     * @param array array of image index. { i: 0, a: 1 } means imageSources[0] in atlas[1]
+     * @param xOffset array x offset, if you want to add tile from array[1][3] to (2, 3) you should set xOffset = 1
+     * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
+     * @returns 
+     */
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
         if (!this.readyToDraw) {
             this._initializeFunctions.push(() => this.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset));
@@ -171,6 +205,12 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * clear tile at position.
+     * @param column column in tilemap
+     * @param row row in tilemap
+     * @returns 
+     */
     public clearTile(column: number, row: number): void {
         if (!this.readyToDraw) {
             this._initializeFunctions.push(() => this.clearTile(column, row));
@@ -181,6 +221,9 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         context.clearRect(column * this._tileResolutionX, row * this._tileResolutionY, this._tileResolutionX, this._tileResolutionY);
     }
 
+    /**
+     * image sources for drawing.
+     */
     public set imageSources(value: TileAtlasItem[]) {
         if (!this.readyToDraw) {
             this._initializeFunctions.push(() => this.imageSources = value);
@@ -193,10 +236,16 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * column count of the tilemap (default: 10)
+     */
     public get columnCount(): number {
         return this._columnCount;
     }
 
+    /**
+     * column count of the tilemap (default: 10)
+     */
     public set columnCount(value: number) {
         this._columnCount = value;
 
@@ -209,10 +258,16 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * row count of the tilemap (default: 10)
+     */
     public get rowCount(): number {
         return this._rowCount;
     }
 
+    /**
+     * row count of the tilemap (default: 10)
+     */
     public set rowCount(value: number) {
         this._rowCount = value;
 
@@ -225,10 +280,16 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * tile width (default: 1)
+     */
     public get gridCellWidth(): number {
         return this._tileWidth;
     }
 
+    /**
+     * tile width (default: 1)
+     */
     public set gridCellWidth(value: number) {
         this._tileWidth = value;
 
@@ -239,10 +300,16 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * tile height (default: 1)
+     */
     public get gridCellHeight(): number {
         return this._tileHeight;
     }
 
+    /**
+     * tile height (default: 1)
+     */
     public set gridCellHeight(value: number) {
         this._tileHeight = value;
 
@@ -253,10 +320,20 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * tile resolution x (default: 16)
+     * 
+     * if your assets are high resolution, you should set this value to higher value.
+     */
     public get tileResolutionX(): number {
         return this._tileResolutionX;
     }
 
+    /**
+     * tile resolution x (default: 16)
+     * 
+     * if your assets are high resolution, you should set this value to higher value.
+     */
     public set tileResolutionX(value: number) {
         this._tileResolutionX = value;
 
@@ -266,10 +343,20 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
 
+    /**
+     * tile resolution y (default: 16)
+     * 
+     * if your assets are high resolution, you should set this value to higher value.
+     */
     public get tileResolutionY(): number {
         return this._tileResolutionY;
     }
 
+    /**
+     * tile resolution y (default: 16)
+     * 
+     * if your assets are high resolution, you should set this value to higher value.
+     */
     public set tileResolutionY(value: number) {
         this._tileResolutionY = value;
 
@@ -279,16 +366,34 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         }
     }
     
+    /**
+     * grid coordinate center position
+     * 
+     * 
+     * if columnCount is even, The center position will be skewed by half the tile width.
+     * 
+     * if rowCount is even, The center position will be skewed by half the tile height.
+     */
     public get gridCenter(): Vector2 {
         const offsetX = this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2;
         const offsetY = this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2;
         return new Vector2(this.transform.position.x + offsetX, this.transform.position.y + offsetY);
     }
 
+    /**
+     * grid coordinate center position x
+     * 
+     * if columnCount is even, The center position will be skewed by half the tile width.
+     */
     public get gridCenterX(): number {
         return this.transform.position.x + (this.columnCount % 2 === 1 ? 0 : this._tileWidth / 2);
     }
 
+    /**
+     * grid coordinate center position y
+     * 
+     * if rowCount is even, The center position will be skewed by half the tile height.
+     */
     public get gridCenterY(): number {
         return this.transform.position.y + (this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2);
     }
