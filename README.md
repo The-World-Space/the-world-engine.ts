@@ -22,5 +22,5 @@ npm i the-world-engine
 - [the-world-engine-examples](https://github.com/The-World-Space/the-world-engine-examples)
 
 ## Documentation
-- [Documentation](https://the-world-space.github.io/the-world-engine/build) - I'm still working on it
+- [Documentation](https://the-world-space.github.io/the-world-engine.ts/build) - I'm still working on it
 
