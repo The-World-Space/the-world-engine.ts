@@ -1,3 +1,6 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper1, Bootstrapper2, Bootstrapper3, Bootstrapper4 } from "./3-add-sprite/Bootstrapper";
+
 # Add Sprite
 
 Let's find out how to add sprites to the game
@@ -29,7 +32,7 @@ export class Bootstrapper extends BaseBootstrapper {
     }
 }
 ```
-![sprite1](/img/1-getting-started/3-add-sprite/sprite1.png)
+<DocumentGame bootstrapper = { Bootstrapper1 } />
 
 ## Change Sprite Position
 
@@ -43,7 +46,7 @@ return this.sceneBuilder
         .withComponent(CssSpriteRenderer))
 ;
 ```
-![sprite1](/img/1-getting-started/3-add-sprite/sprite1-position.png)
+<DocumentGame bootstrapper = { Bootstrapper2 } />
 
 ## Change Sprite Rotation and Scale
 
@@ -61,7 +64,7 @@ return this.sceneBuilder
         .withComponent(CssSpriteRenderer))
 ;
 ```
-![sprite1](/img/1-getting-started/3-add-sprite/sprite1-rotation-scale.png)
+<DocumentGame bootstrapper = { Bootstrapper3 } />
 
 ## Set Sprite Image
 
@@ -77,4 +80,4 @@ you can set image of the `CssSpriteRenderer` component from image path.
     }))
 ;
 ```
-![sprite1](/img/1-getting-started/3-add-sprite/sprite1-image.png)
+<DocumentGame bootstrapper = { Bootstrapper4 } />
