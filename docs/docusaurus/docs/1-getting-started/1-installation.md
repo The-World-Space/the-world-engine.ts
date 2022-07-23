@@ -32,6 +32,7 @@ paste the following boilerplate files in the src folder
             padding: 0;
         }
     </style>
+    <link rel="icon" href="data:,">
 </head>
 
 <body>
@@ -168,7 +169,10 @@ However, there is no need to install three.js separately because there is a depe
 
 ## Congrats!
 
+![console-hello-world](/img/1-getting-started/1-installation/console-hello-world.png)
+
 The development environment is now complete. We can finally start developing our game.
+
 
 :::tip info
 Installing webpack or typescript is not mandatory
