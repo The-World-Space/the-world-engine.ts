@@ -72,3 +72,10 @@ You can use [Three.js Developer Tools](https://addons.mozilla.org/en-US/firefox/
 
 But don't trust all the information from `Three.js Developer Tools`. There are some bugs.
 :::
+
+:::danger danger
+Importing the three.js type from "three" instead of "three/src/three" will cause the bundle size to grow dramatically
+because the bundled js file is included in the build.
+
+so use "three/src/Three" instead of "three"
+:::
