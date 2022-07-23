@@ -9,7 +9,7 @@ const config = {
     title: 'the-world-engine',
     tagline: 'three.js based, unity like game engine for browser',
     url: 'https://the-world-space.github.io/',
-    baseUrl: process.env.NODE_ENV === 'production' ? '/the-world-engine/build/' : '/',
+    baseUrl: process.env.NODE_ENV === 'production' ? '/the-world-engine.ts/build/' : '/',
     onBrokenLinks: 'throw',
     onBrokenMarkdownLinks: 'warn',
     favicon: 'img/favicon.ico',
