@@ -1,7 +1,3 @@
----
-sidebar_position: 1
----
-
 # Installation
 
 Let's create a `the-world-engine` project with typescript and webpack dev server.

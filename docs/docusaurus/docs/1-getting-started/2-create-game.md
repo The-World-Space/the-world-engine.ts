@@ -1,7 +1,3 @@
----
-sidebar_position: 2
----
-
 # Create Game
 
 Let's find out how to create a game instance
