@@ -7,6 +7,11 @@ import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * css2d polygon renderer
+ * 
+ * this renderer use svg tag to render polygon
+ */
 export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolygonElement|null = null;
     private _points: Vector2[] = [
@@ -116,10 +121,16 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         return points;
     }
 
+    /**
+     * polygon points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     */
     public get points(): readonly ReadonlyVector2[] {
         return this._points;
     }
 
+    /**
+     * polygon points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
         for (let i = 0; i < value.length; i++) {
@@ -133,6 +144,11 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * set polygon points to regular polygon
+     * @param sides number of sides
+     * @param radius radius of polygon
+     */
     public setShapeToRegularPolygon(sides: number, radius: number): void {
         const points = [];
         const angle = DEG2RAD * 360 / sides;
@@ -145,10 +161,16 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         this.points = points;
     }
 
+    /**
+     * color (default: "#39C5BB")
+     */
     public get color(): ReadonlyColor {
         return this._color;
     }
 
+    /**
+     * color (default: "#39C5BB")
+     */
     public set color(value: ReadonlyColor) {
         this._color.copy(value);
         if (this.htmlElement) {
@@ -156,10 +178,16 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * border color (default: "#00FF00")
+     */
     public get borderColor(): ReadonlyColor {
         return this._borderColor;
     }
 
+    /**
+     * border color (default: "#00FF00")
+     */
     public set borderColor(value: ReadonlyColor) {
         this._borderColor.copy(value);
         if (this.htmlElement) {
@@ -167,10 +195,16 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * border width (default: 0)
+     */
     public get borderWidth(): number {
         return this._borderWidth;
     }
 
+    /**
+     * border width (default: 0)
+     */
     public set borderWidth(value: number) {
         this._borderWidth = value;
         if (this.htmlElement) {

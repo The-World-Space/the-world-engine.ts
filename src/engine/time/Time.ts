@@ -65,14 +65,14 @@ export class Time {
     }
 
     /** 
-     * The scale at which time passes.
+     * The scale at which time passes. (default: 1)
      */
     public get timeScale(): number {
         return this._timeScale;
     }
 
     /** 
-     * The scale at which time passes.
+     * The scale at which time passes. (default: 1)
      */
     public set timeScale(value: number) {
         this._timeScale = value;

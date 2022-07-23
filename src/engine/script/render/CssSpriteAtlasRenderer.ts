@@ -3,11 +3,33 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
 import { CssFilter } from "./filter/CssFilter";
 
+/**
+ * css sprite atlas render mode
+ */
 export enum CssSpriteAtlasRenderMode {
+    /**
+     * This option clips images using object-fit css property.
+     * 
+     * The object-fit uses less resources than the clip-path.
+     * However, in object-fit mode, the viewScale value must be fixed to 1.
+     * 
+     * If you don't have any problems, you'd better use this method
+     */
     ObjectFit,
+    /**
+     * This option clips images using clip-path css property.
+     * 
+     * The object-fit uses less resources than the clip-path.
+     * However, in object-fit mode, the viewScale value must be fixed to 1.
+     */
     ClipPath
 }
 
+/**
+ * css sprite atlas renderer
+ * 
+ * this compoenent slices the image into rows and columns, it's memory efficient and fast to animate.
+ */
 export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _renderMode: CssSpriteAtlasRenderMode = CssSpriteAtlasRenderMode.ObjectFit;
     private _imageWidth = 0;
@@ -141,10 +163,21 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
+    /**
+     * image (default: null)
+     */
     public get image(): HTMLImageElement|null {
         return this.htmlElement;
     }
 
+    /**
+     * set image from path asynchronously
+     * @param path image path
+     * @param rowCount sprite atlas row count
+     * @param columnCount sprite atlas column count
+     * @param onComplete on complete callback
+     * @returns 
+     */
     public asyncSetImageFromPath(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
         if (!this.readyToDraw) {
             this._initializeFunction = (): void => this.asyncSetImageFromPath(path, rowCount, columnCount, onComplete);
@@ -163,6 +196,12 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         image.addEventListener("load", onLoad);
     }
 
+    /**
+     * set image from `HTMLImageElement`
+     * @param image image must be loaded
+     * @param rowCount sprite atlas row count
+     * @param columnCount sprite atlas column count
+     */
     public setImage(image: HTMLImageElement, rowCount: number, columnCount: number): void {
         if (!image.complete) throw new Error(`Image {${image.src}} is not loaded.`);
 
@@ -197,10 +236,24 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
+    /**
+     * render mode (default: CssSpriteAtlasRenderMode.ObjectFit)
+     * 
+     * Decide which css method to clip the image
+     * 
+     * Change this option if you have a render problem.
+     */
     public get renderMode(): CssSpriteAtlasRenderMode {
         return this._renderMode;
     }
 
+    /**
+     * render mode (default: CssSpriteAtlasRenderMode.ObjectFit)
+     * 
+     * Decide which css method to clip the image
+     * 
+     * Change this option if you have a render problem.
+     */
     public set renderMode(value: CssSpriteAtlasRenderMode) {
         if (this._renderMode === value) return;
         this._renderMode = value;
@@ -237,10 +290,24 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
+    /**
+     * image index (default: 0)
+     * 
+     * Decide which image to display
+     * 
+     * Index increases from left to right from top to bottom
+     */
     public get imageIndex(): number {
         return this._currentImageIndex;
     }
 
+    /**
+     * image index (default: 0)
+     * 
+     * Decide which image to display
+     * 
+     * Index increases from left to right from top to bottom
+     */
     public set imageIndex(value: number) {
         this._currentImageIndex = value;
         this.updateImageIndex();
@@ -249,18 +316,34 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
+    /**
+     * sprite atlas row count (default: 1)
+     */
     public get rowCount(): number {
         return this._rowCount;
     }
 
+    /**
+     * sprite atlas column count (default: 1)
+     */
     public get columnCount(): number {
         return this._columnCount;
     }
 
+    /**
+     * image width (default: 0)
+     * 
+     * if this value is 0, it will automatically update when image is set
+     */
     public get imageWidth(): number {
         return this._imageWidth;
     }
 
+    /**
+     * image width (default: 0)
+     * 
+     * if this value is 0, it will automatically update when image is set
+     */
     public set imageWidth(value: number) {
         this._imageWidth = value;
         if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
@@ -277,10 +360,20 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * image height (default: 0)
+     * 
+     * if this value is 0, it will automatically update when image is set
+     */
     public get imageHeight(): number {
         return this._imageHeight;
     }
 
+    /**
+     * image height (default: 0)
+     * 
+     * if this value is 0, it will automatically update when image is set
+     */
     public set imageHeight(value: number) {
         this._imageHeight = value;
         if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
@@ -297,10 +390,16 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * image flip x (default: false)
+     */
     public get imageFlipX(): boolean {
         return this._imageFlipX;
     }
 
+    /**
+     * image flip x (default: false)
+     */
     public set imageFlipX(value: boolean) {
         this._imageFlipX = value;
         if (this.css3DObject) {
@@ -323,10 +422,16 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
+    /**
+     * image flip y (default: false)
+     */
     public get imageFlipY(): boolean {
         return this._imageFlipY;
     }
 
+    /**
+     * image flip y (default: false)
+     */
     public set imageFlipY(value: boolean) {
         this._imageFlipY = value;
         if (this.css3DObject) {
@@ -349,10 +454,16 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
 
+    /**
+     * image opacity (default: 1)
+     */
     public get opacity(): number {
         return this._opacity;
     }
 
+    /**
+     * image opacity (default: 1)
+     */
     public set opacity(value: number) {
         this._opacity = value;
         if (this.htmlElement) {
@@ -360,6 +471,9 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         }
     }
     
+    /**
+     * css filter
+     */
     public get filter(): CssFilter {
         return this._filter;
     }

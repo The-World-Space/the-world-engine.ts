@@ -4,6 +4,8 @@ import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { CssCollideTilemapChunkRenderer } from "@src/engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";
 import { GridCollider } from "@src/engine/script/grid_physics2d/GridCollider";
 import { GridObjectCollideMap } from "@src/engine/script/grid_physics2d/GridObjectCollideMap";
+import { AsyncImageLoader } from "@src/engine/script/helper/AsyncImageLoader";
+import { TwoDimensionalStringMapper } from "@src/engine/script/helper/TwoDimensionalStringMapper";
 import { CssTilemapChunkRenderer } from "@src/engine/script/post_render/CssTilemapChunkRenderer";
 import { ParallaxTranslater } from "@src/engine/script/post_render/ParallaxTranslater";
 import { CameraRelativeZaxisSorter } from "@src/engine/script/render/CameraRelativeZaxisSorter";
@@ -43,71 +45,85 @@ export class SansFightRoomPrefab extends Prefab {
 
                 .withChild(instantiater.buildGameObject("floor", new Vector3(0, 0, -1))
                     .withComponent(CssTilemapChunkRenderer, c => {
-                        const tilemap3 = new Image();
-                        tilemap3.src = SansFightRoomTileAtlas;
 
-                        c.imageSources = [new TileAtlasItem(tilemap3, 3, 20)];
                         c.pointerEvents = false;
-                        
-                        tilemap3.onload = (): void => {
-                            tilemap3.onload = null;
+
+                        AsyncImageLoader.loadImageFromPath(SansFightRoomTileAtlas).then(tilemap3 => {
                             if (!c.exists) return;
-                            /* eslint-disable @typescript-eslint/naming-convention */
-                            const F = {i:0, a:57};
-                            const G = {i:0, a:58};
-                            const H = {i:0, a:48};
-                            const I = {i:0, a:49};
-                            const J = {i:0, a:52};
-                            const K = {i:0, a:53};
-                            /* eslint-enable @typescript-eslint/naming-convention */
-                            c.drawTileFromTwoDimensionalArray([
-                                [G, F, G, F, G, F, G, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, G, F, G, F, G, F, G, F],
-                                [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G],
-                                [G, F, G, F, G, F, G, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, K, J, K, H, I, H, G, F, G, F, G, F, G, F],
-                                [F, G, F, G, F, G, F, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, J, K, J, I, H, I, F, G, F, G, F, G, F, G]
-                            ], -2, -2);
-                        };
+
+                            c.imageSources = [new TileAtlasItem(tilemap3, 3, 20)];
+
+                            const f = (a: number): { i: number; a: number; } => {
+                                return { i: 0, a: a };
+                            };
+
+                            const converter = {
+                                /* eslint-disable @typescript-eslint/naming-convention */
+                                "F": () => f(57),
+                                "G": () => f(58),
+                                "H": () => f(48),
+                                "I": () => f(49),
+                                "J": () => f(52),
+                                "K": () => f(53)
+                                /* eslint-enable @typescript-eslint/naming-convention */
+                            };
+
+                            c.drawTileFromTwoDimensionalArray(
+                                TwoDimensionalStringMapper.map([
+                                    "GFGFGFGHIHKJKHIHKJKHIHKJKHIHKJKHIHKJKHIHKJKHIHKJKHIHGFGFGFGF",
+                                    "FGFGFGFIHIJKJIHIJKJIHIJKJIHIJKJIHIJKJIHIJKJIHIJKJIHIFGFGFGFG",
+                                    "GFGFGFGHIHKJKHIHKJKHIHKJKHIHKJKHIHKJKHIHKJKHIHKJKHIHGFGFGFGF",
+                                    "FGFGFGFIHIJKJIHIJKJIHIJKJIHIJKJIHIJKJIHIJKJIHIJKJIHIFGFGFGFG"
+                                ], converter), -2, -2
+                            );
+                        });
                     }))
 
                 .withChild(instantiater.buildGameObject("wall")
                     .withComponent(CssCollideTilemapChunkRenderer, c => {
-                        const tilemap3 = new Image();
-                        tilemap3.src = SansFightRoomTileAtlas;
-
-                        c.imageSources = [
-                            new TileAtlasItem(tilemap3, 3, 20)
-                        ];
                         c.pointerEvents = false;
 
-                        tilemap3.onload = (): void => {
-                            tilemap3.onload = null;
+                        AsyncImageLoader.loadImageFromPath(SansFightRoomTileAtlas).then(tilemap3 => {
                             if (!c.exists) return;
+                            
+                            c.imageSources = [
+                                new TileAtlasItem(tilemap3, 3, 20)
+                            ];
 
-                            /* eslint-disable @typescript-eslint/naming-convention */
-                            const W = {i:0, a:56};
-                            const X = {i:0, a:50};
-                            const Y = {i:0, a:59};
-                            const Z = {i:0, a:40};
-                            const A = {i:0, a:51};
-                            const o = null;
-                            /* eslint-enable @typescript-eslint/naming-convention */
-                            c.drawTileFromTwoDimensionalArray([
-                                [W, W, W, W, W, W, W, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, X, X, X, o, o, o, W, W, W, W, W, W, W, W],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
-                                [W, W, W, W, W, W, W, W, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, X, W, W, W, W, W, W, W, W],
-                                [Y, Y, Y, Y, Y, Y, Y, Y, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, A, A, A, Z, Z, Z, W, W, W, W, W, W, W, W]
-                            ], -2, 2);
+                            const f = (a: number): { i: number; a: number; } => {
+                                return { i: 0, a: a };
+                            };
 
-                            /* eslint-disable @typescript-eslint/naming-convention */
-                            const B = {i:0, a:44};
-                            const C = {i:0, a:42};
-                            /* eslint-enable @typescript-eslint/naming-convention */
-                            c.drawTileFromTwoDimensionalArray([
-                                [o, o, o, o, o, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C, o, B, o, o, o, C]
-                            ], -2, 7);
+                            const converter = {
+                                /* eslint-disable @typescript-eslint/naming-convention */
+                                "W": () => f(56),
+                                "X": () => f(50),
+                                "Y": () => f(59),
+                                "Z": () => f(40),
+                                "A": () => f(51),
+                                " ": () => null,
+                                "B": () => f(44),
+                                "C": () => f(42)
+                                /* eslint-enable @typescript-eslint/naming-convention */
+                            };
 
+                            c.drawTileFromTwoDimensionalArray(
+                                TwoDimensionalStringMapper.map([
+                                    "WWWWWWW   XXX   XXX   XXX   XXX   XXX   XXX   XXX   WWWWWWWW",
+                                    "WWWWWWWWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXWWWWWWWW",
+                                    "WWWWWWWWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXWWWWWWWW",
+                                    "WWWWWWWWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXWWWWWWWW",
+                                    "WWWWWWWWXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXWWWWWWWW",
+                                    "YYYYYYYYZZAAAZZZAAAZZZAAAZZZAAAZZZAAAZZZAAAZZZAAAZZZWWWWWWWW"
+                                ], converter), -2, 2
+                            );
+
+                            c.drawTileFromTwoDimensionalArray(
+                                TwoDimensionalStringMapper.map([
+                                    "      B   C B   C B   C B   C B   C B   C B   C B   C"
+                                ], converter), -2, 7
+                            );
+                            
                             c.addCollider(-3, 1);
                             c.addCollider(-3, 0);
                             c.addCollider(-3, -1);
@@ -131,12 +147,12 @@ export class SansFightRoomPrefab extends Prefab {
                                 {x: 47, y: 1}
                             ].forEach(p => {
                                 c.drawTileFromTwoDimensionalArray([
-                                    [{i: 0, a: 0}, {i: 0, a: 1}, {i: 0, a: 2}],
-                                    [{i: 0, a: 3}, {i: 0, a: 4}, {i: 0, a: 5}],
-                                    [{i: 0, a: 6}, {i: 0, a: 7}, {i: 0, a: 8}],
-                                    [{i: 0, a: 9}, {i: 0, a: 10}, {i: 0, a: 11}],
-                                    [{i: 0, a: 12}, {i: 0, a: 13}, {i: 0, a: 14}],
-                                    [{i: 0, a: 15}, {i: 0, a: 16}, {i: 0, a: 17}]
+                                    [f(0), f(1), f(2)],
+                                    [f(3), f(4), f(5)],
+                                    [f(6), f(7), f(8)],
+                                    [f(9), f(10), f(11)],
+                                    [f(12), f(13), f(14)],
+                                    [f(15), f(16), f(17)]
                                 ], p.x, p.y);
                             });
 
@@ -150,14 +166,14 @@ export class SansFightRoomPrefab extends Prefab {
                                 {x: 44, y: 3}
                             ].forEach(p => {
                                 c.drawTileFromTwoDimensionalArray([
-                                    [{i: 0, a: 24}, {i: 0, a: 25}, {i: 0, a: 26}],
-                                    [{i: 0, a: 27}, {i: 0, a: 28}, {i: 0, a: 29}],
-                                    [{i: 0, a: 30}, {i: 0, a: 31}, {i: 0, a: 32}],
-                                    [{i: 0, a: 33}, {i: 0, a: 34}, {i: 0, a: 35}],
-                                    [{i: 0, a: 36}, {i: 0, a: 37}, {i: 0, a: 38}]
+                                    [f(24), f(25), f(26)],
+                                    [f(27), f(28), f(29)],
+                                    [f(30), f(31), f(32)],
+                                    [f(33), f(34), f(35)],
+                                    [f(36), f(37), f(38)]
                                 ], p.x, p.y);
                             });
-                        };
+                        });
                     })
                     .getComponent(CssCollideTilemapChunkRenderer, this._colideTilemapChunkRenderer)))
 

@@ -6,11 +6,21 @@ import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 
+/**
+ * caamera projection type
+ */
 export enum CameraType {
     Perspective,
     Orthographic
 }
 
+/**
+ * camera component
+ * 
+ * it's a wrapper for `THREE.Camera`
+ * 
+ * At least one camera component must exist in the scene
+ */
 export class Camera extends Component {
     private _camera: ThreeCamera|null = null;
     private _cameraType: CameraType = CameraType.Orthographic;
@@ -130,10 +140,24 @@ export class Camera extends Component {
         this._camera?.removeFromParent();
     }
 
+    /**
+     * camera projection type (default: `CameraType.Orthographic`)
+     * 
+     * perspective: Camera will render objects with perspective intact
+     * 
+     * orthographic: Camera will render objects uniformly, with no sense of perspective
+     */
     public get cameraType(): CameraType {
         return this._cameraType;
     }
 
+    /**
+     * camera projection type (default: `CameraType.Orthographic`)
+     * 
+     * perspective: Camera will render objects with perspective intact
+     * 
+     * orthographic: Camera will render objects uniformly, with no sense of perspective
+     */
     public set cameraType(value: CameraType) {
         if (this._cameraType === value) return;
         this._cameraType = value;
@@ -142,10 +166,20 @@ export class Camera extends Component {
         }
     }
 
+    /**
+     * field of view (default: 75)
+     * 
+     * only available when cameraType is Perspective
+     */
     public get fov(): number {
         return this._fov;
     }
 
+    /**
+     * field of view (default: 75)
+     * 
+     * only available when cameraType is Perspective
+     */
     public set fov(value: number) {
         if (this._fov === value) return;
         this._fov = value;
@@ -155,10 +189,20 @@ export class Camera extends Component {
         }
     }
 
+    /**
+     * view size (default: 5)
+     * 
+     * only available when cameraType is Orthographic
+     */
     public get viewSize(): number {
         return this._viewSize;
     }
 
+    /**
+     * view size (default: 5)
+     * 
+     * only available when cameraType is Orthographic
+     */
     public set viewSize(value: number) {
         if (this._viewSize === value) return;
         this._viewSize = value;
@@ -173,10 +217,20 @@ export class Camera extends Component {
         }
     }
 
+    /**
+     * near clipping plane (default: 0.1)
+     * 
+     * this property is not available when using CssRenderer because css does not support frustum culling
+     */
     public get near(): number {
         return this._near;
     }
-
+    
+    /**
+     * near clipping plane (default: 0.1)
+     * 
+     * this property is not available when using CssRenderer because css does not support frustum culling
+     */
     public set near(value: number) {
         if (this._near === value) return;
         this._near = value;
@@ -186,10 +240,20 @@ export class Camera extends Component {
         }
     }
 
+    /**
+     * far clipping plane (default: 1000)
+     * 
+     * this property is not available when using CssRenderer because css does not support frustum culling
+     */
     public get far(): number {
         return this._far;
     }
 
+    /**
+     * far clipping plane (default: 1000)
+     * 
+     * this property is not available when using CssRenderer because css does not support frustum culling
+     */
     public set far(value: number) {
         if (this._far === value) return;
         this._far = value;
@@ -199,10 +263,20 @@ export class Camera extends Component {
         }
     }
 
+    /**
+     * priority of the camera (default: 0)
+     * 
+     * If there are multiple cameras in the scene, higher priority cameras will be rendered
+     */
     public get priority(): number {
         return this._priority;
     }
 
+    /**
+     * priority of the camera (default: 0)
+     * 
+     * If there are multiple cameras in the scene, higher priority cameras will be rendered
+     */
     public set priority(value: number) {
         this._priority = value;
         if (this._camera) {
@@ -210,10 +284,20 @@ export class Camera extends Component {
         }
     }
 
+    /**
+     * background color of the camera (default: white)
+     * 
+     * This color will fill the empty space of the scene
+     */
     public get backgroundColor(): ReadonlyColor {
         return this._backgroudColor;
     }
 
+    /**
+     * background color of the camera (default: white)
+     * 
+     * This color will fill the empty space of the scene
+     */
     public set backgroundColor(value: ReadonlyColor) {
         this._backgroudColor.copy(value);
         if (this._camera) {

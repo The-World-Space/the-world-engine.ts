@@ -10,6 +10,7 @@ import { PlayerGridMovementController } from "@src/engine/script/controller/Play
 import { TrackCameraController } from "@src/engine/script/controller/TrackCameraController";
 import { GridCollideMap } from "@src/engine/script/grid_physics2d/GridCollideMap";
 import { GridObjectCollideMap } from "@src/engine/script/grid_physics2d/GridObjectCollideMap";
+import { TwoDimensionalStringMapper } from "@src/engine/script/helper/TwoDimensionalStringMapper";
 import { GridPointer } from "@src/engine/script/input/GridPointer";
 import { PointerGridInputListener } from "@src/engine/script/input/PointerGridInputListener";
 import { CssTilemapChunkRenderer } from "@src/engine/script/post_render/CssTilemapChunkRenderer";
@@ -101,15 +102,39 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                                 return { i: 0, a: index };
                             };
 
-                            c.drawTileFromTwoDimensionalArray([
-                                [ t(0), t(1), t(2), t(3), t(4), t(5), t(6), t(7) ],
-                                [ t(8), t(9), t(10), t(11), t(12), t(13), t(14), t(15) ],
-                                [ t(16), t(17), t(18), t(19), t(20), t(21), t(22), t(23) ],
-                                [ t(24), t(25), t(26), t(27), t(28), t(29), t(30), t(31) ],
-                                [ t(32), t(33), t(34), t(35), t(36), t(37), t(38), t(39) ],
-                                [ t(40), t(41), t(42), t(43), t(44), t(45), t(46), t(47) ],
-                                [ t(48), t(49), t(50), t(51), t(52), t(53), t(54), t(55) ]
-                            ], -4, -4);
+                            const converter = {
+                                /* eslint-disable @typescript-eslint/naming-convention */
+                                "1": () => t(0), "2": () => t(1), "3": () => t(2),
+                                "7": () => t(3), "8": () => t(4), "9": () => t(5),
+                                "0": () => t(6), " ": () => t(7), "q": () => t(8),
+                                "w": () => t(9), "e": () => t(10), "u": () => t(11),
+                                "i": () => t(12), "o": () => t(13), "p": () => t(14),
+                                "a": () => t(16), "s": () => t(17), "d": () => t(18),
+                                "j": () => t(19), "k": () => t(20), "l": () => t(21),
+                                "4": () => t(24), "5": () => t(25), "6": () => t(26),
+                                "m": () => t(27), ",": () => t(28), "r": () => t(32),
+                                "t": () => t(33), "y": () => t(34), ".": () => t(35),
+                                "f": () => t(40), "g": () => t(41), "h": () => t(42),
+                                "v": () => t(48), "b": () => t(49), "n": () => t(50)
+                                /* eslint-enable @typescript-eslint/naming-convention */
+                            };
+
+                            /*
+                                "1237890 ",
+                                "qweuiop ",
+                                "asdjkl  ",
+                                "456m,   ",
+                                "rty.    ",
+                                "fgh     ",
+                                "vbn     "
+                            */
+                            c.drawTileFromTwoDimensionalArray(
+                                TwoDimensionalStringMapper.map([
+                                    "12222223",
+                                    "qwwwwwwe",
+                                    "assssssd"
+                                ], converter), -4, -4
+                            );
                         };
                     })
                 )

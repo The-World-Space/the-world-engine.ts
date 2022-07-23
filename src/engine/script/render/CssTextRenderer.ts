@@ -3,17 +3,26 @@ import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * css text align enum
+ */
 export enum TextAlign {
     Left = "left",
     Center = "center",
     Right = "right",
 }
 
+/**
+ * css text weight enum
+ */
 export enum FontWeight {
     Normal = "normal",
     Bold = "bold",
 }
 
+/**
+ * css text renderer
+ */
 export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private _textWidth = 2;
     private _textHeight = 1;
@@ -94,10 +103,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * text that is displayed (default: null)
+     */
     public get text(): string|null {
         return this._text;
     }
 
+    /**
+     * text that is displayed (default: null)
+     */
     public set text(value: string|null) {
         this._text = value;
 
@@ -133,6 +148,13 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
+    /**
+     * text render width (default: 2)
+     * 
+     * this property is modifiable only when autoSize is false
+     * 
+     * Outside of this range, css text will be overflowed
+     */
     public get textWidth(): number {
         if (this._autoSize) {
             if (this.htmlElement) {
@@ -147,6 +169,13 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         return this._textWidth;
     }
 
+    /**
+     * text render width (default: 2)
+     * 
+     * this property is modifiable only when autoSize is false
+     * 
+     * Outside of this range, css text will be overflowed
+     */
     public set textWidth(value: number) {
         if (this._autoSize) return;
 
@@ -157,6 +186,13 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * text render height (default: 1)
+     * 
+     * this property is modifiable only when autoSize is false
+     * 
+     * Outside of this range, css text will be overflowed
+     */
     public get textHeight(): number {
         if (this._autoSize) {
             if (this.htmlElement) {
@@ -171,6 +207,13 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         return this._textHeight;
     }
 
+    /**
+     * text render height (default: 1)
+     * 
+     * this property is modifiable only when autoSize is false
+     * 
+     * Outside of this range, css text will be overflowed
+     */
     public set textHeight(value: number) {
         if (this._autoSize) return;
 
@@ -181,10 +224,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * if this value is true, the textWidth and textHeight will be automatically calculated (default: false)
+     */
     public get autoSize(): boolean {
         return this._autoSize;
     }
 
+    /**
+     * if this value is true, the textWidth and textHeight will be automatically calculated (default: false)
+     */
     public set autoSize(value: boolean) {
         this._autoSize = value;
         if (this.htmlElement) {
@@ -198,10 +247,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * font size as pixel value (default: 8)
+     */
     public get fontSize(): number {
         return this._fontSize;
     }
 
+    /**
+     * font size as pixel value (default: 8)
+     */
     public set fontSize(value: number) {
         this._fontSize = value;
         if (this.htmlElement) {
@@ -209,10 +264,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * font weight (default: `FontWeight.Normal`)
+     */
     public get fontWeight(): FontWeight {
         return this._fontWeight;
     }
 
+    /**
+     * font weight (default: `FontWeight.Normal`)
+     */
     public set fontWeight(value: FontWeight) {
         this._fontWeight = value;
         if (this.htmlElement) {
@@ -220,10 +281,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * font family (default: "Arial")
+     */
     public get fontFamily(): string {
         return this._fontFamily;
     }
 
+    /**
+     * font family (default: "Arial")
+     */
     public set fontFamily(value: string) {
         this._fontFamily = value;
         if (this.htmlElement) {
@@ -231,10 +298,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * text align (default: `TextAlign.Left`)
+     */
     public get textAlign(): TextAlign {
         return this._textalign;
     }
 
+    /**
+     * text align (default: `TextAlign.Left`)
+     */
     public set textAlign(value: TextAlign) {
         this._textalign = value;
         if (this.htmlElement) {
@@ -242,10 +315,16 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         }
     }
 
+    /**
+     * text color (default: "black")
+     */
     public get textColor(): ReadonlyColor {
         return this._textColor;
     }
 
+    /**
+     * text color (default: "black")
+     */
     public set textColor(value: ReadonlyColor) {
         this._textColor.copy(value);
         if (this.htmlElement) {

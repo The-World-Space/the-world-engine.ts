@@ -1,6 +1,13 @@
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
 
+/**
+ * css html element renderer
+ * 
+ * you can use this renderer to render html element
+ * 
+ * You can draw anything that can be drawn in HTML
+ */
 export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
     private _elementWidth = 1;
     private _elementHeight = 1;
@@ -72,10 +79,16 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
         }
     }
 
+    /**
+     * html element (default: null)
+     */
     public get element(): HTMLElement|null {
         return this.htmlElement;
     }
 
+    /**
+     * html element (default: null)
+     */
     public set element(value: HTMLElement|null) {
         const element = this.htmlElement = value ?? document.createElement("div");
 
@@ -101,6 +114,11 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
     }
 
+    /**
+     * element width (default: 1)
+     * 
+     * if autoSize is true, this value can't be modified
+     */
     public get elementWidth(): number {
         if (this._autoSize) {
             if (this.htmlElement) {
@@ -115,6 +133,11 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
         return this._elementWidth;
     }
 
+    /**
+     * element width (default: 1)
+     * 
+     * if autoSize is true, this value can't be modified
+     */
     public set elementWidth(value: number) {
         if (this._autoSize) return;
 
@@ -125,6 +148,11 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * element height (default: 1)
+     * 
+     * if autoSize is true, this value can't be modified
+     */
     public get elementHeight(): number {
         if (this._autoSize) {
             if (this.htmlElement) {
@@ -139,6 +167,11 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
         return this._elementHeight;
     }
 
+    /**
+     * element height (default: 1)
+     * 
+     * if autoSize is true, this value can't be modified
+     */
     public set elementHeight(value: number) {
         if (this._autoSize) return;
 
@@ -149,10 +182,20 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
         this.updateCenterOffset(true);
     }
 
+    /**
+     * auto size (default: false)
+     * 
+     * if autoSize is true, elementWidth and elementHeight calculated automatically by html element size
+     */
     public get autoSize(): boolean {
         return this._autoSize;
     }
 
+    /**
+     * auto size (default: false)
+     * 
+     * if autoSize is true, elementWidth and elementHeight calculated automatically by html element size
+     */
     public set autoSize(value: boolean) {
         this._autoSize = value;
         if (this.htmlElement) {

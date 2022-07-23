@@ -18,22 +18,9 @@ npm i the-world-engine
 ### Scripting your component to attach GameObject
 ![write component](docs/image/write_component.gif)
 
-## Component Features
-#### Messages
-- awake()
-- start()
-- update()
-- onEnable()
-- onDisable()
-- onDestroy()
-
-#### Others
-- coroutine
-- change script execution order
-- require components
-- disallow multiple components
-  
-  All features have a similar or same behavior to [Unity Game Engine](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html).
-
 ## Examples
 - [the-world-engine-examples](https://github.com/The-World-Space/the-world-engine-examples)
+
+## Documentation
+- [Documentation](https://the-world-space.github.io/the-world-engine/build) - I'm still working on it
+

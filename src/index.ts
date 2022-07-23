@@ -83,6 +83,7 @@ export { PathfindTest } from "./engine/script/ai/PathfindTest";
 
 //controller
 export { EditorCameraController } from "./engine/script/controller/EditorCameraController";
+export { MovementAnimationController } from "./engine/script/controller/MovementAnimationController";
 export { PlayerGridMovementController } from "./engine/script/controller/PlayerGridMovementController";
 export { TrackCameraController } from "./engine/script/controller/TrackCameraController";
 
@@ -95,6 +96,7 @@ export { AsyncImageLoader } from "./engine/script/helper/AsyncImageLoader";
 export { Direction, Directionable } from "./engine/script/helper/Directionable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
+export { TwoDimensionalStringMapper } from "./engine/script/helper/TwoDimensionalStringMapper";
 
 //input
 export { GridPointer } from "./engine/script/input/GridPointer";

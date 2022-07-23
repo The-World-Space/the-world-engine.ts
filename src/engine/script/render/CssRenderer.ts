@@ -8,10 +8,24 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
 import { ZaxisInitializer } from "./ZaxisInitializer";
 
+/**
+ * precision problems occur when css space and actual game space are 1:1
+ * 
+ * This constant specifies the ratio of css space to match the game space
+ * 
+ * The default value is 0.1, and the css space and game space correspond to 10:1
+ * 
+ * This value is not designed to be changed by default. However, if an engine bug occurs in the future, the value may change.
+ */
 export const enum CssRendererConst {
     LengthUnitScalar = 0.1
 }
 
+/**
+ * css renderer base class
+ * 
+ * you can't use this class directly, but you can use its subclasses e.g. `CssSpriteRenderer`, `CssTextRenderer`
+ */
 export class CssRenderer<T extends HTMLElement> extends Component {
     protected css3DObject: CSS3DObject|null = null;
     protected htmlElement: T|null = null;
@@ -23,12 +37,28 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     private _zindex = 0;
     private _readyToDraw = false;
 
+    /**
+     * start method will initialize css3DObject and add it to scene.
+     * 
+     * process:
+     * 1. set `readyToDraw` to true.
+     * 2. call `renderInitialize()` method.
+     * 3. initialize z-index <- this process will be removed in the future
+     */
     public start(): void {
         this._readyToDraw = true;
         this.renderInitialize();
         ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
+    /**
+     * when object is destroyed, this method will be called.
+     * 
+     * process:
+     * 1. enqueue css3DObject to render queue for update viewport
+     * 2. remove css3DObject from scene
+     * 3. set `css3DObject` and `htmlElement` to null
+     */
     public onDestroy(): void {
         if (this.css3DObject) {
             this.transform.dequeueRenderAttachedObject3D(this.css3DObject);
@@ -38,6 +68,13 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         }
     }
 
+    /**
+     * when object is enabled, this method will be called.
+     * 
+     * process:
+     * 1. show css3DObject
+     * 2. enqueue css3DObject to render queue for update viewport
+     */
     public onEnable(): void {
         if (this.css3DObject) {
             this.css3DObject.visible = true;
@@ -45,6 +82,13 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         }
     }
 
+    /**
+     * when object is disabled, this method will be called.
+     * 
+     * process:
+     * 1. hide css3DObject
+     * 2. enqueue css3DObject to render queue for update viewport
+     */
     public onDisable(): void {
         if (this.css3DObject) {
             this.css3DObject.visible = false;
@@ -52,6 +96,12 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         }
     }
 
+    /**
+     * when z-axis is updated, this method will be called
+     * 
+     * this method will update z-index of css3DObject
+     * @param zaxis z-axis that is set to this object z-index
+     */
     public onSortByZaxis(zaxis: number): void {
         this._zindex = zaxis / CssRendererConst.LengthUnitScalar;
         if (this.css3DObject) {
@@ -59,6 +109,13 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         }
     }
     
+    /**
+     * when world matrix is updated, this method will be called
+     * 
+     * process:
+     * 1. enqueue css3DObject to render queue for update viewport
+     * 2. update raw Three.js object's matrix recursively
+     */
     public onWorldMatrixUpdated(): void {
         if (this.css3DObject) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
@@ -66,10 +123,24 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         }
     }
 
+    /**
+     * initialize css3DObject. you must implement this method in derived class.
+     * 
+     * this method is called when start() message is invoked.
+     * 
+     * this method must set `css3DObject` and `htmlElement` to non-null value.
+     */
     protected renderInitialize(): void {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
+    /**
+     * create css3DObject with basic properties
+     * you must call this method in renderInitialize() for create css3DObject
+     * 
+     * @param reCreate if true, recreate css3DObject else use existing css3DObject
+     * @returns css3DObject
+     */
     protected initializeBaseComponents(reCreate: boolean): CSS3DObject {
         if (!this.htmlElement) throw new Error("htmlElement is null");
 
@@ -111,29 +182,59 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         return this.css3DObject;
     }
     
+    /**
+     * update centerOffset. you must implement this method in derived class.
+     * @param _updateTransform if true, matrix will be updated and render will be enqueued
+     */
     protected updateCenterOffset(_updateTransform: boolean): void {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
+    /**
+     * update viewScale. you must implement this method in derived class.
+     * @param _updateTransform if true, matrix will be updated and render will be enqueued
+     */
     protected updateViewScale(_updateTransform: boolean): void {
         throw new Error("Yon can't Use CssRenderer Directly, use Derived Class e.g. CssSpriteRenderer");
     }
 
+    /**
+     * centerOffset is offset from center of object.
+     * 
+     * if centerOffset is (0.5, 0), object center is left center.
+     * if centerOffset is (0.5, 0.5), object center is top left center.
+     */
     public get centerOffset(): ReadonlyVector2 {
         return this._centerOffset;
     }
 
+    /**
+     * centerOffset is offset from center of object.
+     * 
+     * if centerOffset is (0.5, 0), object center is left center.
+     * if centerOffset is (0.5, 0.5), object center is top left center.
+     */
     public set centerOffset(value: ReadonlyVector2) {
         (this._centerOffset as WritableVector2).copy(value);
         this.updateCenterOffset(true);
     }
 
+    /**
+     * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * @param value
+     */
     public get viewScale(): number {
         return this._viewScale;
     }
 
     /**
      * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
      * 
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
@@ -143,10 +244,18 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         this.updateViewScale(true);
     }
 
+    /**
+     * if true, pointerEvents is auto that means is receive pointerEvent like onClick.
+     * otherwise, pointerEvents is none.
+     */
     public get pointerEvents(): boolean {
         return this._pointerEvents;
     }
 
+    /**
+     * if true, pointerEvents is auto that means is receive pointerEvent like onClick.
+     * otherwise, pointerEvents is none.
+     */
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
         if (this.htmlElement) {
@@ -154,6 +263,9 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         }
     }
 
+    /**
+     * on start() message is invoked, this value will be set to true.
+     */
     protected get readyToDraw(): boolean {
         return this._readyToDraw;
     }
