@@ -142,30 +142,31 @@ export class CssRenderer<T extends HTMLElement> extends Component {
      * @returns css3DObject
      */
     protected initializeBaseComponents(reCreate: boolean): CSS3DObject {
-        if (!this.htmlElement) throw new Error("htmlElement is null");
+        const htmlElement = this.htmlElement;
+        if (!htmlElement) throw new Error("htmlElement is null");
 
         let constructed = false;
         if (reCreate) {
             if (this.css3DObject) {
                 this.transform.unsafeGetObject3D().remove(this.css3DObject);
             }
-            this.css3DObject = new CSS3DObject(this.htmlElement);
+            this.css3DObject = new CSS3DObject(htmlElement);
             constructed = true;
         } else {
             if (this.css3DObject) {
-                this.css3DObject.element = this.htmlElement;
+                this.css3DObject.element = htmlElement;
             } else {
-                this.css3DObject = new CSS3DObject(this.htmlElement);
+                this.css3DObject = new CSS3DObject(htmlElement);
                 constructed = true;
             }
         }
 
         if (constructed) {
             //update pointerEvents
-            this.htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
+            htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
 
             //update zindex
-            this.htmlElement.style.zIndex = Math.floor(this._zindex).toString();
+            htmlElement.style.zIndex = Math.floor(this._zindex).toString();
 
             //update visibility
             if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;
