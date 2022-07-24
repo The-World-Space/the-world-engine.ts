@@ -16,11 +16,17 @@ npm i the-world-engine
 ![build scene](docs/image/build_scene.gif)
 
 ### Scripting your component to attach GameObject
+
 ![write component](docs/image/write_component.gif)
 
 ## Examples
+
 - [the-world-engine-examples](https://github.com/The-World-Space/the-world-engine-examples)
 
 ## Documentation
+
 - [Documentation](https://the-world-space.github.io/the-world-engine.ts/build) - I'm still working on it
 
+## Contributing
+
+Please see the [Contributing Guidelines](./CONTRIBUTING.md) for guidelines on how to contribute to the project.
