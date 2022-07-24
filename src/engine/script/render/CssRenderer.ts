@@ -270,4 +270,11 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     protected get readyToDraw(): boolean {
         return this._readyToDraw;
     }
+
+    /**
+     * html element events
+     */
+    public get htmlElementEventHandler(): GlobalEventHandlers|null {
+        return this.htmlElement;
+    }
 }
