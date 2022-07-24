@@ -19,3 +19,5 @@ jest.config.js
 .github
 .husky
 commitlint.config.js
+CODE_OF_CONDUCT.md
+CONTRIBUTING.md
