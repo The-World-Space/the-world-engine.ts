@@ -1,0 +1,142 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper1, Bootstrapper2 } from "./5-sprite-animations/Bootstrapper";
+
+# Sprite Animations
+
+Learn about Sprite Animation using `CssSpriteAtlasRenderer` Components and `SpriteAtlasAnimator` Components
+
+## Make Scene
+
+Create a scene using the components `CssSpriteAtlasRenderer` and `SpriteAtlasAnimator`.
+
+we will use [this asset](https://i.stack.imgur.com/eUJdp.png).
+
+![sprite atlas](https://i.stack.imgur.com/eUJdp.png)
+
+The Sprite Atlas component allows you to clip a sprite sheet into a number of sprites.
+Sprite Atlas is good for animations.
+
+```typescript title="./asset/Bootstrapper.ts"
+import { 
+    Bootstrapper as BaseBootstrapper,
+    Camera,
+    CssSpriteAtlasRenderer,
+    SceneBuilder,
+    SpriteAtlasAnimator
+} from "the-world-engine";
+import { Vector3 } from "three/src/Three";
+
+export class Bootstrapper extends BaseBootstrapper {
+    public run(): SceneBuilder {
+        const instantiater = this.instantiater;
+
+        return this.sceneBuilder
+            .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
+                .withComponent(Camera))
+            
+            .withChild(instantiater.buildGameObject("sprite1", new Vector3(0, 0, 0))
+                .withComponent(CssSpriteAtlasRenderer, c => {
+                    c.asyncSetImageFromPath(
+                        "https://i.stack.imgur.com/eUJdp.png",
+                        4, 9, // split the image into 4 rows and 9 columns
+                        () => {
+                            if (!c.exists) return;
+                            c.imageWidth *= 3;
+                            c.imageHeight *= 3;
+                            //scale the image to 3x its original size
+                        }
+                    );
+
+                    c.imageIndex = 0;
+                })
+                .withComponent(SpriteAtlasAnimator, c => {
+                    c.addAnimation("idle_up", [0]);
+                    c.addAnimation("walk_up", [1, 2, 3, 4, 5, 6, 7, 8]);
+                    c.addAnimation("idle_left", [9]);
+                    c.addAnimation("walk_left", [10, 11, 12, 13, 14, 15, 16, 17]);
+                    c.addAnimation("idle_down", [18]);
+                    c.addAnimation("walk_down", [19, 20, 21, 22, 23, 24, 25, 26]);
+                    c.addAnimation("idle_right", [27]);
+                    c.addAnimation("walk_right", [28, 29, 30, 31, 32, 33, 34, 35]);
+
+                    c.frameDuration = 0.2;
+                }))
+        ;
+    }
+}
+```
+<DocumentGame bootstrapper={Bootstrapper1} />
+
+The `atlasIndex` increases from left to right from top to bottom.
+
+## Create PlayerController
+
+create a component `PlayerController` that will control the player movement and animation.
+
+```typescript title="./asset/script/PlayerController.ts"
+import { Component, SpriteAtlasAnimator } from "the-world-engine";
+import { Vector2, Vector3 } from "three/src/Three";
+
+export class PlayerController extends Component {
+    private readonly _speed = 4;
+    private readonly _direction: Vector2 = new Vector2(0, -1);
+    private _isMoving: boolean = false;
+    private _spriteAtlasAnimator: SpriteAtlasAnimator|null = null;
+
+    private _tempVector3: Vector3 = new Vector3();
+
+    public awake(): void {
+        this._spriteAtlasAnimator = this.gameObject.getComponent(SpriteAtlasAnimator);
+    }
+    
+    public update(): void {
+        const inputMap = this.engine.input.map; //input map is a dictionary of keyboard inputs
+
+        if (inputMap.get("W") || inputMap.get("w")) {
+            this._direction.set(0, 1);
+            this._isMoving = true;
+        } else if (inputMap.get("S") || inputMap.get("s")) {
+            this._direction.set(0, -1);
+            this._isMoving = true;
+        } else if (inputMap.get("A") || inputMap.get("a")) {
+            this._direction.set(-1, 0);
+            this._isMoving = true;
+        } else if (inputMap.get("D") || inputMap.get("d")) {
+            this._direction.set(1, 0);
+            this._isMoving = true;
+        } else {
+            this._isMoving = false;
+        }
+
+        if (this._direction.x === 1) {
+            this._spriteAtlasAnimator!.playAnimation(this._isMoving ? "walk_right" : "idle_right");
+        } else if (this._direction.x === -1) {
+            this._spriteAtlasAnimator!.playAnimation(this._isMoving ? "walk_left" : "idle_left");
+        } else if (this._direction.y === 1) {
+            this._spriteAtlasAnimator!.playAnimation(this._isMoving ? "walk_up" : "idle_up");
+        } else if (this._direction.y === -1) {
+            this._spriteAtlasAnimator!.playAnimation(this._isMoving ? "walk_down" : "idle_down");
+        }
+
+        if (this._isMoving) {
+            const addVector = this._tempVector3
+                .set(this._direction.x, this._direction.y, 0)
+                .multiplyScalar(this.engine.time.deltaTime * this._speed);
+
+            this.gameObject.transform.position.add(addVector);
+        }
+    }
+}
+```
+
+add the component to the player GameObject.
+
+```typescript title="./asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildGameObject("sprite1", new Vector3(0, 0, 0))
+    //...
+    .withComponent(PlayerController))
+```
+
+<DocumentGame bootstrapper={Bootstrapper2} handleEvents={true} />
+Now move the sprite with w, a, s, d
