@@ -411,7 +411,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
      * 
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
-     public get imageRenderingMode(): ImageRenderingMode {
+    public get imageRenderingMode(): ImageRenderingMode {
         return this._imageRenderingMode;
     }
 

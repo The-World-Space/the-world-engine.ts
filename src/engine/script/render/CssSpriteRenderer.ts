@@ -275,7 +275,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
      * 
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
-     public get imageRenderingMode(): ImageRenderingMode {
+    public get imageRenderingMode(): ImageRenderingMode {
         return this._imageRenderingMode;
     }
 
