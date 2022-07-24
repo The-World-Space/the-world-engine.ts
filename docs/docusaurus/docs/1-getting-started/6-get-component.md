@@ -2,7 +2,7 @@
 
 Let's look at how to get a Component or GameObject from a Component.
 
-## method1: this.gameOjbect.getComponent()
+## method1: this.gameObject.getComponent()
 
 You can use `getComponent()` to get a Components which is attached to a GameObject.
 
