@@ -16,7 +16,11 @@ export class Bootstrapper1 extends BaseBootstrapper {
                 .withComponent(Camera))
             
             .withChild(instantiater.buildGameObject("sprite1")
-                .withComponent(CssSpriteRenderer)
+                .withComponent(CssSpriteRenderer, c => {
+                    c.asyncSetImageFromPath("https://c.tenor.com/jJalYO9p0PAAAAAd/hatsune-miku-plush.gif");
+                    c.imageWidth = 6;
+                    c.imageHeight = 6;
+                })
                 .withComponent(Rotator))
         ;
     }
