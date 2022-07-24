@@ -32,7 +32,7 @@ export class Bootstrapper extends BaseBootstrapper {
     }
 }
 ```
-<DocumentGame bootstrapper = { Bootstrapper1 } />
+<DocumentGame bootstrapper={ Bootstrapper1 } ignoreEvents />
 
 ## Change Sprite Position
 
@@ -46,7 +46,7 @@ return this.sceneBuilder
         .withComponent(CssSpriteRenderer))
 ;
 ```
-<DocumentGame bootstrapper = { Bootstrapper2 } />
+<DocumentGame bootstrapper = { Bootstrapper2 } ignoreEvents />
 
 ## Change Sprite Rotation and Scale
 
@@ -64,7 +64,7 @@ return this.sceneBuilder
         .withComponent(CssSpriteRenderer))
 ;
 ```
-<DocumentGame bootstrapper = { Bootstrapper3 } />
+<DocumentGame bootstrapper={ Bootstrapper3 } ignoreEvents />
 
 ## Set Sprite Image
 
@@ -80,4 +80,4 @@ you can set image of the `CssSpriteRenderer` component from image path.
     }))
 ;
 ```
-<DocumentGame bootstrapper = { Bootstrapper4 } />
+<DocumentGame bootstrapper={ Bootstrapper4 } ignoreEvents />

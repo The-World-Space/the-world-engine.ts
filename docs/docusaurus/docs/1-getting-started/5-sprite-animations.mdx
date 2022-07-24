@@ -65,7 +65,7 @@ export class Bootstrapper extends BaseBootstrapper {
     }
 }
 ```
-<DocumentGame bootstrapper={Bootstrapper1} />
+<DocumentGame bootstrapper={Bootstrapper1} ignoreEvents />
 
 The `atlasIndex` increases from left to right from top to bottom.
 
@@ -138,5 +138,5 @@ add the component to the player GameObject.
     .withComponent(PlayerController))
 ```
 
-<DocumentGame bootstrapper={Bootstrapper2} handleEvents={true} />
+<DocumentGame bootstrapper={Bootstrapper2} allowScroll />
 Now move the sprite with w, a, s, d

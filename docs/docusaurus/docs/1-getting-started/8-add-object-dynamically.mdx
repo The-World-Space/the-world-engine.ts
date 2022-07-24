@@ -56,7 +56,7 @@ Add spawner to builder
     .withComponent(RandomSpawner))
 ```
 
-<DocumentGame bootstrapper={Bootstrapper1} />
+<DocumentGame bootstrapper={Bootstrapper1} ignoreEvents />
 
 ![spawn-scene](/img/1-getting-started/8-add-object-dynamically/spawn-scene.png)
 
@@ -100,7 +100,7 @@ export class RandomSpawner extends Component {
 }
 ```
 
-<DocumentGame bootstrapper={Bootstrapper2} />
+<DocumentGame bootstrapper={Bootstrapper2} ignoreEvents />
 
 ![spawn-gameobject](/img/1-getting-started/8-add-object-dynamically/spawn-gameobject.png)
 
@@ -123,7 +123,7 @@ export class RandomSpawner extends Component {
 }
 ```
 
-<DocumentGame bootstrapper={Bootstrapper3} />
+<DocumentGame bootstrapper={Bootstrapper3} ignoreEvents />
 
 ## Destroy GameObjects
 
@@ -180,7 +180,7 @@ export class RandomSpawner extends Component {
 }
 ```
 
-<DocumentGame bootstrapper={Bootstrapper4} />
+<DocumentGame bootstrapper={Bootstrapper4} allowScroll />
 
 ## Destroy Components
 
@@ -219,4 +219,4 @@ export class RandomSpawner extends Component {
 }
 ```
 
-<DocumentGame bootstrapper={Bootstrapper5} />
+<DocumentGame bootstrapper={Bootstrapper5} allowScroll />
