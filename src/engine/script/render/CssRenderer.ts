@@ -6,7 +6,6 @@ import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 //import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
-import { ZaxisInitializer } from "./ZaxisInitializer";
 
 /**
  * precision problems occur when css space and actual game space are 1:1
@@ -34,7 +33,6 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _pointerEvents = true;
 
-    private _zindex = 0;
     private _readyToDraw = false;
 
     /**
@@ -43,12 +41,10 @@ export class CssRenderer<T extends HTMLElement> extends Component {
      * process:
      * 1. set `readyToDraw` to true.
      * 2. call `renderInitialize()` method.
-     * 3. initialize z-index <- this process will be removed in the future
      */
     public start(): void {
         this._readyToDraw = true;
         this.renderInitialize();
-        ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
     /**
@@ -93,19 +89,6 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         if (this.css3DObject) {
             this.css3DObject.visible = false;
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
-        }
-    }
-
-    /**
-     * when z-axis is updated, this method will be called
-     * 
-     * this method will update z-index of css3DObject
-     * @param zaxis z-axis that is set to this object z-index
-     */
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis / CssRendererConst.LengthUnitScalar;
-        if (this.css3DObject) {
-            this.css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
         }
     }
     
@@ -164,9 +147,6 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         if (constructed) {
             //update pointerEvents
             htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
-
-            //update zindex
-            htmlElement.style.zIndex = Math.floor(this._zindex).toString();
 
             //update visibility
             if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;

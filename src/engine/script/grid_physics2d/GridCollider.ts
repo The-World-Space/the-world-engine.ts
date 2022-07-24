@@ -3,7 +3,6 @@ import { Vector3 } from "three/src/Three";
 import { Component } from "../../hierarchy_object/Component";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
-import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { GridObjectCollideMap } from "./GridObjectCollideMap";
 
 /**
@@ -157,7 +156,6 @@ export class GridCollider extends Component {
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
                 "debug-image", new Vector3(localX, localY, 410000))
-                .withComponent(ZaxisInitializer)
                 .withComponent(CssSpriteRenderer, c => {
                     c.opacity = 0.5;
                     c.imageWidth = gridCellWidth;

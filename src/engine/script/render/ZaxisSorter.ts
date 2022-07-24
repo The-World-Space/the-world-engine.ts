@@ -6,9 +6,6 @@ import { ZaxisSortable } from "./ZaxisSortable";
  * This component is mainly used in top-down 2D games to control the rendering order of objects
  * 
  * It applies to all renderers with child objects in the game object with this component
- * 
- * The renderers at the child or descendant of the gameObject with this component
- * are all z-index is set based on the z-value of the game object with the component attached.
  */
 export class ZaxisSorter extends ZaxisSortable {
     public override readonly disallowMultipleComponent: boolean = true;
@@ -25,15 +22,6 @@ export class ZaxisSorter extends ZaxisSortable {
     public update(): void {
         const worldPosition = this.transform.position;
         worldPosition.z = -worldPosition.y + this._offset;
-
-        this.gameObject.getComponentsInChildren().forEach(component => {
-            const cAny = component as any;
-            if (cAny.onSortByZaxis) {
-                if (typeof cAny.onSortByZaxis === "function") {
-                    cAny.onSortByZaxis(worldPosition.z);
-                }
-            }
-        });
     }
 
     /**
@@ -53,7 +41,7 @@ export class ZaxisSorter extends ZaxisSortable {
     /**
      * Whether to run this component only once at start (default: true)
      * 
-     * if gameObject is moveable, you should set this to false for update the z-index
+     * if gameObject is moveable, you should set this to false for update the z-axis
      */
     public get runOnce(): boolean {
         return this._runOnce;
@@ -62,7 +50,7 @@ export class ZaxisSorter extends ZaxisSortable {
     /**
      * Whether to run this component only once at start (default: true)
      * 
-     * if gameObject is moveable, you should set this to false for update the z-index
+     * if gameObject is moveable, you should set this to false for update the z-axis
      */
     public set runOnce(value: boolean) {
         this._runOnce = value;

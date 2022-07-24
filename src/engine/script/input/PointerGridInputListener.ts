@@ -68,7 +68,6 @@ export class PointerGridInputListener extends Component {
     private _viewScale = 0.1;
     private _inputWidth = 64;
     private _inputHeight = 64;
-    private _zindex = 0;
     private readonly _onPointerDownEvent = new EventContainer<(event: PointerGridEvent) => void>();
     private readonly _onPointerUpEvent = new EventContainer<(event: PointerGridEvent) => void>();
     private readonly _onPointerEnterEvent = new EventContainer<(event: PointerGridEvent) => void>();
@@ -85,7 +84,6 @@ export class PointerGridInputListener extends Component {
 
         this._htmlDivElement.style.width = this._inputWidth / this._viewScale + "px";
         this._htmlDivElement.style.height = this._inputHeight / this._viewScale + "px";
-        this._htmlDivElement.style.zIndex = Math.floor(this._zindex).toString();
         this._htmlDivElement.addEventListener("mousedown", this.onMouseDown);
         this._htmlDivElement.addEventListener("mouseup", this.onMouseUp);
         this._htmlDivElement.addEventListener("mouseenter", this.onMouseEnter);
@@ -136,13 +134,6 @@ export class PointerGridInputListener extends Component {
         if (this._css3DObject) {
             this.transform.unsafeGetObject3D().remove(this._css3DObject);
             //it's safe because _css3DObject is not a GameObject and i'm removing it from the scene in onDestroy
-        }
-    }
-
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis;
-        if (this._css3DObject) {
-            this._css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
         }
     }
     

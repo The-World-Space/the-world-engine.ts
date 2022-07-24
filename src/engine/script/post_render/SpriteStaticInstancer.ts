@@ -3,7 +3,6 @@ import { Quaternion, Vector2, Vector3 } from "three/src/Three";
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Component } from "../../hierarchy_object/Component";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
-import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
 /**
@@ -127,8 +126,6 @@ export class SpriteStaticInstancer extends Component {
             
             if (this._useZaxisSorter) {
                 spriteBuilder.withComponent(ZaxisSorter, c => c.offset = this._zaxisSortOffset);
-            } else {
-                spriteBuilder.withComponent(ZaxisInitializer);
             }
 
             this.gameObject.addChildFromBuilder(spriteBuilder);

@@ -108,7 +108,6 @@ describe("index Test", () => {
     it("CssTextRenderer export", () => expect(Index.CssTextRenderer).toBeDefined());
     it("TileAtlasItem export", () => expect(Index.TileAtlasItem).toBeDefined());
     it("CssTilemapRenderer export", () => expect(Index.CssTilemapRenderer).toBeDefined());
-    it("ZaxisInitializer export", () => expect(Index.ZaxisInitializer).toBeDefined());
     it("ZaxisSortable export", () => expect(Index.ZaxisSortable).toBeDefined());
     it("ZaxisSorter export", () => expect(Index.ZaxisSorter).toBeDefined());
 });
