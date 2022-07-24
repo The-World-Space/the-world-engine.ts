@@ -104,7 +104,6 @@ export class SpriteAnimator extends Component {
         const animationFramesArray: HTMLImageElement[] = [];
         for (let i = 0; i < animationFrames.length; i++) {
             const image = new Image();
-            image.style.imageRendering = "pixelated";
             image.src = animationFrames[i];
             animationFramesArray.push(image);
         }

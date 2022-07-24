@@ -4,7 +4,6 @@ import { Component } from "../../hierarchy_object/Component";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
-import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { IGridCollidable } from "./IGridCollidable";
 
 
@@ -136,7 +135,6 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
                 "debug-image", new Vector3(x, y, 410000))
-                .withComponent(ZaxisInitializer)
                 .withComponent(CssSpriteRenderer, c => {
                     c.opacity = 0.5;
                     c.pointerEvents = false;

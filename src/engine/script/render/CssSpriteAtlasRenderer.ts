@@ -1,6 +1,7 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
+import { ImageRenderingMode } from "./CssSpriteRenderer";
 import { CssFilter } from "./filter/CssFilter";
 
 /**
@@ -37,6 +38,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipX = false;
     private _imageFlipY = false;
     private _opacity = 1;
+    private _imageRenderingMode = ImageRenderingMode.Pixelated;
     
     private readonly onFilterUpdate = (): void => {
         if (this.htmlElement) {
@@ -210,7 +212,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         this.htmlElement = image;
 
         image.alt = this.gameObject.name + "_sprite_atlas";
-        image.style.imageRendering = "pixelated";
+        image.style.imageRendering = this._imageRenderingMode;
         image.style.opacity = this._opacity.toString();
         image.style.filter = this._filter.toString();
         if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
@@ -476,5 +478,26 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
      */
     public get filter(): CssFilter {
         return this._filter;
+    }
+
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    public get imageRenderingMode(): ImageRenderingMode {
+        return this._imageRenderingMode;
+    }
+
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    public set imageRenderingMode(value: ImageRenderingMode) {
+        this._imageRenderingMode = value;
+        if (this.htmlElement) {
+            this.htmlElement.style.imageRendering = this._imageRenderingMode;
+        }
     }
 }

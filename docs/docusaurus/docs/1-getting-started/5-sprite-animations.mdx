@@ -92,16 +92,16 @@ export class PlayerController extends Component {
     public update(): void {
         const inputMap = this.engine.input.map; //input map is a dictionary of keyboard inputs
 
-        if (inputMap.get("W") || inputMap.get("w")) {
+        if (inputMap.get("w")) {
             this._direction.set(0, 1);
             this._isMoving = true;
-        } else if (inputMap.get("S") || inputMap.get("s")) {
+        } else if (inputMap.get("s")) {
             this._direction.set(0, -1);
             this._isMoving = true;
-        } else if (inputMap.get("A") || inputMap.get("a")) {
+        } else if (inputMap.get("a")) {
             this._direction.set(-1, 0);
             this._isMoving = true;
-        } else if (inputMap.get("D") || inputMap.get("d")) {
+        } else if (inputMap.get("d")) {
             this._direction.set(1, 0);
             this._isMoving = true;
         } else {

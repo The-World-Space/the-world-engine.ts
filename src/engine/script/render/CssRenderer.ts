@@ -6,7 +6,6 @@ import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 //import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
-import { ZaxisInitializer } from "./ZaxisInitializer";
 
 /**
  * precision problems occur when css space and actual game space are 1:1
@@ -34,7 +33,6 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _pointerEvents = true;
 
-    private _zindex = 0;
     private _readyToDraw = false;
 
     /**
@@ -43,12 +41,10 @@ export class CssRenderer<T extends HTMLElement> extends Component {
      * process:
      * 1. set `readyToDraw` to true.
      * 2. call `renderInitialize()` method.
-     * 3. initialize z-index <- this process will be removed in the future
      */
     public start(): void {
         this._readyToDraw = true;
         this.renderInitialize();
-        ZaxisInitializer.checkAncestorZaxisInitializer(this.gameObject, this.onSortByZaxis.bind(this));
     }
 
     /**
@@ -95,19 +91,6 @@ export class CssRenderer<T extends HTMLElement> extends Component {
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
-
-    /**
-     * when z-axis is updated, this method will be called
-     * 
-     * this method will update z-index of css3DObject
-     * @param zaxis z-axis that is set to this object z-index
-     */
-    public onSortByZaxis(zaxis: number): void {
-        this._zindex = zaxis / CssRendererConst.LengthUnitScalar;
-        if (this.css3DObject) {
-            this.css3DObject.element.style.zIndex = Math.floor(this._zindex).toString();
-        }
-    }
     
     /**
      * when world matrix is updated, this method will be called
@@ -142,30 +125,28 @@ export class CssRenderer<T extends HTMLElement> extends Component {
      * @returns css3DObject
      */
     protected initializeBaseComponents(reCreate: boolean): CSS3DObject {
-        if (!this.htmlElement) throw new Error("htmlElement is null");
+        const htmlElement = this.htmlElement;
+        if (!htmlElement) throw new Error("htmlElement is null");
 
         let constructed = false;
         if (reCreate) {
             if (this.css3DObject) {
                 this.transform.unsafeGetObject3D().remove(this.css3DObject);
             }
-            this.css3DObject = new CSS3DObject(this.htmlElement);
+            this.css3DObject = new CSS3DObject(htmlElement);
             constructed = true;
         } else {
             if (this.css3DObject) {
-                this.css3DObject.element = this.htmlElement;
+                this.css3DObject.element = htmlElement;
             } else {
-                this.css3DObject = new CSS3DObject(this.htmlElement);
+                this.css3DObject = new CSS3DObject(htmlElement);
                 constructed = true;
             }
         }
 
         if (constructed) {
             //update pointerEvents
-            this.htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
-
-            //update zindex
-            this.htmlElement.style.zIndex = Math.floor(this._zindex).toString();
+            htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
 
             //update visibility
             if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;
@@ -268,5 +249,12 @@ export class CssRenderer<T extends HTMLElement> extends Component {
      */
     protected get readyToDraw(): boolean {
         return this._readyToDraw;
+    }
+
+    /**
+     * html element events
+     */
+    public get htmlElementEventHandler(): GlobalEventHandlers|null {
+        return this.htmlElement;
     }
 }

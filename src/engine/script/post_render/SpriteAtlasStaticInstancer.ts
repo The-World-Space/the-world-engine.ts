@@ -6,7 +6,6 @@ import { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { ReadonlyVector3 } from "../../math/ReadonlyVector3";
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
-import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
 /**
@@ -143,8 +142,6 @@ export class SpriteAtlasStaticInstancer extends Component {
             
             if (this._useZaxisSorter) {
                 spriteBuilder.withComponent(ZaxisSorter, c => c.offset = this._zaxisSortOffset);
-            } else {
-                spriteBuilder.withComponent(ZaxisInitializer);
             }
 
             this.gameObject.addChildFromBuilder(spriteBuilder);

@@ -7,7 +7,6 @@ import { IGridPositionable } from "../helper/IGridPositionable";
 import { GridPointer } from "../input/GridPointer";
 import { PointerGridEvent } from "../input/PointerGridInputListener";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
-import { ZaxisInitializer } from "../render/ZaxisInitializer";
 import { Pathfinder } from "./pathfind/Pathfinder";
 
 /**
@@ -55,7 +54,6 @@ export class PathfindTest extends Component {
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
                 "debug-image", new Vector3(x, y, 10000))
-                .withComponent(ZaxisInitializer)
                 .withComponent(CssSpriteRenderer, c => c.opacity = 0.5)
                 .getGameObject(gameObjectRef));
         this._debugImages.push(gameObjectRef.ref!);
