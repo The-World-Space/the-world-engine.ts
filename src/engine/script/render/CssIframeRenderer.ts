@@ -10,6 +10,9 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
     private _width = 4;
     private _height = 4;
     private _iframeSource = "";
+    private _allow = "";
+    private _allowFullscreen = false;
+    private _refferrerPolicy: ReferrerPolicy = "";
 
     protected override renderInitialize(): void {
         this.htmlElement = document.createElement("iframe") as HTMLIFrameElement;
@@ -17,6 +20,9 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         this.htmlElement.width = (this._width / this.viewScale).toString();
         this.htmlElement.height = (this._height / this.viewScale).toString();
         this.htmlElement.src = this._iframeSource;
+        this.htmlElement.allow = this._allow;
+        this.htmlElement.allowFullscreen = this._allowFullscreen;
+        this.htmlElement.referrerPolicy = this._refferrerPolicy;
         this.htmlElement.style.border = "none";
         const css3DObject = this.initializeBaseComponents(false);
         css3DObject.scale.set(this.viewScale, this.viewScale, this.viewScale);
@@ -110,11 +116,67 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
     }
 
     /**
-     * get iframe element
-     * 
-     * this method is experimental. it may be removed in the future.
+     * iframe allow attribute (default: "")
      */
-    public get element(): HTMLIFrameElement|null {
-        return this.htmlElement;
+    public get allow(): string {
+        return this._allow;
+    }
+
+    /**
+     * iframe allow attribute (default: "")
+     */
+    public set allow(value: string) {
+        this._allow = value;
+        
+        if (this.htmlElement) {
+            this.htmlElement.allow = value;
+        }
+    }
+
+    /**
+     * iframe allow fullscreen attribute (default: false)
+     */
+    public get allowFullscreen(): boolean {
+        return this._allowFullscreen;
+    }
+
+    /**
+     * iframe allow fullscreen attribute (default: false)
+     */
+    public set allowFullscreen(value: boolean) {
+        this._allowFullscreen = value;
+    }
+
+    
+    /**
+     * Retrieves the document object of the page or frame.
+     */
+    public get contentDocument(): Document | null {
+        return this.htmlElement?.contentDocument ?? null;
+    }
+
+    /**
+     * Retrieves the object of the specified.
+     */
+    public get contentWindow(): WindowProxy | null {
+        return this.htmlElement?.contentWindow ?? null;
+    }
+
+    /**
+     * iframe referrerPolicy attribute (default: "")
+     */
+    public get referrerPolicy(): ReferrerPolicy {
+        return this._refferrerPolicy;
+    }
+
+    /**
+     * iframe referrerPolicy attribute (default: "")
+     */
+    public set referrerPolicy(value: ReferrerPolicy) {
+        this._refferrerPolicy = value;
+
+        if (this.htmlElement) {
+            this.htmlElement.referrerPolicy = value;
+        }
     }
 }
