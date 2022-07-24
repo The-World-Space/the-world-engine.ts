@@ -4,6 +4,27 @@ import { CssRenderer, CssRendererConst } from "./CssRenderer";
 import { CssFilter } from "./filter/CssFilter";
 
 /**
+ * css image-rendering property enum
+ */
+export enum ImageRenderingMode {
+    /**
+     * The scaling algorithm is UA dependent. Since version 1.9 (Firefox 3.0), Gecko uses bilinear resampling (high quality).
+     */
+    Auto = "auto",
+    /**
+     * The image is scaled with the nearest-neighbor algorithm.
+     */
+    CrispEdges = "crisp-edges",
+    /**
+     * Using the nearest-neighbor algorithm,
+     * the image is scaled up to the next integer multiple that is greater than or equal to its original size,
+     * then scaled down to the target size, as for smooth. When scaling up to integer multiples of the original size,
+     * this will have the same effect as crisp-edges.
+     */
+    Pixelated = "pixelated",
+}
+
+/**
  * css sprite renderer
  */
 export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
@@ -12,6 +33,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipX = false;
     private _imageFlipY = false;
     private _opacity = 1;
+    private _imageRenderingMode = ImageRenderingMode.Pixelated;
 
     private readonly onFilterUpdate = (): void => {
         if (this.htmlElement) {
@@ -114,7 +136,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         }
 
         image.alt = this.gameObject.name + "_sprite";
-        image.style.imageRendering = "pixelated";
+        image.style.imageRendering = this._imageRenderingMode;
         if (this._imageWidth === 0) this._imageWidth = image.naturalWidth * CssRendererConst.LengthUnitScalar;
         if (this._imageHeight === 0) this._imageHeight = image.naturalHeight * CssRendererConst.LengthUnitScalar;
         image.style.width = (this._imageWidth / this.viewScale) + "px";
@@ -246,5 +268,26 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
      */
     public get filter(): CssFilter {
         return this._filter;
+    }
+    
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+     public get imageRenderingMode(): ImageRenderingMode {
+        return this._imageRenderingMode;
+    }
+
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    public set imageRenderingMode(value: ImageRenderingMode) {
+        this._imageRenderingMode = value;
+        if (this.htmlElement) {
+            this.htmlElement.style.imageRendering = this._imageRenderingMode;
+        }
     }
 }

@@ -2,6 +2,7 @@ import { Vector2 } from "three/src/Three";
 
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
+import { ImageRenderingMode } from "./CssSpriteRenderer";
 
 /**
  * represents a sprite atlas that is used by tilemap
@@ -63,6 +64,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
     private _tileResolutionX = 16;
     private _tileResolutionY = 16;
     private _imageSources: TileAtlasItem[]|null = null;
+    private _imageRenderingMode = ImageRenderingMode.Pixelated;
     
     private _initializeFunctions: ((() => void))[] = [];
 
@@ -118,7 +120,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
         this.htmlElement = document.createElement("canvas") as HTMLCanvasElement;
         this.htmlElement.width = tileMapResolutionX;
         this.htmlElement.height = tileMapResolutionY;
-        this.htmlElement.style.imageRendering = "pixelated";
+        this.htmlElement.style.imageRendering = this._imageRenderingMode;
         this.htmlElement.style.width = (tileMapWidth / this.viewScale) + "px";
         this.htmlElement.style.height = (tileMapHeight / this.viewScale) + "px";
 
@@ -402,5 +404,26 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
      */
     public get gridCenterY(): number {
         return this.transform.position.y + (this.rowCount % 2 === 1 ? 0 : this._tileHeight / 2);
+    }
+    
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+     public get imageRenderingMode(): ImageRenderingMode {
+        return this._imageRenderingMode;
+    }
+
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    public set imageRenderingMode(value: ImageRenderingMode) {
+        this._imageRenderingMode = value;
+        if (this.htmlElement) {
+            this.htmlElement.style.imageRendering = this._imageRenderingMode;
+        }
     }
 }
