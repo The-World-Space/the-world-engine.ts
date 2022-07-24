@@ -1,0 +1,70 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper1, Bootstrapper2 } from "./10-debug-components/Bootstrapper";
+
+# Debug Components
+
+Let's look at the built-in components for debugging purposes.
+
+## EditorGridRenderer
+
+editor grid renderer is used to render the grid.
+
+```typescript
+export class Bootstrapper extends BaseBootstrapper {
+    public run(): SceneBuilder {
+        const instantiater = this.instantiater;
+
+        return this.sceneBuilder
+            .withChild(instantiater.buildGameObject("camera")
+                .withComponent(Camera)
+                .withComponent(EditorGridRenderer, c => {
+                    c.renderWidth = 50;
+                    c.renderHeight = 50;
+                }))
+
+            .withChild(instantiater.buildGameObject("object1")
+                .withComponent(CssSpriteRenderer))
+        ;
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper1} ignoreEvents />
+
+## EditorCameraController
+
+editor camera controller is used to control the camera in 2D space.
+
+```typescript
+import { 
+    Bootstrapper as BaseBootstrapper,
+    Camera,
+    CssSpriteRenderer,
+    EditorCameraController,
+    EditorGridRenderer,
+    SceneBuilder
+} from "the-world-engine";
+
+export class Bootstrapper1 extends BaseBootstrapper {
+    public run(): SceneBuilder {
+        const instantiater = this.instantiater;
+
+        return this.sceneBuilder
+            .withChild(instantiater.buildGameObject("camera")
+                .withComponent(Camera)
+                .withComponent(EditorGridRenderer, c => {
+                    c.renderWidth = 50;
+                    c.renderHeight = 50;
+                })
+                .withComponent(EditorCameraController, c => {
+                    c.mouseMoveButton = 0;
+                }))
+
+            .withChild(instantiater.buildGameObject("object1")
+                .withComponent(CssSpriteRenderer))
+        ;
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper2} handleEvents={true} />

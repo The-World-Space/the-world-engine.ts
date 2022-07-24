@@ -1,0 +1,83 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper } from "./7-prefab/Bootstrapper";
+
+# Prefab
+
+If you keep writing scenes on the bootstrapper, the bootstrapper will become too big.
+
+You can use prefab to resolve this issue.
+
+## Make a prefab
+
+We going to make a camera prefab that tracks a specific object.
+
+```typescript title="./src/asset/prefab/CameraPrefab.ts"
+import { 
+    Camera,
+    GameObject,
+    GameObjectBuilder,
+    Prefab,
+    PrefabRef,
+    TrackCameraController
+} from "the-world-engine";
+
+export class CameraPrefab extends Prefab {
+    private _trackObject = new PrefabRef<GameObject>();
+    private _camera = new PrefabRef<Camera>();
+
+    //If you add a value inside the prefab from the outside, you can create the with method
+    public withTrackObject(trackObject: PrefabRef<GameObject>): this {
+        this._trackObject = trackObject;
+        return this;
+    }
+
+    //When receiving the value inside the prefab from the outside, it is possible by creating the get method
+    public getCamera(componentRef: PrefabRef<Camera>): this {
+        this._camera = componentRef;
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+        return this.gameObjectBuilder
+            .withComponent(Camera)
+            .withComponent(TrackCameraController, c => {
+                c.lerpTrack = true;
+                if (this._trackObject.ref) c.setTrackTarget(this._trackObject.ref);
+            })
+            .getComponent(Camera, this._camera)
+        ;
+    }
+}
+```
+
+## Add a prefab to the builder
+
+Now we can create camera from CameraPrefab.
+
+```typescript title="./src/asset/Bootstrapper.ts"
+import { /*...*/ } from "the-world-engine";
+import { CameraPrefab } from "./prefab/CameraPrefab";
+
+export class Bootstrapper extends BaseBootstrapper {
+    public run(): SceneBuilder {
+        const instantiater = this.instantiater;
+
+        const trackObject = new PrefabRef<GameObject>();
+        const camera = new PrefabRef<Camera>();
+
+        return this.sceneBuilder
+            .withChild(instantiater.buildPrefab("camera", CameraPrefab) // build prefab!
+                .withTrackObject(trackObject)
+                .getCamera(camera)
+                .make())
+
+            .withChild(instantiater.buildGameObject("player")
+                .withComponent(CssSpriteRenderer)
+                .withComponent(PlayerGridMovementController)
+                .getGameObject(trackObject))
+        ;
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper} ignoreEvents />

@@ -1,0 +1,77 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper1 } from "./4-create-component/Bootstrapper";
+
+# Create Component
+
+Let's create our `Component` and add them to the `GameObject`
+
+:::tip tip
+Component corresponds to Unity's [MonoBehaviour](https://docs.unity3d.com/ScriptReference/MonoBehaviour.html) class.
+:::
+
+## Rotator Component
+
+Let's make a component that rotates objects at a constant speed
+
+```typescript title="./src/asset/script/Rotator.ts"
+import { Component } from "the-world-engine";
+
+export class Rotator extends Component {
+    private readonly _rotationSpeed: number = 1;
+    
+    public update(): void { // update is called once per frame
+        this.gameObject.transform.rotateZ(
+            this._rotationSpeed * this.engine.time.deltaTime);
+    }
+}
+```
+
+then we can add it to our `GameObject`
+
+```typescript title="./src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildGameObject("sprite1", new Vector3(0, 0, 0))
+    .withComponent(CssSpriteRenderer, c => {
+        c.asyncSetImageFromPath("https://c.tenor.com/jJalYO9p0PAAAAAd/hatsune-miku-plush.gif");
+        c.imageWidth = 6;
+        c.imageHeight = 6;
+    })
+    .withComponent(Rotator))
+//...
+```
+
+<DocumentGame bootstrapper={Bootstrapper1} ignoreEvents />
+
+## Component Messages
+
+the component messages are called when the gameObject meets certain conditions.
+
+The list below is a list of the available messages.
+
+### Basic Messages
+
+These are the most commonly used messages.
+
+- `awake`: awake is called when the script instance is being loaded.
+- `start`: start is called on the frame when a script is enabled just before any of the update methods are called the first time.
+- `update`: update is called every frame, if the Component is enabled.
+- `onDestroy`: Destroying the attached Component will result in the game or Scene receiving onDestroy.
+- `onEnable`: This function is called when the object becomes enabled and active.
+- `onDisable`: This function is called when the behaviour becomes disabled.
+
+### Physics Messages
+
+These are the messages related to game engine built-in physics engine(box2d).
+
+- `onCollisionEnter2D`: Sent when an incoming collider makes contact with this object's collider (2D physics only).
+- `onCollisionExit2D`: Sent when a collider on another object stops touching this object's collider (2D physics only).
+- `onCollisionStay2D`: Sent each frame where a collider on another object is touching this object's collider (2D physics only).
+- `onTriggerEnter2D`: Sent when another object enters a trigger collider attached to this object (2D physics only).
+- `onTriggerExit2D`: Sent when another object leaves a trigger collider attached to this object (2D physics only).
+- `onTriggerStay2D`: Sent each frame where another object is within a trigger collider attached to this object (2D physics only).
+
+### Unsafe Messages
+
+If you add or remove GameObjects or Components within this messages, proper behavior is not guaranteed (performance reasons).
+
+- `onWorldMatrixUpdated`: This function is called when the world matrix is updated.

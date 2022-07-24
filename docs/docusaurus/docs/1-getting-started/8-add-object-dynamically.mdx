@@ -1,0 +1,222 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper1, Bootstrapper2, Bootstrapper3, Bootstrapper4, Bootstrapper5 } from "./8-add-object-dynamically/Bootstrapper";
+
+# Add/Remove Object Dynamically
+
+Let's find out how to add GmaeObjects/Components dynamically to the game.
+
+## Make Spawner
+
+We gonna make a Spawner class that will spawn GameObjects in random positions.
+
+You can use `this.engine.scene.addChildFromBuilder` to dynamically add objects to a scene
+
+```typescript title="./src/asset/script/RandomSpawner.ts"
+import { Component, CssHtmlElementRenderer } from "the-world-engine";
+import { Vector3 } from "three/src/Three";
+
+export class RandomSpawner extends Component {
+    private readonly _range: number = 6;
+
+    public spawnAtScene(): void {
+        const instantiater = this.engine.instantiater;
+        
+        const x = Math.random() * this._range - this._range / 2;
+        const y = Math.random() * this._range - this._range / 2;
+        const position = new Vector3(x, y, 0);
+
+        this.engine.scene.addChildFromBuilder(
+            instantiater.buildGameObject("spawned-game-object", position)
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const div = document.createElement("div");
+                    div.style.backgroundColor = "black";
+                    div.style.color = "white";
+                    div.style.padding = "10px";
+                    div.textContent = "Spawned At Scene";
+
+                    c.element = div;
+                    c.autoSize = true;
+                    c.viewScale = 0.02;
+                }));
+    }
+
+    public awake(): void {
+        for (let i = 0; i < 10; i++) {
+            this.spawnAtScene();
+        }
+    }
+}
+```
+
+Add spawner to builder
+
+```typescript title="./src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildGameObject("spawner")
+    .withComponent(RandomSpawner))
+```
+
+<DocumentGame bootstrapper={Bootstrapper1} ignoreEvents />
+
+![spawn-scene](/img/1-getting-started/8-add-object-dynamically/spawn-scene.png)
+
+## Create Child GameObjects
+
+You can use `this.gameObject.addChildFromBuilder` to dynamically add objects to a GameObject
+
+```typescript title="./src/asset/script/Spawner.ts"
+//...
+export class RandomSpawner extends Component {
+    //...
+    public spawnAtScene(): void { /*...*/ }
+
+    public spawnAtGameObject(): void {
+        const instantiater = this.engine.instantiater;
+        
+        const x = Math.random() * this._range - this._range / 2;
+        const y = Math.random() * this._range - this._range / 2;
+        const position = new Vector3(x, y, 0);
+
+        this.gameObject.addChildFromBuilder(
+            instantiater.buildGameObject("spawned-game-object", position)
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const div = document.createElement("div");
+                    div.style.backgroundColor = "black";
+                    div.style.color = "white";
+                    div.style.padding = "10px";
+                    div.textContent = "Spawned At Scene";
+
+                    c.element = div;
+                    c.autoSize = true;
+                    c.viewScale = 0.02;
+                }));
+    }
+
+    public awake(): void {
+        for (let i = 0; i < 10; i++) {
+            this.spawnAtGameObject();
+        }
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper2} ignoreEvents />
+
+![spawn-gameobject](/img/1-getting-started/8-add-object-dynamically/spawn-gameobject.png)
+
+## Add Component Dynamically
+
+You can use `this.gameobject.addComponent` to dynamically add components to a GameObject
+
+```typescript title="./src/asset/script/Spawner.ts"
+//...
+export class RandomSpawner extends Component {
+    //...
+    public awake(): void {
+        const textRenderer = this.gameObject.addComponent(CssTextRenderer)!;
+        textRenderer.text = "Spawner";
+        textRenderer.textColor = new Color(1, 0, 0);
+        textRenderer.textAlign = TextAlign.Center;
+        textRenderer.textWidth = 5;
+        //...
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper3} ignoreEvents />
+
+## Destroy GameObjects
+
+you can use `GameObject.destroy()` to destroy a GameObject
+
+```typescript title="./src/asset/script/Spawner.ts"
+//...
+export class RandomSpawner extends Component {
+    private readonly _range: number = 6;
+    private readonly _spawnedObjects: GameObject[] = [];
+    
+    //...
+
+    public spawnAtGameObject(): void {
+        //...
+        const spawnedObject = this.gameObject.addChildFromBuilder(
+            //...
+        );
+
+        this._spawnedObjects.push(spawnedObject);
+    }
+
+    public destroyAllSpawnedObjects(): void {
+        for (const spawnedObject of this._spawnedObjects) {
+            spawnedObject.destroy(); // destroy the spawned object
+        }
+    }
+
+    public awake(): void {
+        //...
+        this.engine.scene.addChildFromBuilder(
+            this.engine.instantiater.buildGameObject(
+                "remove-all-spawned-objects-button",
+                new Vector3(0, 0, 5)
+            )
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const button = document.createElement("button");
+                    button.textContent = "Remove All Spawned Objects";
+                    button.style.backgroundColor = "#990000";
+                    button.style.color = "white";
+                    button.style.padding = "10px";
+                    button.onclick = () => {
+                        this.destroyAllSpawnedObjects();
+                    };
+                    c.element = button;
+                    c.autoSize = true;
+                    c.viewScale = 0.04;
+                }));
+
+        for (let i = 0; i < 10; i++) {
+            this.spawnAtGameObject();
+        }
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper4} allowScroll />
+
+## Destroy Components
+
+You can use `Component.destroy()` to destroy a Component
+
+```typescript title="./src/asset/script/Spawner.ts"
+//...
+export class RandomSpawner extends Component {
+    //...
+    public awake(): void {
+        //...
+        const removeAllButtonRenderer = new PrefabRef<CssHtmlElementRenderer>();
+        
+        this.engine.scene.addChildFromBuilder(
+            this.engine.instantiater.buildGameObject("remove-all-spawned-objects-button", new Vector3(0, 0, 5))
+                //...
+                .getComponent(CssHtmlElementRenderer, removeAllButtonRenderer));
+
+        this.engine.scene.addChildFromBuilder(
+            this.engine.instantiater.buildGameObject("destroy-button", new Vector3(0, -2, 5))
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const button = document.createElement("button");
+                    button.textContent = "Destroy Remove All Spawned Objects Button";
+                    button.style.backgroundColor = "#990000";
+                    button.style.color = "white";
+                    button.style.padding = "10px";
+                    button.onclick = () => {
+                        removeAllButtonRenderer.ref!.destroy(); // destroy the remove all button
+                    };
+                    c.element = button;
+                    c.autoSize = true;
+                    c.viewScale = 0.04;
+                }));
+        //...
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper5} allowScroll />
