@@ -1,0 +1,64 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper } from "./9-coroutines/Bootstrapper";
+
+# Coroutines
+
+A coroutine allows you to spread tasks across several frames.
+
+## Example: Random Movement With Delay
+
+```typescript
+import { Component, CoroutineIterator, WaitForSeconds } from "the-world-engine";
+
+export class RandomMovement extends Component {
+    private readonly _range: number = 6;
+    
+    public awake(): void {
+        this.startCoroutine(this.move());
+    }
+
+    private *move(): CoroutineIterator {
+        for (; ;) {
+            const x = Math.random() * this._range - this._range / 2;
+            const y = Math.random() * this._range - this._range / 2;
+            this.gameObject.transform.position.set(x, y, 0); //move to random position
+
+            yield new WaitForSeconds(1); //wait for 1 second
+        }
+    }
+}
+```
+
+<DocumentGame bootstrapper={Bootstrapper} ignoreEvents />
+
+## Example: Waiting Promise
+
+Async/await is not available in the component, but you can wait for Promise using Coroutine
+
+```typescript
+export class ImageSpawner extends Component {
+    public spawn(query: string): void {
+        this.startCoroutine(this.spawnInternal(query));
+    }
+
+    private *spawnInternal(query: string): CoroutineIterator {
+        let imageSearchResults: SearchResult[]|null = null;
+        ImageSearch.fatch(query).then(images => imageSearchResults = images);
+        yield new WaitWhile(() => imageSearchResults === null);
+
+        for (const image of imageSearchResults!) {
+            //spawn image
+        }
+    }
+}
+```
+
+## Yield Instructions
+
+The control flow can be handed over to the engine using the yield instruction.
+
+- `yield null`: Wait for next frame
+- `yield new WaitForSeconds(1)`: Wait for 1 second
+- `yield new WaitForEndOfFrame`: Wait for end of frame
+- `yield new WaitUntil(() => false)`: Wait until condition is false
+- `yield new WaitWhile(() => true)`: Wait while condition is true
