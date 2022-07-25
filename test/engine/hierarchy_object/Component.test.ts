@@ -534,4 +534,96 @@ describe("Component Test", () => {
             interopObject.testComponent.ref!.destroy();
         }).not.toThrow();
     });
+
+    it("Component.enabled when component has only onEnabled", () => {
+        const result: string[] = [];
+
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component {
+            public onEnable(): void {
+                result.push("onEnabled");
+            }
+        }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = (): SceneBuilder => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent, c => c.enabled = false)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.enabled = true;
+        interopObject.testComponent.ref!.enabled = false;
+        interopObject.testComponent.ref!.enabled = true;
+
+        expect(result).toEqual(["onEnabled", "onEnabled"]);
+    });
+
+    it("Component.enabled when component has only onDisabled", () => {
+        const result: string[] = [];
+
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component {
+            public onDisable(): void {
+                result.push("onDisabled");
+            }
+        }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = (): SceneBuilder => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent, c => c.enabled = true)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.enabled = false;
+        interopObject.testComponent.ref!.enabled = true;
+        interopObject.testComponent.ref!.enabled = false;
+
+        expect(result).toEqual(["onDisabled", "onDisabled"]);
+    });
+
+    it("Component.enabled when component has onEnable and onDisable", () => {
+        const result: string[] = [];
+
+        requestAnimationFrameCount = 1;
+
+        class TestComponent extends Component {
+            public onEnable(): void {
+                result.push("onEnabled");
+            }
+
+            public onDisable(): void {
+                result.push("onDisabled");
+            }
+        }
+
+        const interopObject = { testComponent: new PrefabRef<TestComponent>() };
+        new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
+            public run = (): SceneBuilder => this.sceneBuilder
+                .withChild(this.instantiater.buildGameObject("camera")
+                    .withComponent(Camera))
+
+                .withChild(this.instantiater.buildGameObject("test")
+                    .withComponent(TestComponent, c => c.enabled = false)
+                    .getComponent(TestComponent, this.interopObject!.testComponent));
+        }, interopObject);
+
+        interopObject.testComponent.ref!.enabled = true;
+        interopObject.testComponent.ref!.enabled = false;
+        interopObject.testComponent.ref!.enabled = true;
+        interopObject.testComponent.ref!.enabled = false;
+
+        expect(result).toEqual(["onEnabled", "onDisabled", "onEnabled", "onDisabled"]);
+    });
 });
