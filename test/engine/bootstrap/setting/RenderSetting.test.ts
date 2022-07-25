@@ -29,4 +29,19 @@ describe("RenderSetting Test", () => {
 
         expect(settingObject.useCss3DRenderer).toEqual(false);
     });
+
+    it("RenderSetting.webGLRenderer() default", () => {
+        const settingObject = RenderSetting.createDefaultObject();
+
+        expect(settingObject.webGLRenderer).toBeUndefined();
+    });
+
+    it("RenderSetting.webGLRenderer() defined", () => {
+        const settingObject = RenderSetting.createDefaultObject();
+        const setting = new RenderSetting(settingObject);
+        const renderer = "mock renderer" as any;
+        setting.webGLRenderer(renderer);
+
+        expect(settingObject.webGLRenderer).toEqual(renderer);
+    });
 });
