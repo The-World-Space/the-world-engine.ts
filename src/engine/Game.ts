@@ -1,3 +1,5 @@
+import { Color, Renderer } from "three/src/Three";
+
 import { Bootstrapper } from "./bootstrap/Bootstrapper";
 import { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
 import { GameSettingObject } from "./bootstrap/setting/GameSetting";
@@ -22,7 +24,8 @@ import { DeepReadonly } from "./type/DeepReadonly";
 export class Game {
     private readonly _rootScene: Scene;
     private readonly _gameScreen: GameScreen;
-    private readonly _css3DRenderer: OptimizedCSS3DRenderer;
+    private _css3DRenderer?: OptimizedCSS3DRenderer;
+    private _webglRenderer?: Renderer;
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: Time;
     private readonly _gameState: GameState;
@@ -45,21 +48,23 @@ export class Game {
      * @param autoResize if true, the game view will be resized when the window is resized. (default: true)
      */
     public constructor(container: HTMLElement, autoResize = true) {
+        const div = document.createElement("div");
+        div.style.width = "100%";
+        div.style.height = "100%";
+        div.style.position = "relative";
+        container.appendChild(div);
+        container = div;
+
         this._rootScene = new Scene();
         this._gameScreen = new GameScreen(container.clientWidth, container.clientHeight);
         this._container = container;
-        
-        this._css3DRenderer = new OptimizedCSS3DRenderer();
-        this._css3DRenderer.setSize(container.clientWidth, container.clientHeight);
-        this._css3DRenderer.domElement.style.width = "100%";
-        this._css3DRenderer.domElement.style.height = "100%";
-        this._css3DRenderer.domElement.onscroll = (): void => { //block scroll to prevent camera bug
-            this._css3DRenderer.domElement.scrollLeft = 0;
-            this._css3DRenderer.domElement.scrollTop = 0;
-        };
 
         this._cameraContainer = new CameraContainer((color: ReadonlyColor): void => {
-            this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
+            if (this._webglRenderer) {
+                this._rootScene.unsafeGetThreeScene().background = new Color(color.r, color.g, color.b);
+            } else if (this._css3DRenderer) {
+                this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
+            }
         });
         
         this._time = new Time();
@@ -80,7 +85,7 @@ export class Game {
             this._coroutineProcessor,
             this._transformMatrixProcessor,
             this._physics2DProcessor,
-            this._css3DRenderer.domElement
+            container
         );
         
         this._animationFrameId = null;
@@ -99,9 +104,18 @@ export class Game {
         const height = this._container.clientHeight;
         if (width === this._gameScreen.width && height === this._gameScreen.height) return;
         this._gameScreen.resize(width, height);
-        this._css3DRenderer.setSize(width, height);
-        this._css3DRenderer.domElement.style.width = "100%";
-        this._css3DRenderer.domElement.style.height = "100%";
+
+        if (this._css3DRenderer) {
+            this._css3DRenderer.setSize(width, height);
+            this._css3DRenderer.domElement.style.width = "100%";
+            this._css3DRenderer.domElement.style.height = "100%";
+        }
+
+        if (this._webglRenderer) {
+            this._webglRenderer.setSize(width, height);
+            this._webglRenderer.domElement.style.width = "100%";
+            this._webglRenderer.domElement.style.height = "100%";
+        }
     }
 
     /**
@@ -120,9 +134,32 @@ export class Game {
         const scene = bootstrapper.run();
         this._gameSetting = bootstrapper.getGameSettingObject();
         this._engineGlobalObject.applyGameSetting(this._gameSetting);
-        if (this._gameSetting.render.useCss3DRenderer) {
-            this._container.appendChild(this._css3DRenderer.domElement);
+
+        if (this._gameSetting.render.webGLRenderer) { // initialize webgl renderer
+            const container = this._container;
+            this._webglRenderer = this._gameSetting.render.webGLRenderer as Renderer;
+            this._webglRenderer.setSize(container.clientWidth, container.clientHeight);
+            this._webglRenderer.domElement.style.position = "absolute";
+            container.appendChild(this._webglRenderer.domElement);
         }
+
+        if (this._gameSetting.render.useCss3DRenderer) { // initialize css3d renderer
+            const container = this._container;
+            this._css3DRenderer = new OptimizedCSS3DRenderer();
+            this._css3DRenderer.setSize(container.clientWidth, container.clientHeight);
+            const css3DRendererDomElement = this._css3DRenderer.domElement;
+            css3DRendererDomElement.style.width = "100%";
+            css3DRendererDomElement.style.height = "100%";
+            css3DRendererDomElement.style.position = "absolute";
+            css3DRendererDomElement.style.pointerEvents = "none";
+            css3DRendererDomElement.onscroll = (e: Event): void => { //block scroll to prevent camera bug
+                const target = e.target as HTMLElement;
+                target.scrollTop = 0;
+                target.scrollLeft = 0;
+            };
+            container.appendChild(css3DRendererDomElement);
+        }
+
         scene.build();
         
         //If a camera exists in the bootstrapper,
@@ -135,8 +172,11 @@ export class Game {
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
-        if (this._gameSetting.render.useCss3DRenderer) {
+        if (this._css3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
+        }
+        if (this._webglRenderer) {
+            this._webglRenderer.render(this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
@@ -152,8 +192,11 @@ export class Game {
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
-        if (this._gameSetting!.render.useCss3DRenderer) {
+        if (this._css3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
+        }
+        if (this._webglRenderer) {
+            this._webglRenderer.render(this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
@@ -203,7 +246,8 @@ export class Game {
         }
         
         if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
-        this._container.removeChild(this._css3DRenderer.domElement);
+        if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
+        if (this._webglRenderer) this._container.removeChild(this._webglRenderer.domElement);
         
         this._isDisposed = true;
         this._gameState.kind = GameStateKind.Finalized;

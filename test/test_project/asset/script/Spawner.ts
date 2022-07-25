@@ -3,13 +3,13 @@ import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
-import Queue, { QueueType } from "js-sdsl/dist/esm/Queue/Queue";
+import Queue from "js-sdsl/dist/esm/container/OtherContainer/Queue";
 
 /** @internal */
 export class Spawner extends Component {
     public prefabCtor: PrefabConstructor|null = null;
     public initSpawnCount = 0;
-    private readonly _queue: QueueType<GameObject> = new Queue();
+    private readonly _queue: Queue<GameObject> = new Queue();
     private _objectCounter = 0;
 
     public awake(): void {

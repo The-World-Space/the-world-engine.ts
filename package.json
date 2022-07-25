@@ -1,6 +1,6 @@
 {
     "name": "the-world-engine",
-    "version": "0.4.14",
+    "version": "0.4.15",
     "description": "three.js based, unity like game engine for browser",
     "main": "dist/index.js",
     "scripts": {
@@ -76,7 +76,7 @@
         "webpack-dev-server": "^4.9.3"
     },
     "dependencies": {
-        "js-sdsl": "^3.0.0-beta.0"
+        "js-sdsl": "^4.0.0-beta.0"
     },
     "sideEffects": false
 }
