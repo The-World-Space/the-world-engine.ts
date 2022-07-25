@@ -249,10 +249,10 @@ export class ComponentEventContainer {
     }
 
     public tryRegisterOnEnable(): void {
-        if (!isOnEnableableComponent(this._component)) return;
         if (this._component._engine_internal_destroyed) return;
         if (this._eventState.enabled) return;
         this._eventState.enabled = true;
+        if (!isOnEnableableComponent(this._component)) return;
         const onEnableEvent = ComponentEvent.createOnEnableEvent(
             this._instantiater,
             this._component.onEnable.bind(this._component),
@@ -262,10 +262,10 @@ export class ComponentEventContainer {
     }
 
     public tryRegisterOnDisable(): void {
-        if (!isOnDisableableComponent(this._component)) return;
         if (this._component._engine_internal_destroyed) return;
         if (!this._eventState.enabled) return;
         this._eventState.enabled = false;
+        if (!isOnDisableableComponent(this._component)) return;
         const onDisableEvent = ComponentEvent.createOnDisableEvent(
             this._instantiater,
             this._component.onDisable.bind(this._component),
