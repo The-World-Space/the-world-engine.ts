@@ -137,7 +137,7 @@ export { CssHtmlElementRenderer } from "./engine/script/render/CssHtmlElementRen
 export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
 export { CssRenderer } from "./engine/script/render/CssRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
-export { ImageRenderingMode, CssSpriteRenderer } from "./engine/script/render/CssSpriteRenderer";
+export { CssSpriteRenderer, ImageRenderingMode } from "./engine/script/render/CssSpriteRenderer";
 export { CssTextRenderer, FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
 export { CssTilemapRenderer, TileAtlasItem } from "./engine/script/render/CssTilemapRenderer";
 export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";

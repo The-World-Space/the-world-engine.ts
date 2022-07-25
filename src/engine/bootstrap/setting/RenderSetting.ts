@@ -1,5 +1,8 @@
+import type { Renderer } from "three/src/Three";
+
 export type RenderSettingObject = { 
-    useCss3DRenderer: boolean
+    useCss3DRenderer: boolean,
+    webGLRenderer?: Renderer
 };
 
 export class RenderSetting {
@@ -18,12 +21,24 @@ export class RenderSetting {
     /**
      * if true, use css3d renderer. (default: true)
      * 
-     * for now, engine only support css3d renderer. this setting is for future.
      * @param value if true, use css3d renderer.
      * @returns this
      */
     public useCss3DRenderer(value: boolean): this {
         this._renderSettingObject.useCss3DRenderer = value;
+        return this;
+    }
+
+    /**
+     * set webgl renderer. (default: undefined)
+     * 
+     * you need to inject webgl renderer for use.
+     * 
+     * @param value webgl renderer
+     * @returns this
+     */
+    public webGLRenderer(value: Renderer): this {
+        this._renderSettingObject.webGLRenderer = value;
         return this;
     }
 }
