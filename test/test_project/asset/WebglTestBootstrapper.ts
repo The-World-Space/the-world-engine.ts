@@ -26,10 +26,15 @@ export class WebglTestBootstrapper extends Bootstrapper {
                     c.cameraType = CameraType.Perspective;
                 })
                 .withComponent(class extends Component {
+                    private _camera: Camera|null = null;
                     private _orbitControls: OrbitControls|null = null;
 
+                    public awake(): void {
+                        this._camera = this.gameObject.getComponent(Camera);
+                    }
+
                     public start(): void {
-                        const controls = this._orbitControls = new OrbitControls(this.engine.cameraContainer.camera!.threeCamera!, document.body);
+                        const controls = this._orbitControls = new OrbitControls(this._camera!.threeCamera!, this.engine.domElement);
                         controls.listenToKeyEvents( window ); // optional
         
                         controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
@@ -45,6 +50,12 @@ export class WebglTestBootstrapper extends Bootstrapper {
 
                     public update(): void {
                         this._orbitControls!.update();
+                    }
+
+                    public onDestroy(): void {
+                        this._orbitControls!.dispose();
+                        this._orbitControls = null;
+                        this._camera = null;
                     }
                 }))
 

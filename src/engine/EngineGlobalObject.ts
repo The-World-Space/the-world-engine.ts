@@ -25,6 +25,7 @@ export class EngineGlobalObject {
     private readonly _gameState: IReadonlyGameState;
     private readonly _screen: IReadonlyGameScreen;
     private readonly _physics2DProcessor: Physics2DProcessor;
+    private readonly _domElement: HTMLElement;
     
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
@@ -53,6 +54,7 @@ export class EngineGlobalObject {
         this._coroutineProcessor = coroutineProcessor;
         this._transformMatrixProcessor = transformMatrixProcessor;
         this._physics2DProcessor = physics2DProcessor;
+        this._domElement = renderTargetDom;
         this._inputHandler = new InputHandler(renderTargetDom);
         this._instantiater = new Instantiater(this);
     }
@@ -97,6 +99,10 @@ export class EngineGlobalObject {
 
     public get instantiater(): Instantiater {
         return this._instantiater;
+    }
+
+    public get domElement(): HTMLElement {
+        return this._domElement;
     }
 
     /** @internal */
