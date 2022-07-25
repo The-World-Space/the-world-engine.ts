@@ -1,8 +1,10 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Component } from "@src/engine/hierarchy_object/Component";
+import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
+import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Vector3, WebGLRenderer } from "three/src/Three";
 
@@ -53,14 +55,24 @@ export class WebglTestBootstrapper extends Bootstrapper {
 
             .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -10, 0)).make())
 
-            .withChild(instantiater.buildGameObject("test-object")
-                .withComponent(class extends Component {
-                    public awake(): void {
-                        const geometry = new BoxGeometry(1, 1, 1);
-                        const material = new MeshBasicMaterial({ color: 0x00ff00 });
-                        const cube = new Mesh(geometry, material);
-                        this.transform.unsafeGetObject3D().add(cube);
-                    }
+            .withChild(instantiater.buildGameObject("csssprite-test")
+                .withComponent(Object3DContainer, c => {
+                    const div = document.createElement("div");
+                    div.style.width = "100px";
+                    div.style.height = "100px";
+                    div.textContent = "Hello World";
+                    const renderer = new CSS3DObject(div);
+                    c.object3D = renderer;
+                    (globalThis as any).sprite = c;
+                }))
+
+            .withChild(instantiater.buildGameObject("test-object", new Vector3(0, 0, -10))
+                .withComponent(Object3DContainer, c => {
+                    const geometry = new BoxGeometry(1, 1, 1);
+                    const material = new MeshBasicMaterial({ color: 0x00ff00 });
+                    const cube = new Mesh(geometry, material);
+                    c.object3D = cube;
+                    (globalThis as any).cube = c;
                 }))
         ;
     }
