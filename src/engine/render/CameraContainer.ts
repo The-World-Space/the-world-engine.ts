@@ -1,5 +1,4 @@
-import type { SetType } from "js-sdsl/dist/esm/Set/Set";
-import Set from "js-sdsl/dist/esm/Set/Set";
+import OrderedSet from "js-sdsl/dist/esm/container/TreeContainer/OrderedSet";
 
 import { Camera } from "../script/render/Camera";
 import { CameraInfo } from "./CameraInfo";
@@ -12,13 +11,13 @@ import { ReadonlyColor } from "./ReadonlyColor";
 export class CameraContainer {
     private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null; 
     private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
-    private readonly _cameraQueue: SetType<{camera: Camera, info: CameraInfo}>;
+    private readonly _cameraQueue: OrderedSet<{camera: Camera, info: CameraInfo}>;
     private readonly _onChangeBackgroundColor: (color: ReadonlyColor) => void;
 
     /** @internal */
     public constructor(onChangeBackgroundColor: (color: ReadonlyColor) => void) {
         this._cameraInfoMap = new Map();
-        this._cameraQueue = new Set(undefined, (a, b) => {
+        this._cameraQueue = new OrderedSet(undefined, (a, b) => {
             if (a.info.priority === b.info.priority) {
                 return a.camera.instanceId - b.camera.instanceId;
             }
@@ -64,7 +63,7 @@ export class CameraContainer {
     public removeCamera(camera: Camera): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
-        this._cameraQueue.eraseElementByValue({camera, info});
+        this._cameraQueue.eraseElementByKey({camera, info});
         this._cameraInfoMap.delete(camera);
         this.setCamera();
     }
@@ -79,7 +78,7 @@ export class CameraContainer {
     public changeCameraPriority(camera: Camera, priority: number): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
-        this._cameraQueue.eraseElementByValue({camera, info});
+        this._cameraQueue.eraseElementByKey({camera, info});
         info.priority = priority;
         this._cameraQueue.insert({camera, info});
         this.setCamera();

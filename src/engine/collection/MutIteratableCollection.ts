@@ -1,20 +1,19 @@
-import type { SetType } from "js-sdsl/dist/esm/Set/Set";
-import Set from "js-sdsl/dist/esm/Set/Set";
+import OrderedSet from "js-sdsl/dist/esm/container/TreeContainer/OrderedSet";
 
 /** @internal */
 export class MutIteratableCollection<T extends { isRemoved: boolean }> {
-    private _iterateCollection: SetType<T>|null = null;
-    private readonly _collection: SetType<T>;
+    private _iterateCollection: OrderedSet<T>|null = null;
+    private readonly _collection: OrderedSet<T>;
 
-    private _insertBuffer: SetType<T>;
-    private _insertBufferSwap: SetType<T>;
-    private readonly _deleteBuffer: SetType<T>;
+    private _insertBuffer: OrderedSet<T>;
+    private _insertBufferSwap: OrderedSet<T>;
+    private readonly _deleteBuffer: OrderedSet<T>;
 
     public constructor(comparator: (a: T, b: T) => number) {
-        this._collection = new Set<T>(undefined, comparator);
-        this._insertBuffer = new Set<T>(undefined, comparator);
-        this._insertBufferSwap = new Set<T>(undefined, comparator);
-        this._deleteBuffer = new Set<T>(undefined, comparator);
+        this._collection = new OrderedSet<T>(undefined, comparator);
+        this._insertBuffer = new OrderedSet<T>(undefined, comparator);
+        this._insertBufferSwap = new OrderedSet<T>(undefined, comparator);
+        this._deleteBuffer = new OrderedSet<T>(undefined, comparator);
     }
 
     public get size(): number {
@@ -34,7 +33,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
         if (this._iterateCollection !== null) {
             value.isRemoved = true;
             this._deleteBuffer.insert(value);
-        } else this._collection.eraseElementByValue(value);
+        } else this._collection.eraseElementByKey(value);
     }
 
     /** Clear the tree, same as `Map.clear()`, O(1) 
@@ -60,7 +59,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
         this._iterateCollection = null;
     }
 
-    private flushBuffer(): SetType<T> {
+    private flushBuffer(): OrderedSet<T> {
         this._iterateCollection = null;
         this._deleteBuffer.forEach((value: T) => this.delete(value));
         this._insertBuffer.forEach((value: T) => this.insert(value));
