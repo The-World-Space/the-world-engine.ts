@@ -1,11 +1,12 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { Color } from "@src/engine/render/Color";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Vector3, WebGLRenderer } from "three/src/Three";
+
+import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 
 export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
@@ -21,7 +22,6 @@ export class WebglTestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
                     c.cameraType = CameraType.Perspective;
-                    c.backgroundColor = new Color(0.2, 0.2, 0.2);
                 })
                 .withComponent(class extends Component {
                     private _orbitControls: OrbitControls|null = null;
@@ -50,6 +50,8 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 .withComponent(CssSpriteRenderer, c => {
                     c.pointerEvents = true;
                 }))
+
+            .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -10, 0)).make())
 
             .withChild(instantiater.buildGameObject("test-object")
                 .withComponent(class extends Component {
