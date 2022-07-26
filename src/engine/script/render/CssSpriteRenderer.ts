@@ -1,7 +1,6 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
-import { CssFilter } from "./filter/CssFilter";
 
 /**
  * css image-rendering property enum
@@ -34,14 +33,6 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipY = false;
     private _opacity = 1;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
-
-    private readonly onFilterUpdate = (): void => {
-        if (this.htmlElement) {
-            this.htmlElement.style.filter = this._filter.toString();
-        }
-    };
-
-    private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
 
     private _initializeFunction: (() => void)|null = null;
 
@@ -142,7 +133,6 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         image.style.width = (this._imageWidth / this.viewScale) + "px";
         image.style.height = (this._imageHeight / this.viewScale) + "px";
         image.style.opacity = this._opacity.toString();
-        image.style.filter = this._filter.toString();
         const css3DObject = this.initializeBaseComponents(false);
         Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
@@ -261,13 +251,6 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
         if (this.htmlElement) {
             this.htmlElement.style.opacity = this._opacity.toString();
         }
-    }
-
-    /**
-     * css filter
-     */
-    public get filter(): CssFilter {
-        return this._filter;
     }
     
     /**
