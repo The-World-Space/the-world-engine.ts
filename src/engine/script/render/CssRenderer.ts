@@ -6,6 +6,7 @@ import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
 //import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
 import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
+import { CssFilter } from "./filter/CssFilter";
 
 /**
  * precision problems occur when css space and actual game space are 1:1
@@ -33,6 +34,14 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _pointerEvents = true;
 
+    private readonly onFilterUpdate = (): void => {
+        if (this.htmlElement) {
+            this.htmlElement.style.filter = this._filter.toString();
+        }
+    };
+
+    private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
+    
     private _readyToDraw = false;
 
     /**
@@ -148,6 +157,9 @@ export class CssRenderer<T extends HTMLElement> extends Component {
             //update pointerEvents
             htmlElement.style.pointerEvents = this.pointerEvents ? "auto" : "none";
 
+            //update filter
+            htmlElement.style.filter = this._filter.toString();
+
             //update visibility
             if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;
             else this.css3DObject.visible = false;
@@ -242,6 +254,13 @@ export class CssRenderer<T extends HTMLElement> extends Component {
         if (this.htmlElement) {
             this.htmlElement.style.pointerEvents = value ? "auto" : "none";
         }
+    }
+
+    /**
+     * css filter
+     */
+     public get filter(): CssFilter {
+        return this._filter;
     }
 
     /**

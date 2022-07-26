@@ -2,7 +2,6 @@ import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
 import { ImageRenderingMode } from "./CssSpriteRenderer";
-import { CssFilter } from "./filter/CssFilter";
 
 /**
  * css sprite atlas render mode
@@ -39,14 +38,6 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
     private _imageFlipY = false;
     private _opacity = 1;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
-    
-    private readonly onFilterUpdate = (): void => {
-        if (this.htmlElement) {
-            this.htmlElement.style.filter = this._filter.toString();
-        }
-    };
-    
-    private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
 
     private _rowCount = 1;
     private _columnCount = 1;
@@ -214,7 +205,6 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         image.alt = this.gameObject.name + "_sprite_atlas";
         image.style.imageRendering = this._imageRenderingMode;
         image.style.opacity = this._opacity.toString();
-        image.style.filter = this._filter.toString();
         if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
             if (this.viewScale !== 1) {
                 console.warn("CssSpriteAtlas.viewScale is not supported in CssSpriteAtlasRenderMode.ObjectFit, for supressing this warning set viewScale to 1.");
@@ -471,13 +461,6 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
         if (this.htmlElement) {
             this.htmlElement.style.opacity = this._opacity.toString();
         }
-    }
-    
-    /**
-     * css filter
-     */
-    public get filter(): CssFilter {
-        return this._filter;
     }
 
     /**
