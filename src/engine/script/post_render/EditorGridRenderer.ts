@@ -28,13 +28,18 @@ export class EditorGridRenderer extends Component {
     private _gridCellHeight = 1;
     private _renderWidth = 18;
     private _renderHeight = 10;
-    private _lineWidth = 0.2;
+    private _additiveViewScale = 0.2;
+    private _zOffset = 0;
 
     public awake(): void {
         const cssHtmlRendererRef = new PrefabRef<CssHtmlElementRenderer>();
 
-        this._cssHtmlRendererObject = this.gameObject.addChildFromBuilder(
-            this.engine.instantiater.buildGameObject("grid-renderer", new Vector3(0, 0, -1), undefined, new Vector3(this._lineWidth, this._lineWidth, this._lineWidth))
+        this._cssHtmlRendererObject = this.engine.scene.addChildFromBuilder(
+            this.engine.instantiater.buildGameObject("grid-renderer",
+                undefined,
+                undefined,
+                new Vector3(this._additiveViewScale, this._additiveViewScale, this._additiveViewScale)
+            )
                 .active(false)
                 .withComponent(CssHtmlElementRenderer, c => {
                     const element = document.createElement("div");
@@ -42,12 +47,13 @@ export class EditorGridRenderer extends Component {
                         repeating-linear-gradient(#999 0 1px, transparent 1px 100%),\
                         repeating-linear-gradient(90deg, #999 0 1px, transparent 1px 100%)";
                     element.style.backgroundSize =
-                        (this._gridCellWidth / this._lineWidth / CssRendererConst.LengthUnitScalar) + "px " +
-                        (this._gridCellHeight / this._lineWidth / CssRendererConst.LengthUnitScalar) + "px";
-                    c.elementWidth = this._renderWidth / this._lineWidth;
-                    c.elementHeight = this._renderHeight / this._lineWidth;
+                        (this._gridCellWidth / this._additiveViewScale / CssRendererConst.LengthUnitScalar) + "px " +
+                        (this._gridCellHeight / this._additiveViewScale / CssRendererConst.LengthUnitScalar) + "px";
+                    c.elementWidth = this._renderWidth / this._additiveViewScale;
+                    c.elementHeight = this._renderHeight / this._additiveViewScale;
                     c.pointerEvents = false;
                     c.element = element;
+                    c.viewScale = CssRendererConst.LengthUnitScalar;
                 })
                 .getComponent(CssHtmlElementRenderer, cssHtmlRendererRef));
         
@@ -67,22 +73,36 @@ export class EditorGridRenderer extends Component {
     public update(): void {
         const position = this.transform.position;
 
-        const centerX = this._renderWidth / this._lineWidth / 2;
-        const centerY = this._renderHeight / this._lineWidth / 2;
-        const scaledGridCellWidth = this._gridCellWidth / this._lineWidth / CssRendererConst.LengthUnitScalar;
-        const scaledGridCellHeight = this._gridCellHeight / this._lineWidth / CssRendererConst.LengthUnitScalar;
+        const worldToElementScale = 1 / this._additiveViewScale / CssRendererConst.LengthUnitScalar;
+
+        const centerX = this._renderWidth * worldToElementScale / 2;
+        const centerY = this._renderHeight * worldToElementScale / 2;
+        const scaledGridCellWidth = this._gridCellWidth * worldToElementScale;
+        const scaledGridCellHeight = this._gridCellHeight * worldToElementScale;
         const xRemainder = centerX % scaledGridCellWidth;
         const yRemainder = centerY % scaledGridCellHeight;
 
         if (!position.equals(this._lastPosition)) {
+            const rendererPosition = this._cssHtmlRendererObject!.transform.position;
+            rendererPosition.copy(position);
+            rendererPosition.z += this._zOffset;
             this._cssHtmlRenderer!.element!.style.backgroundPosition = 
-                (-position.x / CssRendererConst.LengthUnitScalar / this._lineWidth + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
-                (position.y / CssRendererConst.LengthUnitScalar / this._lineWidth + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
+                (-position.x * worldToElementScale + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
+                (position.y * worldToElementScale + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
         }
     }
 
     public onDestroy(): void {
         this._cssHtmlRendererObject?.destroy();
+    }
+
+    private updateBackgroundSize(): void {
+        const cssHtmlRenderer = this._cssHtmlRenderer;
+        if (cssHtmlRenderer) {
+            cssHtmlRenderer.element!.style.backgroundSize =
+                (this._gridCellWidth / this._additiveViewScale / CssRendererConst.LengthUnitScalar) + "px " +
+                (this._gridCellHeight / this._additiveViewScale / CssRendererConst.LengthUnitScalar) + "px";
+        }
     }
 
     /**
@@ -97,6 +117,7 @@ export class EditorGridRenderer extends Component {
      */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
+        this.updateBackgroundSize();
     }
 
     /**
@@ -111,6 +132,7 @@ export class EditorGridRenderer extends Component {
      */
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
+        this.updateBackgroundSize();
     }
 
     /**
@@ -129,6 +151,10 @@ export class EditorGridRenderer extends Component {
      */
     public set renderWidth(value: number) {
         this._renderWidth = value;
+
+        if (this._cssHtmlRenderer) {
+            this._cssHtmlRenderer.elementWidth = this._renderWidth / this._additiveViewScale;
+        }
     }
 
     /**
@@ -147,6 +173,10 @@ export class EditorGridRenderer extends Component {
      */
     public set renderHeight(value: number) {
         this._renderHeight = value;
+
+        if (this._cssHtmlRenderer) {
+            this._cssHtmlRenderer.elementHeight = this._renderHeight / this._additiveViewScale;
+        }
     }
 
     /**
@@ -155,7 +185,7 @@ export class EditorGridRenderer extends Component {
      * if line width is too small, grid will not be visible on screen
      */
     public get lineWidth(): number {
-        return this._lineWidth;
+        return this._additiveViewScale * CssRendererConst.LengthUnitScalar;
     }
 
     /**
@@ -164,6 +194,28 @@ export class EditorGridRenderer extends Component {
      * if line width is too small, grid will not be visible on screen
      */
     public set lineWidth(value: number) {
-        this._lineWidth = value;
+        this._additiveViewScale = value / CssRendererConst.LengthUnitScalar;
+
+        const cssHtmlRenderer = this._cssHtmlRenderer!;
+        if (cssHtmlRenderer) {
+            this.updateBackgroundSize();
+            cssHtmlRenderer.elementWidth = this._renderWidth / this._additiveViewScale;
+            cssHtmlRenderer.elementHeight = this._renderHeight / this._additiveViewScale;
+            cssHtmlRenderer.gameObject.transform.localScale.setScalar(this._additiveViewScale);
+        }
+    }
+
+    /**
+     * z offset from the camera. (default: 0)
+     */
+    public get zOffset(): number {
+        return this._zOffset;
+    }
+
+    /**
+     * z offset from the camera. (default: 0)
+     */
+    public set zOffset(value: number) {
+        this._zOffset = value;
     }
 }
