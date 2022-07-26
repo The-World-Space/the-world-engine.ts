@@ -25,6 +25,7 @@ export class EngineGlobalObject {
     private readonly _gameState: IReadonlyGameState;
     private readonly _screen: IReadonlyGameScreen;
     private readonly _physics2DProcessor: Physics2DProcessor;
+    private readonly _domElement: HTMLElement;
     
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
@@ -53,6 +54,7 @@ export class EngineGlobalObject {
         this._coroutineProcessor = coroutineProcessor;
         this._transformMatrixProcessor = transformMatrixProcessor;
         this._physics2DProcessor = physics2DProcessor;
+        this._domElement = renderTargetDom;
         this._inputHandler = new InputHandler(renderTargetDom);
         this._instantiater = new Instantiater(this);
     }
@@ -67,36 +69,76 @@ export class EngineGlobalObject {
         this._inputHandler.dispose();
     }
 
+    /**
+     * game scene. You can add objects to the scene.
+     */
     public get scene(): Scene {
         return this._scene;
     }
 
+    /**
+     * You can get the camera through the camera container.
+     * 
+     * `cameraContainer.camera` value is null until the `onEnable()` message of the camera is called.
+     * 
+     * This problem can be solved by placing the components that use the camera at the bottom of the tree rather than the Camera components.
+     */
     public get cameraContainer(): CameraContainer {
         return this._cameraContainer;
     }
 
+    /**
+     * game screen. You can get the screen size.
+     */
     public get screen(): IReadonlyGameScreen {
         return this._screen;
     }
 
+    /**
+     * game standard input system.
+     * If possible, use this rather than implementing the input system yourself.
+     */
     public get input(): InputHandler {
         return this._inputHandler;
     }
 
+    /**
+     * time information.
+     * 
+     * typically used to get delta time.
+     */
     public get time(): Time {
         return this._time;
     }
 
+    /**
+     * physics2D related operations.
+     */
     public get physics(): IPhysics2D {
         return this._physics2DProcessor;
     }
 
+    /**
+     * game state.
+     */
     public get gameState(): IReadonlyGameState {
         return this._gameState;
     }
 
+    /**
+     * You can instantiate object through instantiater
+     */
     public get instantiater(): Instantiater {
         return this._instantiater;
+    }
+
+    /**
+     * dom element.
+     * 
+     * You can use it when you want to receive the event directly from the dom element.
+     */
+    public get domElement(): HTMLElement {
+        return this._domElement;
     }
 
     /** @internal */

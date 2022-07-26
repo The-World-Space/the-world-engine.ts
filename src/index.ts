@@ -145,3 +145,6 @@ export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssFilter } from "./engine/script/render/filter/CssFilter";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
+
+//three
+export { Object3DContainer } from "./engine/script/three/Object3DContainer";

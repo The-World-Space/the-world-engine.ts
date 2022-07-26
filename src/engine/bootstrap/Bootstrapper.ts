@@ -32,7 +32,9 @@ export abstract class Bootstrapper<T = any> {
     public abstract run(): SceneBuilder;
 
     /**
-     * get engine global object
+     * get instantiater
+     * 
+     * You can instantiate object through instantiater
      */
     protected get instantiater(): Instantiater {
         return this._instantiater;
