@@ -25,6 +25,41 @@ export class CssFilter {
     }
 
     /**
+     * copy filter from another CssFilter
+     * 
+     * onChange callback will not be copied
+     */
+    public copy(other: CssFilter): void {
+        this._blur = other._blur;
+        this._brightness = other._brightness;
+        this._contrast = other._contrast;
+        if (!this._dropShadow && other._dropShadow) {
+            this._dropShadow = new CssDropShadow(undefined, undefined, undefined, undefined, this._onChange);
+            this._dropShadow.copy(other._dropShadow);
+        } else if (this._dropShadow && other._dropShadow) {
+            this._dropShadow.copy(other._dropShadow);
+        }
+        this._grayscale = other._grayscale;
+        this._hueRotate = other._hueRotate;
+        this._invert = other._invert;
+        this._saturate = other._saturate;
+        this._sepia = other._sepia;
+
+        this._onChange?.();
+    }
+
+    /**
+     * clone filter
+     * 
+     * onChange callback will not be cloned
+     */
+    public clone(): CssFilter {
+        const filter = new CssFilter();
+        filter.copy(this);
+        return filter;
+    }
+
+    /**
      * blur filter in pixels (default: 0)
      */
     public get blur(): number {

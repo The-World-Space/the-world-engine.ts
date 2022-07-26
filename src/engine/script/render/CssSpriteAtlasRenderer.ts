@@ -1,7 +1,7 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
-import { ImageRenderingMode } from "./CssSpriteRenderer";
+import { ICssImageRenderOption, ImageRenderingMode } from "./CssSpriteRenderer";
 
 /**
  * css sprite atlas render mode
@@ -30,7 +30,7 @@ export enum CssSpriteAtlasRenderMode {
  * 
  * this compoenent slices the image into rows and columns, it's memory efficient and fast to animate.
  */
-export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> {
+export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implements ICssImageRenderOption {
     private _renderMode: CssSpriteAtlasRenderMode = CssSpriteAtlasRenderMode.ObjectFit;
     private _imageWidth = 0;
     private _imageHeight = 0;

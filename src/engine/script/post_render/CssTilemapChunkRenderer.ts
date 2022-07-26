@@ -2,7 +2,10 @@ import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
 import { IGridCoordinatable } from "../helper/IGridCoordinatable";
+import { CssRendererConst, IUnknownSizeCssRenderOption } from "../render/CssRenderer";
+import { ICssImageRenderOption, ImageRenderingMode } from "../render/CssSpriteRenderer";
 import { CssTilemapRenderer, TileAtlasItem } from "../render/CssTilemapRenderer";
+import { CssFilter } from "../render/filter/CssFilter";
 
 /**
  * tilemap for grid system
@@ -13,7 +16,7 @@ import { CssTilemapRenderer, TileAtlasItem } from "../render/CssTilemapRenderer"
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
  */
-export class CssTilemapChunkRenderer extends Component implements IGridCoordinatable {
+export class CssTilemapChunkRenderer extends Component implements IGridCoordinatable, IUnknownSizeCssRenderOption, ICssImageRenderOption {
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssTilemapRenderer> = new Map();
     //key is chunk position in string format "x_y"
     private _chunkSize = 16;
@@ -23,6 +26,16 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     private _tileResolutionY = 16;
     private _imageSources: TileAtlasItem[]|null = null;
     private _pointerEvents = true;
+    private _viewScale = CssRendererConst.LengthUnitScalar;
+    private _imageRenderingMode = ImageRenderingMode.Pixelated;
+    
+    private readonly onFilterUpdate = (): void => {
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
+            renderer.filter.copy(this._filter);
+        });
+    };
+
+    private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
     
     private _initializeFunctions: ((() => void))[] = [];
     private _started = false;
@@ -80,6 +93,8 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
                         c.rowCount = this._chunkSize;
                         c.columnCount = this._chunkSize;
                         c.pointerEvents = this._pointerEvents;
+                        c.viewScale = this._viewScale;
+                        c.filter.copy(this._filter);
                     })
             );
             this._cssTilemapRendererMap.set(chunkIndex, cssTilemapRenderer!);
@@ -336,5 +351,60 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     public get gridCenterY(): number {
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
         return this.transform.localPosition.y + offsetY;
+    }
+
+    /**
+     * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * @param value
+     */
+    public get viewScale(): number {
+        return this._viewScale;
+    }
+
+    /**
+     * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * @param value
+     */
+    public set viewScale(value: number) {
+        this._viewScale = value;
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
+            renderer.viewScale = this._viewScale;
+        });
+    }
+
+    /**
+     * css filter
+     */
+    public get filter(): CssFilter {
+        return this._filter;
+    }
+    
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    public get imageRenderingMode(): ImageRenderingMode {
+        return this._imageRenderingMode;
+    }
+
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    public set imageRenderingMode(value: ImageRenderingMode) {
+        this._imageRenderingMode = value;
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
+            renderer.imageRenderingMode = value;
+        });
     }
 }

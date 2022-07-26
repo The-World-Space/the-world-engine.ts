@@ -3,6 +3,18 @@ import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
 
 /**
+ * Option for the css object that renders the image
+ */
+export interface ICssImageRenderOption {
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     */
+    imageRenderingMode: ImageRenderingMode;
+}
+
+/**
  * css image-rendering property enum
  */
 export enum ImageRenderingMode {
@@ -26,7 +38,7 @@ export enum ImageRenderingMode {
 /**
  * css sprite renderer
  */
-export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> {
+export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements ICssImageRenderOption {
     private _imageWidth = 0;
     private _imageHeight = 0;
     private _imageFlipX = false;
