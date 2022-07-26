@@ -9,6 +9,45 @@ import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class
 import { CssFilter } from "./filter/CssFilter";
 
 /**
+ * Options for rendering css objects of unknown size.
+ */
+export interface IUnknownSizeCssRenderOption {
+    /**
+     * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * @param value
+     */
+    viewScale: number;
+
+    /**
+     * if true, pointerEvents is auto that means is receive pointerEvent like onClick.
+     * otherwise, pointerEvents is none.
+     */
+    pointerEvents: boolean;
+
+    /**
+     * css filter
+     */
+    filter: CssFilter;
+}
+
+/**
+ * Options used on most css objects with finite size.
+ */
+export interface ICssRenderOption extends IUnknownSizeCssRenderOption {
+    /**
+     * centerOffset is offset from center of object.
+     * 
+     * if centerOffset is (0.5, 0), object center is left center.
+     * if centerOffset is (0.5, 0.5), object center is top left center.
+     */
+    centerOffset: ReadonlyVector2;
+}
+
+/**
  * precision problems occur when css space and actual game space are 1:1
  * 
  * This constant specifies the ratio of css space to match the game space
@@ -26,7 +65,7 @@ export const enum CssRendererConst {
  * 
  * you can't use this class directly, but you can use its subclasses e.g. `CssSpriteRenderer`, `CssTextRenderer`
  */
-export class CssRenderer<T extends HTMLElement> extends Component {
+export class CssRenderer<T extends HTMLElement> extends Component implements ICssRenderOption {
     protected css3DObject: CSS3DObject|null = null;
     protected htmlElement: T|null = null;
 
@@ -259,7 +298,7 @@ export class CssRenderer<T extends HTMLElement> extends Component {
     /**
      * css filter
      */
-     public get filter(): CssFilter {
+    public get filter(): CssFilter {
         return this._filter;
     }
 

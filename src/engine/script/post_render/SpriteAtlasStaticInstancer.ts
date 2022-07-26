@@ -5,7 +5,10 @@ import { Component } from "../../hierarchy_object/Component";
 import { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
 import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { ReadonlyVector3 } from "../../math/ReadonlyVector3";
+import { CssRendererConst, IUnknownSizeCssRenderOption } from "../render/CssRenderer";
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
+import { ICssImageRenderOption, ImageRenderingMode } from "../render/CssSpriteRenderer";
+import { CssFilter } from "../render/filter/CssFilter";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
 /**
@@ -95,13 +98,17 @@ export class SpriteAtlasInstance {
  * 
  * drawcall optimization is not yet available
  */
-export class SpriteAtlasStaticInstancer extends Component {
+export class SpriteAtlasStaticInstancer extends Component implements IUnknownSizeCssRenderOption, ICssImageRenderOption {
     private _imageSource: string = GlobalConfig.defaultSpriteSrc;
     private _useZaxisSorter = false;
     private _zaxisSortOffset = 0;
     private _rowCount = 1;
     private _columnCount = 1;
     private _pointerEvents = true;
+    private _viewScale = CssRendererConst.LengthUnitScalar;
+    private _imageRenderingMode = ImageRenderingMode.Pixelated;
+    
+    private readonly _filter: CssFilter = new CssFilter();
 
     private _initializeFunction: (() => void)|null = null;
     private _started = false;
@@ -138,6 +145,9 @@ export class SpriteAtlasStaticInstancer extends Component {
                     c.asyncSetImageFromPath(this._imageSource, this._rowCount, this._columnCount);
                     c.pointerEvents = this._pointerEvents;
                     if (instance.centerOffset) c.centerOffset = instance.centerOffset;
+                    c.viewScale = this._viewScale;
+                    c.imageRenderingMode = this._imageRenderingMode;
+                    c.filter.copy(this._filter);
                 });
             
             if (this._useZaxisSorter) {
@@ -251,5 +261,64 @@ export class SpriteAtlasStaticInstancer extends Component {
      */
     public set pointerEvents(value: boolean) {
         this._pointerEvents = value;
+    }
+
+    /**
+     * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     * @param value
+     */
+    public get viewScale(): number {
+        return this._viewScale;
+    }
+
+    /**
+     * element viewScale
+     * 
+     * value to scaling html element. the smaller value, the higher resolution of element.
+     * 
+     * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     * @param value
+     */
+    public set viewScale(value: number) {
+        this._viewScale = value;
+    }
+
+    /**
+     * css filter
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
+    public get filter(): CssFilter {
+        return this._filter;
+    }
+    
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
+    public get imageRenderingMode(): ImageRenderingMode {
+        return this._imageRenderingMode;
+    }
+
+    /**
+     * image rendering mode (default: ImageRenderingMode.Pixelated)
+     * 
+     * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
+     * 
+     * Even if you change this value after the instance is created. Objects that have already been created will not be changed
+     */
+    public set imageRenderingMode(value: ImageRenderingMode) {
+        this._imageRenderingMode = value;
     }
 }

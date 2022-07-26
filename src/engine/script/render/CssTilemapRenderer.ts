@@ -2,7 +2,7 @@ import { Vector2 } from "three/src/Three";
 
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
-import { ImageRenderingMode } from "./CssSpriteRenderer";
+import { ICssImageRenderOption, ImageRenderingMode } from "./CssSpriteRenderer";
 
 /**
  * represents a sprite atlas that is used by tilemap
@@ -56,7 +56,7 @@ export class TileAtlasItem {
  * 
  * coordinate system is row column (positive x is right, positive y is down)
  */
-export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> {
+export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> implements ICssImageRenderOption {
     private _columnCount = 10;
     private _rowCount = 10;
     private _tileWidth = 1;
