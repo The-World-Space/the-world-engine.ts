@@ -12,7 +12,7 @@ export class TwoDimensionalStringMapper {
      */
     public static map<T>(
         array: string[],
-        converter: { [key: string]: (row: number, column: number) => T }
+        converter: { [key: string]: (column: number, row: number) => T }
     ): T[][] {
         const result: T[][] = [];
         for (let row = 0; row < array.length; ++row) {
@@ -21,7 +21,7 @@ export class TwoDimensionalStringMapper {
             const str = array[row];
             for (let column = 0; column < str.length; ++column) {
                 const char = str[column];
-                rowArray.push(converter[char](row, column));
+                rowArray.push(converter[char](column, row));
             }
             result.push(rowArray);
         }
