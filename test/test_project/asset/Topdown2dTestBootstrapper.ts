@@ -9,6 +9,7 @@ import { MovementAnimationController } from "@src/engine/script/controller/Movem
 import { PlayerGridMovementController } from "@src/engine/script/controller/PlayerGridMovementController";
 import { TrackCameraController } from "@src/engine/script/controller/TrackCameraController";
 import { GridCollideMap } from "@src/engine/script/grid_physics2d/GridCollideMap";
+import { GridCollider } from "@src/engine/script/grid_physics2d/GridCollider";
 import { GridObjectCollideMap } from "@src/engine/script/grid_physics2d/GridObjectCollideMap";
 import { TwoDimensionalStringMapper } from "@src/engine/script/helper/TwoDimensionalStringMapper";
 import { GridPointer } from "@src/engine/script/input/GridPointer";
@@ -190,6 +191,17 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                     c.centerOffset = new Vector2(0, 0.5);
                 })
                 .withComponent(ZaxisSorter))
+
+            .withChild(instantiater.buildGameObject("collideObject")
+                .withComponent(GridCollider, c => {
+                    c.gridObjectCollideMap = gridObjectCollideMap.ref;
+                    c.addColliderFromTwoDimensionalArray(
+                        [
+                            [1],
+                            [1]
+                        ], -1, -1
+                    );
+                }))
 
             .withChild(instantiater.buildGameObject("test-object")
                 .withComponent(class StartInvoke extends Component {
