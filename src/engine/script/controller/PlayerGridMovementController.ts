@@ -42,6 +42,7 @@ export class PlayerGridMovementController extends Directionable
     private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
     private readonly _cachedParentWorldPosition: Vector2 = new Vector2();
+    private _receiveKeyboardInput = true;
 
     private readonly _tempVector2 = new Vector2();
 
@@ -64,7 +65,9 @@ export class PlayerGridMovementController extends Directionable
 
     public update(): void {
         this._pathfindStartFunction?.();
-        this.processInput();
+        if (this._receiveKeyboardInput) {
+            this.processInput();
+        }
         this.processPathfinderInput();
         this.processMovement();
     }
@@ -80,25 +83,25 @@ export class PlayerGridMovementController extends Directionable
             this.direction = Direction.Up;
             if (this.checkCollision(this._currentGridPosition.x, this._currentGridPosition.y + this._gridCellHeight)) return;
             this._targetGridPosition.set(this._currentGridPosition.x, this._currentGridPosition.y + this._gridCellHeight);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             this.isMoving = true;
         } else if (inputMap.get("s") || inputMap.get("ArrowDown")) {
             this.direction = Direction.Down;
             if (this.checkCollision(this._currentGridPosition.x, this._currentGridPosition.y - this._gridCellHeight)) return;
             this._targetGridPosition.set(this._currentGridPosition.x, this._currentGridPosition.y - this._gridCellHeight);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             this.isMoving = true;
         } else if (inputMap.get("a") || inputMap.get("ArrowLeft")) {
             this.direction = Direction.Left;
             if (this.checkCollision(this._currentGridPosition.x - this._gridCellWidth, this._currentGridPosition.y)) return;
             this._targetGridPosition.set(this._currentGridPosition.x - this._gridCellWidth, this._currentGridPosition.y);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             this.isMoving = true;
         } else if (inputMap.get("d") || inputMap.get("ArrowRight")) {
             this.direction = Direction.Right;
             if (this.checkCollision(this._currentGridPosition.x + this._gridCellWidth, this._currentGridPosition.y)) return;
             this._targetGridPosition.set(this._currentGridPosition.x + this._gridCellWidth, this._currentGridPosition.y);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             this.isMoving = true;
         }
     }
@@ -109,38 +112,38 @@ export class PlayerGridMovementController extends Directionable
             this.direction = Direction.Up;
             if (this.checkCollision(currentGridPosotion.x, currentGridPosotion.y + this._gridCellHeight)) return false;
             this._targetGridPosition.set(currentGridPosotion.x, currentGridPosotion.y + this._gridCellHeight);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             return true;
         } else if (inputMap.get("s") || inputMap.get("ArrowDown")) {
             this.direction = Direction.Down;
             if (this.checkCollision(currentGridPosotion.x, currentGridPosotion.y - this._gridCellHeight)) return false;
             this._targetGridPosition.set(currentGridPosotion.x, currentGridPosotion.y - this._gridCellHeight);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             return true;
         } else if (inputMap.get("a") || inputMap.get("ArrowLeft")) {
             this.direction = Direction.Left;
             if (this.checkCollision(currentGridPosotion.x - this._gridCellWidth, currentGridPosotion.y)) return false;
             this._targetGridPosition.set(currentGridPosotion.x - this._gridCellWidth, currentGridPosotion.y);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             return true;
         } else if (inputMap.get("d") || inputMap.get("ArrowRight")) {
             this.direction = Direction.Right;
             if (this.checkCollision(currentGridPosotion.x + this._gridCellWidth, currentGridPosotion.y)) return false;
             this._targetGridPosition.set(currentGridPosotion.x + this._gridCellWidth, currentGridPosotion.y);
-            this.invokeOnMoveToTarget(this._targetGridPosition);
+            this.invokeOnMoveToTarget();
             return true;
         }
         return false;
     }
 
-    private invokeOnMoveToTarget(_vector2: Vector2): void {
+    private invokeOnMoveToTarget(): void {
         this._onMoveToTargetEvent.invoke(
             Math.floor(this._targetGridPosition.x / this._gridCellWidth),
             Math.floor(this._targetGridPosition.y / this._gridCellHeight)
         );
     }
 
-    private invokeOnMovedToTarget(_vector2: Vector2): void {
+    private invokeOnMovedToTarget(): void {
         this._onMovedToTargetEvent.invoke(
             Math.floor(this._currentGridPosition.x / this._gridCellWidth),
             Math.floor(this._currentGridPosition.y / this._gridCellHeight)
@@ -173,7 +176,7 @@ export class PlayerGridMovementController extends Directionable
                 this._movingByPathfinder = false;
                 return;
             } else {
-                this.invokeOnMovedToTarget(currentPositionVector2);
+                this.invokeOnMovedToTarget();
             }
         }
         if (this.checkCollision(currentPath.x, currentPath.y)) { //path changed while moving
@@ -182,7 +185,7 @@ export class PlayerGridMovementController extends Directionable
         }
         if (this._targetGridPosition.equals(this._findedPath![this._currentPathIndex])) return;
         this._targetGridPosition.copy(this._findedPath![this._currentPathIndex]);
-        this.invokeOnMoveToTarget(this._targetGridPosition);
+        this.invokeOnMoveToTarget();
         const prevPositionX = this._findedPath![this._currentPathIndex - 1].x;
         const prevPositionY = this._findedPath![this._currentPathIndex - 1].y;
         const currentPositionX = this._findedPath![this._currentPathIndex].x;
@@ -208,7 +211,7 @@ export class PlayerGridMovementController extends Directionable
         if (distance < this._speed * this.engine.time.deltaTime) {
             if (this.noncheckProcessInput(this._targetGridPosition)) {
                 distance = vector2Pos.distanceTo(this._targetGridPosition);
-                this.invokeOnMovedToTarget(vector2Pos);
+                this.invokeOnMovedToTarget();
             }
         }
 
@@ -222,7 +225,7 @@ export class PlayerGridMovementController extends Directionable
             this._currentGridPosition.copy(this._targetGridPosition);
             transform.localPosition.x = this._currentGridPosition.x;
             transform.localPosition.y = this._currentGridPosition.y;
-            this.invokeOnMovedToTarget(this._targetGridPosition);
+            this.invokeOnMovedToTarget();
         }
     }
 
@@ -309,6 +312,21 @@ export class PlayerGridMovementController extends Directionable
 
     public get onMovedToTarget(): IEventContainer<(x: number, y: number) => void> {
         return this._onMovedToTargetEvent;
+    }
+
+    /**
+     * teleport to target grid position
+     * @param positionInGrid position in grid coordinates
+     */
+    public teleport(positionInGrid: ReadonlyVector2): void {
+        this.isMoving = false;
+        this._movingByPathfinder = false;
+        (this._targetGridPosition as WritableVector2).copy(positionInGrid);
+        (this._currentGridPosition as WritableVector2).copy(positionInGrid);
+        this.transform.localPosition.x = this._currentGridPosition.x;
+        this.transform.localPosition.y = this._currentGridPosition.y;
+        this.invokeOnMoveToTarget();
+        this.invokeOnMovedToTarget();
     }
 
     /**
@@ -423,5 +441,23 @@ export class PlayerGridMovementController extends Directionable
             Math.floor(this.transform.localPosition.x / this._gridCellWidth),
             Math.floor(this.transform.localPosition.y / this._gridCellHeight)
         );
+    }
+
+    /**
+     * receive keyboard input (default: true)
+     * 
+     * if set true, this object will receive keyboard w, a, s, d, arrow up, arrow down, arrow left, arrow right input
+     */
+    public get receiveKeyboardInput(): boolean {
+        return this._receiveKeyboardInput;
+    }
+
+    /**
+     * receive keyboard input (default: true)
+     * 
+     * if set true, this object will receive keyboard w, a, s, d, arrow up, arrow down, arrow left, arrow right input
+     */
+    public set receiveKeyboardInput(value: boolean) {
+        this._receiveKeyboardInput = value;
     }
 }
