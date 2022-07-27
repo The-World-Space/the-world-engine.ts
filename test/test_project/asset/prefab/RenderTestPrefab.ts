@@ -97,7 +97,7 @@ export class RenderTestPrefab extends Prefab {
                 //.active(false)
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     //c.enabled = false;
-                    c.asyncSetImageFromPath(GlobalConfig.defaultSpriteSrc, 2, 3);
+                    c.asyncSetImageFromPath(GlobalConfig.defaultSpriteSrc, 3, 2);
                     c.viewScale = 1;
                     c.imageIndex = 0;
                     c.pointerEvents = true;

@@ -9,6 +9,7 @@ import { MovementAnimationController } from "@src/engine/script/controller/Movem
 import { PlayerGridMovementController } from "@src/engine/script/controller/PlayerGridMovementController";
 import { TrackCameraController } from "@src/engine/script/controller/TrackCameraController";
 import { GridCollideMap } from "@src/engine/script/grid_physics2d/GridCollideMap";
+import { GridCollider } from "@src/engine/script/grid_physics2d/GridCollider";
 import { GridObjectCollideMap } from "@src/engine/script/grid_physics2d/GridObjectCollideMap";
 import { TwoDimensionalStringMapper } from "@src/engine/script/helper/TwoDimensionalStringMapper";
 import { GridPointer } from "@src/engine/script/input/GridPointer";
@@ -144,7 +145,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     c.asyncSetImageFromPath(
                         "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/b6a35565-210f-476d-b139-ed3e879dab25/d2gj3yy-a3f09625-84c4-4ef7-b479-38a4f5631a65.png?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcL2I2YTM1NTY1LTIxMGYtNDc2ZC1iMTM5LWVkM2U4NzlkYWIyNVwvZDJnajN5eS1hM2YwOTYyNS04NGM0LTRlZjctYjQ3OS0zOGE0ZjU2MzFhNjUucG5nIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.E1u4UOfOATX-6M_AILzEDOed19UnpbEK4rLkUUMVfgE",
-                        8, 12
+                        12, 8
                     );
                     c.imageIndex = 0;
 
@@ -190,6 +191,17 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                     c.centerOffset = new Vector2(0, 0.5);
                 })
                 .withComponent(ZaxisSorter))
+
+            .withChild(instantiater.buildGameObject("collideObject")
+                .withComponent(GridCollider, c => {
+                    c.gridObjectCollideMap = gridObjectCollideMap.ref;
+                    c.addColliderFromTwoDimensionalArray(
+                        [
+                            [1],
+                            [1]
+                        ], -1, -1
+                    );
+                }))
 
             .withChild(instantiater.buildGameObject("test-object")
                 .withComponent(class StartInvoke extends Component {

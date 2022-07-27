@@ -24,6 +24,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     private _tileHeight = 1;
     private _tileResolutionX = 16;
     private _tileResolutionY = 16;
+    private _tilemapScale = 1.001;
     private _imageSources: TileAtlasItem[]|null = null;
     private _pointerEvents = true;
     private _viewScale = CssRendererConst.LengthUnitScalar;
@@ -82,7 +83,10 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
             this.gameObject.addChildFromBuilder(
                 this.engine.instantiater.buildGameObject(
                     "css_tilemap_renderer_" + chunkIndexX + "_" + chunkIndexY, 
-                    new Vector3(chunkIndexX * this._chunkSize * this._tileWidth, chunkIndexY * this._chunkSize * this._tileHeight, 0))
+                    new Vector3(chunkIndexX * this._chunkSize * this._tileWidth, chunkIndexY * this._chunkSize * this._tileHeight, 0),
+                    undefined,
+                    new Vector3().setScalar(this._tilemapScale)
+                )
                     .withComponent(CssTilemapRenderer, c => {
                         cssTilemapRenderer = c;
                         if (this._imageSources) c.imageSources = this._imageSources;
@@ -319,6 +323,28 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         this._tileResolutionY = value;
         this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.tileResolutionY = this._tileResolutionY;
+        });
+    }
+
+    /**
+     * tilemaps scale. (default: 1.001)
+     * 
+     * If this value is 1 due to precision issues, there's a gap between the tilemaps.
+     */
+    public get tilemapScale(): number {
+        return this._tilemapScale;
+    }
+
+    /**
+     * tilemaps scale. (default: 1.001)
+     * 
+     * If this value is 1 due to precision issues, there's a gap between the tilemaps.
+     */
+    public set tilemapScale(value: number) {
+        if (this._tilemapScale === value) return;
+        this._tilemapScale = value;
+        this._cssTilemapRendererMap.forEach((renderer, _key) => {
+            renderer.gameObject.transform.localScale.setScalar(this._tilemapScale);
         });
     }
 

@@ -38,7 +38,7 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withComponent(CssSpriteAtlasRenderer, c => {
                     c.asyncSetImageFromPath(
                         "https://i.stack.imgur.com/eUJdp.png",
-                        4, 9, // split the image into 4 rows and 9 columns
+                        9, 4, // split the image into 9 column and 4 rows
                         () => {
                             if (!c.exists) return;
                             c.imageWidth *= 3;

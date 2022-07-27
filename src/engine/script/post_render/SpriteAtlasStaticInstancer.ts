@@ -102,8 +102,8 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
     private _imageSource: string = GlobalConfig.defaultSpriteSrc;
     private _useZaxisSorter = false;
     private _zaxisSortOffset = 0;
-    private _rowCount = 1;
     private _columnCount = 1;
+    private _rowCount = 1;
     private _pointerEvents = true;
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
@@ -142,7 +142,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
                     c.imageWidth = instance.width;
                     c.imageHeight = instance.height;
                     c.imageIndex = instance.atlasIndex;
-                    c.asyncSetImageFromPath(this._imageSource, this._rowCount, this._columnCount);
+                    c.asyncSetImageFromPath(this._imageSource, this._columnCount, this._rowCount);
                     c.pointerEvents = this._pointerEvents;
                     if (instance.centerOffset) c.centerOffset = instance.centerOffset;
                     c.viewScale = this._viewScale;
@@ -163,12 +163,12 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
      * set the number of rows and columns of the sprite atlas
      * 
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
-     * @param rowCount number of rows
      * @param columnCount number of columns
+     * @param rowCount number of rows
      */
-    public setSliceCount(rowCount: number, columnCount: number): void {
-        this._rowCount = rowCount;
+    public setSliceCount(columnCount: number, rowCount: number): void {
         this._columnCount = columnCount;
+        this._rowCount = rowCount;
     }
 
     /**
@@ -190,17 +190,17 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
     }
 
     /**
-     * row count of the sprite atlas (default: 1)
-     */
-    public get rowCount(): number {
-        return this._rowCount;
-    }
-
-    /**
      * column count of the sprite atlas (default: 1)
      */
     public get columnCount(): number {
         return this._columnCount;
+    }
+
+    /**
+     * row count of the sprite atlas (default: 1)
+     */
+    public get rowCount(): number {
+        return this._rowCount;
     }
 
     /**

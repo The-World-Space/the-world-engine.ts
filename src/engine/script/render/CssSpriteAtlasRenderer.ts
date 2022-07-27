@@ -28,7 +28,7 @@ export enum CssSpriteAtlasRenderMode {
 /**
  * css sprite atlas renderer
  * 
- * this compoenent slices the image into rows and columns, it's memory efficient and fast to animate.
+ * this compoenent slices the image into column and rows, it's memory efficient and fast to animate.
  */
 export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implements ICssImageRenderOption {
     private _renderMode: CssSpriteAtlasRenderMode = CssSpriteAtlasRenderMode.ObjectFit;
@@ -39,8 +39,8 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     private _opacity = 1;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
 
-    private _rowCount = 1;
     private _columnCount = 1;
+    private _rowCount = 1;
     private _currentImageIndex = 0;
     
     // used for object-fit
@@ -166,14 +166,14 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     /**
      * set image from path asynchronously
      * @param path image path
-     * @param rowCount sprite atlas row count
      * @param columnCount sprite atlas column count
+     * @param rowCount sprite atlas row count
      * @param onComplete on complete callback
      * @returns 
      */
-    public asyncSetImageFromPath(path: string, rowCount: number, columnCount: number, onComplete?: () => void): void {
+    public asyncSetImageFromPath(path: string, columnCount: number, rowCount: number, onComplete?: () => void): void {
         if (!this.readyToDraw) {
-            this._initializeFunction = (): void => this.asyncSetImageFromPath(path, rowCount, columnCount, onComplete);
+            this._initializeFunction = (): void => this.asyncSetImageFromPath(path, columnCount, rowCount, onComplete);
             return;
         }
 
@@ -183,7 +183,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
         const onLoad = (_e: Event): void => {
             if (!this.exists) return;
             image.removeEventListener("load", onLoad);
-            this.setImage(image, rowCount, columnCount);
+            this.setImage(image, columnCount, rowCount);
             onComplete?.();
         };
         image.addEventListener("load", onLoad);
@@ -192,14 +192,14 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     /**
      * set image from `HTMLImageElement`
      * @param image image must be loaded
-     * @param rowCount sprite atlas row count
      * @param columnCount sprite atlas column count
+     * @param rowCount sprite atlas row count
      */
-    public setImage(image: HTMLImageElement, rowCount: number, columnCount: number): void {
+    public setImage(image: HTMLImageElement, columnCount: number, rowCount: number): void {
         if (!image.complete) throw new Error(`Image {${image.src}} is not loaded.`);
 
-        this._rowCount = rowCount;
         this._columnCount = columnCount;
+        this._rowCount = rowCount;
         this.htmlElement = image;
 
         image.alt = this.gameObject.name + "_sprite_atlas";
@@ -309,17 +309,17 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     }
 
     /**
-     * sprite atlas row count (default: 1)
-     */
-    public get rowCount(): number {
-        return this._rowCount;
-    }
-
-    /**
      * sprite atlas column count (default: 1)
      */
     public get columnCount(): number {
         return this._columnCount;
+    }
+
+    /**
+     * sprite atlas row count (default: 1)
+     */
+    public get rowCount(): number {
+        return this._rowCount;
     }
 
     /**
