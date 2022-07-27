@@ -248,6 +248,7 @@ export class Game {
         if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
         if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
         if (this._webglRenderer) this._container.removeChild(this._webglRenderer.domElement);
+        this._container.remove();
         
         this._isDisposed = true;
         this._gameState.kind = GameStateKind.Finalized;
