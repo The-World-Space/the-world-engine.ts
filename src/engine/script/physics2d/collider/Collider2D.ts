@@ -43,7 +43,7 @@ export class Collider2D extends Component {
         this._fixtureGroup = this.engine.physics2DProcessor.addCollider(this.gameObject, this);
 
         const shapes = this.createShapes();
-        for (let i = 0; i < shapes.length; i++) {
+        for (let i = 0; i < shapes.length; ++i) {
             const shape = shapes[i];
             const fixtureDef = new FixtureDef();
             fixtureDef.userData = this;
@@ -334,7 +334,7 @@ export class Collider2D extends Component {
             }
             
             const manifold = currentContactEdge.contact.GetManifold();
-            for (let i = 0; i < manifold.pointCount; i++) {
+            for (let i = 0; i < manifold.pointCount; ++i) {
                 if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
                 currentContactEdge.contact.GetWorldManifold(this._worldManifold);
                 out[insertPos].setData(

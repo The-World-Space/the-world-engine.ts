@@ -22,7 +22,7 @@ export class ContactTest extends Component {
         if (event.key === "a") {
             if (!this._rigidbody) return;
             const len = this._rigidbody.getContacts(this._contactBuffer);
-            for (let i = 0; i < len; i++) {
+            for (let i = 0; i < len; ++i) {
                 const contact = this._contactBuffer[i];
                 console.log(`${contact.rigidbody?.gameObject.name} - ${contact.otherRigidbody?.gameObject.name}`, contact.normal.x, contact.normal.y);
             }

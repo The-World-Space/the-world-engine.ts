@@ -91,10 +91,11 @@ export abstract class Component {
      */
     public stopAllCoroutines(): void {
         this.checkComponentIsExist();
-        this._runningCoroutines.forEach(coroutine => {
-            this.stopCoroutine(coroutine);
-        });
-        this._runningCoroutines.length = 0;
+        const runningCoroutines = this._runningCoroutines;
+        for (let i = 0; i < runningCoroutines.length; ++i) {
+            this.stopCoroutine(runningCoroutines[i]);
+        }
+        runningCoroutines.length = 0;
     }
 
     /**

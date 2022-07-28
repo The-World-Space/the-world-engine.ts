@@ -16,7 +16,7 @@ export class PlayerGridEventInvoker extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
 
-    private readonly _collideSize: number = 0.5;
+    private _collideSize = 0.5;
     private _playerGridMovementController: PlayerGridMovementController|null = null;
     private readonly _gridEventMaps: GridEventMap[] = [];
 
@@ -26,9 +26,10 @@ export class PlayerGridEventInvoker extends Component {
         const gridCellHeight = this._playerGridMovementController!.gridCellHeight;
         const worldX = gridCenter.x + x * gridCellWidth;
         const worldY = gridCenter.y + y * gridCellHeight;
-        this._gridEventMaps.forEach((gridEventMap) => {
-            gridEventMap.tryInvokeEvent(worldX, worldY, this._collideSize, this._collideSize, this.gameObject);
-        });
+        const gridEventMaps = this._gridEventMaps;
+        for (let i = 0; i < gridEventMaps.length; ++i) {
+            gridEventMaps[i].tryInvokeEvent(worldX, worldY, this._collideSize, this._collideSize, this.gameObject);
+        }
     };
 
     public awake(): void {
@@ -46,5 +47,46 @@ export class PlayerGridEventInvoker extends Component {
      */
     public addGridEventMap(gridEventMap: GridEventMap): void {
         this._gridEventMaps.push(gridEventMap);
+    }
+
+    /**
+     * remove GridEventMap from this player
+     * @param gridEventMap grid event map
+     */
+    public removeGridEventMap(gridEventMap: GridEventMap): void {
+        const index = this._gridEventMaps.indexOf(gridEventMap);
+        if (index >= 0) {
+            this._gridEventMaps.splice(index, 1);
+        }
+    }
+
+    /**
+     * remove all GridEventMap from this player
+     * @param gridEventMap grid event map
+     */
+    public removeAllGridEventMap(): void {
+        this._gridEventMaps.length = 0;
+    }
+
+    /**
+     * collide size of `tryInvokeEvent` (default: 0.5)
+     * 
+     * The larger this value, the greater the range of event invocation
+     * 
+     * The default is to match the tile size of 1x1
+     */
+    public get collideSize(): number {
+        return this._collideSize;
+    }
+
+    /**
+     * collide size of `tryInvokeEvent` (default: 0.5)
+     * 
+     * The larger this value, the greater the range of event invocation
+     * 
+     * The default is to match the tile size of 1x1
+     */
+    public set collideSize(value: number) {
+        this._collideSize = value;
     }
 }

@@ -241,7 +241,7 @@ export class Game {
         this._engineGlobalObject.dispose();
 
         const rootChildren = this._rootScene.children;
-        for (let i = 0; i < rootChildren.length; i++) {
+        for (let i = 0; i < rootChildren.length; ++i) {
             rootChildren[i].gameObject.destroy();
         }
         

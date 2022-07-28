@@ -128,7 +128,7 @@ export class SansFightRoomPrefab extends Prefab {
                             c.addCollider(-3, 0);
                             c.addCollider(-3, -1);
                             c.addCollider(-3, -2);
-                            for (let i = -4; i < 58; i++) {
+                            for (let i = -4; i < 58; ++i) {
                                 c.addCollider(i, -3);
                             }
                             c.addCollider(58, 1);

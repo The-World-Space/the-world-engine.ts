@@ -83,8 +83,9 @@ export class PhysicsObject2D implements IPhysicsObject2D {
     }
 
     private readonly updateMaterialInfo = (): void => {
-        for (let i = 0; i < this._colliders.length; i++) {
-            this._colliders[i].updateFixturesMaterialInfo();
+        const colliders = this._colliders;
+        for (let i = 0; i < colliders.length; ++i) {
+            colliders[i].updateFixturesMaterialInfo();
         }
     };
 

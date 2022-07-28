@@ -7,7 +7,7 @@ export class HorizontalObjectsAnimator extends Component {
     private _prefab: PrefabConstructor|null = null;
     private _spawnCount = 0;
     private _padding = 1;
-    private _spawnedObjects: GameObject[] = [];
+    private readonly _spawnedObjects: GameObject[] = [];
 
     public awake(): void {
         this.updateSpawnedObjects(true);
@@ -15,15 +15,16 @@ export class HorizontalObjectsAnimator extends Component {
 
     private updateSpawnedObjects(rePosition: boolean, reSpawn = false): void {
         if (reSpawn) {
-            for (let i = 0; i < this._spawnedObjects.length; i++) {
-                this._spawnedObjects[i].destroy();
+            const spawnedObjects = this._spawnedObjects;
+            for (let i = 0; i < spawnedObjects.length; ++i) {
+                spawnedObjects[i].destroy();
             }
-            this._spawnedObjects.length = 0;
+            spawnedObjects.length = 0;
         }
 
         const spawnedObjects = this._spawnedObjects;
         if (spawnedObjects.length < this._spawnCount) {
-            for (let i = spawnedObjects.length; i < this._spawnCount; i++) {
+            for (let i = spawnedObjects.length; i < this._spawnCount; ++i) {
                 this._spawnedObjects.push(this.gameObject.addChildFromBuilder(
                     this.engine.instantiater.buildPrefab(
                         "horizontal_animated_object_" + i,
@@ -41,7 +42,7 @@ export class HorizontalObjectsAnimator extends Component {
         }
 
         if (rePosition) {
-            for (let i = 0; i < spawnedObjects.length; i++) {
+            for (let i = 0; i < spawnedObjects.length; ++i) {
                 spawnedObjects[i].transform.position.x = i * this._padding;
             }
         }

@@ -37,7 +37,7 @@ export class CssImageFilterSolver {
         const a: FilterValue = [60, 180, 18000, 600, 1.2, 1.2];
 
         let best: { values: FilterValue|null, loss: number } = { values: null, loss: Infinity };
-        for (let i = 0; best.loss > 25 && i < 3; i++) {
+        for (let i = 0; best.loss > 25 && i < 3; ++i) {
             const initial: FilterValue = [50, 20, 3750, 50, 100, 100];
             const result = this.spsa(aa, a, c, initial, 1000);
             if (result.loss < best.loss) {
@@ -70,14 +70,14 @@ export class CssImageFilterSolver {
 
         for (let k = 0; k < iters; k++) {
             const ck = c / Math.pow(k + 1, gamma);
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 6; ++i) {
                 deltas[i] = Math.random() > 0.5 ? 1 : -1;
                 highArgs[i] = values[i] + ck * deltas[i];
                 lowArgs[i] = values[i] - ck * deltas[i];
             }
 
             const lossDiff = this.loss(highArgs) - this.loss(lowArgs);
-            for (let i = 0; i < 6; i++) {
+            for (let i = 0; i < 6; ++i) {
                 const g = lossDiff / (2 * ck) * deltas[i];
                 const ak = a[i] / Math.pow(aa + k + 1, alpha);
                 values[i] = fix(values[i] - ak * g, i);

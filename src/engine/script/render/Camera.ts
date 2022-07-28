@@ -74,6 +74,7 @@ export class Camera extends Component {
                     this._camera.updateProjectionMatrix();
                 } else {
                     this._camera.removeFromParent();
+                    Camera.removeCameraFromDuckPool(this._camera);
                     this._camera = this.createNewPerspectiveCamera();
                     this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
                 }
@@ -94,6 +95,7 @@ export class Camera extends Component {
                     this._camera.updateProjectionMatrix();
                 } else {
                     this._camera.removeFromParent();
+                    Camera.removeCameraFromDuckPool(this._camera);
                     this._camera = this.createNewOrthographicCamera();
                     this.transform.unsafeGetObject3D().add(this._camera); //it's safe because this._camera is not GameObject
                 }
@@ -133,11 +135,16 @@ export class Camera extends Component {
 
     public onDisable(): void {
         this.engine.screen.onResize.removeListener(this.onScreenResize);
-        if (this._camera) this.engine.cameraContainer.removeCamera(this);
+        if (this._camera) {
+            this.engine.cameraContainer.removeCamera(this);
+        }
     }
 
     public onDestroy(): void {
-        this._camera?.removeFromParent();
+        if (this._camera) {
+            this._camera.removeFromParent();
+            Camera.removeCameraFromDuckPool(this._camera);
+        }
     }
 
     /**
@@ -308,5 +315,10 @@ export class Camera extends Component {
     /** @internal */
     public get threeCamera(): ThreeCamera|null {
         return this._camera;
+    }
+
+    /** @internal */
+    public static removeCameraFromDuckPool(_camera: ThreeCamera): void {
+        // this method will be injected by DuckThreeCamera
     }
 }

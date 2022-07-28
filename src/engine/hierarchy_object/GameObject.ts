@@ -82,7 +82,7 @@ export class GameObject {
             }
         }
         const requiredComponents = component.requiredComponents;
-        for (let i = 0; i < requiredComponents.length; i++) {
+        for (let i = 0; i < requiredComponents.length; ++i) {
             const requiredComponentCtor = requiredComponents[i];
             const requiredComponent = this.getComponent(requiredComponentCtor);
             if (!requiredComponent) {
@@ -115,7 +115,7 @@ export class GameObject {
     public getComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
         this.checkGameObjectIsExist();
         const components = this.components;
-        for (let i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             if (component instanceof componentCtor) return component;
         }
@@ -144,7 +144,7 @@ export class GameObject {
         if (!componentCtor) return this.components.slice() as T[];
         const components = this.components;
         const result: T[] = [];
-        for (let i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             if (component instanceof componentCtor) {
                 result.push(component);
@@ -235,11 +235,11 @@ export class GameObject {
         this.checkGameObjectIsExist();
         const components = this.components;
         if (!componentCtor) {
-            for (let i = 0; i < components.length; i++) {
+            for (let i = 0; i < components.length; ++i) {
                 callback(components[i] as T);
             }
         } else {
-            for (let i = 0; i < components.length; i++) {
+            for (let i = 0; i < components.length; ++i) {
                 const component = components[i];
                 if (component instanceof componentCtor) {
                     callback(component);
@@ -284,22 +284,6 @@ export class GameObject {
         }
     }
 
-    // /**
-    //  * remove component from the GameObject
-    //  * @param component 
-    //  */
-    // public removeComponent(component: Component): void {
-    //     for (let i = 0; i < this._components.length; i++) {
-    //         if (this._components[i] === component) {
-    //             component.enabled = false;
-    //             component.stopAllCoroutines();
-    //             component.eventInvoker.tryCallOnDestroy();
-    //             this._components.splice(i, 1);
-    //             break;
-    //         }
-    //     }
-    // }
-
     private _destroyed = false;
 
     /**
@@ -315,15 +299,17 @@ export class GameObject {
         if (gameObject._destroyed) return;
         gameObject._destroyed = true;
         gameObject.destroyEventProcess();
-        gameObject._transform.children.forEach(child => { // modified values in foreach but array is not modified
+        const children = gameObject._transform.children;
+        for (let i = 0; i < children.length; ++i) { // modified values in foreach but array is not modified
+            const child = children[i];
             if (child instanceof Transform) GameObject.destroyRecursively(child.gameObject);
-        });
+        }
     }
 
     private destroyEventProcess(): void {
         const components = this.components;
 
-        for (let i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             if (component._engine_internal_destroyed) continue;
             if (component.enabled && this._activeInHierarchy) {
@@ -375,7 +361,7 @@ export class GameObject {
             const components = this.components;
             if (this._activeInHierarchy) {
                 //enable components
-                for (let i = 0; i < components.length; i++) {
+                for (let i = 0; i < components.length; ++i) {
                     const component = components[i];
                     if (component.enabled) {
                         component._engine_internal_componentEventContainer.tryCallAwake();
@@ -385,7 +371,7 @@ export class GameObject {
                     }
                 }
             } else {
-                for (let i = 0; i < components.length; i++) {
+                for (let i = 0; i < components.length; ++i) {
                     const component = components[i];
                     if (component.enabled) {
                         //disable components

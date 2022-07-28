@@ -17,7 +17,7 @@ export class PathfindTest extends Component {
     private _collideMaps: IGridCollidable[]|null = null;
     private _gridPointer: GridPointer|null = null;
     private _pathfinder: Pathfinder|null = null;
-    private _debugImages: GameObject[] = [];
+    private readonly _debugImages: GameObject[] = [];
 
     private readonly _onPointerDownBind = this.onPointerDown.bind(this);
 
@@ -44,9 +44,12 @@ export class PathfindTest extends Component {
         const end = event.gridPosition;
         const path = this._pathfinder!.findPath(start, end);
         this.removeDebugImages();
-        path?.forEach(p => {
-            this.addDebugImage(p.x * this._collideMaps![0].gridCellWidth, p.y * this._collideMaps![0].gridCellHeight);
-        });
+        if (path) {
+            for (let i = 0; i < path.length; ++i) {
+                const p = path[i];
+                this.addDebugImage(p.x * this._collideMaps![0].gridCellWidth, p.y * this._collideMaps![0].gridCellHeight);
+            }
+        }
     }
     
     private addDebugImage(x: number, y: number): void {
@@ -60,10 +63,11 @@ export class PathfindTest extends Component {
     }
 
     private removeDebugImages(): void {
-        this._debugImages.forEach(image => {
-            image.destroy();
-        });
-        this._debugImages = [];
+        const debugImages = this._debugImages;
+        for (let i = 0; i < debugImages.length; ++i) {
+            debugImages[i].destroy();
+        }
+        debugImages.length = 0;
     }
 
     /**

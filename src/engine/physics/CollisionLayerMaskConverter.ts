@@ -29,7 +29,7 @@ export class CollisionLayerMaskConverter {
         this._numCategory = new Map();
         this._layerMasks = new Map();
 
-        for (let i = 0, j = 0x0001; i < entries.length; i++, j <<= 1) {
+        for (let i = 0, j = 0x0001; i < entries.length; ++i, j <<= 1) {
             const layerName = entries[i][0];
             this._strCategory.set(layerName, j);
             this._numCategory.set(j, layerName);
@@ -77,7 +77,7 @@ export class CollisionLayerMaskConverter {
 
     public createMaskFromName<T extends CollisionLayer>(...layerNames: CollisionLayerParm<T>[]): number {
         let maskBit = 0x0000;
-        for (let i = 0; i < layerNames.length; i++) {
+        for (let i = 0; i < layerNames.length; ++i) {
             maskBit |= this.nameToLayer(layerNames[i]);
         }
         return maskBit;
@@ -85,7 +85,7 @@ export class CollisionLayerMaskConverter {
 
     public createMaskFromLayer(...layer: number[]): number {
         let maskBit = 0x0000;
-        for (let i = 0; i < layer.length; i++) {
+        for (let i = 0; i < layer.length; ++i) {
             maskBit |= layer[i];
         }
         return maskBit;

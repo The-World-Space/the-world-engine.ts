@@ -43,7 +43,7 @@ export class Spawner extends Component {
     };
 
     private *spawninitObjects(): CoroutineIterator {
-        for (let i = 0; i < this.initSpawnCount; i++) {
+        for (let i = 0; i < this.initSpawnCount; ++i) {
             this._queue.push(this.gameObject.addChildFromBuilder(
                 this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()
             ));

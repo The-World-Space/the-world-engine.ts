@@ -114,7 +114,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
         }
 
         const instantlater = this.engine.instantiater;
-        for (let i = 0; i < instances.length; i++) {
+        for (let i = 0; i < instances.length; ++i) {
             const instance = instances[i];
 
             const spriteBuilder = instantlater.buildGameObject(

@@ -18,15 +18,18 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     private _gridCellWidth = 1;
     private _gridCellHeight = 1;
     private _showCollider = false;
-    private _eventVisualizeImages: GameObject[] = [];
+    private readonly _eventVisualizeImages: GameObject[] = [];
     
-    private _initializeFunctions: ((() => void))[] = [];
+    private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
 
     public start(): void {
         this._started = true;
-        this._initializeFunctions.forEach(func => func());
-        this._initializeFunctions = [];
+        const initializeFunctions = this._initializeFunctions;
+        for (let i = 0; i < initializeFunctions.length; ++i) {
+            initializeFunctions[i]();
+        }
+        initializeFunctions.length = 0;
     }
 
     /**
@@ -84,10 +87,11 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     }
 
     private removeVisualizeImages(): void {
-        this._eventVisualizeImages.forEach(image => {
-            image.destroy();
-        });
-        this._eventVisualizeImages = [];
+        const eventVisualizeImages = this._eventVisualizeImages;
+        for (let i = 0; i < eventVisualizeImages.length; ++i) {
+            eventVisualizeImages[i].destroy();
+        }
+        this._eventVisualizeImages.length = 0;
     }
     
     private addDebugImage(x: number, y: number): void {

@@ -102,7 +102,7 @@ export class SpriteAnimator extends Component {
      */
     public addAnimationFromPath(name: string, animationFrames: string[]): void {
         const animationFramesArray: HTMLImageElement[] = [];
-        for (let i = 0; i < animationFrames.length; i++) {
+        for (let i = 0; i < animationFrames.length; ++i) {
             const image = new Image();
             image.src = animationFrames[i];
             animationFramesArray.push(image);

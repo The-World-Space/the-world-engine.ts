@@ -203,7 +203,7 @@ export class GameObjectBuilder {
     private checkComponentRequirements(gameObject: GameObject): void {
         let componentRemoved = false;
         const components: Component[] = gameObject.components;
-        for (let i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             const requiredComponents = component.requiredComponents;
             for (let j = 0; j < requiredComponents.length; j++) {
@@ -234,7 +234,7 @@ export class GameObjectBuilder {
         this._gameObject.transform.setParent(parent, false);
 
         const children = this._children;
-        for (let i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; ++i) {
             const child = children[i];
             child.registerTransform(this._gameObject.transform);
         }
@@ -243,18 +243,18 @@ export class GameObjectBuilder {
     private chackComponentRequirementsRecursive(): void {
         this.checkComponentRequirements(this._gameObject);
         const children = this._children;
-        for (let i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; ++i) {
             children[i].chackComponentRequirementsRecursive();
         }
     }
 
     private componentInitialize(): void {
         const componentInitializeFuncList = this._componentInitializeFuncList;
-        for (let i = 0; i < componentInitializeFuncList.length; i++) {
+        for (let i = 0; i < componentInitializeFuncList.length; ++i) {
             componentInitializeFuncList[i]();
         }
         const children = this._children;
-        for (let i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; ++i) {
             children[i].componentInitialize();
         }
 
@@ -269,12 +269,12 @@ export class GameObjectBuilder {
     /** @internal */
     public static processEventByGroup(builders: GameObjectBuilder[], sceneProcessor: SceneProcessor): void {
         const components = [];
-        for (let i = 0; i < builders.length; i++) {
+        for (let i = 0; i < builders.length; ++i) {
             components.push(...builders[i]._gameObject.getComponentsInChildren());
         }
 
         //awake
-        for (let i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             if (component.gameObject.activeInHierarchy && component.enabled) {
                 component._engine_internal_componentEventContainer.tryCallAwake();
@@ -282,7 +282,7 @@ export class GameObjectBuilder {
         }
         
         //onEnable start update
-        for (let i = 0; i < components.length; i++) {
+        for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             if (component._engine_internal_destroyed) continue;
             if (component.gameObject.activeInHierarchy && component.enabled) {

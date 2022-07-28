@@ -56,7 +56,7 @@ export class Object3DContainer<T extends Object3D> extends Component {
     private setVisibleRecursively(object3D: Object3D, visible: boolean): void {
         object3D.visible = visible;
         const children = object3D.children;
-        for (let i = 0; i < children.length; i++) {
+        for (let i = 0; i < children.length; ++i) {
             this.setVisibleRecursively(children[i], visible);
         }
     }
