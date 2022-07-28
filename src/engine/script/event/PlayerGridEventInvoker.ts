@@ -47,4 +47,23 @@ export class PlayerGridEventInvoker extends Component {
     public addGridEventMap(gridEventMap: GridEventMap): void {
         this._gridEventMaps.push(gridEventMap);
     }
+
+    /**
+     * remove GridEventMap from this player
+     * @param gridEventMap grid event map
+     */
+    public removeGridEventMap(gridEventMap: GridEventMap): void {
+        const index = this._gridEventMaps.indexOf(gridEventMap);
+        if (index >= 0) {
+            this._gridEventMaps.splice(index, 1);
+        }
+    }
+
+    /**
+     * remove all GridEventMap from this player
+     * @param gridEventMap grid event map
+     */
+    public removeAllGridEventMap(): void {
+        this._gridEventMaps.length = 0;
+    }
 }

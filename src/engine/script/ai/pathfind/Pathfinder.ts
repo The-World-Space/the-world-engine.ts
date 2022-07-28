@@ -49,6 +49,24 @@ export class Pathfinder {
     }
 
     /**
+     * removes a collide map from the list of collide maps
+     * @param collideMap
+     */
+    public removeCollideMap(collideMap: IGridCollidable): void {
+        const index = this._collideMaps.indexOf(collideMap);
+        if (index >= 0) {
+            this._collideMaps.splice(index, 1);
+        }
+    }
+
+    /**
+     * removes all collide maps
+     */
+    public removeAllCollideMaps(): void {
+        this._collideMaps.length = 0;
+    }
+
+    /**
      * finds the shortest path between two points
      * @param startGridPosition start position in grid coordinates (integers value)
      * @param endGridPosition end position in grid coordinates (integers value)

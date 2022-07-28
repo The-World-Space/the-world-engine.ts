@@ -424,6 +424,25 @@ export class PlayerGridMovementController extends Directionable
     }
 
     /**
+     * remove collide map for collision detection
+     */
+    public removeCollideMap(collideMap: IGridCollidable): void {
+        const index = this._collideMaps.indexOf(collideMap);
+        if (index >= 0) {
+            this._collideMaps.splice(index, 1);
+            this._pathfinder?.removeCollideMap(collideMap);
+        }
+    }
+
+    /**
+     * remove all collide maps for collision detection
+     */
+    public removeAllCollideMaps(): void {
+        this._collideMaps.length = 0;
+        this._pathfinder?.removeAllCollideMaps();
+    }
+
+    /**
      * set grid cell size and grid center position from grid collide map
      * @param collideMap
      */
