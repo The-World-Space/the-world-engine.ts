@@ -16,7 +16,7 @@ export class PlayerGridEventInvoker extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
 
-    private readonly _collideSize: number = 0.5;
+    private _collideSize: number = 0.5;
     private _playerGridMovementController: PlayerGridMovementController|null = null;
     private readonly _gridEventMaps: GridEventMap[] = [];
 
@@ -66,5 +66,27 @@ export class PlayerGridEventInvoker extends Component {
      */
     public removeAllGridEventMap(): void {
         this._gridEventMaps.length = 0;
+    }
+
+    /**
+     * collide size of `tryInvokeEvent` (default: 0.5)
+     * 
+     * The larger this value, the greater the range of event invocation
+     * 
+     * The default is to match the tile size of 1x1
+     */
+    public get collideSize(): number {
+        return this._collideSize;
+    }
+
+    /**
+     * collide size of `tryInvokeEvent` (default: 0.5)
+     * 
+     * The larger this value, the greater the range of event invocation
+     * 
+     * The default is to match the tile size of 1x1
+     */
+    public set collideSize(value: number) {
+        this._collideSize = value;
     }
 }
