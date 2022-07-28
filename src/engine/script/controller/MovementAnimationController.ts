@@ -1,6 +1,6 @@
 import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
-import { Direction, Directable } from "../helper/Directable";
+import { Directable, Direction } from "../helper/Directable";
 import { SpriteAtlasAnimator } from "../post_render/SpriteAtlasAnimator";
 
 /**

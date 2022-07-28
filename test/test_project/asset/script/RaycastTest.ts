@@ -4,8 +4,8 @@ import { WritableVector2 } from "@src/engine/math/WritableVector2";
 import { ContactFilter2D } from "@src/engine/physics/2d/ContactFilter2D";
 import { RaycastHit2D } from "@src/engine/physics/2d/RaycastHit2D";
 import { Color } from "@src/engine/render/Color";
-import { CssLineRenderer } from "@src/engine/script/render/CssLineRenderer";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
+import { CssLineRenderer } from "@src/engine/script/render/CssLineRenderer";
 import { Vector2, Vector3 } from "three/src/Three";
 //import { CssPolygonRenderer2D } from "../../../engine/script/render/CssPolygonRenderer2D";
 

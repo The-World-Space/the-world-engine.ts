@@ -2,8 +2,8 @@ import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilde
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { Color } from "@src/engine/render/Color";
 import { CssEdgeRenderer } from "@src/engine/script/render/CssEdgeRenderer";
-import { CssPolygonRenderer2D } from "@src/engine/script/render/CssPolygonRenderer2D";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
+import { CssPolygonRenderer2D } from "@src/engine/script/render/CssPolygonRenderer2D";
 import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRenderer";
 import { GlobalConfig } from "@src/GlobalConfig";

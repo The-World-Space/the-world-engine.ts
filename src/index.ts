@@ -93,7 +93,7 @@ export { PlayerGridEventInvoker } from "./engine/script/event/PlayerGridEventInv
 
 //helper
 export { AsyncImageLoader } from "./engine/script/helper/AsyncImageLoader";
-export { Direction, Directable } from "./engine/script/helper/Directable";
+export { Directable, Direction } from "./engine/script/helper/Directable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
 export { Mulberry32 } from "./engine/script/helper/Mulberry32";
@@ -143,10 +143,10 @@ export type { ICssImageRenderOption } from "./engine/script/render/CssSpriteRend
 export { CssSpriteRenderer, ImageRenderingMode } from "./engine/script/render/CssSpriteRenderer";
 export { CssTextRenderer, FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
 export { CssTilemapRenderer, TileAtlasItem } from "./engine/script/render/CssTilemapRenderer";
+export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
 export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssFilter } from "./engine/script/render/filter/CssFilter";
-export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
 
