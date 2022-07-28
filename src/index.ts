@@ -93,7 +93,7 @@ export { PlayerGridEventInvoker } from "./engine/script/event/PlayerGridEventInv
 
 //helper
 export { AsyncImageLoader } from "./engine/script/helper/AsyncImageLoader";
-export { Direction, Directionable } from "./engine/script/helper/Directionable";
+export { Directable, Direction } from "./engine/script/helper/Directable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
 export { Mulberry32 } from "./engine/script/helper/Mulberry32";
@@ -131,11 +131,11 @@ export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_rend
 //render
 export { Camera, CameraType } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
-export { Css2DEdgeRenderer } from "./engine/script/render/Css2DEdgeRenderer";
-export { Css2DLineRenderer } from "./engine/script/render/Css2DLineRenderer";
-export { Css2DPolygonRenderer } from "./engine/script/render/Css2DPolygonRenderer";
+export { CssEdgeRenderer } from "./engine/script/render/CssEdgeRenderer";
 export { CssHtmlElementRenderer } from "./engine/script/render/CssHtmlElementRenderer";
 export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
+export { CssLineRenderer } from "./engine/script/render/CssLineRenderer";
+export { CssPolygonRenderer2D } from "./engine/script/render/CssPolygonRenderer2D";
 export type { ICssRenderOption, IUnknownSizeCssRenderOption } from "./engine/script/render/CssRenderer";
 export { CssRenderer } from "./engine/script/render/CssRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
@@ -143,10 +143,10 @@ export type { ICssImageRenderOption } from "./engine/script/render/CssSpriteRend
 export { CssSpriteRenderer, ImageRenderingMode } from "./engine/script/render/CssSpriteRenderer";
 export { CssTextRenderer, FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
 export { CssTilemapRenderer, TileAtlasItem } from "./engine/script/render/CssTilemapRenderer";
+export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
 export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssFilter } from "./engine/script/render/filter/CssFilter";
-export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
 

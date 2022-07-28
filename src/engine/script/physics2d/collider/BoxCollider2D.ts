@@ -6,7 +6,7 @@ import type { GameObject } from "../../../hierarchy_object/GameObject";
 import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import type { WritableVector2 } from "../../../math/WritableVector2";
 import { CssHtmlElementRenderer } from "../../render/CssHtmlElementRenderer";
-import { Object2DAttacher } from "../Object2DAttacher";
+import { ObjectAttacher2D } from "../ObjectAttacher2D";
 import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
 import { Collider2D } from "./Collider2D";
 
@@ -21,8 +21,8 @@ export class BoxCollider2D extends Collider2D {
 
     private updateDebugDraw(): void {
         if (this._debugDraw) {
-            let objectAttacher = this.gameObject.getComponent(Object2DAttacher);
-            if (!objectAttacher) objectAttacher = this.gameObject.addComponent(Object2DAttacher)!;
+            let objectAttacher = this.gameObject.getComponent(ObjectAttacher2D);
+            if (!objectAttacher) objectAttacher = this.gameObject.addComponent(ObjectAttacher2D)!;
 
             if (this._debugObject) {
                 const renderer = this._debugObject.getComponentInChildren(CssHtmlElementRenderer)!;

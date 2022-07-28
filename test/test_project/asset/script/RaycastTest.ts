@@ -4,14 +4,14 @@ import { WritableVector2 } from "@src/engine/math/WritableVector2";
 import { ContactFilter2D } from "@src/engine/physics/2d/ContactFilter2D";
 import { RaycastHit2D } from "@src/engine/physics/2d/RaycastHit2D";
 import { Color } from "@src/engine/render/Color";
-import { Css2DLineRenderer } from "@src/engine/script/render/Css2DLineRenderer";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
+import { CssLineRenderer } from "@src/engine/script/render/CssLineRenderer";
 import { Vector2, Vector3 } from "three/src/Three";
-//import { Css2DPolygonRenderer } from "../../../engine/script/render/Css2DPolygonRenderer";
+//import { CssPolygonRenderer2D } from "../../../engine/script/render/CssPolygonRenderer2D";
 
 export class RaycastTest extends Component {
-    private _lineRenderer: Css2DLineRenderer|null = null;
-    //private _polygonRenderer: Css2DPolygonRenderer|null = null;
+    private _lineRenderer: CssLineRenderer|null = null;
+    //private _polygonRenderer: CssPolygonRenderer2D|null = null;
     private _degrees = 0;
     private readonly _directionVector = new Vector2();
     private readonly _positionVector2 = new Vector2();
@@ -24,13 +24,13 @@ export class RaycastTest extends Component {
     private readonly _pointPool: GameObject[] = [];
 
     public awake(): void {
-        this._lineRenderer = this.gameObject.addComponent(Css2DLineRenderer)!;
+        this._lineRenderer = this.gameObject.addComponent(CssLineRenderer)!;
         this._lineRenderer.lineWidth = 0.02;
         this._lineRenderer.lineColor = new Color(1, 1, 1);
         this._lineRenderer.viewScale = 0.01;
         this._lineRenderer.point1 = new Vector2();
 
-        // this._polygonRenderer = this.gameObject.addComponent(Css2DPolygonRenderer)!;
+        // this._polygonRenderer = this.gameObject.addComponent(CssPolygonRenderer2D)!;
         // this._polygonRenderer.viewScale = 0.01;
         // this._polygonRenderer.color = new Color(0.2, 0.2, 1);
     }
