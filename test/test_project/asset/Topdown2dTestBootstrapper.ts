@@ -41,8 +41,11 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                     c.backgroundColor = new Color(0.5, 0.5, 0.5);
                 })
                 .withComponent(EditorCameraController, c => c.enabled = true)
-                .withComponent(TrackCameraController, c => {
-                    c.enabled = false;
+                .withComponent(class extends TrackCameraController {
+                    public override readonly executionOrder = 1;
+                }, c => {
+                    c.enabled = true;
+                    c.smoothTrack = true;
                     if (player.ref) c.setTrackTarget(player.ref);
                 }))
 

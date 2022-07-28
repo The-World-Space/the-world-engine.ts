@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from "three/src/Three";
+import { MathUtils, Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
@@ -10,7 +10,7 @@ import { Camera } from "../render/Camera";
  * 
  * it requires a camera component to control
  * 
- * it supports pixel perfect and lerp movement
+ * it supports pixel perfect and smooth damping
  * 
  * 
  * disallow multiple component
@@ -26,8 +26,8 @@ export class TrackCameraController extends Component {
     private _cameraDistanceOffset = 20;
     private _pixelPerfectUnit = 1;
     private _pixelPerfect = false;
-    private _lerpTrack = false;
-    private _lerpAlpha = 0.1;
+    private _smoothTrack = false;
+    private _smoothLambda = 6;
 
     public start(): void {
         if (this._trackTarget) {
@@ -45,8 +45,15 @@ export class TrackCameraController extends Component {
         targetPosition.x += this._targetOffset.x;
         targetPosition.y += this._targetOffset.y;
         const transform = this.transform;
-        if (this._lerpTrack) {
-            transform.position.lerp(targetPosition, 0.1);
+        if (this._smoothTrack) {
+            const deltaTime = this.engine.time.deltaTime;
+            const smoothLambda = this._smoothLambda;
+            const x = MathUtils.damp(transform.position.x, targetPosition.x, smoothLambda, deltaTime);
+            const y = MathUtils.damp(transform.position.y, targetPosition.y, smoothLambda, deltaTime);
+            const z = MathUtils.damp(transform.position.z, targetPosition.z, smoothLambda, deltaTime);
+            transform.position.set(x, y, z);
+            // transform.position.set(x, y, targetPosition.z);
+            // transform.position.lerp(targetPosition, 0.1);
         } else {
             transform.position.copy(targetPosition);
         }
@@ -122,30 +129,34 @@ export class TrackCameraController extends Component {
     }
 
     /**
-     * use lerp to track (default: false)
+     * use smooth damp to track (default: false)
      */
-    public get lerpTrack(): boolean {
-        return this._lerpTrack;
+    public get smoothTrack(): boolean {
+        return this._smoothTrack;
     }
 
     /**
-     * use lerp to track (default: false)
+     * use smooth damp to track (default: false)
      */
-    public set lerpTrack(value: boolean) {
-        this._lerpTrack = value;
+    public set smoothTrack(value: boolean) {
+        this._smoothTrack = value;
     }
 
     /**
-     * lerp alpha (default: 0.1)
+     * smooth damp lambda (default: 6)
+     * 
+     * higher value make camera movement more faster
      */
-    public get lerpAlpha(): number {
-        return this._lerpAlpha;
+    public get smoothLambda(): number {
+        return this._smoothLambda;
     }
 
     /**
-     * lerp alpha (default: 0.1)
+     * smooth damp lambda (default: 6)
+     * 
+     * higher value make camera movement more faster
      */
-    public set lerpAlpha(value: number) {
-        this._lerpAlpha = value;
+    public set smoothLambda(value: number) {
+        this._smoothLambda = value;
     }
 }
