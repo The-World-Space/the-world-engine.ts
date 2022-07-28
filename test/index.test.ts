@@ -57,7 +57,7 @@ describe("index Test", () => {
 
     it("AsyncImageLoader export", () => expect(Index.AsyncImageLoader).toBeDefined());
     it("Direction export", () => expect(Index.Direction).toBeDefined());
-    it("Directionable export", () => expect(Index.Directionable).toBeDefined());
+    it("Directable export", () => expect(Index.Directable).toBeDefined());
     
     it("GridPointer export", () => expect(Index.GridPointer).toBeDefined());
     it("PointerGridEvent export", () => expect(Index.PointerGridEvent).toBeDefined());

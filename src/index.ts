@@ -93,7 +93,7 @@ export { PlayerGridEventInvoker } from "./engine/script/event/PlayerGridEventInv
 
 //helper
 export { AsyncImageLoader } from "./engine/script/helper/AsyncImageLoader";
-export { Direction, Directionable } from "./engine/script/helper/Directionable";
+export { Direction, Directable } from "./engine/script/helper/Directable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
 export { Mulberry32 } from "./engine/script/helper/Mulberry32";

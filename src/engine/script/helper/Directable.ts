@@ -15,7 +15,7 @@ export enum Direction {
  * 
  * this component is used for 2d grid-based game
  */
-export class Directionable extends Component {
+export class Directable extends Component {
     private _direction: Direction = Direction.Down;
     private _isMoving = false;
 

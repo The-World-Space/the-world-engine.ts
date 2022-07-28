@@ -5,7 +5,7 @@ import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
 import { Pathfinder } from "../ai/pathfind/Pathfinder";
 import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
-import { Direction, Directionable } from "../helper/Directionable";
+import { Direction, Directable } from "../helper/Directable";
 import { IGridPositionable } from "../helper/IGridPositionable";
 import { GridPointer } from "../input/GridPointer";
 import { PointerGridEvent } from "../input/PointerGridInputListener";
@@ -19,7 +19,7 @@ import { PointerGridEvent } from "../input/PointerGridInputListener";
  * 
  * disallow multiple component
  */
-export class PlayerGridMovementController extends Directionable
+export class PlayerGridMovementController extends Directable
     implements IGridPositionable {
     public override readonly disallowMultipleComponent: boolean = true;
 
