@@ -16,7 +16,7 @@ export class PlayerGridEventInvoker extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
 
-    private _collideSize: number = 0.5;
+    private _collideSize = 0.5;
     private _playerGridMovementController: PlayerGridMovementController|null = null;
     private readonly _gridEventMaps: GridEventMap[] = [];
 
