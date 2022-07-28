@@ -96,6 +96,7 @@ export { AsyncImageLoader } from "./engine/script/helper/AsyncImageLoader";
 export { Direction, Directionable } from "./engine/script/helper/Directionable";
 export type { IGridCoordinatable } from "./engine/script/helper/IGridCoordinatable";
 export type { IGridPositionable } from "./engine/script/helper/IGridPositionable";
+export { Mulberry32 } from "./engine/script/helper/Mulberry32";
 export { TwoDimensionalStringMapper } from "./engine/script/helper/TwoDimensionalStringMapper";
 
 //input
