@@ -100,7 +100,7 @@ export class Pathfinder {
             closedList.push(currentNode);
 
             const neighbors = this.getNeighbors(currentNode);
-            for (let i = 0; i < neighbors.length; i++) {
+            for (let i = 0; i < neighbors.length; ++i) {
                 const neighbor = neighbors[i];
                 if (closedList.find(node => node.equals(neighbor)) !== undefined) continue; //already visited
                 else {
@@ -155,7 +155,7 @@ export class Pathfinder {
 
     private getLowestFcostNode(openList: PathNode[]): PathNode {
         let lowestFcostNode: PathNode = openList[0];
-        for (let i = 1; i < openList.length; i++) {
+        for (let i = 1; i < openList.length; ++i) {
             if (openList[i].fCost < lowestFcostNode.fCost) {
                 lowestFcostNode = openList[i];
             }
@@ -165,7 +165,7 @@ export class Pathfinder {
 
     private checkCollision(x: number, y: number): boolean {
         const collideMaps = this._collideMaps;
-        for (let i = 0; i < collideMaps.length; i++) {
+        for (let i = 0; i < collideMaps.length; ++i) {
             const collideMap = collideMaps[i];
             if (collideMap.checkCollision(
                 x * collideMap.gridCellWidth + collideMap.gridCenterX,

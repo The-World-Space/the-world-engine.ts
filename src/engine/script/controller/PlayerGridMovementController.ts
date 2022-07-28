@@ -38,7 +38,7 @@ export class PlayerGridMovementController extends Directionable
     private _gridPointer: GridPointer|null = null;
     private _pathfinder: Pathfinder|null = null;
     private _movingByPathfinder = false;
-    private _findedPath: Vector2[]|null = null;
+    private _foundedPath: Vector2[]|null = null;
     private _currentPathIndex = 0;
     private _pathfindStartFunction: (() => void)|null = null;
     private readonly _cachedParentWorldPosition: Vector2 = new Vector2();
@@ -168,11 +168,11 @@ export class PlayerGridMovementController extends Directionable
 
         const transform = this.transform;
         const currentPositionVector2 = this._tempVector2.set(transform.localPosition.x, transform.localPosition.y);
-        const currentPath = this._findedPath![this._currentPathIndex];
+        const currentPath = this._foundedPath![this._currentPathIndex];
         const distance = currentPath.distanceTo(currentPositionVector2);
         if (distance < this._speed * this.engine.time.deltaTime) {
             this._currentPathIndex++;
-            if (this._currentPathIndex >= this._findedPath!.length) {
+            if (this._currentPathIndex >= this._foundedPath!.length) {
                 this._movingByPathfinder = false;
                 return;
             } else {
@@ -183,13 +183,13 @@ export class PlayerGridMovementController extends Directionable
             this._movingByPathfinder = false;
             return;
         }
-        if (this._targetGridPosition.equals(this._findedPath![this._currentPathIndex])) return;
-        this._targetGridPosition.copy(this._findedPath![this._currentPathIndex]);
+        if (this._targetGridPosition.equals(this._foundedPath![this._currentPathIndex])) return;
+        this._targetGridPosition.copy(this._foundedPath![this._currentPathIndex]);
         this.invokeOnMoveToTarget();
-        const prevPositionX = this._findedPath![this._currentPathIndex - 1].x;
-        const prevPositionY = this._findedPath![this._currentPathIndex - 1].y;
-        const currentPositionX = this._findedPath![this._currentPathIndex].x;
-        const currentPositionY = this._findedPath![this._currentPathIndex].y;
+        const prevPositionX = this._foundedPath![this._currentPathIndex - 1].x;
+        const prevPositionY = this._foundedPath![this._currentPathIndex - 1].y;
+        const currentPositionX = this._foundedPath![this._currentPathIndex].x;
+        const currentPositionY = this._foundedPath![this._currentPathIndex].y;
         if (prevPositionY < currentPositionY) {
             this.direction = Direction.Up;
         } else if (prevPositionY > currentPositionY) {
@@ -233,8 +233,9 @@ export class PlayerGridMovementController extends Directionable
         x += this._cachedParentWorldPosition.x;
         y += this._cachedParentWorldPosition.y;
         
-        for (let i = 0; i < this._collideMaps.length; i++) {
-            if (this._collideMaps[i].checkCollision(x, y, this._collideSize, this._collideSize)) {
+        const collideMaps = this._collideMaps;
+        for (let i = 0; i < collideMaps.length; ++i) {
+            if (collideMaps[i].checkCollision(x, y, this._collideSize, this._collideSize)) {
                 return true;
             }
         }
@@ -286,12 +287,13 @@ export class PlayerGridMovementController extends Directionable
         if (this._movingByPathfinder) return false;
         this._pathfindStartFunction = null;
         
-        this._findedPath = this._pathfinder!.findPath(this.positionInGrid, targetGridPosition);
-        if (!this._findedPath || this._findedPath.length <= 1) return false;
-        this._findedPath.forEach((path) => {
+        const foundedPath = this._foundedPath = this._pathfinder!.findPath(this.positionInGrid, targetGridPosition);
+        if (!foundedPath || foundedPath.length <= 1) return false;
+        for (let i = 0; i < foundedPath.length; ++i) {
+            const path = foundedPath[i];
             path.x = path.x * this._gridCellWidth + this._gridCenter.x;
             path.y = path.y * this._gridCellHeight + this._gridCenter.y;
-        });
+        }
         this._currentPathIndex = 1;
         this.isMoving = true;
         this._movingByPathfinder = true;

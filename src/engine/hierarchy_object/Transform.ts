@@ -28,7 +28,7 @@ export class Transform {
             (this.userData as Transform).updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
             if (updateChildren) {
                 const children = this.children;
-                for (let i = 0, l = children.length; i < l; i++) {
+                for (let i = 0, l = children.length; i < l; ++i) {
                     children[i].updateWorldMatrix(false, true);
                 }
             }
@@ -234,7 +234,7 @@ export class Transform {
     private setWorldPositionRotationScaleNeedUpdateRecursively(): void {
         this._worldPositionRotationScaleNeedUpdate = true;
         const children = this._object3D.children;
-        for (let i = 0, len = children.length; i < len; i++) {
+        for (let i = 0, len = children.length; i < len; ++i) {
             const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.setWorldPositionRotationScaleNeedUpdateRecursively();
@@ -244,7 +244,7 @@ export class Transform {
 
     private setChildrenWorldPositionRotationScaleNeedUpdateRecursively(): void {
         const children = this._object3D.children;
-        for (let i = 0, len = children.length; i < len; i++) {
+        for (let i = 0, len = children.length; i < len; ++i) {
             const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.setWorldPositionRotationScaleNeedUpdateRecursively();
@@ -260,7 +260,7 @@ export class Transform {
     private setWorldMatrixNeedUpdateRecursivelyInternal(): void {
         this._worldMatrixNeedUpdate = true;
         const children = this._object3D.children;
-        for (let i = 0, len = children.length; i < len; i++) {
+        for (let i = 0, len = children.length; i < len; ++i) {
             const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.setWorldMatrixNeedUpdateRecursivelyInternal();
@@ -271,7 +271,7 @@ export class Transform {
     private setHasChangedRecursively(): void {
         this._hasChanged = true;
         const children = this._object3D.children;
-        for (let i = 0, len = children.length; i < len; i++) {
+        for (let i = 0, len = children.length; i < len; ++i) {
             const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.setHasChangedRecursively();
@@ -447,7 +447,7 @@ export class Transform {
     // private updateLocalMatrixFromOthersRecursively(): void {
     //     this.updateLocalMatrixFromOthers();
     //     const children = this._object3D.children;
-    //     for (let i = 0, l = children.length; i < l; i++) {
+    //     for (let i = 0, l = children.length; i < l; ++i) {
     //         const child = children[i];
     //         if (child.userData instanceof Transform) {
     //             child.userData.updateLocalMatrixFromOthersRecursively();
@@ -458,7 +458,7 @@ export class Transform {
     private updateLocalPositionRotationScaleFromOthersRecursively(): void {
         this.updateLocalPositionRotationScaleFromOthers();
         const children = this._object3D.children;
-        for (let i = 0, l = children.length; i < l; i++) {
+        for (let i = 0, l = children.length; i < l; ++i) {
             const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.updateLocalPositionRotationScaleFromOthersRecursively();
@@ -468,7 +468,7 @@ export class Transform {
 
     private updateChildrenLocalPositionRotationScaleFromOthersRecursively(): void {
         const children = this._object3D.children;
-        for (let i = 0, l = children.length; i < l; i++) {
+        for (let i = 0, l = children.length; i < l; ++i) {
             const child = children[i];
             if (child.userData instanceof Transform) {
                 child.userData.updateLocalPositionRotationScaleFromOthers();
@@ -492,7 +492,7 @@ export class Transform {
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
 
         const object3dChildren = this._object3D.children;
-        for (let i = 0, l = object3dChildren.length; i < l; i++) {
+        for (let i = 0, l = object3dChildren.length; i < l; ++i) {
             const child = object3dChildren[i];
             if (child.userData instanceof Transform) {
                 child.userData.tryUpdateWorldMatrixRecursivelyFromThisToChildrenInternal();
@@ -515,7 +515,7 @@ export class Transform {
      */
     public foreachChild(callback: (transform: Transform) => void): void {
         const object3dChildren = this._object3D.children;
-        for (let i = 0, l = object3dChildren.length; i < l; i++) {
+        for (let i = 0, l = object3dChildren.length; i < l; ++i) {
             const child = object3dChildren[i];
             if (child.userData instanceof Transform) {
                 callback(child.userData);
@@ -531,7 +531,7 @@ export class Transform {
      */
     public iterateChild(callback: (transform: Transform) => boolean): void {
         const object3dChildren = this._object3D.children;
-        for (let i = 0, l = object3dChildren.length; i < l; i++) {
+        for (let i = 0, l = object3dChildren.length; i < l; ++i) {
             const child = object3dChildren[i];
             if (child.userData instanceof Transform) {
                 if (!callback(child.userData)) break;
@@ -1013,7 +1013,7 @@ export class Transform {
         }
         // update children
         const children = object3D.children;
-        for (let i = 0, l = children.length; i < l; i++) {
+        for (let i = 0, l = children.length; i < l; ++i) {
             Transform.updateRawObject3DWorldMatrixRecursivelyInternal(children[i]);
         }
     }
@@ -1023,7 +1023,7 @@ export class Transform {
         object3D.matrixWorld.multiplyMatrices(object3D.parent!.matrixWorld, object3D.matrix);
         // update children
         const children = object3D.children;
-        for (let i = 0, l = children.length; i < l; i++) {
+        for (let i = 0, l = children.length; i < l; ++i) {
             Transform.updateRawObject3DWorldMatrixRecursivelyInternal(children[i]);
         }
     }

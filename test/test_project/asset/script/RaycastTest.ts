@@ -63,7 +63,7 @@ export class RaycastTest extends Component {
 
         {
             const resultCount = this.engine.physics.raycast(position, direction, ContactFilter2D.noFilter, this._resultBuffer);
-            for (let i = this._pointPool.length; i < resultCount; i++) {
+            for (let i = this._pointPool.length; i < resultCount; ++i) {
                 this._pointPool.push(
                     this.engine.scene.addChildFromBuilder(this.engine.instantiater.buildGameObject("point")
                         .withComponent(CssHtmlElementRenderer, c => {
@@ -76,13 +76,13 @@ export class RaycastTest extends Component {
                         }))
                 );
             }
-            for (let i = 0; i < resultCount; i++) {
+            for (let i = 0; i < resultCount; ++i) {
                 const point = this._pointPool[i];
                 point.transform.position.x = this._resultBuffer[i].point.x;
                 point.transform.position.y = this._resultBuffer[i].point.y;
                 point.activeSelf = true;
             }
-            for (let i = resultCount; i < this._pointPool.length; i++) {
+            for (let i = resultCount; i < this._pointPool.length; ++i) {
                 this._pointPool[i].activeSelf = false;
             }
         }

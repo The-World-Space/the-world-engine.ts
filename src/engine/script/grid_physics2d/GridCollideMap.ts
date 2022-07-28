@@ -23,13 +23,16 @@ export class GridCollideMap extends Component implements IGridCollidable {
     private readonly _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
     private _collideEnabled = false;
     
-    private _initializeFunctions: ((() => void))[] = [];
+    private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
 
     public start(): void {
         this._started = true;
-        this._initializeFunctions.forEach(func => func());
-        this._initializeFunctions = [];
+        const initializeFunctions = this._initializeFunctions;
+        for (let i = 0; i < initializeFunctions.length; ++i) {
+            initializeFunctions[i]();
+        }
+        this._initializeFunctions.length = 0;
     }
 
     public onEnable(): void {

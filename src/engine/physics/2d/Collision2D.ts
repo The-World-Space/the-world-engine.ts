@@ -70,7 +70,7 @@ export class Collision2D {
         if (!this._contact) return 0;
         let insertPos = 0;
         const manifold = this._contact.GetManifold();
-        for (let i = 0; i < manifold.pointCount; i++) {
+        for (let i = 0; i < manifold.pointCount; ++i) {
             if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
             this._contact.GetWorldManifold(this._worldManifold);
             out[insertPos].setData(

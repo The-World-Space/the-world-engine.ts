@@ -139,7 +139,7 @@ export class RigidBody2D extends Component {
     private updateCollidersFilter(): void {
         if (!this._physicsObject) return;
         const colliders = this._physicsObject.colliders;
-        for (let i = 0, l = colliders.length; i < l; i++) {
+        for (let i = 0, l = colliders.length; i < l; ++i) {
             const collider = colliders[i];
             collider.updateFixturesFilter();
         }
@@ -645,7 +645,7 @@ export class RigidBody2D extends Component {
         if (out.length < colliders.length) {
             out.length = colliders.length;
         }
-        for (let i = 0; i < colliders.length; i++) {
+        for (let i = 0; i < colliders.length; ++i) {
             out[i] = colliders[i];
         }
         return colliders.length;
@@ -667,7 +667,7 @@ export class RigidBody2D extends Component {
             contactEdge = contactEdge.next;
             
             const manifold = currentContactEdge.contact.GetManifold();
-            for (let i = 0; i < manifold.pointCount; i++) {
+            for (let i = 0; i < manifold.pointCount; ++i) {
                 if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
                 currentContactEdge.contact.GetWorldManifold(this._worldManifold);
                 out[insertPos].setData(

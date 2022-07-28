@@ -42,14 +42,15 @@ export class ObjectPoolTestBootstrapper extends Bootstrapper {
                     }
 
                     public update(): void {
-                        for (let i = 0; i < this._activeObjects.length; ++i) {
-                            this.releaseSprite(this._activeObjects[i]);
+                        const activeObjects = this._activeObjects;
+                        for (let i = 0; i < activeObjects.length; ++i) {
+                            this.releaseSprite(activeObjects[i]);
                         }
-                        this._activeObjects.length = 0;
+                        activeObjects.length = 0;
 
                         for (let i = 4; i >= 0; --i) {
                             const gameObject = this.createSprite();
-                            this._activeObjects.push(gameObject);
+                            activeObjects.push(gameObject);
 
                             gameObject.transform.position.x = i * 2;
                         }

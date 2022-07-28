@@ -42,13 +42,16 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
     
-    private _initializeFunctions: (() => void)[] = [];
+    private readonly _initializeFunctions: (() => void)[] = [];
     private _started = false;
 
     public start(): void {
         this._started = true;
-        this._initializeFunctions.forEach(func => func());
-        this._initializeFunctions = [];
+        const initializeFunctions = this._initializeFunctions;
+        for (let i = 0; i < initializeFunctions.length; ++i) {
+            initializeFunctions[i]();
+        }
+        initializeFunctions.length = 0;
     }
 
     public onEnable(): void {

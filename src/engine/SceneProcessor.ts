@@ -56,12 +56,12 @@ export class SceneProcessor {
 
     public processRemoveObject(): void {
         const removeComponents = this._removeComponents;
-        for (let i = 0; i < removeComponents.length; i++) {
+        for (let i = 0; i < removeComponents.length; ++i) {
             removeComponents[i].gameObject.removeComponent(removeComponents[i]);
         }
         
         const removeGameObjects = this._removeGameObjects;
-        for (let i = 0; i < removeGameObjects.length; i++) {
+        for (let i = 0; i < removeGameObjects.length; ++i) {
             removeGameObjects[i].removeFromParent();
         }
     }

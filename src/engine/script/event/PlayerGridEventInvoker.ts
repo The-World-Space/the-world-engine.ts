@@ -26,9 +26,10 @@ export class PlayerGridEventInvoker extends Component {
         const gridCellHeight = this._playerGridMovementController!.gridCellHeight;
         const worldX = gridCenter.x + x * gridCellWidth;
         const worldY = gridCenter.y + y * gridCellHeight;
-        this._gridEventMaps.forEach((gridEventMap) => {
-            gridEventMap.tryInvokeEvent(worldX, worldY, this._collideSize, this._collideSize, this.gameObject);
-        });
+        const gridEventMaps = this._gridEventMaps;
+        for (let i = 0; i < gridEventMaps.length; ++i) {
+            gridEventMaps[i].tryInvokeEvent(worldX, worldY, this._collideSize, this._collideSize, this.gameObject);
+        }
     };
 
     public awake(): void {

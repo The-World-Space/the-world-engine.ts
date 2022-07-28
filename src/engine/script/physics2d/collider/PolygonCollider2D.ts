@@ -88,7 +88,7 @@ export class PolygonCollider2D extends Collider2D {
      */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
-        for (let i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; ++i) {
             this._points.push(value[i].clone());
         }
         this.updateFixture();
@@ -103,7 +103,7 @@ export class PolygonCollider2D extends Collider2D {
     public setShapeToRegularPolygon(sides: number, radius: number): void {
         const points = [];
         const angle = DEG2RAD * 360 / sides;
-        for (let i = 0; i < sides; i++) {
+        for (let i = 0; i < sides; ++i) {
             points.push(new Vector2(
                 radius * Math.cos(angle * i + Math.PI / 2),
                 radius * Math.sin(angle * i + Math.PI / 2)

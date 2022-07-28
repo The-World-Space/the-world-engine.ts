@@ -67,9 +67,10 @@ export class EdgeCollider2D extends Collider2D {
 
     protected override createShapes(): Shape[] {
         const shapes: Shape[] = [];
-        for (let i = 0; i < this._points.length - 1; i++) {
+        const points = this._points;
+        for (let i = 0; i < points.length - 1; ++i) {
             const shape = new EdgeShape();
-            shape.SetTwoSided(this._points[i], this._points[i + 1]);
+            shape.SetTwoSided(points[i], points[i + 1]);
             shape.m_radius = this._edgeRadius;
             shapes.push(shape);
         }
@@ -88,7 +89,7 @@ export class EdgeCollider2D extends Collider2D {
      */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
-        for (let i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; ++i) {
             this._points.push(value[i].clone());
         }
         this.updateFixture();

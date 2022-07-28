@@ -5,7 +5,7 @@ import { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./Yield
 /** @internal */
 export class CoroutineProcessor {
     private readonly _time: Time;
-    private _coroutines: (Coroutine|null)[];
+    private readonly _coroutines: (Coroutine|null)[];
     private _coroutineCount: number;
 
     private static readonly _needToCompactCount = 16;
@@ -30,21 +30,22 @@ export class CoroutineProcessor {
     }
 
     public tryCompact(): void {
-        if (CoroutineProcessor._needToCompactCount <= this._coroutines.length - this._coroutineCount) {
+        const coroutines = this._coroutines;
+        if (CoroutineProcessor._needToCompactCount <= coroutines.length - this._coroutineCount) {
             let insertPosition = 0;
-            for (let i = 0; i < this._coroutines.length; i++) {
-                const coroutine = this._coroutines[i];
+            for (let i = 0; i < coroutines.length; ++i) {
+                const coroutine = coroutines[i];
                 if (coroutine === null) continue;
-                this._coroutines[insertPosition] = coroutine;
+                coroutines[insertPosition] = coroutine;
                 insertPosition += 1;
             }
-            this._coroutines.length = this._coroutineCount;
+            coroutines.length = this._coroutineCount;
         }
     }
 
     public updateAfterProcess(): void {
         const coroutines = this._coroutines;
-        for (let i = 0; i < coroutines.length; i++) {
+        for (let i = 0; i < coroutines.length; ++i) {
             const coroutine = coroutines[i];
             if (coroutine == null) continue;
 
@@ -80,7 +81,7 @@ export class CoroutineProcessor {
 
     public endFrameAfterProcess(): void {
         const coroutines = this._coroutines;
-        for (let i = 0; i < coroutines.length; i++) {
+        for (let i = 0; i < coroutines.length; ++i) {
             const coroutine = coroutines[i];
             if (coroutine == null) continue;
 

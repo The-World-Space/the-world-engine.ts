@@ -22,13 +22,16 @@ export class GridCollider extends Component {
     private readonly _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
     private _gridObjectCollideMap: GridObjectCollideMap|null = null;
     private _collideInfoAddedToMap = false;
-    private _initializeFunctions: ((() => void))[] = [];
+    private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
 
     public start(): void {
         this._started = true;
-        this._initializeFunctions.forEach(func => func());
-        this._initializeFunctions = [];
+        const initializeFunctions = this._initializeFunctions;
+        for (let i = 0; i < initializeFunctions.length; ++i) {
+            initializeFunctions[i]();
+        }
+        this._initializeFunctions.length = 0;
 
         if (!this._gridObjectCollideMap) {
             throw new Error("GridCollider: gridObjectCollideMap must be set");

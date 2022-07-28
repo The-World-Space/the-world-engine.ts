@@ -66,13 +66,16 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> implement
     private _imageSources: TileAtlasItem[]|null = null;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
     
-    private _initializeFunctions: ((() => void))[] = [];
+    private readonly _initializeFunctions: ((() => void))[] = [];
 
     protected override renderInitialize(): void {
         this.drawTileMap();
 
-        this._initializeFunctions.forEach(func => func());
-        this._initializeFunctions = [];
+        const initializeFunctions = this._initializeFunctions;
+        for (let i = 0; i < initializeFunctions.length; ++i) {
+            initializeFunctions[i]();
+        }
+        this._initializeFunctions.length = 0;
     }
 
     protected override updateCenterOffset(updateTransform: boolean): void {
@@ -239,7 +242,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> implement
         }
 
         this._imageSources = value;
-        for (let i = 0; i < value.length; i++) {
+        for (let i = 0; i < value.length; ++i) {
             if (!value[i].htmlImageElement.complete) throw new Error(`Image ${value[i].htmlImageElement.src} is not loaded.`);
         }
     }

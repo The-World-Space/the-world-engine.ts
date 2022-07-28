@@ -32,9 +32,10 @@ export class SceneBuilder {
      * @internal
      */
     public build(): void {
-        for (let i = 0; i < this._children.length; i++) {
-            this._children[i].build(null);
+        const children = this._children;
+        for (let i = 0; i < children.length; ++i) {
+            children[i].build(null);
         }
-        GameObjectBuilder.processEventByGroup(this._children, this._sceneProcessor);
+        GameObjectBuilder.processEventByGroup(children, this._sceneProcessor);
     }
 }
