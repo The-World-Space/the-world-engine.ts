@@ -1034,4 +1034,38 @@ export class Transform {
     public toJSON(): any {
         return { }; //for pervent infinite recursion
     }
+
+    // #region Expriemental
+
+    /** @internal */
+    public getLocalMatrix(): Matrix4 {
+        this.updateLocalMatrixFromOthers();
+        return this._object3D.matrix;
+    }
+
+    /** @internal */
+    public setLocalMatrix(matrix: Matrix4): void {
+        this._object3D.matrix.copy(matrix);
+        this._localMatrixNeedUpdate = false;
+        this._localPositionRotationScaleNeedUpdate = true;
+        this._worldMatrixNeedUpdate = true;
+        this._worldPositionRotationScaleNeedUpdate = true;
+    }
+
+    /** @internal */
+    public getWorldMatrix(): Matrix4 {
+        this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
+        return this._object3D.matrixWorld;
+    }
+
+    /** @internal */
+    public setWorldMatrix(matrix: Matrix4): void {
+        this._object3D.matrixWorld.copy(matrix);
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedUpdate = true;
+        this._worldMatrixNeedUpdate = false;
+        this._worldPositionRotationScaleNeedUpdate = true;
+    }
+
+    // #endregion Expriemental
 }

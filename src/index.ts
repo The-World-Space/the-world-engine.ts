@@ -146,6 +146,7 @@ export { CssTilemapRenderer, TileAtlasItem } from "./engine/script/render/CssTil
 export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssFilter } from "./engine/script/render/filter/CssFilter";
+export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
 

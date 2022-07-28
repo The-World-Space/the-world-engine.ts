@@ -1,9 +1,9 @@
 import { Game } from "../../src/engine/Game";
-import { Topdown2dTestBootstrapper } from "./asset/Topdown2dTestBootstrapper";
+import { WebglTestBootstrapper } from "./asset/WebglTestBootstrapper";
 
 function startTestGame(container: HTMLElement): void {
     const game = new Game(container);
-    game.run(Topdown2dTestBootstrapper);
+    game.run(WebglTestBootstrapper);
     game.inputHandler.startHandleEvents();
 }
 

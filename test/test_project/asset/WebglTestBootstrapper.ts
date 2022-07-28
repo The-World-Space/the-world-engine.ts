@@ -4,6 +4,7 @@ import { Component } from "@src/engine/hierarchy_object/Component";
 import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
+import { DuckThreeCamera } from "@src/engine/script/render/DuckThreeCamera";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { BoxGeometry, Mesh, MeshBasicMaterial, Vector3, WebGLRenderer } from "three/src/Three";
@@ -34,7 +35,10 @@ export class WebglTestBootstrapper extends Bootstrapper {
                     }
 
                     public start(): void {
-                        const controls = this._orbitControls = new OrbitControls(this._camera!.threeCamera!, this.engine.domElement);
+                        const controls = this._orbitControls = new OrbitControls(
+                            DuckThreeCamera.createInterface(this._camera!),
+                            this.engine.domElement
+                        );
                         controls.listenToKeyEvents( window ); // optional
         
                         controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
