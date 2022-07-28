@@ -7,8 +7,8 @@ import type { GameObject } from "../../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../../hierarchy_object/PrefabRef";
 import type { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import { Color } from "../../../render/Color";
-import { Css2DPolygonRenderer } from "../../render/Css2DPolygonRenderer";
-import { Object2DAttacher } from "../Object2DAttacher";
+import { CssPolygonRenderer2D } from "../../render/CssPolygonRenderer2D";
+import { ObjectAttacher2D } from "../ObjectAttacher2D";
 import { getOrCreatePhysicsDebugRenderObject } from "../PhysicsDebugRender";
 import { Collider2D } from "./Collider2D";
 
@@ -24,22 +24,22 @@ export class PolygonCollider2D extends Collider2D {
     ];
     private _debugDraw = true;
     private _debugObject: GameObject|null = null;
-    private _debugRenderer: Css2DPolygonRenderer|null = null;
+    private _debugRenderer: CssPolygonRenderer2D|null = null;
 
     private updateDebugDraw(): void {
         if (this._debugDraw) {
-            let objectAttacher = this.gameObject.getComponent(Object2DAttacher);
-            if (!objectAttacher) objectAttacher = this.gameObject.addComponent(Object2DAttacher)!;
+            let objectAttacher = this.gameObject.getComponent(ObjectAttacher2D);
+            if (!objectAttacher) objectAttacher = this.gameObject.addComponent(ObjectAttacher2D)!;
 
             if (this._debugObject) {
                 this._debugRenderer!.points = this._points;
             } else {
                 const physicsDebugRenderObject = getOrCreatePhysicsDebugRenderObject(this.engine);
-                const debugRenderer = new PrefabRef<Css2DPolygonRenderer>();
+                const debugRenderer = new PrefabRef<CssPolygonRenderer2D>();
                 this._debugObject = physicsDebugRenderObject.addChildFromBuilder(
                     this.engine.instantiater.buildGameObject(this.gameObject.name + "_debug_polygon")
                         .withChild(this.engine.instantiater.buildGameObject("debug_polygon", new Vector3(this.offset.x, this.offset.y, 200))
-                            .withComponent(Css2DPolygonRenderer, c => {
+                            .withComponent(CssPolygonRenderer2D, c => {
                                 c.points = this._points;
                                 c.viewScale = 0.01;
                                 c.color = new Color(0, 0, 0, 0);
@@ -47,7 +47,7 @@ export class PolygonCollider2D extends Collider2D {
                                 c.borderColor = new Color(1, 1, 0, 0.3);
                                 c.pointerEvents = false;
                             })
-                            .getComponent(Css2DPolygonRenderer, debugRenderer)));
+                            .getComponent(CssPolygonRenderer2D, debugRenderer)));
                 
                 this._debugRenderer = debugRenderer.ref;
                 objectAttacher!.target = this._debugObject;

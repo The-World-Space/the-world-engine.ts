@@ -8,12 +8,12 @@ import { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
 /**
- * css2d polygon renderer
+ * css 2d edge renderer
  * 
- * this renderer use svg tag to render polygon
+ * this renderer use svg tag to render edge
  */
-export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
-    private _svgElement: SVGPolygonElement|null = null;
+export class CssEdgeRenderer extends CssRenderer<HTMLDivElement> {
+    private _svgElement: SVGPolylineElement|null = null;
     private _points: Vector2[] = [
         new Vector2(-2, -2),
         new Vector2(2, -2),
@@ -22,9 +22,9 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     ];
     private _width = 4;
     private _height = 4;
-    private readonly _color = Color.fromHex("#39C5BB");
-    private readonly _borderColor = Color.fromHex("#00FF00");
-    private _borderWidth = 0;
+    private readonly _edgeColor = Color.fromHex("#00FF00");
+    private _edgeWidth = 0;
+    private static readonly _safebound = 0.1;
 
     protected override renderInitialize(): void {
         if (!this.htmlElement) {
@@ -33,29 +33,14 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
             svgElement.setAttribute("width", "100%");
             svgElement.setAttribute("height", "100%");
             
-            //blur test code
-            // const defs = document.createElementNS("http://www.w3.org/2000/svg", "defs");
-            // const filter = document.createElementNS("http://www.w3.org/2000/svg", "filter");
-            // filter.setAttribute("id", "blur");
-            // filter.setAttribute("x", "-50%");
-            // filter.setAttribute("y", "-50%");
-            // filter.setAttribute("width", "200%");
-            // filter.setAttribute("height", "200%");
-            // const feGaussianBlur = document.createElementNS("http://www.w3.org/2000/svg", "feGaussianBlur");
-            // feGaussianBlur.setAttribute("in", "SourceGraphic");
-            // feGaussianBlur.setAttribute("stdDeviation", "100");
-            // filter.appendChild(feGaussianBlur);
-            // defs.appendChild(filter);
-            // svgElement.appendChild(defs);
-
-            const svgPolygon = document.createElementNS("http://www.w3.org/2000/svg", "polygon");
-            svgPolygon.style.fill = this._color.toHexWithAlpha();
-            svgPolygon.style.stroke = this._borderColor.toHexWithAlpha();
-            svgPolygon.style.strokeWidth = this._borderWidth + "px";
-            // svgPolygon.style.filter = "url(#blur)";
-            svgElement.appendChild(svgPolygon);
+            const svgPolyLine = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
+            svgPolyLine.style.fill = "none";
+            svgPolyLine.style.stroke = this._edgeColor.toHexWithAlpha();
+            svgPolyLine.style.strokeWidth = this._edgeWidth + "px";
+            
+            svgElement.appendChild(svgPolyLine);
             this.htmlElement.appendChild(svgElement);
-            this._svgElement = svgPolygon;
+            this._svgElement = svgPolyLine;
             const css3DObject = this.initializeBaseComponents(false);
             
             Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
@@ -100,8 +85,8 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
             if (Math.abs(point.x) > maxX) maxX = Math.abs(point.x);
             if (Math.abs(point.y) > maxY) maxY = Math.abs(point.y);
         }
-        this._width = maxX * 2 + this._borderWidth * 0.03;
-        this._height = maxY * 2 + this._borderWidth * 0.03;
+        this._width = maxX * 2 + this._edgeWidth * 0.03 + CssEdgeRenderer._safebound * 2;
+        this._height = maxY * 2 + this._edgeWidth * 0.03 + CssEdgeRenderer._safebound * 2;
         this.htmlElement!.style.width = (this._width / this.viewScale) + "px";
         this.htmlElement!.style.height = (this._height / this.viewScale) + "px";
     }
@@ -124,14 +109,14 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     }
 
     /**
-     * polygon points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     * edge points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
      */
     public get points(): readonly ReadonlyVector2[] {
         return this._points;
     }
 
     /**
-     * polygon points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
+     * edge points (default: [(-2, -2), (2, -2), (2, 2), (-2, 2)])
      */
     public set points(value: readonly ReadonlyVector2[]) {
         this._points.length = 0;
@@ -147,7 +132,7 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     }
 
     /**
-     * set polygon points to regular polygon
+     * set edge points to regular polygon
      * @param sides number of sides
      * @param radius radius of polygon
      */
@@ -164,51 +149,34 @@ export class Css2DPolygonRenderer extends CssRenderer<HTMLDivElement> {
     }
 
     /**
-     * color (default: "#39C5BB")
+     * edge color (default: "#00FF00")
      */
-    public get color(): ReadonlyColor {
-        return this._color;
+    public get edgeColor(): ReadonlyColor {
+        return this._edgeColor;
     }
 
     /**
-     * color (default: "#39C5BB")
+     * edge color (default: "#00FF00")
      */
-    public set color(value: ReadonlyColor) {
-        this._color.copy(value);
-        if (this.htmlElement) {
-            this._svgElement!.style.fill = value.toHexWithAlpha();
-        }
-    }
-
-    /**
-     * border color (default: "#00FF00")
-     */
-    public get borderColor(): ReadonlyColor {
-        return this._borderColor;
-    }
-
-    /**
-     * border color (default: "#00FF00")
-     */
-    public set borderColor(value: ReadonlyColor) {
-        this._borderColor.copy(value);
+    public set edgeColor(value: ReadonlyColor) {
+        this._edgeColor.copy(value);
         if (this.htmlElement) {
             this._svgElement!.style.stroke = value.toHexWithAlpha();
         }
     }
 
     /**
-     * border width (default: 0)
+     * edge width (default: 0)
      */
-    public get borderWidth(): number {
-        return this._borderWidth;
+    public get edgeWidth(): number {
+        return this._edgeWidth;
     }
 
     /**
-     * border width (default: 0)
+     * edge width (default: 0)
      */
-    public set borderWidth(value: number) {
-        this._borderWidth = value;
+    public set edgeWidth(value: number) {
+        this._edgeWidth = value;
         if (this.htmlElement) {
             this._svgElement!.style.strokeWidth = value + "px";
         }

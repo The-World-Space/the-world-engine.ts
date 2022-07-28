@@ -131,11 +131,11 @@ export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_rend
 //render
 export { Camera, CameraType } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
-export { Css2DEdgeRenderer } from "./engine/script/render/Css2DEdgeRenderer";
-export { Css2DLineRenderer } from "./engine/script/render/Css2DLineRenderer";
-export { Css2DPolygonRenderer } from "./engine/script/render/Css2DPolygonRenderer";
+export { CssEdgeRenderer } from "./engine/script/render/CssEdgeRenderer";
 export { CssHtmlElementRenderer } from "./engine/script/render/CssHtmlElementRenderer";
 export { CssIframeRenderer } from "./engine/script/render/CssIframeRenderer";
+export { CssLineRenderer } from "./engine/script/render/CssLineRenderer";
+export { CssPolygonRenderer2D } from "./engine/script/render/CssPolygonRenderer2D";
 export type { ICssRenderOption, IUnknownSizeCssRenderOption } from "./engine/script/render/CssRenderer";
 export { CssRenderer } from "./engine/script/render/CssRenderer";
 export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";

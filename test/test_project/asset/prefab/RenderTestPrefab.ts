@@ -1,8 +1,8 @@
 import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { Color } from "@src/engine/render/Color";
-import { Css2DEdgeRenderer } from "@src/engine/script/render/Css2DEdgeRenderer";
-import { Css2DPolygonRenderer } from "@src/engine/script/render/Css2DPolygonRenderer";
+import { CssEdgeRenderer } from "@src/engine/script/render/CssEdgeRenderer";
+import { CssPolygonRenderer2D } from "@src/engine/script/render/CssPolygonRenderer2D";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
 import { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "@src/engine/script/render/CssSpriteAtlasRenderer";
 import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRenderer";
@@ -78,7 +78,7 @@ export class RenderTestPrefab extends Prefab {
                 }))
                 
             .withChild(instantiater.buildGameObject("polygon_render_test_object", new Vector3(0, 0, 0))
-                .withComponent(Css2DPolygonRenderer, c => {
+                .withComponent(CssPolygonRenderer2D, c => {
                     c.enabled = true;
                     c.viewScale = 0.01;
                     c.setShapeToRegularPolygon(10, 6);
@@ -86,7 +86,7 @@ export class RenderTestPrefab extends Prefab {
                 }))
                 
             .withChild(instantiater.buildGameObject("edge_render_test_object", new Vector3(20, 0, 0))
-                .withComponent(Css2DEdgeRenderer, c => {
+                .withComponent(CssEdgeRenderer, c => {
                     c.edgeWidth = 2;
                     c.edgeColor = new Color(1, 1, 1, 0.3);
                     c.viewScale = 0.01;

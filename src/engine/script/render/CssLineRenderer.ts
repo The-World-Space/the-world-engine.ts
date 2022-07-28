@@ -12,7 +12,7 @@ import { CssRenderer } from "./CssRenderer";
  * 
  * this renderer use div tag to render single line
  */
-export class Css2DLineRenderer extends CssRenderer<HTMLDivElement> {
+export class CssLineRenderer extends CssRenderer<HTMLDivElement> {
     private readonly _lineColor = Color.fromHex("#00FF00");
     private _lineWidth = 1;
     private readonly _point1 = new Vector2(-2, -2);
