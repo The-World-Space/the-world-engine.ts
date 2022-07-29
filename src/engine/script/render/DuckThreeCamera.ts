@@ -319,6 +319,8 @@ export class DuckThreeCamera {
     /**
      * create duck type interface of camera component
      * 
+     * this interface is guaranteed automatic updating of the matrix
+     * 
      * If this method is called without the camera's enable message being invoked error will be thrown
      * @param camera camera component
      * @returns three.js camera object duck type interface

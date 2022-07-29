@@ -6,7 +6,7 @@ import { Scene } from "./hierarchy_object/Scene";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
-import { CameraContainer } from "./render/CameraContainer";
+import { CameraContainer, IReadonlyCameraContainer } from "./render/CameraContainer";
 import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { SceneProcessor } from "./SceneProcessor";
@@ -83,7 +83,7 @@ export class EngineGlobalObject {
      * 
      * This problem can be solved by placing the components that use the camera at the bottom of the tree rather than the Camera components.
      */
-    public get cameraContainer(): CameraContainer {
+    public get cameraContainer(): IReadonlyCameraContainer {
         return this._cameraContainer;
     }
 
