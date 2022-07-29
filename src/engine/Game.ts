@@ -25,7 +25,8 @@ export class Game {
     private readonly _rootScene: Scene;
     private readonly _gameScreen: GameScreen;
     private _css3DRenderer?: OptimizedCSS3DRenderer;
-    private _webglRenderer?: Renderer;
+    private _webglRenderer?: Omit<Renderer, "domElement">;
+    private _webglRendererDomElement?: HTMLCanvasElement;
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: Time;
     private readonly _gameState: GameState;
@@ -113,8 +114,8 @@ export class Game {
 
         if (this._webglRenderer) {
             this._webglRenderer.setSize(width, height);
-            this._webglRenderer.domElement.style.width = "100%";
-            this._webglRenderer.domElement.style.height = "100%";
+            this._webglRendererDomElement!.style.width = "100%";
+            this._webglRendererDomElement!.style.height = "100%";
         }
     }
 
@@ -137,10 +138,11 @@ export class Game {
 
         if (this._gameSetting.render.webGLRenderer) { // initialize webgl renderer
             const container = this._container;
-            this._webglRenderer = this._gameSetting.render.webGLRenderer as Renderer;
+            this._webglRenderer = this._gameSetting.render.webGLRenderer as Omit<Renderer, "domElement">;
+            this._webglRendererDomElement = this._gameSetting.render.webGlRendererDomElement! as HTMLCanvasElement;
             this._webglRenderer.setSize(container.clientWidth, container.clientHeight);
-            this._webglRenderer.domElement.style.position = "absolute";
-            container.appendChild(this._webglRenderer.domElement);
+            this._webglRendererDomElement.style.position = "absolute";
+            container.appendChild(this._webglRendererDomElement);
         }
 
         if (this._gameSetting.render.useCss3DRenderer) { // initialize css3d renderer
@@ -247,7 +249,7 @@ export class Game {
         
         if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
         if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
-        if (this._webglRenderer) this._container.removeChild(this._webglRenderer.domElement);
+        if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);
         this._container.remove();
         
         this._isDisposed = true;
