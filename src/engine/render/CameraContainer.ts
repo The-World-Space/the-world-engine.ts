@@ -5,6 +5,18 @@ import { CameraInfo } from "./CameraInfo";
 import { ReadonlyColor } from "./ReadonlyColor";
 
 /**
+ * The container that has the camera currently in use for rendering.
+ * 
+ * you can use Unsafe API by casting this to `CameraContainer`
+ */
+export interface IReadonlyCameraContainer {
+    /**
+     * get current render camera
+     */
+    get camera(): Camera|null;
+}
+
+/**
  * schedule camera by priority to be rendered
  * do not drive this class
  */
@@ -35,7 +47,9 @@ export class CameraContainer {
 
     /**
      * get current camera priority
-     * @internal
+     * 
+     * This is the API used to make wrapper of three.js Camera
+     * There is no use unless you use raw three.js objects that are not managed by the engine
      */
     public get currentCameraPriority(): number {
         return this._currentCameraInfo?.info.priority ?? Number.MIN_SAFE_INTEGER;
@@ -46,7 +60,8 @@ export class CameraContainer {
      * @param camera 
      * @param info 
      * 
-     * @internal
+     * This is the API used to make wrapper of three.js Camera
+     * There is no use unless you use raw three.js objects that are not managed by the engine
      */
     public addCamera(camera: Camera, info: CameraInfo): void {
         this._cameraInfoMap.set(camera, info);
@@ -58,7 +73,8 @@ export class CameraContainer {
      * remove camera from camera container
      * @param camera 
      * 
-     * @internal
+     * This is the API used to make wrapper of three.js Camera
+     * There is no use unless you use raw three.js objects that are not managed by the engine
      */
     public removeCamera(camera: Camera): void {
         const info = this._cameraInfoMap.get(camera);
@@ -73,7 +89,8 @@ export class CameraContainer {
      * @param camera 
      * @param priority 
      * 
-     * @internal
+     * This is the API used to make wrapper of three.js Camera
+     * There is no use unless you use raw three.js objects that are not managed by the engine
      */
     public changeCameraPriority(camera: Camera, priority: number): void {
         const info = this._cameraInfoMap.get(camera);
@@ -89,7 +106,8 @@ export class CameraContainer {
      * @param camera 
      * @param color 
      * 
-     * @internal
+     * This is the API used to make wrapper of three.js Camera
+     * There is no use unless you use raw three.js objects that are not managed by the engine
      */
     public changeCameraBackgroundColor(camera: Camera, color: ReadonlyColor): void {
         const info = this._cameraInfoMap.get(camera);

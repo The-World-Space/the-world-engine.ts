@@ -2,11 +2,38 @@ import { Camera as ThreeCamera, OrthographicCamera as ThreeOrthographicCamera, P
 
 import { Transform } from "../../../engine/hierarchy_object/Transform";
 import { Component } from "../../hierarchy_object/Component";
+import { CameraContainer } from "../../render/CameraContainer";
 import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 
 type PerspectiveOrOrthographicCamera = ThreePerspectiveCamera|ThreeOrthographicCamera;
+
+type OverridedCamera = PerspectiveCameraOverrided|OrthographicCameraOverrided;
+
+class PerspectiveCameraOverrided extends ThreePerspectiveCamera {
+    public override updateProjectionMatrix(): void {
+        Transform.updateRawObject3DWorldMatrixRecursively(this);
+        this.matrixWorldInverse.copy(this.matrixWorld).invert();
+        super.updateProjectionMatrix();
+    }
+
+    public originalUpdateProjectionMatrix(): void {
+        super.updateProjectionMatrix();
+    }
+}
+
+class OrthographicCameraOverrided extends ThreeOrthographicCamera {
+    public override updateProjectionMatrix(): void {
+        Transform.updateRawObject3DWorldMatrixRecursively(this);
+        this.matrixWorldInverse.copy(this.matrixWorld).invert();
+        super.updateProjectionMatrix();
+    }
+
+    public originalUpdateProjectionMatrix(): void {
+        super.updateProjectionMatrix();
+    }
+}
 
 /**
  * caamera projection type
@@ -33,21 +60,26 @@ export class Camera extends Component {
     private _far = 1000;
     private _priority = 0;
     private readonly _backgroudColor: Color = new Color(1, 1, 1, 0);
+    private _cameraContainer: CameraContainer|null = null;
 
     private readonly onScreenResize = (width: number, height: number): void => {
         const aspectRatio = width / height;
         if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.aspect = aspectRatio;
-            this._camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         } else if (this._camera instanceof ThreeOrthographicCamera) {
             const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
             this._camera.right = viewSizeScalar * aspectRatio;
             this._camera.top = viewSizeScalar;
             this._camera.bottom = -viewSizeScalar;
-            this._camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         }
     };
+
+    public awake(): void {
+        this._cameraContainer = this.engine.cameraContainer as CameraContainer;
+    }
 
     public onEnable(): void {
         this.engine.screen.onResize.addListener(this.onScreenResize);
@@ -74,7 +106,7 @@ export class Camera extends Component {
                     this._camera.fov = this._fov;
                     this._camera.near = this._near;
                     this._camera.far = this._far;
-                    this._camera.updateProjectionMatrix();
+                    (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
                 } else {
                     this._camera.removeFromParent();
                     Camera.removeCameraFromDuckPool(this._camera);
@@ -95,7 +127,7 @@ export class Camera extends Component {
                     this._camera.bottom = -viewSizeScalar;
                     this._camera.near = this._near;
                     this._camera.far = this._far;
-                    this._camera.updateProjectionMatrix();
+                    (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
                 } else {
                     this._camera.removeFromParent();
                     Camera.removeCameraFromDuckPool(this._camera);
@@ -108,12 +140,12 @@ export class Camera extends Component {
         }
         
         Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
-        this.engine.cameraContainer.addCamera(this, new CameraInfo(this._priority, this._backgroudColor));
+        this._cameraContainer!.addCamera(this, new CameraInfo(this._priority, this._backgroudColor));
     }
 
     private createNewPerspectiveCamera(): ThreePerspectiveCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
-        const camera = new ThreePerspectiveCamera(
+        const camera = new PerspectiveCameraOverrided(
             this._fov,
             aspectRatio,
             this._near,
@@ -121,7 +153,7 @@ export class Camera extends Component {
         );
         if (this._zoom !== 1) {
             camera.zoom = this._zoom;
-            camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         }
         return camera;
     }
@@ -129,7 +161,7 @@ export class Camera extends Component {
     private createNewOrthographicCamera(): ThreeOrthographicCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
         const viewSizeScalar = this._viewSize;
-        const camera = new ThreeOrthographicCamera(
+        const camera = new OrthographicCameraOverrided(
             -viewSizeScalar * aspectRatio,
             viewSizeScalar * aspectRatio,
             viewSizeScalar,
@@ -139,7 +171,7 @@ export class Camera extends Component {
         );
         if (this._zoom !== 1) {
             camera.zoom = this._zoom;
-            camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         }
         return camera;
     }
@@ -147,7 +179,7 @@ export class Camera extends Component {
     public onDisable(): void {
         this.engine.screen.onResize.removeListener(this.onScreenResize);
         if (this._camera) {
-            this.engine.cameraContainer.removeCamera(this);
+            this._cameraContainer!.removeCamera(this);
         }
     }
 
@@ -206,7 +238,7 @@ export class Camera extends Component {
             if (this._camera.fov === value) return;
 
             this._fov = this._camera.fov = value;
-            this._camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         } else {
             this._fov = value;
         }
@@ -240,7 +272,7 @@ export class Camera extends Component {
             this._camera.right = viewSizeScalar * aspectRatio;
             this._camera.top = viewSizeScalar;
             this._camera.bottom = -viewSizeScalar;
-            this._camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         } else {
             this._viewSize = value;
         }
@@ -266,7 +298,7 @@ export class Camera extends Component {
             if (camera.zoom === value) return;
 
             this._zoom = camera.zoom = value;
-            camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         } else {
             this._zoom = value;
         }
@@ -296,7 +328,7 @@ export class Camera extends Component {
             if (camera.near === value) return;
 
             this._near = camera.near = value;
-            camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         } else {
             this._near = value;
         }
@@ -326,7 +358,7 @@ export class Camera extends Component {
             if (camera.far === value) return;
 
             this._far = camera.far = value;
-            camera.updateProjectionMatrix();
+            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
         } else {
             this._far = value;
         }
@@ -349,7 +381,7 @@ export class Camera extends Component {
     public set priority(value: number) {
         this._priority = value;
         if (this._camera) {
-            this.engine.cameraContainer.changeCameraPriority(this, value);
+            this._cameraContainer!.changeCameraPriority(this, value);
         }
     }
 
@@ -370,7 +402,7 @@ export class Camera extends Component {
     public set backgroundColor(value: ReadonlyColor) {
         this._backgroudColor.copy(value);
         if (this._camera) {
-            this.engine.cameraContainer.changeCameraBackgroundColor(this, value);
+            this._cameraContainer!.changeCameraBackgroundColor(this, value);
         }
     }
 

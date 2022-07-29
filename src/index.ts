@@ -57,6 +57,7 @@ export type { DefaultLayerName } from "./engine/physics/CollisionLayerConstType"
 export { CollisionLayerMaskConverter } from "./engine/physics/CollisionLayerMaskConverter";
 
 //render
+export type { IReadonlyCameraContainer } from "./engine/render/CameraContainer";
 export { CameraContainer } from "./engine/render/CameraContainer";
 export { Color } from "./engine/render/Color";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
