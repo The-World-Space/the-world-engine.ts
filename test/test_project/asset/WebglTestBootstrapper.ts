@@ -1,16 +1,14 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
-import { Component } from "@src/engine/hierarchy_object/Component";
 import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
-import { DuckThreeCamera } from "@src/engine/script/render/DuckThreeCamera";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { OutlineEffect } from "three/examples/jsm/effects/OutlineEffect";
 import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshBasicMaterial, Vector3, WebGLRenderer } from "three/src/Three";
 
 import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
+import { OrbitControls } from "./script/OrbitControls";
 
 export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
@@ -28,41 +26,9 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 .withComponent(Camera, c => {
                     c.cameraType = CameraType.Perspective;
                 })
-                .withComponent(class extends Component {
-                    private _camera: Camera|null = null;
-                    private _orbitControls: OrbitControls|null = null;
-
-                    public awake(): void {
-                        this._camera = this.gameObject.getComponent(Camera);
-                    }
-
-                    public start(): void {
-                        const controls = this._orbitControls = new OrbitControls(
-                            DuckThreeCamera.createInterface(this._camera!),
-                            this.engine.domElement
-                        );
-                        controls.listenToKeyEvents( window ); // optional
-        
-                        controls.enableDamping = true; // an animation loop is required when either damping or auto-rotation are enabled
-                        controls.dampingFactor = 0.05;
-        
-                        controls.screenSpacePanning = true;
-        
-                        controls.minDistance = 20;
-                        controls.maxDistance = 50;
-        
-                        controls.maxPolarAngle = Math.PI / 2;
-                    }
-
-                    public update(): void {
-                        this._orbitControls!.update();
-                    }
-
-                    public onDestroy(): void {
-                        this._orbitControls!.dispose();
-                        this._orbitControls = null;
-                        this._camera = null;
-                    }
+                .withComponent(OrbitControls, c => {
+                    c.target = new Vector3(0, 4, 0);
+                    (globalThis as any).controls = c;
                 }))
                 
             .withChild(instantiater.buildGameObject("ambient-light")
