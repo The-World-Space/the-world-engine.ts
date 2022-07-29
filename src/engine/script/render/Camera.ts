@@ -9,32 +9,6 @@ import { ReadonlyColor } from "../../render/ReadonlyColor";
 
 type PerspectiveOrOrthographicCamera = ThreePerspectiveCamera|ThreeOrthographicCamera;
 
-type OverridedCamera = PerspectiveCameraOverrided|OrthographicCameraOverrided;
-
-class PerspectiveCameraOverrided extends ThreePerspectiveCamera {
-    public override updateProjectionMatrix(): void {
-        Transform.updateRawObject3DWorldMatrixRecursively(this);
-        this.matrixWorldInverse.copy(this.matrixWorld).invert();
-        super.updateProjectionMatrix();
-    }
-
-    public originalUpdateProjectionMatrix(): void {
-        super.updateProjectionMatrix();
-    }
-}
-
-class OrthographicCameraOverrided extends ThreeOrthographicCamera {
-    public override updateProjectionMatrix(): void {
-        Transform.updateRawObject3DWorldMatrixRecursively(this);
-        this.matrixWorldInverse.copy(this.matrixWorld).invert();
-        super.updateProjectionMatrix();
-    }
-
-    public originalUpdateProjectionMatrix(): void {
-        super.updateProjectionMatrix();
-    }
-}
-
 /**
  * caamera projection type
  */
@@ -66,14 +40,14 @@ export class Camera extends Component {
         const aspectRatio = width / height;
         if (this._camera instanceof ThreePerspectiveCamera) {
             this._camera.aspect = aspectRatio;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            this._camera.updateProjectionMatrix();
         } else if (this._camera instanceof ThreeOrthographicCamera) {
             const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
             this._camera.right = viewSizeScalar * aspectRatio;
             this._camera.top = viewSizeScalar;
             this._camera.bottom = -viewSizeScalar;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            this._camera.updateProjectionMatrix();
         }
     };
 
@@ -106,7 +80,7 @@ export class Camera extends Component {
                     this._camera.fov = this._fov;
                     this._camera.near = this._near;
                     this._camera.far = this._far;
-                    (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+                    this._camera.updateProjectionMatrix();
                 } else {
                     this._camera.removeFromParent();
                     Camera.removeCameraFromDuckPool(this._camera);
@@ -127,7 +101,7 @@ export class Camera extends Component {
                     this._camera.bottom = -viewSizeScalar;
                     this._camera.near = this._near;
                     this._camera.far = this._far;
-                    (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+                    this._camera.updateProjectionMatrix();
                 } else {
                     this._camera.removeFromParent();
                     Camera.removeCameraFromDuckPool(this._camera);
@@ -145,7 +119,7 @@ export class Camera extends Component {
 
     private createNewPerspectiveCamera(): ThreePerspectiveCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
-        const camera = new PerspectiveCameraOverrided(
+        const camera = new ThreePerspectiveCamera(
             this._fov,
             aspectRatio,
             this._near,
@@ -153,7 +127,7 @@ export class Camera extends Component {
         );
         if (this._zoom !== 1) {
             camera.zoom = this._zoom;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            camera.updateProjectionMatrix();
         }
         return camera;
     }
@@ -161,7 +135,7 @@ export class Camera extends Component {
     private createNewOrthographicCamera(): ThreeOrthographicCamera {
         const aspectRatio = this.engine.screen.width / this.engine.screen.height;
         const viewSizeScalar = this._viewSize;
-        const camera = new OrthographicCameraOverrided(
+        const camera = new ThreeOrthographicCamera(
             -viewSizeScalar * aspectRatio,
             viewSizeScalar * aspectRatio,
             viewSizeScalar,
@@ -171,7 +145,7 @@ export class Camera extends Component {
         );
         if (this._zoom !== 1) {
             camera.zoom = this._zoom;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            camera.updateProjectionMatrix();
         }
         return camera;
     }
@@ -238,7 +212,7 @@ export class Camera extends Component {
             if (this._camera.fov === value) return;
 
             this._fov = this._camera.fov = value;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            this._camera.updateProjectionMatrix();
         } else {
             this._fov = value;
         }
@@ -272,7 +246,7 @@ export class Camera extends Component {
             this._camera.right = viewSizeScalar * aspectRatio;
             this._camera.top = viewSizeScalar;
             this._camera.bottom = -viewSizeScalar;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            this._camera.updateProjectionMatrix();
         } else {
             this._viewSize = value;
         }
@@ -298,7 +272,7 @@ export class Camera extends Component {
             if (camera.zoom === value) return;
 
             this._zoom = camera.zoom = value;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            camera.updateProjectionMatrix();
         } else {
             this._zoom = value;
         }
@@ -328,7 +302,7 @@ export class Camera extends Component {
             if (camera.near === value) return;
 
             this._near = camera.near = value;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            camera.updateProjectionMatrix();
         } else {
             this._near = value;
         }
@@ -358,7 +332,7 @@ export class Camera extends Component {
             if (camera.far === value) return;
 
             this._far = camera.far = value;
-            (this._camera as OverridedCamera).originalUpdateProjectionMatrix();
+            camera.updateProjectionMatrix();
         } else {
             this._far = value;
         }
