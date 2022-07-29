@@ -24,7 +24,7 @@ export class DuckThreeCamera {
         const derivedMembers = new Map<string, any>();
         this.getDerivedProtoypeMembers(threeCamera, derivedMembers);
         for (const [name, value] of derivedMembers) {
-            (this as any)[name] = value;
+            (this as any)[name] = value.bind(threeCamera);
         }
         this.overrideMembers(component);
     }
