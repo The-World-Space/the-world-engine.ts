@@ -7,7 +7,8 @@ import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { DuckThreeCamera } from "@src/engine/script/render/DuckThreeCamera";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { BoxGeometry, Mesh, MeshBasicMaterial, Vector3, WebGLRenderer } from "three/src/Three";
+import { OutlineEffect } from "three/examples/jsm/effects/OutlineEffect";
+import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshBasicMaterial, Vector3, WebGLRenderer } from "three/src/Three";
 
 import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 
@@ -15,9 +16,10 @@ export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
         this.setting.render.useCss3DRenderer(true);
 
-        const webGLRenderer = new WebGLRenderer();
-        webGLRenderer.setPixelRatio( window.devicePixelRatio );
-        this.setting.render.webGLRenderer(webGLRenderer);
+        const webGLRenderer = new WebGLRenderer({ antialias: true });
+        webGLRenderer.setPixelRatio(window.devicePixelRatio);
+        const effect = new OutlineEffect(webGLRenderer);
+        this.setting.render.webGLRenderer(effect, webGLRenderer.domElement);
 
         const instantiater = this.instantiater;
 
@@ -62,6 +64,12 @@ export class WebglTestBootstrapper extends Bootstrapper {
                         this._camera = null;
                     }
                 }))
+                
+            .withChild(instantiater.buildGameObject("ambient-light")
+                .withComponent(Object3DContainer, c => c.object3D = new AmbientLight(0x666666)))
+
+            .withChild(instantiater.buildGameObject("directional-light", new Vector3(-1, 1, 1).normalize())
+                .withComponent(Object3DContainer, c => c.object3D = new DirectionalLight(0x887766)))
 
             .withChild(instantiater.buildGameObject("sprite", new Vector3(0, 0, 10))
                 .withComponent(CssSpriteRenderer, c => {
