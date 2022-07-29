@@ -33,7 +33,7 @@ export class CameraContainer {
             if (a.info.priority === b.info.priority) {
                 return a.camera.instanceId - b.camera.instanceId;
             }
-            return a.info.priority - b.info.priority;
+            return b.info.priority - a.info.priority;
         });
         this._onChangeBackgroundColor = onChangeBackgroundColor;
     }
