@@ -75,11 +75,8 @@ export abstract class Component {
      * @param coroutineIterator coroutine iterator
      * @returns coroutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
      */
-    public startCoroutine(coroutineIterator: CoroutineIterator): Coroutine|null {
+    public startCoroutine(coroutineIterator: CoroutineIterator): Coroutine {
         this.checkComponentIsExist();
-        if (!this._enabled || !this._gameObject.activeInHierarchy) {
-            return null;
-        }
 
         const coroutine = new Coroutine(this, coroutineIterator, () => {
             const index = this._runningCoroutines.indexOf(coroutine);
@@ -87,8 +84,10 @@ export abstract class Component {
                 this._runningCoroutines.splice(index, 1);
             }
         });
-        this._runningCoroutines.push(coroutine);
         coroutine.fatchNextInstruction();
+        if (!this._gameObject.activeInHierarchy) return coroutine;
+
+        this._runningCoroutines.push(coroutine);
         this.engine.coroutineProcessor.addCoroutine(coroutine);
         return coroutine;
     }
@@ -161,8 +160,6 @@ export abstract class Component {
                 this._engine_internal_componentEventContainer.tryUnregisterStart();
                 this._engine_internal_componentEventContainer.tryUnregisterUpdate();
                 this.engine.sceneProcessor.tryStartProcessSyncedEvent();
-                
-                this.stopAllCoroutines();
             }
         }
     }
