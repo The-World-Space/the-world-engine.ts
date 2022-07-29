@@ -175,32 +175,32 @@ export class DuckThreeCamera {
         };
 
         // override getWorldDirection property
-        (this as unknown as ThreeCamera).getWorldDirection = (target: Vector3): Vector3 => {
+        (this as unknown as Object3D).getWorldDirection = (target: Vector3): Vector3 => {
             return transform.getForward(target);
         };
 
         // override getWorldPosition property
-        (this as unknown as ThreeCamera).getWorldPosition = (target: Vector3): Vector3 => {
+        (this as unknown as Object3D).getWorldPosition = (target: Vector3): Vector3 => {
             return target.copy(transform.position);
         };
 
         // override getWorldQuaternion property
-        (this as unknown as ThreeCamera).getWorldQuaternion = (target: Quaternion): Quaternion => {
+        (this as unknown as Object3D).getWorldQuaternion = (target: Quaternion): Quaternion => {
             return target.copy(transform.rotation);
         };
 
         // override getWorldScale property
-        (this as unknown as ThreeCamera).getWorldScale = (target: Vector3): Vector3 => {
+        (this as unknown as Object3D).getWorldScale = (target: Vector3): Vector3 => {
             return (target as WritableVector3).copy(transform.lossyScale) as Vector3;
         };
 
         // override localToWorld property
-        (this as unknown as ThreeCamera).localToWorld = (target: Vector3): Vector3 => {
+        (this as unknown as Object3D).localToWorld = (target: Vector3): Vector3 => {
             return transform.transformPoint(target);
         };
 
         // override lookAt
-        (this as unknown as ThreeCamera).lookAt = (target: Vector3): void => {
+        (this as unknown as Object3D).lookAt = (target: Vector3): void => {
             transform.lookAt(target);
         };
 
@@ -260,7 +260,7 @@ export class DuckThreeCamera {
         };
 
         // override setRotationFromQuaternion
-        (this as unknown as ThreeCamera).setRotationFromQuaternion = (quaternion: Quaternion): void => {
+        (this as unknown as Object3D).setRotationFromQuaternion = (quaternion: Quaternion): void => {
             transform.localRotation.copy(quaternion);
         };
 
@@ -303,12 +303,12 @@ export class DuckThreeCamera {
         };
 
         // override updateProjectionMatrix
-        (this as unknown as ThreeCamera).updateWorldMatrix = (): void => {
+        (this as unknown as Object3D).updateWorldMatrix = (): void => {
             //empty because matrix is automatically updated by transform
         };
 
         // override worldToLocal
-        (this as unknown as ThreeCamera).worldToLocal = (target: Vector3): Vector3 => {
+        (this as unknown as Object3D).worldToLocal = (target: Vector3): Vector3 => {
             return transform.inverseTransformPoint(target);
         };
     }

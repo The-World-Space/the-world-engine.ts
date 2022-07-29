@@ -2,7 +2,8 @@ import type { Renderer } from "three/src/Three";
 
 export type RenderSettingObject = { 
     useCss3DRenderer: boolean,
-    webGLRenderer?: Renderer
+    webGLRenderer?: Omit<Renderer, "domElement">,
+    webGlRendererDomElement?: HTMLCanvasElement
 };
 
 export class RenderSetting {
@@ -37,8 +38,13 @@ export class RenderSetting {
      * @param value webgl renderer
      * @returns this
      */
-    public webGLRenderer(value: Renderer): this {
-        this._renderSettingObject.webGLRenderer = value;
+    public webGLRenderer(renderer: Renderer): this;
+
+    public webGLRenderer(renderer: Omit<Renderer, "domElement">, domElement: HTMLCanvasElement): this;
+    
+    public webGLRenderer(renderer: Omit<Renderer, "domElement">, domElement?: HTMLCanvasElement): this {
+        this._renderSettingObject.webGLRenderer = renderer;
+        this._renderSettingObject.webGlRendererDomElement = domElement ?? (renderer as Renderer).domElement;
         return this;
     }
 }
