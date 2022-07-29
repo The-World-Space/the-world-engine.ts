@@ -6,6 +6,8 @@ import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
 import { ReadonlyColor } from "../../render/ReadonlyColor";
 
+type PerspectiveOrOrthographicCamera = ThreePerspectiveCamera|ThreeOrthographicCamera;
+
 /**
  * caamera projection type
  */
@@ -26,6 +28,7 @@ export class Camera extends Component {
     private _cameraType: CameraType = CameraType.Orthographic;
     private _fov = 75;
     private _viewSize = 5;
+    private _zoom = 1;
     private _near = 0.1;
     private _far = 1000;
     private _priority = 0;
@@ -116,6 +119,10 @@ export class Camera extends Component {
             this._near,
             this._far
         );
+        if (this._zoom !== 1) {
+            camera.zoom = this._zoom;
+            camera.updateProjectionMatrix();
+        }
         return camera;
     }
 
@@ -130,6 +137,10 @@ export class Camera extends Component {
             this._near,
             this._far
         );
+        if (this._zoom !== 1) {
+            camera.zoom = this._zoom;
+            camera.updateProjectionMatrix();
+        }
         return camera;
     }
 
@@ -179,6 +190,9 @@ export class Camera extends Component {
      * only available when cameraType is Perspective
      */
     public get fov(): number {
+        if (this._camera instanceof ThreePerspectiveCamera) {
+            return this._fov = this._camera.fov;
+        }
         return this._fov;
     }
 
@@ -188,11 +202,13 @@ export class Camera extends Component {
      * only available when cameraType is Perspective
      */
     public set fov(value: number) {
-        if (this._fov === value) return;
-        this._fov = value;
         if (this._camera instanceof ThreePerspectiveCamera) {
-            this._camera.fov = value;
+            if (this._camera.fov === value) return;
+
+            this._fov = this._camera.fov = value;
             this._camera.updateProjectionMatrix();
+        } else {
+            this._fov = value;
         }
     }
 
@@ -202,6 +218,9 @@ export class Camera extends Component {
      * only available when cameraType is Orthographic
      */
     public get viewSize(): number {
+        if (this._camera instanceof ThreeOrthographicCamera) {
+            return this._viewSize = this._camera.top;
+        }
         return this._viewSize;
     }
 
@@ -211,9 +230,10 @@ export class Camera extends Component {
      * only available when cameraType is Orthographic
      */
     public set viewSize(value: number) {
-        if (this._viewSize === value) return;
-        this._viewSize = value;
         if (this._camera instanceof ThreeOrthographicCamera) {
+            if (this._camera.top === value) return;
+
+            this._viewSize = value;
             const aspectRatio = this.engine.screen.width / this.engine.screen.height;
             const viewSizeScalar = this._viewSize;
             this._camera.left = -viewSizeScalar * aspectRatio;
@@ -221,6 +241,34 @@ export class Camera extends Component {
             this._camera.top = viewSizeScalar;
             this._camera.bottom = -viewSizeScalar;
             this._camera.updateProjectionMatrix();
+        } else {
+            this._viewSize = value;
+        }
+    }
+
+    /**
+     * zoom (default: 1)
+     */
+    public get zoom(): number {
+        if (this._camera) {
+            return this._zoom = (this._camera as PerspectiveOrOrthographicCamera).zoom;
+        }
+
+        return this._zoom;
+    }
+
+    /**
+     * zoom (default: 1)
+     */
+    public set zoom(value: number) {
+        const camera = this._camera as PerspectiveOrOrthographicCamera;
+        if (camera) {
+            if (camera.zoom === value) return;
+
+            this._zoom = camera.zoom = value;
+            camera.updateProjectionMatrix();
+        } else {
+            this._zoom = value;
         }
     }
 
@@ -230,6 +278,10 @@ export class Camera extends Component {
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public get near(): number {
+        if (this._camera) {
+            return this._near = (this._camera as PerspectiveOrOrthographicCamera).near;
+        }
+
         return this._near;
     }
     
@@ -239,11 +291,14 @@ export class Camera extends Component {
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public set near(value: number) {
-        if (this._near === value) return;
-        this._near = value;
-        if (this._camera instanceof ThreePerspectiveCamera) {
-            this._camera.near = value;
-            this._camera.updateProjectionMatrix();
+        const camera = this._camera as PerspectiveOrOrthographicCamera;
+        if (camera) {
+            if (camera.near === value) return;
+
+            this._near = camera.near = value;
+            camera.updateProjectionMatrix();
+        } else {
+            this._near = value;
         }
     }
 
@@ -253,6 +308,10 @@ export class Camera extends Component {
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public get far(): number {
+        if (this._camera) {
+            return this._far = (this._camera as PerspectiveOrOrthographicCamera).far;
+        }
+
         return this._far;
     }
 
@@ -262,11 +321,14 @@ export class Camera extends Component {
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public set far(value: number) {
-        if (this._far === value) return;
-        this._far = value;
-        if (this._camera instanceof ThreePerspectiveCamera) {
-            this._camera.far = value;
-            this._camera.updateProjectionMatrix();
+        const camera = this._camera as PerspectiveOrOrthographicCamera;
+        if (camera) {
+            if (camera.far === value) return;
+
+            this._far = camera.far = value;
+            camera.updateProjectionMatrix();
+        } else {
+            this._far = value;
         }
     }
 
