@@ -71,7 +71,6 @@ export abstract class Component {
      * starts a coroutine
      * 
      * if component is destroyed this will throw an error
-     * if component is not enabled coroutine will not be executed
      * @param coroutineIterator coroutine iterator
      * @returns coroutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
      */
