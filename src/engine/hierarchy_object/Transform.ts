@@ -1067,5 +1067,14 @@ export class Transform {
         this._worldPositionRotationScaleNeedUpdate = true;
     }
 
+    /** @internal */
+    public forceUpdateOthersFromLocalPositionRotationScale(): void {
+        this._localMatrixNeedUpdate = true;
+        this._localPositionRotationScaleNeedUpdate = false;
+        this._worldMatrixNeedUpdate = true;
+        this._worldPositionRotationScaleNeedUpdate = true;
+        this.tryUpdateWorldMatrixRecursivelyFromThisToChildren();
+    }
+
     // #endregion Expriemental
 }
