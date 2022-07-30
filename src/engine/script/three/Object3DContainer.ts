@@ -49,6 +49,7 @@ export class Object3DContainer<T extends Object3D> extends Component {
     public onWorldMatrixUpdated(): void {
         const object3D = this._object3D;
         if (!object3D) return;
+        if (!this.gameObject.activeInHierarchy || !this.enabled) return;
         Transform.updateRawObject3DWorldMatrixRecursively(object3D);
         this.transform.enqueueRenderAttachedObject3D(object3D);
     }

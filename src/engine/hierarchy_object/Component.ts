@@ -69,37 +69,51 @@ export abstract class Component {
 
     /**
      * starts a coroutine
+     * 
+     * if component is destroyed this will throw an error
      * @param coroutineIterator coroutine iterator
      * @returns coroutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
      */
     public startCoroutine(coroutineIterator: CoroutineIterator): Coroutine {
         this.checkComponentIsExist();
+
         const coroutine = new Coroutine(this, coroutineIterator, () => {
             const index = this._runningCoroutines.indexOf(coroutine);
             if (index >= 0) {
                 this._runningCoroutines.splice(index, 1);
             }
         });
-        this._runningCoroutines.push(coroutine);
         coroutine.fatchNextInstruction();
+        if (!this._gameObject.activeInHierarchy) return coroutine;
+
+        this._runningCoroutines.push(coroutine);
         this.engine.coroutineProcessor.addCoroutine(coroutine);
         return coroutine;
     }
 
     /**
      * stop all coroutines executed by this component
+     * 
+     * if component is destroyed this will throw an error
      */
     public stopAllCoroutines(): void {
         this.checkComponentIsExist();
         const runningCoroutines = this._runningCoroutines;
+        const coroutineProcessor = this.engine.coroutineProcessor;
         for (let i = 0; i < runningCoroutines.length; ++i) {
-            this.stopCoroutine(runningCoroutines[i]);
+            const coroutine = runningCoroutines[i] as Coroutine;
+            if (coroutine.component !== this) {
+                throw new Error("Coroutine is not owned by this component");
+            }
+            coroutineProcessor.removeCoroutine(coroutine);
         }
         runningCoroutines.length = 0;
     }
 
     /**
      * stop coroutine that is executed by this component
+     * 
+     * if component is destroyed this will throw an error
      * @param coroutine coroutine instance
      */
     public stopCoroutine(coroutine: Coroutine): void {
@@ -123,6 +137,8 @@ export abstract class Component {
 
     /**
      * enabled components are updated, disabled components are not
+     * 
+     * if component is destroyed this will throw an error
      */
     public set enabled(value: boolean) {
         this.checkComponentIsExist();

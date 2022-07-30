@@ -6,6 +6,8 @@
 export class TwoDimensionalStringMapper {
     /**
      * map string to T
+     * 
+     * it will throw error if the string is not in the map
      * @param array two dimensional string array
      * @param converter converter functions
      * @returns mapped array
@@ -21,6 +23,9 @@ export class TwoDimensionalStringMapper {
             const str = array[row];
             for (let column = 0; column < str.length; ++column) {
                 const char = str[column];
+                if (converter[char] === undefined) {
+                    throw new Error(`conversion not found for ${char}`);
+                }
                 rowArray.push(converter[char](column, row));
             }
             result.push(rowArray);
