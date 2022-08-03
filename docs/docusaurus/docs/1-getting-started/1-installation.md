@@ -151,6 +151,14 @@ add scripts to package.json
 }
 ```
 
+for import images we should add `image.d.ts` file
+
+```typescript title="./src/types/image.d.ts"
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.gif";
+```
+
 ## Install the-world-engine
 
 you can install the-world-engine with npm:
