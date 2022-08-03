@@ -40,7 +40,7 @@ paste the following boilerplate files in the src folder
 ```typescript title="./src/index.ts"
 console.log("Hello World");
 
-export{}
+export{};
 ```
 
 ## Install typescript

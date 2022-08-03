@@ -1,7 +1,7 @@
 import { Component, CoroutineIterator, WaitForSeconds } from "the-world-engine";
 
 export class RandomMovement extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
     
     public awake(): void {
         this.startCoroutine(this.move());

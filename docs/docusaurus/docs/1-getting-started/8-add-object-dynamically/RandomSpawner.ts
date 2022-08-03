@@ -2,7 +2,7 @@ import { Color, Component, CssHtmlElementRenderer, CssTextRenderer, GameObject, 
 import { Vector3 } from "three/src/Three";
 
 export class RandomSpawner1 extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
 
     public spawnAtScene(): void {
         const instantiater = this.engine.instantiater;
@@ -34,7 +34,7 @@ export class RandomSpawner1 extends Component {
 }
 
 export class RandomSpawner2 extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
 
     public spawnAtScene(): void {
         const instantiater = this.engine.instantiater;
@@ -88,7 +88,7 @@ export class RandomSpawner2 extends Component {
 }
 
 export class RandomSpawner3 extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
 
     public spawnAtScene(): void {
         const instantiater = this.engine.instantiater;
@@ -148,7 +148,7 @@ export class RandomSpawner3 extends Component {
 }
 
 export class RandomSpawner4 extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
     private readonly _spawnedObjects: GameObject[] = [];
 
     public spawnAtGameObject(): void {
@@ -211,7 +211,7 @@ export class RandomSpawner4 extends Component {
 }
 
 export class RandomSpawner5 extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
     private readonly _spawnedObjects: GameObject[] = [];
 
     public spawnAtGameObject(): void {

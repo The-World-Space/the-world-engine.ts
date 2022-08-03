@@ -79,11 +79,11 @@ import { Vector2, Vector3 } from "three/src/Three";
 
 export class PlayerController extends Component {
     private readonly _speed = 4;
-    private readonly _direction: Vector2 = new Vector2(0, -1);
-    private _isMoving: boolean = false;
+    private readonly _direction = new Vector2(0, -1);
+    private _isMoving = false;
     private _spriteAtlasAnimator: SpriteAtlasAnimator|null = null;
 
-    private _tempVector3: Vector3 = new Vector3();
+    private readonly _tempVector3 = new Vector3();
 
     public awake(): void {
         this._spriteAtlasAnimator = this.gameObject.getComponent(SpriteAtlasAnimator);
