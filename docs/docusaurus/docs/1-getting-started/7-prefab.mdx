@@ -5,7 +5,7 @@ import { Bootstrapper } from "./7-prefab/Bootstrapper";
 
 If you keep writing scenes on the bootstrapper, the bootstrapper will become too big.
 
-You can use prefab to resolve this issue.
+**You can use prefab to separate scene builds**. It's like separating components in React development.
 
 ## Make a prefab
 
@@ -49,6 +49,19 @@ export class CameraPrefab extends Prefab {
     }
 }
 ```
+:::tip
+It is recommended that the method of exporting something from a prefab starts with the name "with"
+And it is recommended that the method of getting something from the prefab starts with the name "get".
+:::
+:::tip
+You can see that the implementation of the "get" method and the "with" method is the same, because it works as a call by reference.
+
+Eventually, the behavior is determined by whether the reference is read or written inside the prefab.
+
+For this code, `this._camera` will be exposed as "get" method because the value was writed at `.getComponent(Camera, this._camera)`
+
+And `this._trackObject` will be exposed as "with" method because the value was readed at `if (this._trackObject.ref) c.setTrackTarget(this._trackObject.ref);`
+:::
 
 ## Add a prefab to the builder
 
