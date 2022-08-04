@@ -32,7 +32,6 @@ import { ObjectsPrefab } from "./prefab/world/ObjectsPrefab";
 import { DialogController } from "./script/DialogController";
 import { DrawIndex } from "./script/DrawIndex";
 import { FontLoader } from "./script/FontLoader";
-import { LastPositionSaver } from "./script/LastPositionSaver";
 
 export class Bootstrapper extends BaseBootstrapper {
     public override run(): SceneBuilder {
@@ -138,9 +137,7 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withCollideMap(collideTilemap2)
                 .withGridEventMap(gridEventMap)
                 .withGridPointer(pointer)
-                .withGridPosition(new PrefabRef(LastPositionSaver.loadPosition()))
                 .make()
-                .withComponent(LastPositionSaver)
                 .getGameObject(player))
 
             .withChild(instantiater.buildGameObject("pointer")
