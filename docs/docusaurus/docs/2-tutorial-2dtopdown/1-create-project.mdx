@@ -18,3 +18,38 @@ and we'll soon find out how to use all of these elements.
 ## Create Project
 
 First, follow the Installation Guide in **[Getting Started/Installation](../getting-started/installation)** to create a project.
+
+And make a bootstrapper skeleton.
+
+```typescript title="src/index.ts"
+import { Game } from "the-world-engine";
+
+import { Bootstrapper } from "./asset/Bootstrapper";
+
+const game = new Game(document.body);
+game.run(Bootstrapper);
+game.inputHandler.startHandleEvents();
+```
+
+```typescript title="src/asset/Bootstrapper.ts"
+import {
+    Bootstrapper as BaseBootstrapper,
+    Camera,
+    SceneBuilder
+} from "the-world-engine";
+
+export class Bootstrapper extends BaseBootstrapper {
+    public override run(): SceneBuilder {
+        const instantiater = this.instantiater;
+
+        return this.sceneBuilder
+            .withChild(instantiater.buildGameObject("camera")
+                .withComponent(Camera))
+        ;
+    }
+}
+```
+
+Now you're ready to make a scene. Most of our journeys will take place at Bootstrapper.ts.
+
+Then let's get started!
