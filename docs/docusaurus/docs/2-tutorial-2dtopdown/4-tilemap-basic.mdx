@@ -1,0 +1,211 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper, Bootstrapper2, Bootstrapper3, Bootstrapper4 } from "./project-override/4-tilemap-basic";
+
+# Tilemap Basic
+
+Let's find out the basic way to use the built-in engine component tilemap
+
+## Kind of Tilemap
+Currently, four types of tile maps are provided as standard:
+- `CssTilemapRenderer` - It's the most basic form of tilemap. You are **limited in size** and can draw tiles from a given tile set.
+- `CssTilemapChunkRenderer` - As a wrapper of the `CssTilemapRenderer`, it is a tilemap of **infinite size**.
+- `CssCollideTilemapRenderer` - It is a tilemap that **contains a grid collide map**.
+- `CssCollideTilemapChunkRenderer` - As a wrapper of the `CssCollideTilemapRenderer`, it has **infinite size**.
+
+:::tip
+grid collide maps are used for collision handling in grid-based games. We'll talk about this later.
+:::
+
+## Usage of `CssTilemapChunkRenderer`
+
+First, let's use the CssTilemapChunkRender to draw background tiles.
+
+```typescript title="src/asset/Bootstrapper.ts"
+return this.sceneBuilder
+    .withChild(instantiater.buildGameObject("background", new Vector3(0, 0, -1))
+        .withComponent(CssTilemapChunkRenderer, c => {
+            c.chunkSize = 15;
+            c.tileResolutionX = 16;
+            c.tileResolutionY = 16;
+
+            AsyncImageLoader.loadImageFromPath(OverworldTileset).then(image => {
+                if (!c.exists) return;
+
+                c.imageSources = [ new TileAtlasItem(image, 18, 13) ];
+                c.drawTile(0, 0, 0, 24);
+            });
+        }))
+
+    .withChild(instantiater.buildGameObject("camera")
+        .withComponent(Camera, c => {
+            c.viewSize = 4;
+        })
+        .withComponent(EditorCameraController, c => {
+            c.mouseMoveButton = 0;
+        })
+        .withComponent(EditorGridRenderer, c => {
+            c.renderWidth = 50;
+            c.renderHeight = 50;
+        }))
+;
+```
+
+<DocumentGame bootstrapper={Bootstrapper} />
+
+Let's look at the code line by line.
+
+```typescript
+c.chunkSize = 15;
+```
+
+- First, I'm specifying the chunk size.
+This is because if the chunk size is even,
+the center of the tilemap coordinate system is (0.5, 0.5) and if it's odd,
+it's (0, 0), so we put an odd value in order to make the coordinate system (0, 0).
+The default chunk size is 16, which is odd.
+
+```typescript
+c.tileResolutionX = 16;
+c.tileResolutionY = 16;
+```
+
+- Next, the tileResolution value is specified.
+It is recommended that the resolution of the tile map renderer be
+accurate to the resolution of the tile. In this case, the resolution of the tile is 16x16,
+so we set it to 16.
+
+```typescript
+AsyncImageLoader.loadImageFromPath(OverworldTileset).then(image => {
+    if (!c.exists) return;
+
+    //...
+});
+```
+
+- then loading the image using AsyncImageLoader.
+AsyncImageLoader is just a Promise Wrapper for an onLoad callback.
+
+- c.exists is the code to determine if a component exists,
+and it is recommended that you check the existence for all asynchronous job callbacks
+because the component may have been destroyed by another element after the asynchronous operation.
+*(For example, the most frequent problem is that if the player unmounts the game while loading the game, the component will no longer exist at the time of asynchronous callback.)*
+
+```typescript
+c.imageSources = [ new TileAtlasItem(image, 18, 13) ];
+```
+
+- Then you have to specify the sprite Atlas to use in Renderer.
+18 and 13 are column count and row count
+
+```typescript
+c.drawTile(0, 0, 0, 24);
+```
+
+- Finally, you can draw a tile.
+The first two numbers are x, y values to draw tiles,
+followed by the index of the c.imageSources array,
+and the last is the index value of the sprite Atlas.
+Overworld Tileset's 24th tile is a grass tile.
+
+## Draw Tile From Two Dimensional Array
+
+```typescript title="src/asset/Bootstrapper.ts"
+const g = { i: 0 as const, a: 24 };
+    
+c.drawTileFromTwoDimensionalArray(
+    [
+        [g, g, g, g],
+        [g, g, g, g],
+        [g, g, g, g],
+        [g, g, g, g]
+    ],
+    0, 0
+);
+```
+
+<DocumentGame bootstrapper={Bootstrapper2} />
+
+You can also draw tiles through a two-dimensional array.
+
+The items in the array type is `{ i: number, a: number }`.
+where i stands for the index of c.imageSources and a stands for the index of Sprite Atlas.
+
+The last parameter 0, 0 is the center coordinate to draw the tile.
+The center coordinates span the left corner of the two-dimensional array
+
+### Mapping from String Array
+
+```typescript title="src/asset/Bootstrapper.ts"
+c.drawTileFromTwoDimensionalArray(
+    TwoDimensionalStringMapper.map([
+        "gggg",
+        "gggg",
+        "gggg",
+        "gggg"
+    ], {
+        "g": () => ({ i: 0, a: 24 }),
+    }),
+    0, 0
+);
+```
+
+Code for obtaining the same result as above.
+It can be viewed in a more readable form by mapping through strings.
+
+In future tutorials, we will use string mapping to design levels.
+
+## Make Grass Background
+
+Now let's make a lawn.
+
+```typescript title="src/asset/Bootstrapper.ts"
+.withChild(instantiater.buildGameObject("background", new Vector3(0, 0, -1))
+    .withComponent(CssTilemapChunkRenderer, c => {
+        c.chunkSize = 15;
+        c.tileResolutionX = 16;
+        c.tileResolutionY = 16;
+
+        AsyncImageLoader.loadImageFromPath(OverworldTileset).then(image => {
+            if (!c.exists) return;
+
+            c.imageSources = [ new TileAtlasItem(image, 18, 13) ];
+
+            const grass = { i: 0 as const, a: 24 };
+            const planeSize = 51;
+
+            const array2d: { i: 0; a: number; }[][] = [];
+            for (let i = 0; i < planeSize; i++) {
+                array2d[i] = [];
+                for (let j = 0; j < planeSize; j++) {
+                    array2d[i][j] = grass;
+                }
+            }
+
+            const planeSizeHalf = Math.floor(planeSize / 2);
+
+            c.drawTileFromTwoDimensionalArray(
+                array2d,
+                -planeSizeHalf, -planeSizeHalf
+            );
+        });
+    }))
+```
+
+We'll use a loop because it's a simple iteration.
+
+<DocumentGame bootstrapper={Bootstrapper3} />
+
+There is a lawn, but I think it's too dark. In fact, the asset we use is a little dark in color.
+
+Let's use the css filter to make it brighter.
+
+```typescript title="src/asset/Bootstrapper.ts"
+.withComponent(CssTilemapChunkRenderer, c => {
+    c.filter.brightness = 1.5;
+    //...
+})
+```
+
+<DocumentGame bootstrapper={Bootstrapper4} />
+
+I think it's better now

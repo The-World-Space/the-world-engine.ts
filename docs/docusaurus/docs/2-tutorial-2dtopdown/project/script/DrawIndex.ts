@@ -1,8 +1,5 @@
 import { Color, Component, CssTextRenderer } from "the-world-engine";
-import {
-    Vector2,
-    Vector3
-} from "three/src/Three";
+import { Vector2, Vector3 } from "three/src/Three";
 
 export class DrawIndex extends Component {
     public column = 18;
