@@ -1,0 +1,22 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper } from "./project-override/2-editor-setup";
+
+# Editor Setup
+
+for debug purposes we will add some components to game
+
+```typescript title="src/Bootstrapper.ts"
+.withChild(instantiater.buildGameObject("camera")
+    .withComponent(Camera)
+    .withComponent(EditorCameraController, c => {
+        c.mouseMoveButton = 0;
+    })
+    .withComponent(EditorGridRenderer, c => {
+        c.renderWidth = 50;
+        c.renderHeight = 50;
+    }))
+```
+
+<DocumentGame bootstrapper={Bootstrapper} />
+
+These two components will be very helpful in creating grid-based 2D games.

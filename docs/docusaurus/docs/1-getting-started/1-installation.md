@@ -40,7 +40,7 @@ paste the following boilerplate files in the src folder
 ```typescript title="./src/index.ts"
 console.log("Hello World");
 
-export{}
+export{};
 ```
 
 ## Install typescript
@@ -149,6 +149,14 @@ add scripts to package.json
     },
     //...
 }
+```
+
+for import images we should add `image.d.ts` file
+
+```typescript title="./src/types/image.d.ts"
+declare module "*.png";
+declare module "*.jpg";
+declare module "*.gif";
 ```
 
 ## Install the-world-engine

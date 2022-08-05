@@ -16,7 +16,7 @@ import { Component, CssHtmlElementRenderer } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
 
 export class RandomSpawner extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
 
     public spawnAtScene(): void {
         const instantiater = this.engine.instantiater;
@@ -132,7 +132,7 @@ you can use `GameObject.destroy()` to destroy a GameObject
 ```typescript title="./src/asset/script/Spawner.ts"
 //...
 export class RandomSpawner extends Component {
-    private readonly _range: number = 6;
+    private readonly _range = 6;
     private readonly _spawnedObjects: GameObject[] = [];
     
     //...
