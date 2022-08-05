@@ -12,9 +12,12 @@ export class Bootstrapper extends BaseBootstrapper {
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera")
-                .withComponent(Camera)
+                .withComponent(Camera, c => {
+                    c.viewSize = 4;
+                })
                 .withComponent(EditorCameraController, c => {
                     c.mouseMoveButton = 0;
+                    c.maxViewSize = 4;
                 })
                 .withComponent(EditorGridRenderer, c => {
                     c.renderWidth = 50;
