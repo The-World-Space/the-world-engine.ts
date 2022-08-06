@@ -1,0 +1,146 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper, Bootstrapper2 } from "./project-override/7-player";
+
+# Player
+
+We'll going to make a player gameObject that will be able to move around the map. and We'll animate the player.
+
+## Create Player Prefab
+
+You can create players with only engine-embedded components without any scripting.
+
+```typescript title="src/asset/prefab/PlayerPrefab.ts"
+import {
+    CssSpriteAtlasRenderer,
+    GameObjectBuilder,
+    MovementAnimationController,
+    PlayerGridMovementController,
+    Prefab,
+    SpriteAtlasAnimator
+} from "the-world-engine";
+
+import CharSpriteSheet from "../image/Char_Sprites/char_spritesheet.png";
+
+export class PlayerPrefab extends Prefab {
+
+    public override make(): GameObjectBuilder {
+        return this.gameObjectBuilder
+            .withComponent(CssSpriteAtlasRenderer, c => {
+                c.asyncSetImageFromPath(CharSpriteSheet, 26, 23);
+                c.imageWidth = 1;
+                c.imageHeight = 1;
+                c.viewScale = 1;
+                c.filter.brightness = 1.2;
+            })
+            .withComponent(SpriteAtlasAnimator, c => {
+                c.addAnimation("down_walk", [27, 28, 29, 30, 31, 32]);
+                c.addAnimation("left_walk", [53, 54, 55, 56, 57, 58]);
+                c.addAnimation("right_walk", [79, 80, 81, 82, 83, 84]);
+                c.addAnimation("up_walk", [105, 106, 107, 108, 109, 110]);
+
+                c.addAnimation("down_idle", [34, 35, 36, 37, 38, 39]);
+                c.addAnimation("left_idle", [60, 61, 62, 63, 64, 65]);
+                c.addAnimation("right_idle", [86, 87, 88, 89, 90, 91]);
+                c.addAnimation("up_idle", [112, 113, 114, 115, 116, 117]);
+
+                c.frameDuration = 0.1;
+                c.playAnimation("down_idle");
+            })
+            .withComponent(PlayerGridMovementController, c => {
+                c.speed = 4;
+            })
+            .withComponent(MovementAnimationController)
+        ;
+    }
+}
+```
+
+- `CssSpriteAtlasRenderer` is a component that renders a sprite atlas image.
+- `SpriteAtlasAnimator` is a component that animates the sprite atlas image.
+- `PlayerGridMovementController` is a component that moves the player on the grid.
+- `MovementAnimationController` is a component that controls the animation of the player. This is a very simple [FSM](https://en.wikipedia.org/wiki/Finite-state_machine).
+
+That's all you need to do and use it on the bootstrapper.
+
+:::tip
+If you don't like the specifications, you can implement these components yourself.
+:::
+
+## Build Player Prefab
+
+```typescript title="src/asset/Bootstrapper.ts"
+return this.sceneBuilder
+    .withChild(instantiater.buildGameObject("tilemap")
+        //...    
+    )
+
+    .withChild(instantiater.buildPrefab("player", PlayerPrefab)
+        .make())
+
+    .withChild(instantiater.buildGameObject("camera")
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll />
+
+Move the player to w, a, s, d.
+
+## Camera Follow Player
+
+We will use the `TrackCameraController`, an internal component of the Engine, to allow the camera to follow the player.
+
+```typescript title="src/asset/Bootstrapper.ts"
+const player = new PrefabRef<GameObject>();
+
+return this.sceneBuilder
+    .withChild(instantiater.buildGameObject("tilemap")
+        //...    
+    )
+
+    .withChild(instantiater.buildPrefab("player", PlayerPrefab)
+        .make()
+        .getGameObject(player))
+
+    .withChild(instantiater.buildGameObject("camera")
+        //...
+        .withComponent(TrackCameraController, c => {
+            c.setTrackTarget(player.ref!);
+        }))
+;
+```
+
+<DocumentGame bootstrapper={Bootstrapper2} allowScroll />
+
+now camera follow player.
+
+```typescript
+const player = new PrefabRef<GameObject>();
+```
+
+`PrefabRef` is used to inject dependencies when building a scene.
+In this case, we want to inject the player GameObject into the `TrackCameraController` component.
+
+```typescript
+.getGameObject(player)
+```
+
+so we get the player GameObject to the `PrefabRef` object.
+
+```typescript
+c.setTrackTarget(player.ref!);
+```
+
+Finally, we set the player GameObject to the `TrackCameraController` component.
+
+## Disable Editor Grid Renderer
+
+I think we can disable the grid renderer now that we have some frames.
+
+```typescript title="src/asset/Bootstrapper.ts"
+.withComponent(EditorGridRenderer, c => {
+    c.enabled = false;
+    c.renderWidth = 50;
+    c.renderHeight = 50;
+})
+```
+
+You can enable it whenever you need it for debugging.
