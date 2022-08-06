@@ -50,7 +50,7 @@ return this.sceneBuilder
 ;
 ```
 
-<DocumentGame bootstrapper={Bootstrapper} />
+<DocumentGame bootstrapper={Bootstrapper} ignoreEvents />
 
 Let's look at the code line by line.
 
@@ -123,7 +123,7 @@ c.drawTileFromTwoDimensionalArray(
 );
 ```
 
-<DocumentGame bootstrapper={Bootstrapper2} />
+<DocumentGame bootstrapper={Bootstrapper2} ignoreEvents />
 
 You can also draw tiles through a two-dimensional array.
 
@@ -193,7 +193,7 @@ Now let's make a lawn.
 
 We'll use a loop because it's a simple iteration.
 
-<DocumentGame bootstrapper={Bootstrapper3} />
+<DocumentGame bootstrapper={Bootstrapper3} ignoreEvents />
 
 There is a lawn, but I think it's too dark. In fact, the asset we use is a little dark in color.
 
@@ -206,6 +206,6 @@ Let's use the css filter to make it brighter.
 })
 ```
 
-<DocumentGame bootstrapper={Bootstrapper4} />
+<DocumentGame bootstrapper={Bootstrapper4} ignoreEvents />
 
 I think it's better now
