@@ -1,11 +1,13 @@
-import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
-import { IReadonlyGameScreen } from "@src/engine/render/IReadonlyGameScreen";
-import { WebGLGlobalObject } from "@src/engine/render/WebGLGlobalObject";
+import { EngineGlobalObject } from "../../EngineGlobalObject";
+import { CameraContainer } from "../../render/CameraContainer";
+import { IReadonlyGameScreen } from "../../render/IReadonlyGameScreen";
+import { WebGLGlobalObject } from "../../render/WebGLGlobalObject";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { WebGLRenderer } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
+import { Camera } from "./Camera";
 
 class EffectComposerRc {
     private static readonly _map = new Map<EngineGlobalObject, EffectComposerRc>();
@@ -52,9 +54,16 @@ export class WebGLGlobalPostProcessVolume extends Component {
     private _renderPass: RenderPass|null = null;
     private _effectComposer: EffectComposer|null = null;
 
+    private readonly onCameraChanged = (camera: Camera): void => {
+        if (this._renderPass !== null) {
+            this._renderPass.camera = camera.threeCamera!;
+        }
+    };
+
     public onEnable(): void {
         const threeScene = this.engine.scene.unsafeGetThreeScene();
-        const camera = this.engine.cameraContainer.camera;
+        const cameraContainer = this.engine.cameraContainer as CameraContainer;
+        const camera = cameraContainer.camera;
         const webglGlobalObject = this.engine.webGL;
 
         if (camera === null) {
@@ -71,6 +80,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
 
         const renderPass = this._renderPass = new RenderPass(threeScene, camera.threeCamera!);
         const effectComposer = this._effectComposer = EffectComposerRc.createOraddReference(this.engine, webglGlobalObject.webglRenderer);
+        cameraContainer.onCameraChanged.addListener(this.onCameraChanged);
         this._renderPass;
         this._effectComposer;
         effectComposer.addPass(renderPass);
@@ -84,6 +94,9 @@ export class WebGLGlobalPostProcessVolume extends Component {
         if (this._renderPass !== null) {
             this._effectComposer?.removePass(this._renderPass);
             this._renderPass = null;
+
+            const cameraContainer = this.engine.cameraContainer as CameraContainer;
+            cameraContainer.onCameraChanged.removeListener(this.onCameraChanged);
         }
         if (this._effectComposer !== null) {
             EffectComposerRc.removeReference(this.engine);
