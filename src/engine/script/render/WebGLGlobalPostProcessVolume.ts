@@ -1,4 +1,5 @@
 import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
+import { IReadonlyGameScreen } from "@src/engine/render/IReadonlyGameScreen";
 import { WebGLGlobalObject } from "@src/engine/render/WebGLGlobalObject";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
@@ -74,7 +75,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
         this._effectComposer;
         effectComposer.addPass(renderPass);
 
-        this._effectComposerInitializer?.(effectComposer);
+        this._effectComposerInitializer?.(effectComposer, threeScene, camera.threeCamera!, this.engine.screen);
 
         (this.engine.webGL as WebGLGlobalObject).effectComposer = effectComposer;
     }
@@ -90,9 +91,9 @@ export class WebGLGlobalPostProcessVolume extends Component {
         }
     }
 
-    private _effectComposerInitializer: ((effectComposer: EffectComposer) => void)|null = null;
+    private _effectComposerInitializer: ((effectComposer: EffectComposer, scene: THREE.Scene, camera: THREE.Camera, screen: IReadonlyGameScreen) => void)|null = null;
 
-    public setEffectComposerInitializer(effectComposerInitializer: (effectComposer: EffectComposer) => void): void {
+    public initializer(effectComposerInitializer: (effectComposer: EffectComposer, scene: THREE.Scene, camera: THREE.Camera, screen: IReadonlyGameScreen) => void): void {
         this._effectComposerInitializer = effectComposerInitializer;
     }
 }

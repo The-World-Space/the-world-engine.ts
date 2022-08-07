@@ -8,6 +8,7 @@ import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { WebGLGlobalPostProcessVolume } from "@src/engine/script/render/WebGLGlobalPostProcessVolume";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
 import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass"; 
+import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector3, WebGLRenderer } from "three/src/Three";
 import * as THREE from "three/src/Three";
 
@@ -41,9 +42,12 @@ export class WebglTestBootstrapper extends Bootstrapper {
 
             .withChild(instantiater.buildGameObject("postprocess-volume")
                 .withComponent(WebGLGlobalPostProcessVolume, c => {
-                    c.setEffectComposerInitializer(composer => {
+                    c.initializer(composer => {
                         const ssaoPass = new SSAOPass(c.engine.scene.unsafeGetThreeScene(), c.engine.cameraContainer.camera!.threeCamera!);
                         composer.addPass(ssaoPass);
+
+                        const bloomPass = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 1, 0.4, 0.8);
+                        composer.addPass(bloomPass);
                     });
                 }))
                 
