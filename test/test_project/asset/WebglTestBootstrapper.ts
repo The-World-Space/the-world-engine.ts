@@ -5,7 +5,9 @@ import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
 import { WebGLRendererLoader } from "@src/engine/render/WebGLRendererLoader";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
+import { WebGLGlobalPostProcessVolume } from "@src/engine/script/render/WebGLGlobalPostProcessVolume";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
+import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass"; 
 import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector3, WebGLRenderer } from "three/src/Three";
 import * as THREE from "three/src/Three";
 
@@ -35,6 +37,14 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 .withComponent(OrbitControls, c => {
                     c.enableDamping = false;
                     (globalThis as any).controls = c;
+                }))
+
+            .withChild(instantiater.buildGameObject("postprocess-volume")
+                .withComponent(WebGLGlobalPostProcessVolume, c => {
+                    c.setEffectComposerInitializer(composer => {
+                        const ssaoPass = new SSAOPass(c.engine.scene.unsafeGetThreeScene(), c.engine.cameraContainer.camera!.threeCamera!);
+                        composer.addPass(ssaoPass);
+                    });
                 }))
                 
             .withChild(instantiater.buildGameObject("ambient-light")

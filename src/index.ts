@@ -62,8 +62,8 @@ export { CameraContainer } from "./engine/render/CameraContainer";
 export { Color } from "./engine/render/Color";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 export type { ReadonlyColor } from "./engine/render/ReadonlyColor";
-export { WebGLGlobalObject } from "./engine/render/WebGLGlobalObject";
 export type { IReadonlyWebGLGlobalObject } from "./engine/render/WebGLGlobalObject";
+export { WebGLGlobalObject } from "./engine/render/WebGLGlobalObject";
 export { WebGLRendererLoader } from "./engine/render/WebGLRendererLoader";
 
 //time
