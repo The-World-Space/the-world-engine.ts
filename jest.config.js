@@ -13,8 +13,7 @@ const config = {
         "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/mocks/fileMock.js",
         "\\.(css|less)$": "<rootDir>/test/mocks/styleMock.js",
         "@src/(.*)": "<rootDir>/src/$1",
-        "three/src/Three": "<rootDir>/node_modules/three/src/Three.js",
-        "three/src/math/MathUtils": "<rootDir>/node_modules/three/src/math/MathUtils.js"
+        "three/(.*)": ["<rootDir>/node_modules/three/$1", "<rootDir>/src/engine/script/three/$1"]
     },
     transformIgnorePatterns: [
         "<rootDir>/node_modules/(?!three|js-sdsl)"
