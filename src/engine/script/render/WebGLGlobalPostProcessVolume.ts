@@ -1,12 +1,12 @@
-import { EngineGlobalObject } from "../../EngineGlobalObject";
-import { CameraContainer } from "../../render/CameraContainer";
-import { IReadonlyGameScreen } from "../../render/IReadonlyGameScreen";
-import { WebGLGlobalObject } from "../../render/WebGLGlobalObject";
 import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
 import { WebGLRenderer } from "three/src/Three";
 
+import { EngineGlobalObject } from "../../EngineGlobalObject";
 import { Component } from "../../hierarchy_object/Component";
+import { CameraContainer } from "../../render/CameraContainer";
+import { IReadonlyGameScreen } from "../../render/IReadonlyGameScreen";
+import { WebGLGlobalObject } from "../../render/WebGLGlobalObject";
 import { Camera } from "./Camera";
 
 class EffectComposerRc {
