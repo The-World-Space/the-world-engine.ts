@@ -1,9 +1,11 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Color } from "@src/engine/render/Color";
 import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
 import { WebGLRendererLoader } from "@src/engine/render/WebGLRendererLoader";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
+import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { WebGLGlobalPostProcessVolume } from "@src/engine/script/render/WebGLGlobalPostProcessVolume";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
@@ -17,7 +19,7 @@ import { OrbitControls } from "./script/OrbitControls";
 
 export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
-        this.setting.render.useCss3DRenderer(false);
+        this.setting.render.useCss3DRenderer(true);
         this.setting.render.webGLRendererLoader(WebGLRendererLoader);
         this.setting.render.webGLRenderer(() => {
             const webGLRenderer = new WebGLRenderer({ antialias: true });
@@ -29,7 +31,18 @@ export class WebglTestBootstrapper extends Bootstrapper {
 
         const instantiater = this.instantiater;
 
+        const camera1 = new PrefabRef<Camera>();
+
         return this.sceneBuilder
+            .withChild(instantiater.buildGameObject("switch-camera-button")
+                .withComponent(CssHtmlElementRenderer, c => {
+                    const button = document.createElement("button");
+                    button.innerText = "switch camera";
+                    button.onclick = (): void => {
+                        camera1.ref!.priority = camera1.ref!.priority === 1 ? -1 : 1;
+                    };
+                    c.element = button;
+                }))
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
                     c.backgroundColor = new Color(1, 1, 1);
@@ -38,13 +51,21 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 .withComponent(OrbitControls, c => {
                     c.enableDamping = false;
                     (globalThis as any).controls = c;
+                })
+                .getComponent(Camera, camera1))
+
+            .withChild(instantiater.buildGameObject("camera2", new Vector3(0, 0, 20))
+                .withComponent(Camera, c => {
+                    c.backgroundColor = new Color(1, 1, 1);
+                    c.cameraType = CameraType.Perspective;
                 }))
 
             .withChild(instantiater.buildGameObject("postprocess-volume")
                 .withComponent(WebGLGlobalPostProcessVolume, c => {
                     c.initializer(composer => {
                         const ssaoPass = new SSAOPass(c.engine.scene.unsafeGetThreeScene(), c.engine.cameraContainer.camera!.threeCamera!);
-                        composer.addPass(ssaoPass);
+                        ssaoPass;
+                        //composer.addPass(ssaoPass);
 
                         const bloomPass = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 1, 0.4, 0.8);
                         composer.addPass(bloomPass);
