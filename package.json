@@ -1,6 +1,6 @@
 {
     "name": "the-world-engine",
-    "version": "0.4.27",
+    "version": "0.4.28",
     "description": "three.js based, unity like game engine for browser",
     "main": "dist/index.js",
     "scripts": {
