@@ -25,8 +25,8 @@ class DrivedComponent2 extends Component {
     }
 
     public value1 = 1;
-    public func1 = (value: number) => value;
-    public func2 = (value: number) => value;
+    public func1 = (value: number): number => value;
+    public func2 = (value: number): number => value;
 }
 
 type UnwrapUnknown<T> = T extends unknown
@@ -39,8 +39,8 @@ type GetProps<T extends Component> = T["getProps"] extends (() => infer U) ? Unw
 
 type GetPropsOrComponent<T extends Component> = GetProps<T> extends never ? T : GetProps<T>;
 
-function withComponent<T extends Component>(componentCtor: new (...args: any[]) => T, callback: (component: GetPropsOrComponent<T>) => void) {
-    return callback(new componentCtor());
+function withComponent<T extends Component>(componentCtor: new (...args: any[]) => T, callback: (component: GetPropsOrComponent<T>) => void): void {
+    callback(new componentCtor());
 }
 
 withComponent(DrivedComponent, c => {
