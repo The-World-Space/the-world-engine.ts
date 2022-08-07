@@ -47,7 +47,7 @@ export class CoroutineProcessor {
         const coroutines = this._coroutines;
         for (let i = 0; i < coroutines.length; ++i) {
             const coroutine = coroutines[i];
-            if (coroutine == null) continue;
+            if (coroutine === null) continue;
 
             if (coroutine.currentYieldInstructionExist) {
                 this.updateAfterProcessSingleInstruction(coroutine);
@@ -83,7 +83,7 @@ export class CoroutineProcessor {
         const coroutines = this._coroutines;
         for (let i = 0; i < coroutines.length; ++i) {
             const coroutine = coroutines[i];
-            if (coroutine == null) continue;
+            if (coroutine === null) continue;
 
             if (coroutine.currentYieldInstructionExist) {
                 this.endFrameAfterProcessSingleInstruction(coroutine);

@@ -9,6 +9,7 @@ import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { CameraContainer, IReadonlyCameraContainer } from "./render/CameraContainer";
 import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
+import { WebGLGlobalObject } from "./render/WebGLGlobalObject";
 import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
 import { DeepReadonly } from "./type/DeepReadonly";
@@ -26,6 +27,7 @@ export class EngineGlobalObject {
     private readonly _screen: IReadonlyGameScreen;
     private readonly _physics2DProcessor: Physics2DProcessor;
     private readonly _domElement: HTMLElement;
+    private _webGLGlobalObject: WebGLGlobalObject|null = null;
     
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
@@ -62,6 +64,11 @@ export class EngineGlobalObject {
     /** @internal */
     public applyGameSetting(gameSettingObject: DeepReadonly<GameSettingObject>): void {
         this._physics2DProcessor.applyPhysicsSettings(gameSettingObject.physics);
+    }
+
+    /** @internal */
+    public setWebGLGlobalObject(webGLGlobalObject: WebGLGlobalObject): void {
+        this._webGLGlobalObject = webGLGlobalObject;
     }
 
     /** @internal */
@@ -139,6 +146,15 @@ export class EngineGlobalObject {
      */
     public get domElement(): HTMLElement {
         return this._domElement;
+    }
+
+    /**
+     * webGL object.
+     * 
+     * if you not use WebGL, this value is null.
+     */
+    public get webGL(): WebGLGlobalObject|null {
+        return this._webGLGlobalObject;
     }
 
     /** @internal */

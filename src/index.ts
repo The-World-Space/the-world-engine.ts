@@ -62,6 +62,9 @@ export { CameraContainer } from "./engine/render/CameraContainer";
 export { Color } from "./engine/render/Color";
 export type { IReadonlyGameScreen } from "./engine/render/IReadonlyGameScreen";
 export type { ReadonlyColor } from "./engine/render/ReadonlyColor";
+export type { IReadonlyWebGLGlobalObject } from "./engine/render/WebGLGlobalObject";
+export { WebGLGlobalObject } from "./engine/render/WebGLGlobalObject";
+export { WebGLRendererLoader } from "./engine/render/WebGLRendererLoader";
 
 //time
 export { Time } from "./engine/time/Time";
@@ -148,6 +151,7 @@ export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
 export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
 export { CssFilter } from "./engine/script/render/filter/CssFilter";
+export { WebGLGlobalPostProcessVolume } from "./engine/script/render/WebGLGlobalPostProcessVolume";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
 

@@ -1,5 +1,6 @@
 import OrderedSet from "js-sdsl/dist/esm/container/TreeContainer/OrderedSet";
 
+import { EventContainer, IEventContainer } from "../collection/EventContainer";
 import { Camera } from "../script/render/Camera";
 import { CameraInfo } from "./CameraInfo";
 import { ReadonlyColor } from "./ReadonlyColor";
@@ -25,6 +26,7 @@ export class CameraContainer {
     private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
     private readonly _cameraQueue: OrderedSet<{camera: Camera, info: CameraInfo}>;
     private readonly _onChangeBackgroundColor: (color: ReadonlyColor) => void;
+    private readonly _onChangeCameraEvent: EventContainer<(camera: Camera) => void>;
 
     /** @internal */
     public constructor(onChangeBackgroundColor: (color: ReadonlyColor) => void) {
@@ -36,6 +38,7 @@ export class CameraContainer {
             return b.info.priority - a.info.priority;
         });
         this._onChangeBackgroundColor = onChangeBackgroundColor;
+        this._onChangeCameraEvent = new EventContainer();
     }
 
     /**
@@ -129,7 +132,13 @@ export class CameraContainer {
             this._currentCameraInfo = null;
             return;
         }
+        if (this._currentCameraInfo?.camera === cameraPair.camera) return;
         this._currentCameraInfo = cameraPair;
         this._onChangeBackgroundColor(this._currentCameraInfo.info.backgroundColor);
+        this._onChangeCameraEvent.invoke(this._currentCameraInfo.camera);
+    }
+
+    public get onChangeCamera(): IEventContainer<(camera: Camera) => void> {
+        return this._onChangeCameraEvent;
     }
 }
