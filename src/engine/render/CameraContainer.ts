@@ -26,7 +26,7 @@ export class CameraContainer {
     private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
     private readonly _cameraQueue: OrderedSet<{camera: Camera, info: CameraInfo}>;
     private readonly _onChangeBackgroundColor: (color: ReadonlyColor) => void;
-    private readonly _onChangeCameraEvent: EventContainer<(camera: Camera) => void>;
+    private readonly _onCameraChangedEvent: EventContainer<(camera: Camera) => void>;
 
     /** @internal */
     public constructor(onChangeBackgroundColor: (color: ReadonlyColor) => void) {
@@ -38,7 +38,7 @@ export class CameraContainer {
             return b.info.priority - a.info.priority;
         });
         this._onChangeBackgroundColor = onChangeBackgroundColor;
-        this._onChangeCameraEvent = new EventContainer();
+        this._onCameraChangedEvent = new EventContainer();
     }
 
     /**
@@ -135,10 +135,10 @@ export class CameraContainer {
         if (this._currentCameraInfo?.camera === cameraPair.camera) return;
         this._currentCameraInfo = cameraPair;
         this._onChangeBackgroundColor(this._currentCameraInfo.info.backgroundColor);
-        this._onChangeCameraEvent.invoke(this._currentCameraInfo.camera);
+        this._onCameraChangedEvent.invoke(this._currentCameraInfo.camera);
     }
 
-    public get onChangeCamera(): IEventContainer<(camera: Camera) => void> {
-        return this._onChangeCameraEvent;
+    public get onCameraChanged(): IEventContainer<(camera: Camera) => void> {
+        return this._onCameraChangedEvent;
     }
 }
