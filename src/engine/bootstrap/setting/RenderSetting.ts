@@ -1,12 +1,10 @@
-import type { WebGLPostProcessLoader } from "@src/engine/render/WebGLPostProcessLoader";
 import type { WebGLRendererLoader } from "@src/engine/render/WebGLRendererLoader";
 import type { Renderer, WebGLRenderer } from "three/src/Three";
 
 export type RenderSettingObject = { 
     useCss3DRenderer: boolean,
     webGLRendererLoader?: typeof WebGLRendererLoader,
-    webGLRendererInitilizer?: () => WebGLRenderer | (readonly [Omit<Renderer, "domElement">, HTMLCanvasElement]),
-    webGLPostProcessLoader?: typeof WebGLPostProcessLoader
+    webGLRendererInitilizer?: () => WebGLRenderer | (readonly [Omit<Renderer, "domElement">, HTMLCanvasElement])
 };
 
 export class RenderSetting {
@@ -61,19 +59,6 @@ export class RenderSetting {
     
     public webGLRenderer(func: () => WebGLRenderer | (readonly [Omit<Renderer, "domElement">, HTMLCanvasElement])): this {
         this._renderSettingObject.webGLRendererInitilizer = func;
-        return this;
-    }
-
-    /**
-     * set webgl post process loader. (default: undefined)
-     * 
-     * you need to inject webgl post process loader for use post process effect.
-     * 
-     * @param value webgl post process loader
-     * @returns this
-     */
-    public webGLPostProcessLoader(value: typeof WebGLPostProcessLoader): this {
-        this._renderSettingObject.webGLPostProcessLoader = value;
         return this;
     }
 }

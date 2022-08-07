@@ -1,4 +1,3 @@
-import type { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import type { Renderer, WebGLRenderer } from "three/src/Three";
 
 import { Bootstrapper } from "./bootstrap/Bootstrapper";
@@ -32,7 +31,6 @@ export class Game {
     private _webglRendererLoader?: typeof WebGLRendererLoader;
     private _webglRenderer?: Omit<Renderer, "domElement">;
     private _webglRendererDomElement?: HTMLCanvasElement;
-    private _effectComposer?: EffectComposer;
 
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: Time;
@@ -44,6 +42,7 @@ export class Game {
     private readonly _physics2DProcessor: Physics2DProcessor;
 
     private readonly _engineGlobalObject: EngineGlobalObject;
+    private _webGLGlobalObject?: WebGLGlobalObject;
 
     private readonly _container: HTMLElement;
     private _gameSetting: DeepReadonly<GameSettingObject>|null = null;
@@ -72,7 +71,7 @@ export class Game {
 
         this._cameraContainer = new CameraContainer(
             (color: ReadonlyColor): void => {
-                if (this._webglRenderer || this._effectComposer) {
+                if (this._webglRenderer) {
                     this._rootScene.unsafeGetThreeScene().background = new this._webglRendererLoader!.Color(color.r, color.g, color.b);
                 } else if (this._css3DRenderer) {
                     this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
@@ -130,10 +129,6 @@ export class Game {
             this._webglRenderer.setSize(width, height);
             this._webglRendererDomElement!.style.width = "100%";
             this._webglRendererDomElement!.style.height = "100%";
-        }
-
-        if (this._effectComposer) {
-            this._effectComposer.setSize(width, height);
         }
     }
 
@@ -194,36 +189,21 @@ export class Game {
                 const container = this._container;
                 this._webglRendererDomElement = domElement;
 
-                let effectComposer: EffectComposer|null = null;
-                if (this._gameSetting.render.webGLPostProcessLoader) {
-                    if (rendererIsWebGLRenderer) {
-                        effectComposer = new this._gameSetting.render.webGLPostProcessLoader.EffectComposer(renderer as WebGLRenderer);
-                        this._effectComposer = effectComposer;
-                        this._effectComposer.setSize(container.clientWidth, container.clientHeight);
-                    } else {
-                        console.warn("you can't use post process with webgl renderer wrapper.");
-                    }
-                }
-
                 this._webglRenderer = renderer;
                 this._webglRenderer.setSize(container.clientWidth, container.clientHeight);
 
                 this._webglRendererDomElement.style.position = "absolute";
                 container.appendChild(this._webglRendererDomElement);
 
-                this._engineGlobalObject.setWebGLGlobalObject(
-                    new WebGLGlobalObject(
-                        renderer,
-                        rendererIsWebGLRenderer ? renderer as WebGLRenderer : null,
-                        null
-                    )
+                this._webGLGlobalObject = new WebGLGlobalObject(  
+                    renderer,
+                    rendererIsWebGLRenderer ? renderer as WebGLRenderer : null
                 );
+                this._engineGlobalObject.setWebGLGlobalObject(this._webGLGlobalObject);
             }
         } else {
             if (this._gameSetting.render.webGLRendererInitilizer) {
                 console.warn("webGLRenderer is specified, but webGLRendererLoader is not specified. so engine will not render as webgl.");
-            } else if (this._gameSetting.render.webGLPostProcessLoader) {
-                console.warn("webGLPostProcessLoader is specified, but webGLRendererLoader is not specified. so engine will not render as webgl.");
             }
         }
 
@@ -238,23 +218,15 @@ export class Game {
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
 
-        //if post process volume is not exist, use default render pass.
-        if (this._effectComposer && this._effectComposer.passes.length === 0) {
-            const renderPass = new this._gameSetting.render.webGLPostProcessLoader!.RenderPass(
-                this._rootScene.unsafeGetThreeScene(),
-                this._cameraContainer.camera!.threeCamera!
-            );
-            this._effectComposer.addPass(renderPass);
-        }
-
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
 
         if (this._css3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
-        if (this._effectComposer) {
-            this._effectComposer.render(this._time.deltaTime);
+        const effectComposer = this._webGLGlobalObject?.effectComposer;
+        if (effectComposer) {
+            effectComposer.render(this._time.deltaTime);
         } else if (this._webglRenderer) {
             this._webglRenderer.render(this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
@@ -277,8 +249,9 @@ export class Game {
         if (this._css3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
-        if (this._effectComposer) {
-            this._effectComposer.render(this._time.deltaTime);
+        const effectComposer = this._webGLGlobalObject?.effectComposer;
+        if (effectComposer) {
+            effectComposer.render(this._time.deltaTime);
         } else if (this._webglRenderer) {
             this._webglRenderer.render(this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }

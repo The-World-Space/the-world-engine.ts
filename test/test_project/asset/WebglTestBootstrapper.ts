@@ -2,7 +2,6 @@ import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Color } from "@src/engine/render/Color";
 import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
-import { WebGLPostProcessLoader } from "@src/engine/render/WebGLPostProcessLoader";
 import { WebGLRendererLoader } from "@src/engine/render/WebGLRendererLoader";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
@@ -17,7 +16,6 @@ export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
         this.setting.render.useCss3DRenderer(false);
         this.setting.render.webGLRendererLoader(WebGLRendererLoader);
-        this.setting.render.webGLPostProcessLoader(WebGLPostProcessLoader);
         this.setting.render.webGLRenderer(() => {
             const webGLRenderer = new WebGLRenderer({ antialias: true });
             webGLRenderer.setPixelRatio(window.devicePixelRatio);
