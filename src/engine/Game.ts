@@ -1,4 +1,5 @@
-import { Color, Renderer } from "three/src/Three";
+import type { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
+import type { Renderer, WebGLRenderer } from "three/src/Three";
 
 import { Bootstrapper } from "./bootstrap/Bootstrapper";
 import { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
@@ -14,6 +15,8 @@ import { GameScreen } from "./render/GameScreen";
 import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
 import { ReadonlyColor } from "./render/ReadonlyColor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
+import { WebGLGlobalObject } from "./render/WebGLGlobalObject";
+import type { WebGLRendererLoader } from "./render/WebGLRendererLoader";
 import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
 import { DeepReadonly } from "./type/DeepReadonly";
@@ -25,16 +28,23 @@ export class Game {
     private readonly _rootScene: Scene;
     private readonly _gameScreen: GameScreen;
     private _css3DRenderer?: OptimizedCSS3DRenderer;
+
+    private _webglRendererLoader?: typeof WebGLRendererLoader;
     private _webglRenderer?: Omit<Renderer, "domElement">;
     private _webglRendererDomElement?: HTMLCanvasElement;
+    private _effectComposer?: EffectComposer;
+
     private readonly _cameraContainer: CameraContainer;
     private readonly _time: Time;
     private readonly _gameState: GameState;
+
     private readonly _sceneProcessor: SceneProcessor;
     private readonly _coroutineProcessor: CoroutineProcessor;
     private readonly _transformMatrixProcessor: TransformMatrixProcessor;
     private readonly _physics2DProcessor: Physics2DProcessor;
+
     private readonly _engineGlobalObject: EngineGlobalObject;
+
     private readonly _container: HTMLElement;
     private _gameSetting: DeepReadonly<GameSettingObject>|null = null;
     private _animationFrameId: number|null;
@@ -60,13 +70,15 @@ export class Game {
         this._gameScreen = new GameScreen(container.clientWidth, container.clientHeight);
         this._container = container;
 
-        this._cameraContainer = new CameraContainer((color: ReadonlyColor): void => {
-            if (this._webglRenderer) {
-                this._rootScene.unsafeGetThreeScene().background = new Color(color.r, color.g, color.b);
-            } else if (this._css3DRenderer) {
-                this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
+        this._cameraContainer = new CameraContainer(
+            (color: ReadonlyColor): void => {
+                if (this._webglRenderer || this._effectComposer) {
+                    this._rootScene.unsafeGetThreeScene().background = new this._webglRendererLoader!.Color(color.r, color.g, color.b);
+                } else if (this._css3DRenderer) {
+                    this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
+                }
             }
-        });
+        );
         
         this._time = new Time();
         this._gameState = new GameState(GameStateKind.WaitingForStart);
@@ -82,10 +94,12 @@ export class Game {
             this._time,
             this._gameState,
             this._gameScreen,
+
             this._sceneProcessor,
             this._coroutineProcessor,
             this._transformMatrixProcessor,
             this._physics2DProcessor,
+            
             container
         );
         
@@ -117,6 +131,10 @@ export class Game {
             this._webglRendererDomElement!.style.width = "100%";
             this._webglRendererDomElement!.style.height = "100%";
         }
+
+        if (this._effectComposer) {
+            this._effectComposer.setSize(width, height);
+        }
     }
 
     /**
@@ -136,15 +154,6 @@ export class Game {
         this._gameSetting = bootstrapper.getGameSettingObject();
         this._engineGlobalObject.applyGameSetting(this._gameSetting);
 
-        if (this._gameSetting.render.webGLRenderer) { // initialize webgl renderer
-            const container = this._container;
-            this._webglRenderer = this._gameSetting.render.webGLRenderer as Omit<Renderer, "domElement">;
-            this._webglRendererDomElement = this._gameSetting.render.webGlRendererDomElement! as HTMLCanvasElement;
-            this._webglRenderer.setSize(container.clientWidth, container.clientHeight);
-            this._webglRendererDomElement.style.position = "absolute";
-            container.appendChild(this._webglRendererDomElement);
-        }
-
         if (this._gameSetting.render.useCss3DRenderer) { // initialize css3d renderer
             const container = this._container;
             this._css3DRenderer = new OptimizedCSS3DRenderer();
@@ -161,6 +170,62 @@ export class Game {
             };
             container.appendChild(css3DRendererDomElement);
         }
+        
+        if (this._gameSetting.render.webGLRendererLoader) { // initialize webgl renderer
+            if (this._gameSetting.render.webGLRendererInitilizer === undefined) {
+                console.warn("webGLRendererLoader is specified, but webGLRenderer is not specified. so engine will not render as webgl.");
+            } else {
+                this._webglRendererLoader = this._gameSetting.render.webGLRendererLoader;
+
+                const initilizerResult = this._gameSetting.render.webGLRendererInitilizer();
+                let renderer: WebGLRenderer|Omit<Renderer, "domElement">;
+                let domElement: HTMLCanvasElement;
+                let rendererIsWebGLRenderer: boolean;
+                if (initilizerResult instanceof Array) {
+                    renderer = initilizerResult[0];
+                    domElement = initilizerResult[1];
+                    rendererIsWebGLRenderer = false;
+                } else {
+                    renderer = initilizerResult;
+                    domElement = initilizerResult.domElement;
+                    rendererIsWebGLRenderer = true;
+                }
+
+                const container = this._container;
+                this._webglRendererDomElement = domElement;
+
+                let effectComposer: EffectComposer|null = null;
+                if (this._gameSetting.render.webGLPostProcessLoader) {
+                    if (rendererIsWebGLRenderer) {
+                        effectComposer = new this._gameSetting.render.webGLPostProcessLoader.EffectComposer(renderer as WebGLRenderer);
+                        this._effectComposer = effectComposer;
+                        this._effectComposer.setSize(container.clientWidth, container.clientHeight);
+                    } else {
+                        console.warn("you can't use post process with webgl renderer wrapper.");
+                    }
+                }
+
+                this._webglRenderer = renderer;
+                this._webglRenderer.setSize(container.clientWidth, container.clientHeight);
+
+                this._webglRendererDomElement.style.position = "absolute";
+                container.appendChild(this._webglRendererDomElement);
+
+                this._engineGlobalObject.setWebGLGlobalObject(
+                    new WebGLGlobalObject(
+                        renderer,
+                        rendererIsWebGLRenderer ? renderer as WebGLRenderer : null,
+                        null
+                    )
+                );
+            }
+        } else {
+            if (this._gameSetting.render.webGLRendererInitilizer) {
+                console.warn("webGLRenderer is specified, but webGLRendererLoader is not specified. so engine will not render as webgl.");
+            } else if (this._gameSetting.render.webGLPostProcessLoader) {
+                console.warn("webGLPostProcessLoader is specified, but webGLRendererLoader is not specified. so engine will not render as webgl.");
+            }
+        }
 
         scene.build();
         
@@ -172,14 +237,28 @@ export class Game {
         this._physics2DProcessor.update(this._time.deltaTime);
         this._coroutineProcessor.updateAfterProcess();
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
+
+        //if post process volume is not exist, use default render pass.
+        if (this._effectComposer && this._effectComposer.passes.length === 0) {
+            const renderPass = new this._gameSetting.render.webGLPostProcessLoader!.RenderPass(
+                this._rootScene.unsafeGetThreeScene(),
+                this._cameraContainer.camera!.threeCamera!
+            );
+            this._effectComposer.addPass(renderPass);
+        }
+
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
+
         if (this._css3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
-        if (this._webglRenderer) {
+        if (this._effectComposer) {
+            this._effectComposer.render(this._time.deltaTime);
+        } else if (this._webglRenderer) {
             this._webglRenderer.render(this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
+
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
         this._animationFrameId = requestAnimationFrame(this._loopBind);
@@ -194,12 +273,16 @@ export class Game {
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
         this._sceneProcessor.processRemoveObject();
         const renderObjects = this._transformMatrixProcessor.update();
+
         if (this._css3DRenderer) {
             this._css3DRenderer.render(renderObjects, this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
-        if (this._webglRenderer) {
+        if (this._effectComposer) {
+            this._effectComposer.render(this._time.deltaTime);
+        } else if (this._webglRenderer) {
             this._webglRenderer.render(this._rootScene.unsafeGetThreeScene(), this._cameraContainer.camera.threeCamera!);
         }
+
         this._transformMatrixProcessor.flush();
         this._coroutineProcessor.endFrameAfterProcess();
         this._animationFrameId = requestAnimationFrame(this._loopBind);
@@ -238,18 +321,23 @@ export class Game {
     public dispose(): void {
         if (this._isDisposed) return;
         
-        this._gameState.kind = GameStateKind.Finalizing;
-        if (this._animationFrameId) cancelAnimationFrame(this._animationFrameId);
-        this._engineGlobalObject.dispose();
+        if (this._gameState.kind === GameStateKind.Running) {
+            this._gameState.kind = GameStateKind.Finalizing;
+            if (this._animationFrameId) cancelAnimationFrame(this._animationFrameId);
+            this._engineGlobalObject.dispose();
 
-        const rootChildren = this._rootScene.children;
-        for (let i = 0; i < rootChildren.length; ++i) {
-            rootChildren[i].gameObject.destroy();
+            const rootChildren = this._rootScene.children;
+            for (let i = 0; i < rootChildren.length; ++i) {
+                rootChildren[i].gameObject.destroy();
+            }
+            
+            if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
+            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);   
+        } else {
+            this._engineGlobalObject.dispose();
         }
-        
+
         if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
-        if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
-        if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);
         this._container.remove();
         
         this._isDisposed = true;

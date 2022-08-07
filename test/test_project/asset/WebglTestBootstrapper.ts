@@ -1,14 +1,13 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import { Color } from "@src/engine/render/Color";
 import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
+import { WebGLPostProcessLoader } from "@src/engine/render/WebGLPostProcessLoader";
+import { WebGLRendererLoader } from "@src/engine/render/WebGLRendererLoader";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
-import { OutlineEffect } from "three/examples/jsm/effects/OutlineEffect";
-import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
-//import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
-import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector2, Vector3, WebGLRenderer } from "three/src/Three";
+import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector3, WebGLRenderer } from "three/src/Three";
 import * as THREE from "three/src/Three";
 
 import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
@@ -17,33 +16,22 @@ import { OrbitControls } from "./script/OrbitControls";
 export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
         this.setting.render.useCss3DRenderer(false);
-        const webGLRenderer = new WebGLRenderer({ antialias: true });
-        webGLRenderer.setPixelRatio(window.devicePixelRatio);
-        webGLRenderer.shadowMap.enabled = true;
-        webGLRenderer.toneMapping = THREE.ReinhardToneMapping;
-
-        const outlineEffect = new OutlineEffect(webGLRenderer);
-
-        // todo: support render pass
-        // todo: support post processing
-
-        //const renderScene = new RenderPass( scene, camera );
-
-        const bloomPass = new UnrealBloomPass( new Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85 );
-        bloomPass.threshold = 0;
-        bloomPass.strength = 1.5;
-        bloomPass.radius = 0;
-
-        const composer = new EffectComposer(webGLRenderer);
-        //composer.addPass(renderScene);
-        composer.addPass(bloomPass);
-        this.setting.render.webGLRenderer(outlineEffect, webGLRenderer.domElement);
+        this.setting.render.webGLRendererLoader(WebGLRendererLoader);
+        this.setting.render.webGLPostProcessLoader(WebGLPostProcessLoader);
+        this.setting.render.webGLRenderer(() => {
+            const webGLRenderer = new WebGLRenderer({ antialias: true });
+            webGLRenderer.setPixelRatio(window.devicePixelRatio);
+            webGLRenderer.shadowMap.enabled = true;
+            webGLRenderer.toneMapping = THREE.ReinhardToneMapping;
+            return webGLRenderer;
+        });
 
         const instantiater = this.instantiater;
 
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
+                    c.backgroundColor = new Color(1, 1, 1);
                     c.cameraType = CameraType.Perspective;
                 })
                 .withComponent(OrbitControls, c => {
@@ -54,8 +42,21 @@ export class WebglTestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildGameObject("ambient-light")
                 .withComponent(Object3DContainer, c => c.object3D = new AmbientLight(0x666666)))
 
-            .withChild(instantiater.buildGameObject("directional-light", new Vector3(-1, 1, 1).normalize())
-                .withComponent(Object3DContainer, c => c.object3D = new DirectionalLight(0x887766)))
+            .withChild(instantiater.buildGameObject("directional-light", new Vector3(-2, 0.5, 1))
+                .withComponent(Object3DContainer, c => {
+                    const directionalLight = new DirectionalLight(0x887766);
+                    directionalLight.castShadow = true;
+                    directionalLight.shadow.mapSize.width = 2048 * 2;
+                    directionalLight.shadow.mapSize.height = 2048 * 2;
+                    directionalLight.shadow.camera.near = 0.5;
+                    directionalLight.shadow.camera.far = 500;
+                    directionalLight.shadow.camera.left = -100;
+                    directionalLight.shadow.camera.right = 100;
+                    directionalLight.shadow.camera.top = 100;
+                    directionalLight.shadow.camera.bottom = -100;
+                    (globalThis as any).directionalLight = directionalLight;
+                    c.object3D = directionalLight;
+                }))
 
             .withChild(instantiater.buildGameObject("sprite", new Vector3(0, 0, 0))
                 .active(true)

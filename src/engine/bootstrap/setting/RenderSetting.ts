@@ -1,9 +1,12 @@
-import type { Renderer } from "three/src/Three";
+import type { WebGLPostProcessLoader } from "@src/engine/render/WebGLPostProcessLoader";
+import type { WebGLRendererLoader } from "@src/engine/render/WebGLRendererLoader";
+import type { Renderer, WebGLRenderer } from "three/src/Three";
 
 export type RenderSettingObject = { 
     useCss3DRenderer: boolean,
-    webGLRenderer?: Omit<Renderer, "domElement">,
-    webGlRendererDomElement?: HTMLCanvasElement
+    webGLRendererLoader?: typeof WebGLRendererLoader,
+    webGLRendererInitilizer?: () => WebGLRenderer | (readonly [Omit<Renderer, "domElement">, HTMLCanvasElement]),
+    webGLPostProcessLoader?: typeof WebGLPostProcessLoader
 };
 
 export class RenderSetting {
@@ -31,6 +34,20 @@ export class RenderSetting {
     }
 
     /**
+     * webgl renderer loader.
+     * 
+     * for use webgl renderer, you need to inject webgl renderer loader.
+     * WebGLRendererLoader has dependency of WebGLRenderer.
+     * 
+     * @param value webgl renderer loader
+     * @returns this
+     */
+    public webGLRendererLoader(value: typeof WebGLRendererLoader): this {
+        this._renderSettingObject.webGLRendererLoader = value;
+        return this;
+    }
+
+    /**
      * set webgl renderer. (default: undefined)
      * 
      * you need to inject webgl renderer for use.
@@ -38,13 +55,25 @@ export class RenderSetting {
      * @param value webgl renderer
      * @returns this
      */
-    public webGLRenderer(renderer: Renderer): this;
+    public webGLRenderer(func: () => WebGLRenderer): this;
 
-    public webGLRenderer(renderer: Omit<Renderer, "domElement">, domElement: HTMLCanvasElement): this;
+    public webGLRenderer(func: () => readonly [Omit<Renderer, "domElement">, HTMLCanvasElement]): this;
     
-    public webGLRenderer(renderer: Omit<Renderer, "domElement">, domElement?: HTMLCanvasElement): this {
-        this._renderSettingObject.webGLRenderer = renderer;
-        this._renderSettingObject.webGlRendererDomElement = domElement ?? (renderer as Renderer).domElement;
+    public webGLRenderer(func: () => WebGLRenderer | (readonly [Omit<Renderer, "domElement">, HTMLCanvasElement])): this {
+        this._renderSettingObject.webGLRendererInitilizer = func;
+        return this;
+    }
+
+    /**
+     * set webgl post process loader. (default: undefined)
+     * 
+     * you need to inject webgl post process loader for use post process effect.
+     * 
+     * @param value webgl post process loader
+     * @returns this
+     */
+    public webGLPostProcessLoader(value: typeof WebGLPostProcessLoader): this {
+        this._renderSettingObject.webGLPostProcessLoader = value;
         return this;
     }
 }
