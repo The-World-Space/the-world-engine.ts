@@ -11,6 +11,9 @@ class EffectComposerRc {
 
     private _referenceCount = 0;
     private readonly _effectComposer: EffectComposer;
+    private readonly onScreenResize = (width: number, height: number): void => {
+        this._effectComposer.setSize(width, height);
+    };
 
     private constructor(engineGlobalObject: EngineGlobalObject, effectComposer: EffectComposer) {
         this._effectComposer = effectComposer;
@@ -20,7 +23,11 @@ class EffectComposerRc {
     public static createOraddReference(engineGlobalObject: EngineGlobalObject, webglRenderer: WebGLRenderer): EffectComposer {
         let effectComposerRc = EffectComposerRc._map.get(engineGlobalObject);
         if (effectComposerRc === undefined) {
-            effectComposerRc = new EffectComposerRc(engineGlobalObject, new EffectComposer(webglRenderer));
+            const effectComposer = new EffectComposer(webglRenderer);
+            const screen = engineGlobalObject.screen;
+            effectComposer.setSize(screen.width, screen.height);
+            effectComposerRc = new EffectComposerRc(engineGlobalObject, effectComposer);
+            screen.onResize.addListener(effectComposerRc.onScreenResize);
             EffectComposerRc._map.set(engineGlobalObject, effectComposerRc);
         }
         effectComposerRc._referenceCount += 1;
@@ -32,6 +39,8 @@ class EffectComposerRc {
         if (effectComposerRc !== undefined) {
             effectComposerRc._referenceCount -= 1;
             if (effectComposerRc._referenceCount === 0) {
+                const screen = engineGlobalObject.screen;
+                screen.onResize.removeListener(effectComposerRc.onScreenResize);
                 EffectComposerRc._map.delete(engineGlobalObject);
             }
         }
