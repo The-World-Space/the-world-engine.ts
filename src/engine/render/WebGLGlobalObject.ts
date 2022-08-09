@@ -28,6 +28,11 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
         this._webglRenderer = webglRenderer;
         this._effectComposer = null;
     }
+
+    /** @internal */
+    public dispose(): void {
+        if (this._webglRenderer) this._webglRenderer.dispose();
+    }
     
     /**
      * get abstract renderer.

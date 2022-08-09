@@ -14,6 +14,7 @@ import { Object3D } from "three/src/Three";
 export class Object3DContainer<T extends Object3D> extends Component {
     private _object3D: T|null = null;
     private _ready = false;
+    private _onDispose: ((object3D: T) => void)|null = null;
 
     public awake(): void {
         this._ready = true;
@@ -41,6 +42,7 @@ export class Object3DContainer<T extends Object3D> extends Component {
 
     public onDestroy(): void {
         if (!this._object3D) return;
+        this._onDispose?.(this._object3D);
         this.transform.dequeueRenderAttachedObject3D(this._object3D);
         this.transform.unsafeGetObject3D().remove(this._object3D);
         this._object3D = null;
@@ -70,22 +72,42 @@ export class Object3DContainer<T extends Object3D> extends Component {
     }
 
     /**
-     * Object3D object to add to the hierarchy.
+     * set Object3D object to add to the hierarchy.
+     * @param object3D Object3D object to add to the hierarchy.
+     * @param onDispose onDispose callback
      */
-    public set object3D(value: T|null) {
+    public setObject3D(object3D: T, onDispose?: (object3D: T) => void): void {
         if (this._ready) {
-            if (this._object3D) this.transform.unsafeGetObject3D().remove(this._object3D);
-            
-            this._object3D = value;
-
             if (this._object3D) {
-                this.transform.unsafeGetObject3D().add(this._object3D);
-                Transform.updateRawObject3DWorldMatrixRecursively(this._object3D);
-                this.transform.enqueueRenderAttachedObject3D(this._object3D);
+                this._onDispose?.(this._object3D);
+                this.transform.unsafeGetObject3D().remove(this._object3D);
             }
+            
+            this._object3D = object3D;
+            this._onDispose = onDispose ?? null;
+
+            this.transform.unsafeGetObject3D().add(this._object3D);
+            Transform.updateRawObject3DWorldMatrixRecursively(this._object3D);
+            this.transform.enqueueRenderAttachedObject3D(this._object3D);
         } else {
-            this._object3D = value;
+            if (this._object3D) {
+                this._onDispose?.(this._object3D);
+            }
+
+            this._object3D = object3D;
+            this._onDispose = onDispose ?? null;
         }
+    }
+
+    /**
+     * remove Object3D object from the hierarchy. and dispose it.
+     */
+    public clearObject3D(): void {
+        if (!this._object3D) return;
+
+        this._onDispose?.(this._object3D);
+        if (this._ready) this.transform.unsafeGetObject3D().remove(this._object3D);
+        this._object3D = null;
     }
 
     /**

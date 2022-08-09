@@ -149,23 +149,6 @@ export class Game {
         this._gameSetting = bootstrapper.getGameSettingObject();
         this._engineGlobalObject.applyGameSetting(this._gameSetting);
 
-        if (this._gameSetting.render.useCss3DRenderer) { // initialize css3d renderer
-            const container = this._container;
-            this._css3DRenderer = new OptimizedCSS3DRenderer();
-            this._css3DRenderer.setSize(container.clientWidth, container.clientHeight);
-            const css3DRendererDomElement = this._css3DRenderer.domElement;
-            css3DRendererDomElement.style.width = "100%";
-            css3DRendererDomElement.style.height = "100%";
-            css3DRendererDomElement.style.position = "absolute";
-            css3DRendererDomElement.style.pointerEvents = "none";
-            css3DRendererDomElement.onscroll = (e: Event): void => { //block scroll to prevent camera bug
-                const target = e.target as HTMLElement;
-                target.scrollTop = 0;
-                target.scrollLeft = 0;
-            };
-            container.appendChild(css3DRendererDomElement);
-        }
-        
         if (this._gameSetting.render.webGLRendererLoader) { // initialize webgl renderer
             if (this._gameSetting.render.webGLRendererInitilizer === undefined) {
                 console.warn("webGLRendererLoader is specified, but webGLRenderer is not specified. so engine will not render as webgl.");
@@ -205,6 +188,23 @@ export class Game {
             if (this._gameSetting.render.webGLRendererInitilizer) {
                 console.warn("webGLRenderer is specified, but webGLRendererLoader is not specified. so engine will not render as webgl.");
             }
+        }
+
+        if (this._gameSetting.render.useCss3DRenderer) { // initialize css3d renderer
+            const container = this._container;
+            this._css3DRenderer = new OptimizedCSS3DRenderer();
+            this._css3DRenderer.setSize(container.clientWidth, container.clientHeight);
+            const css3DRendererDomElement = this._css3DRenderer.domElement;
+            css3DRendererDomElement.style.width = "100%";
+            css3DRendererDomElement.style.height = "100%";
+            css3DRendererDomElement.style.position = "absolute";
+            css3DRendererDomElement.style.pointerEvents = "none";
+            css3DRendererDomElement.onscroll = (e: Event): void => { //block scroll to prevent camera bug
+                const target = e.target as HTMLElement;
+                target.scrollTop = 0;
+                target.scrollLeft = 0;
+            };
+            container.appendChild(css3DRendererDomElement);
         }
 
         scene.build();
@@ -305,7 +305,8 @@ export class Game {
             }
             
             if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
-            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);   
+            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);  
+            if (this._webGLGlobalObject) this._webGLGlobalObject.dispose();
         } else {
             this._engineGlobalObject.dispose();
         }
