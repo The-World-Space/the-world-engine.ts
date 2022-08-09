@@ -9,6 +9,7 @@ import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElement
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { WebGLGlobalPostProcessVolume } from "@src/engine/script/render/WebGLGlobalPostProcessVolume";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
+import { FullScreenQuad } from "three/examples/jsm/postprocessing/Pass";
 import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass"; 
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector3, WebGLRenderer } from "three/src/Three";
@@ -45,12 +46,12 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 }))
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
+                    //todo: background color need to support texture
                     c.backgroundColor = new Color(1, 1, 1);
                     c.cameraType = CameraType.Perspective;
                 })
                 .withComponent(OrbitControls, c => {
                     c.enableDamping = false;
-                    (globalThis as any).controls = c;
                 })
                 .getComponent(Camera, camera1))
 
@@ -62,21 +63,35 @@ export class WebglTestBootstrapper extends Bootstrapper {
 
             .withChild(instantiater.buildGameObject("postprocess-volume")
                 .withComponent(WebGLGlobalPostProcessVolume, c => {
-                    c.initializer(composer => {
-                        const ssaoPass = new SSAOPass(c.engine.scene.unsafeGetThreeScene(), c.engine.cameraContainer.camera!.threeCamera!);
-                        ssaoPass;
-                        //composer.addPass(ssaoPass);
-
-                        const bloomPass = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 1, 0.4, 0.8);
-                        composer.addPass(bloomPass);
+                    c.initializer((scene, camera) => {
+                        const ssaoPass = new SSAOPass(scene, camera);
+                        return [[ssaoPass], (): void => {
+                            (ssaoPass.fsQuad as FullScreenQuad).dispose();
+                        }];
                     });
+                    (globalThis as any).volume = c;
+                }))
+            
+            .withChild(instantiater.buildGameObject("postprocess-volume")
+                .withComponent(WebGLGlobalPostProcessVolume, c => {
+                    c.willAddRenderPass = false;
+
+                    c.initializer(() => {
+                        const bloomPass = new UnrealBloomPass(new THREE.Vector2(1024, 1024), 1, 0.4, 0.8);
+                        return [[bloomPass], (): void => {
+                            bloomPass.dispose();
+                        }];
+                    });
+                    (globalThis as any).volume2 = c;
                 }))
                 
             .withChild(instantiater.buildGameObject("ambient-light")
-                .withComponent(Object3DContainer, c => c.object3D = new AmbientLight(0x666666)))
+                .withComponent(Object3DContainer<AmbientLight>, c => {
+                    c.setObject3D(new AmbientLight(0x666666), object3D => object3D.dispose());
+                }))
 
             .withChild(instantiater.buildGameObject("directional-light", new Vector3(-2, 0.5, 1))
-                .withComponent(Object3DContainer, c => {
+                .withComponent(Object3DContainer<DirectionalLight>, c => {
                     const directionalLight = new DirectionalLight(0x887766);
                     directionalLight.castShadow = true;
                     directionalLight.shadow.mapSize.width = 2048 * 2;
@@ -87,8 +102,7 @@ export class WebglTestBootstrapper extends Bootstrapper {
                     directionalLight.shadow.camera.right = 100;
                     directionalLight.shadow.camera.top = 100;
                     directionalLight.shadow.camera.bottom = -100;
-                    (globalThis as any).directionalLight = directionalLight;
-                    c.object3D = directionalLight;
+                    c.setObject3D(directionalLight, object3D => object3D.dispose());
                 }))
 
             .withChild(instantiater.buildGameObject("sprite", new Vector3(0, 0, 0))
@@ -107,30 +121,35 @@ export class WebglTestBootstrapper extends Bootstrapper {
                     div.style.height = "100px";
                     div.textContent = "Hello World";
                     const renderer = new CSS3DObject(div);
-                    c.object3D = renderer;
+                    c.setObject3D(renderer);
                     c.enabled = false;
                 }))
 
             .withChild(instantiater.buildGameObject("test-object", new Vector3(0, 0, 0))
-                .withComponent(Object3DContainer, c => {
+                .withComponent(Object3DContainer<Mesh<BoxGeometry, MeshPhongMaterial>>, c => {
                     const geometry = new BoxGeometry(10, 10, 10);
                     const material = new MeshPhongMaterial({ color: 0x00ff00 });
                     const cube = new Mesh(geometry, material);
                     cube.castShadow = true;
                     cube.receiveShadow = true;
-                    c.object3D = cube;
-                    (globalThis as any).cube = c;
+                    c.setObject3D(cube, object3D => {
+                        object3D.geometry.dispose();
+                        object3D.material.dispose();
+                    });
                 }))
             
             .withChild(instantiater.buildGameObject("plane",
                 new Vector3(0, -5, 0),
                 new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 2))
-                .withComponent(Object3DContainer, c => {
+                .withComponent(Object3DContainer<Mesh<PlaneGeometry, MeshPhongMaterial>>, c => {
                     const geometry = new PlaneGeometry(100, 100);
                     const material = new MeshPhongMaterial({ color: 0xffffff });
                     const plane = new Mesh(geometry, material);
                     plane.receiveShadow = true;
-                    c.object3D = plane;
+                    c.setObject3D(plane, object3D => {
+                        object3D.geometry.dispose();
+                        object3D.material.dispose();
+                    });
                 }))
         ;
     }
