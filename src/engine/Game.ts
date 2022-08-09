@@ -305,7 +305,8 @@ export class Game {
             }
             
             if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
-            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);   
+            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);  
+            if (this._webGLGlobalObject) this._webGLGlobalObject.dispose();
         } else {
             this._engineGlobalObject.dispose();
         }
