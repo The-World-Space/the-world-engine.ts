@@ -19,8 +19,7 @@ import { PointerGridEvent } from "../input/PointerGridInputListener";
  * 
  * disallow multiple component
  */
-export class PlayerGridMovementController extends Directable
-    implements IGridPositionable {
+export class PlayerGridMovementController extends Directable implements IGridPositionable {
     public override readonly disallowMultipleComponent: boolean = true;
 
     private _speed = 8;
@@ -29,8 +28,8 @@ export class PlayerGridMovementController extends Directable
     private readonly _collideMaps: IGridCollidable[] = [];
     private readonly _collideSize: number = 0.5;
     private readonly _gridCenter: Vector2 = new Vector2();
-    private readonly _currentGridPosition: Vector2 = new Vector2();
-    private readonly _targetGridPosition: Vector2 = new Vector2();
+    private readonly _currentPosition: Vector2 = new Vector2();
+    private readonly _targetPosition: Vector2 = new Vector2();
     private readonly _initPosition: Vector2 = new Vector2(); //integer position
     private readonly _onMoveToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
     private readonly _onMovedToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
@@ -57,7 +56,7 @@ export class PlayerGridMovementController extends Directable
         const position = transform.position;
         position.x = this._gridCenter.x + this._initPosition.x * this._gridCellWidth;
         position.y = this._gridCenter.y + this._initPosition.y * this._gridCellHeight;
-        this._currentGridPosition.set(transform.localPosition.x, transform.localPosition.y);
+        this._currentPosition.set(transform.localPosition.x, transform.localPosition.y);
 
         const parent = transform.parent;
         if (parent) this._cachedParentWorldPosition.set(parent.position.x, parent.position.y);
@@ -79,57 +78,58 @@ export class PlayerGridMovementController extends Directable
         }
 
         const inputMap = this.engine.input.map;
+        const currentPosition = this._currentPosition;
         if (inputMap.get("w") || inputMap.get("ArrowUp")) {
             this.direction = Direction.Up;
-            if (this.checkCollision(this._currentGridPosition.x, this._currentGridPosition.y + this._gridCellHeight)) return;
-            this._targetGridPosition.set(this._currentGridPosition.x, this._currentGridPosition.y + this._gridCellHeight);
+            if (this.checkCollision(currentPosition.x, currentPosition.y + this._gridCellHeight)) return;
+            this._targetPosition.set(currentPosition.x, currentPosition.y + this._gridCellHeight);
             this.invokeOnMoveToTarget();
             this.isMoving = true;
         } else if (inputMap.get("s") || inputMap.get("ArrowDown")) {
             this.direction = Direction.Down;
-            if (this.checkCollision(this._currentGridPosition.x, this._currentGridPosition.y - this._gridCellHeight)) return;
-            this._targetGridPosition.set(this._currentGridPosition.x, this._currentGridPosition.y - this._gridCellHeight);
+            if (this.checkCollision(currentPosition.x, currentPosition.y - this._gridCellHeight)) return;
+            this._targetPosition.set(currentPosition.x, currentPosition.y - this._gridCellHeight);
             this.invokeOnMoveToTarget();
             this.isMoving = true;
         } else if (inputMap.get("a") || inputMap.get("ArrowLeft")) {
             this.direction = Direction.Left;
-            if (this.checkCollision(this._currentGridPosition.x - this._gridCellWidth, this._currentGridPosition.y)) return;
-            this._targetGridPosition.set(this._currentGridPosition.x - this._gridCellWidth, this._currentGridPosition.y);
+            if (this.checkCollision(currentPosition.x - this._gridCellWidth, currentPosition.y)) return;
+            this._targetPosition.set(currentPosition.x - this._gridCellWidth, currentPosition.y);
             this.invokeOnMoveToTarget();
             this.isMoving = true;
         } else if (inputMap.get("d") || inputMap.get("ArrowRight")) {
             this.direction = Direction.Right;
-            if (this.checkCollision(this._currentGridPosition.x + this._gridCellWidth, this._currentGridPosition.y)) return;
-            this._targetGridPosition.set(this._currentGridPosition.x + this._gridCellWidth, this._currentGridPosition.y);
+            if (this.checkCollision(currentPosition.x + this._gridCellWidth, currentPosition.y)) return;
+            this._targetPosition.set(currentPosition.x + this._gridCellWidth, currentPosition.y);
             this.invokeOnMoveToTarget();
             this.isMoving = true;
         }
     }
 
-    private noncheckProcessInput(currentGridPosotion: Vector2): boolean {
+    private noncheckProcessInput(currentPosotion: Vector2): boolean {
         const inputMap = this.engine.input.map;
         if (inputMap.get("w") || inputMap.get("ArrowUp")) {
             this.direction = Direction.Up;
-            if (this.checkCollision(currentGridPosotion.x, currentGridPosotion.y + this._gridCellHeight)) return false;
-            this._targetGridPosition.set(currentGridPosotion.x, currentGridPosotion.y + this._gridCellHeight);
+            if (this.checkCollision(currentPosotion.x, currentPosotion.y + this._gridCellHeight)) return false;
+            this._targetPosition.set(currentPosotion.x, currentPosotion.y + this._gridCellHeight);
             this.invokeOnMoveToTarget();
             return true;
         } else if (inputMap.get("s") || inputMap.get("ArrowDown")) {
             this.direction = Direction.Down;
-            if (this.checkCollision(currentGridPosotion.x, currentGridPosotion.y - this._gridCellHeight)) return false;
-            this._targetGridPosition.set(currentGridPosotion.x, currentGridPosotion.y - this._gridCellHeight);
+            if (this.checkCollision(currentPosotion.x, currentPosotion.y - this._gridCellHeight)) return false;
+            this._targetPosition.set(currentPosotion.x, currentPosotion.y - this._gridCellHeight);
             this.invokeOnMoveToTarget();
             return true;
         } else if (inputMap.get("a") || inputMap.get("ArrowLeft")) {
             this.direction = Direction.Left;
-            if (this.checkCollision(currentGridPosotion.x - this._gridCellWidth, currentGridPosotion.y)) return false;
-            this._targetGridPosition.set(currentGridPosotion.x - this._gridCellWidth, currentGridPosotion.y);
+            if (this.checkCollision(currentPosotion.x - this._gridCellWidth, currentPosotion.y)) return false;
+            this._targetPosition.set(currentPosotion.x - this._gridCellWidth, currentPosotion.y);
             this.invokeOnMoveToTarget();
             return true;
         } else if (inputMap.get("d") || inputMap.get("ArrowRight")) {
             this.direction = Direction.Right;
-            if (this.checkCollision(currentGridPosotion.x + this._gridCellWidth, currentGridPosotion.y)) return false;
-            this._targetGridPosition.set(currentGridPosotion.x + this._gridCellWidth, currentGridPosotion.y);
+            if (this.checkCollision(currentPosotion.x + this._gridCellWidth, currentPosotion.y)) return false;
+            this._targetPosition.set(currentPosotion.x + this._gridCellWidth, currentPosotion.y);
             this.invokeOnMoveToTarget();
             return true;
         }
@@ -138,15 +138,15 @@ export class PlayerGridMovementController extends Directable
 
     private invokeOnMoveToTarget(): void {
         this._onMoveToTargetEvent.invoke(
-            Math.floor(this._targetGridPosition.x / this._gridCellWidth),
-            Math.floor(this._targetGridPosition.y / this._gridCellHeight)
+            Math.floor((this._targetPosition.x - this._gridCenter.x) / this._gridCellWidth),
+            Math.floor((this._targetPosition.y - this._gridCenter.y) / this._gridCellHeight)
         );
     }
 
     private invokeOnMovedToTarget(): void {
         this._onMovedToTargetEvent.invoke(
-            Math.floor(this._currentGridPosition.x / this._gridCellWidth),
-            Math.floor(this._currentGridPosition.y / this._gridCellHeight)
+            Math.floor((this._currentPosition.x - this._gridCenter.x) / this._gridCellWidth),
+            Math.floor((this._currentPosition.y - this._gridCenter.y) / this._gridCellHeight)
         );
     }
 
@@ -183,8 +183,8 @@ export class PlayerGridMovementController extends Directable
             this._movingByPathfinder = false;
             return;
         }
-        if (this._targetGridPosition.equals(this._foundedPath![this._currentPathIndex])) return;
-        this._targetGridPosition.copy(this._foundedPath![this._currentPathIndex]);
+        if (this._targetPosition.equals(this._foundedPath![this._currentPathIndex])) return;
+        this._targetPosition.copy(this._foundedPath![this._currentPathIndex]);
         this.invokeOnMoveToTarget();
         const prevPositionX = this._foundedPath![this._currentPathIndex - 1].x;
         const prevPositionY = this._foundedPath![this._currentPathIndex - 1].y;
@@ -206,29 +206,38 @@ export class PlayerGridMovementController extends Directable
         if (!this.isMoving) return;
         const transform = this.transform;
         const vector2Pos = new Vector2(transform.localPosition.x, transform.localPosition.y);
-        let distance = vector2Pos.distanceTo(this._targetGridPosition);
+        let distance = vector2Pos.distanceTo(this._targetPosition);
+        const oneStepDistance = this._speed * this.engine.time.deltaTime;
 
-        if (distance < this._speed * this.engine.time.deltaTime) {
-            if (this.noncheckProcessInput(this._targetGridPosition)) {
-                distance = vector2Pos.distanceTo(this._targetGridPosition);
+        if (distance < oneStepDistance) {
+            if (this.noncheckProcessInput(this._targetPosition)) {
+                distance = vector2Pos.distanceTo(this._targetPosition);
                 this.invokeOnMovedToTarget();
             }
         }
 
-        if (distance > 0.01) {
-            const direction = this._tempVector2.copy(this._targetGridPosition).sub(vector2Pos).normalize();
-            direction.multiplyScalar(Math.min(this._speed * this.engine.time.deltaTime, distance));
-            transform.localPosition.x += direction.x;
-            transform.localPosition.y += direction.y;
-        } else {
+        const direction = this._tempVector2.copy(this._targetPosition).sub(vector2Pos).normalize();
+        
+        if (distance < oneStepDistance) {
             this.isMoving = false;
-            this._currentGridPosition.copy(this._targetGridPosition);
-            transform.localPosition.x = this._currentGridPosition.x;
-            transform.localPosition.y = this._currentGridPosition.y;
+            this._currentPosition.copy(this._targetPosition);
+            transform.localPosition.x = this._currentPosition.x;
+            transform.localPosition.y = this._currentPosition.y;
             this.invokeOnMovedToTarget();
+        } else {
+            direction.multiplyScalar(oneStepDistance);
+
+            this.gameObject.transform.localPosition.x += direction.x;
+            this.gameObject.transform.localPosition.y += direction.y;
         }
     }
 
+    /**
+     * 
+     * @param x local position x
+     * @param y local position y
+     * @returns 
+     */
     private checkCollision(x: number, y: number): boolean {
         x += this._cachedParentWorldPosition.x;
         y += this._cachedParentWorldPosition.y;
@@ -308,10 +317,16 @@ export class PlayerGridMovementController extends Directable
         this._movingByPathfinder = false;
     }
 
+    /**
+     * on move to target event position is grid position (integer)
+     */
     public get onMoveToTarget(): IEventContainer<(x: number, y: number) => void> {
         return this._onMoveToTargetEvent;
     }
 
+    /**
+     * on moved to target event position is grid position (integer)
+     */
     public get onMovedToTarget(): IEventContainer<(x: number, y: number) => void> {
         return this._onMovedToTargetEvent;
     }
@@ -323,10 +338,16 @@ export class PlayerGridMovementController extends Directable
     public teleport(positionInGrid: ReadonlyVector2): void {
         this.isMoving = false;
         this._movingByPathfinder = false;
-        (this._targetGridPosition as WritableVector2).copy(positionInGrid);
-        (this._currentGridPosition as WritableVector2).copy(positionInGrid);
-        this.transform.localPosition.x = this._currentGridPosition.x;
-        this.transform.localPosition.y = this._currentGridPosition.y;
+
+        (this._currentPosition as WritableVector2)
+            .copy(positionInGrid)
+            .multiplyScalar(this._gridCellWidth)
+            .add(this._gridCenter);
+        (this._targetPosition as WritableVector2)
+            .copy(this._currentPosition);
+        
+        this.transform.localPosition.x = this._currentPosition.x;
+        this.transform.localPosition.y = this._currentPosition.y;
         this.invokeOnMoveToTarget();
         this.invokeOnMovedToTarget();
     }
@@ -459,8 +480,8 @@ export class PlayerGridMovementController extends Directable
      */
     public get positionInGrid(): Vector2 {
         return new Vector2(
-            Math.floor(this.transform.localPosition.x / this._gridCellWidth),
-            Math.floor(this.transform.localPosition.y / this._gridCellHeight)
+            Math.floor((this.transform.localPosition.x - this._gridCenter.x) / this._gridCellWidth),
+            Math.floor((this.transform.localPosition.y - this._gridCenter.y) / this._gridCellHeight)
         );
     }
 
