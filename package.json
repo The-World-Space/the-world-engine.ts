@@ -76,7 +76,7 @@
         "webpack-dev-server": "^4.10.0"
     },
     "dependencies": {
-        "js-sdsl": "^4.1.0"
+        "js-sdsl": "4.0.3"
     },
     "sideEffects": false
 }
