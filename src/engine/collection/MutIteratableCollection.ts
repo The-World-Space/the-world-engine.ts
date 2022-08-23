@@ -26,13 +26,9 @@ export class MutIteratableCollection<T extends { itemData: number }> {
     public get size(): number {
         return this._collection.size();
     }
-
-    private readonly _testSet: Set<T> = new Set<T>();
-
+    
     /** Set an entry, O(log n) */
     public insert(value: T): void {
-        this._testSet.add(value);
-
         //set is removed to false
         value.itemData &= 0b1111_1111_1111_1111_1111_1111_1111_1110;
         //set is exist to true
