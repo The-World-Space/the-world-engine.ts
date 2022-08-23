@@ -1,7 +1,14 @@
 import OrderedSet from "js-sdsl/dist/esm/container/TreeContainer/OrderedSet";
 
+// itemData is represents two things:
+// 1. is removed from the collection
+// 2. is exist in the collection
+
+// 0000 0000 0000 0000 0000 0000 0000 0000
+//                                      21                          
+
 /** @internal */
-export class MutIteratableCollection<T extends { isRemoved: boolean }> {
+export class MutIteratableCollection<T extends { itemData: number }> {
     private _iterateCollection: OrderedSet<T>|null = null;
     private readonly _collection: OrderedSet<T>;
 
@@ -20,18 +27,34 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
         return this._collection.size();
     }
 
+    private readonly _testSet: Set<T> = new Set<T>();
+
     /** Set an entry, O(log n) */
     public insert(value: T): void {
-        value.isRemoved = false;
+        this._testSet.add(value);
+
+        //set is removed to false
+        value.itemData &= 0b1111_1111_1111_1111_1111_1111_1111_1110;
+        //set is exist to true
+        value.itemData |= 0b0000_0000_0000_0000_0000_0000_0000_0010;
+        
         if (this._iterateCollection !== null) this._insertBuffer.insert(value);
         else this._collection.insert(value);
     }
 
-    /** Delete an entry with the key from the tree, O(log n) 
-     *  Error: if the key is not in the tree */
+    /**
+     * Delete an entry with the key from the tree, O(log n) 
+     * if the entry is not found, nothing happens
+     */
     public delete(value: T): void {
+        //if the entry is not exist, return
+        if (!(value.itemData & 0b0000_0000_0000_0000_0000_0000_0000_0010)) return;
+        //set is exist to false
+        value.itemData &= 0b1111_1111_1111_1111_1111_1111_1111_1101;
+
         if (this._iterateCollection !== null) {
-            value.isRemoved = true;
+            //set is removed to true
+            value.itemData |= 0b0000_0000_0000_0000_0000_0000_0000_0001;
             this._deleteBuffer.insert(value);
         } else this._collection.eraseElementByKey(value);
     }
@@ -47,13 +70,15 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     public forEach(callback: (value: T) => void): void {
         this._iterateCollection = this._collection;
         this._iterateCollection.forEach((value: T) => {
-            if (!value.isRemoved) callback(value);
+            //if the entry is not removed, call the callback
+            if (!(value.itemData & 0b0000_0000_0000_0000_0000_0000_0000_0001)) callback(value);
         });
 
         do {
             this._iterateCollection = this.flushBuffer();
             this._iterateCollection.forEach((value: T) => {
-                if (!value.isRemoved) callback(value);
+                //if the entry is not removed, call the callback
+                if (!(value.itemData & 0b0000_0000_0000_0000_0000_0000_0000_0001)) callback(value);
             });
         } while (0 < this._insertBuffer.size() || 0 < this._deleteBuffer.size());
         this._iterateCollection = null;
