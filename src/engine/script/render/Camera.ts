@@ -33,7 +33,7 @@ export class Camera extends Component {
     private _near = 0.1;
     private _far = 1000;
     private _priority = 0;
-    private readonly _backgroudColor: Color = new Color(1, 1, 1, 0);
+    private _backgroundColor: null|Color|THREE.Texture = null;
     private _cameraContainer: CameraContainer|null = null;
 
     private readonly onScreenResize = (width: number, height: number): void => {
@@ -114,7 +114,7 @@ export class Camera extends Component {
         }
         
         Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
-        this._cameraContainer!.addCamera(this, new CameraInfo(this._priority, this._backgroudColor));
+        this._cameraContainer!.addCamera(this, new CameraInfo(this._priority, this._backgroundColor));
     }
 
     private createNewPerspectiveCamera(): ThreePerspectiveCamera {
@@ -360,21 +360,36 @@ export class Camera extends Component {
     }
 
     /**
-     * background color of the camera (default: white)
+     * background color of the camera (default: null)
      * 
      * This color will fill the empty space of the scene
+     * 
+     * When used with WebGLRenderer, you can specify a texture background. And in the case of color, the alpha channel is ignored
      */
-    public get backgroundColor(): ReadonlyColor {
-        return this._backgroudColor;
+    public get backgroundColor(): null|ReadonlyColor|THREE.Texture {
+        return this._backgroundColor;
     }
 
     /**
-     * background color of the camera (default: white)
+     * background color of the camera (default: null)
      * 
      * This color will fill the empty space of the scene
+     * 
+     * When used with WebGLRenderer, you can specify a texture background. And in the case of color, the alpha channel is ignored
      */
-    public set backgroundColor(value: ReadonlyColor) {
-        this._backgroudColor.copy(value);
+    public set backgroundColor(value: null|ReadonlyColor|THREE.Texture) {
+        if (value === null) {
+            this._backgroundColor = null;
+        } else if (value instanceof Color) {
+            if (this._backgroundColor instanceof Color) {
+                this._backgroundColor.copy(value);
+            } else {
+                this._backgroundColor = value.clone();
+            }
+        } else {
+            this._backgroundColor = value as THREE.Texture;
+        }
+
         if (this._camera) {
             this._cameraContainer!.changeCameraBackgroundColor(this, value);
         }

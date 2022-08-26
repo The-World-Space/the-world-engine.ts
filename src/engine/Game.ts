@@ -10,12 +10,13 @@ import { Scene } from "./hierarchy_object/Scene";
 import { IInputEventHandleable } from "./input/IInputEventHandleable";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { CameraContainer } from "./render/CameraContainer";
+import { Color } from "./render/Color";
 import { GameScreen } from "./render/GameScreen";
 import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
 import { ReadonlyColor } from "./render/ReadonlyColor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { WebGLGlobalObject } from "./render/WebGLGlobalObject";
-import type { WebGLRendererLoader } from "./render/WebGLRendererLoader";
+//import type { WebGLRendererLoader } from "./render/WebGLRendererLoader";
 import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
 import { DeepReadonly } from "./type/DeepReadonly";
@@ -28,7 +29,8 @@ export class Game {
     private readonly _gameScreen: GameScreen;
     private _css3DRenderer?: OptimizedCSS3DRenderer;
 
-    private _webglRendererLoader?: typeof WebGLRendererLoader;
+    //private _webglRendererLoader?: typeof WebGLRendererLoader;
+    private _threeColor?: THREE.Color;
     private _webglRenderer?: Omit<Renderer, "domElement">;
     private _webglRendererDomElement?: HTMLCanvasElement;
 
@@ -69,15 +71,34 @@ export class Game {
         this._gameScreen = new GameScreen(container.clientWidth, container.clientHeight);
         this._container = container;
 
-        this._cameraContainer = new CameraContainer(
-            (color: ReadonlyColor): void => {
-                if (this._webglRenderer) {
-                    this._rootScene.unsafeGetThreeScene().background = new this._webglRendererLoader!.Color(color.r, color.g, color.b);
-                } else if (this._css3DRenderer) {
-                    this._css3DRenderer.domElement.style.backgroundColor = "rgba(" + (color.r * 255) + "," + (color.g * 255) + "," + (color.b * 255) + "," + color.a + ")";
+        {
+            this._cameraContainer = new CameraContainer(
+                (color: null|ReadonlyColor|THREE.Texture): void => {
+                    if (this._webglRenderer) {
+                        const threeScene = this._rootScene.unsafeGetThreeScene();
+                        if (color instanceof Color) {
+                            const threeColor = this._threeColor!;
+                            threeColor!.r = color.r;
+                            threeColor!.g = color.g;
+                            threeColor!.b = color.b;
+                            threeScene.background = threeColor;
+                        } else {
+                            threeScene.background = color as null|THREE.Texture;
+                        }
+                    } else if (this._css3DRenderer) {
+                        const domElement = this._css3DRenderer.domElement;
+                        if ((color as THREE.Texture).isTexture) {
+                            console.warn("THREE.Texture background is not supported in CSS3DRenderer");
+                            domElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
+                        } else if (color === null) {
+                            domElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
+                        } else {
+                            domElement.style.backgroundColor = "rgba(" + ((color as ReadonlyColor).r * 255) + "," + ((color as ReadonlyColor).g * 255) + "," + ((color as ReadonlyColor).b * 255) + "," + (color as ReadonlyColor).a + ")";
+                        }
+                    }
                 }
-            }
-        );
+            );
+        }
         
         this._time = new Time();
         this._gameState = new GameState(GameStateKind.WaitingForStart);
@@ -153,7 +174,8 @@ export class Game {
             if (this._gameSetting.render.webGLRendererInitilizer === undefined) {
                 console.warn("webGLRendererLoader is specified, but webGLRenderer is not specified. so engine will not render as webgl.");
             } else {
-                this._webglRendererLoader = this._gameSetting.render.webGLRendererLoader;
+                //this._webglRendererLoader = this._gameSetting.render.webGLRendererLoader;
+                this._threeColor = new this._gameSetting.render.webGLRendererLoader.Color();
 
                 const initilizerResult = this._gameSetting.render.webGLRendererInitilizer();
                 let renderer: WebGLRenderer|Omit<Renderer, "domElement">;

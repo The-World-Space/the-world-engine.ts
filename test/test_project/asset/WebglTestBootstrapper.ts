@@ -1,5 +1,7 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Color } from "@src/engine/render/Color";
 import { CSS3DObject } from "@src/engine/render/CSS3DRenderer";
@@ -17,6 +19,13 @@ import * as THREE from "three/src/Three";
 
 import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 import { OrbitControls } from "./script/OrbitControls";
+import BlueCloudBk from "./source/cloudy_cubemap/bluecloud_bk.jpg";
+import BlueCloudDn from "./source/cloudy_cubemap/bluecloud_dn.jpg";
+import BlueCloudFt from "./source/cloudy_cubemap/bluecloud_ft.jpg";
+import BlueCloudLf from "./source/cloudy_cubemap/bluecloud_lf.jpg";
+import BlueCloudRt from "./source/cloudy_cubemap/bluecloud_rt.jpg";
+import BlueCloudUp from "./source/cloudy_cubemap/bluecloud_up.jpg";
+import DaylightBox from "./source/Daylight Box_0.png";
 
 export class WebglTestBootstrapper extends Bootstrapper {
     public override run(): SceneBuilder {
@@ -26,7 +35,9 @@ export class WebglTestBootstrapper extends Bootstrapper {
             const webGLRenderer = new WebGLRenderer({ antialias: true });
             webGLRenderer.setPixelRatio(window.devicePixelRatio);
             webGLRenderer.shadowMap.enabled = true;
+            webGLRenderer.outputEncoding = THREE.sRGBEncoding;
             webGLRenderer.toneMapping = THREE.ReinhardToneMapping;
+            webGLRenderer.toneMappingExposure = 2.3;
             return webGLRenderer;
         });
 
@@ -46,8 +57,20 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 }))
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
-                    //todo: background color need to support texture
-                    c.backgroundColor = new Color(1, 1, 1);
+                    c.backgroundColor = new THREE.CubeTextureLoader().load([
+                        BlueCloudFt, BlueCloudBk, BlueCloudUp, BlueCloudDn, BlueCloudRt, BlueCloudLf
+                    ]);
+                    c.backgroundColor.mapping = THREE.CubeReflectionMapping;
+                    c.startCoroutine(function* (): CoroutineIterator {
+                        yield new WaitForSeconds(3);
+                        const daylightBox = new THREE.TextureLoader().load(DaylightBox);
+                        daylightBox.mapping = THREE.EquirectangularReflectionMapping;
+                        c.backgroundColor = daylightBox;
+                        yield new WaitForSeconds(3);
+                        c.backgroundColor = new Color(1, 0, 0);
+                        yield new WaitForSeconds(3);
+                        c.backgroundColor = new Color(0, 1, 0);
+                    }());
                     c.cameraType = CameraType.Perspective;
                 })
                 .withComponent(OrbitControls, c => {
@@ -87,7 +110,7 @@ export class WebglTestBootstrapper extends Bootstrapper {
                 
             .withChild(instantiater.buildGameObject("ambient-light")
                 .withComponent(Object3DContainer<AmbientLight>, c => {
-                    c.setObject3D(new AmbientLight(0x666666), object3D => object3D.dispose());
+                    c.setObject3D(new AmbientLight(0xFFFFFF), object3D => object3D.dispose());
                 }))
 
             .withChild(instantiater.buildGameObject("directional-light", new Vector3(-2, 0.5, 1))
