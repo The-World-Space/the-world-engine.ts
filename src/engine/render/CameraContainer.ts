@@ -25,11 +25,11 @@ export class CameraContainer {
     private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null; 
     private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
     private readonly _cameraQueue: OrderedSet<{camera: Camera, info: CameraInfo}>;
-    private readonly _onChangeBackgroundColor: (color: ReadonlyColor) => void;
+    private readonly _onChangeBackgroundColor: (color: null|ReadonlyColor|THREE.Texture) => void;
     private readonly _onCameraChangedEvent: EventContainer<(camera: Camera) => void>;
 
     /** @internal */
-    public constructor(onChangeBackgroundColor: (color: ReadonlyColor) => void) {
+    public constructor(onChangeBackgroundColor: (color: null|ReadonlyColor|THREE.Texture) => void) {
         this._cameraInfoMap = new Map();
         this._cameraQueue = new OrderedSet(undefined, (a, b) => {
             if (a.info.priority === b.info.priority) {
@@ -112,7 +112,7 @@ export class CameraContainer {
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
-    public changeCameraBackgroundColor(camera: Camera, color: ReadonlyColor): void {
+    public changeCameraBackgroundColor(camera: Camera, color: null|ReadonlyColor|THREE.Texture): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         info.backgroundColor = color;

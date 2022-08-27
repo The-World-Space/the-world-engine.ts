@@ -1,7 +1,7 @@
 import { MutIteratableCollection } from "@src/engine/collection/MutIteratableCollection";
 
 class TestItem {
-    public itemData = 0;
+    public isRemoved = false;
     private static _idGenerator = 0;
     private readonly _id: number;
     private readonly _func: () => void;

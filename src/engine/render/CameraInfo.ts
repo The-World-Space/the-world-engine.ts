@@ -7,7 +7,7 @@ import { ReadonlyColor } from "./ReadonlyColor";
  */
 export class CameraInfo {
     private _priority: number;
-    private readonly _backgroundColor: Color;
+    private _backgroundColor: null|Color|THREE.Texture;
 
     /**
      * 
@@ -16,10 +16,16 @@ export class CameraInfo {
      */
     public constructor(
         priority: number,
-        backgroundColor: ReadonlyColor
+        backgroundColor: null|ReadonlyColor|THREE.Texture
     ) {
         this._priority = priority;
-        this._backgroundColor = new Color().copy(backgroundColor);
+        if (backgroundColor === null) {
+            this._backgroundColor = null;
+        } else if (backgroundColor instanceof Color) {
+            this._backgroundColor = backgroundColor.clone();
+        } else {
+            this._backgroundColor = backgroundColor as THREE.Texture;
+        }
     }
 
     /**
@@ -39,14 +45,24 @@ export class CameraInfo {
     /**
      * get camera background color
      */
-    public get backgroundColor(): ReadonlyColor {
+    public get backgroundColor(): null|ReadonlyColor|THREE.Texture {
         return this._backgroundColor;
     }
 
     /**
      * set camera background color
      */
-    public set backgroundColor(value: ReadonlyColor) {
-        this._backgroundColor.copy(value);
+    public set backgroundColor(value: null|ReadonlyColor|THREE.Texture) {
+        if (value === null) {
+            this._backgroundColor = null;
+        } else if (value instanceof Color) {
+            if (this._backgroundColor instanceof Color) {
+                this._backgroundColor.copy(value);
+            } else {
+                this._backgroundColor = value.clone();
+            }
+        } else {
+            this._backgroundColor = value as THREE.Texture;
+        }
     }
 }

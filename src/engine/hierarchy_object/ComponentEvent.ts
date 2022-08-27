@@ -21,7 +21,7 @@ const enum EventPriority { // lower number means higher priority
 
 /** @internal */
 export class ComponentEvent<T extends (...params: any[]) => void = () => void> {
-    public itemData = 0;
+    public isRemoved = false;
     private readonly _priority: EventPriority;
     private readonly _eventId: number;
     private readonly _componentExecutionOrder: number;
