@@ -27,7 +27,6 @@ export class Spawner extends Component {
                 this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()
             ));
         } else if (e.key === "d") {
-            if (this._queue.empty()) return;
             let front = this._queue.front();
             if (front) {
                 while (!front.exists) {
