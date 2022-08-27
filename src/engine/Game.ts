@@ -87,10 +87,10 @@ export class Game {
                         }
                     } else if (this._css3DRenderer) {
                         const domElement = this._css3DRenderer.domElement;
-                        if ((color as THREE.Texture).isTexture) {
-                            console.warn("THREE.Texture background is not supported in CSS3DRenderer");
+                        if (color === null) {
                             domElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
-                        } else if (color === null) {
+                        } else if ((color as THREE.Texture).isTexture) {
+                            console.warn("THREE.Texture background is not supported in CSS3DRenderer");
                             domElement.style.backgroundColor = "rgba(0, 0, 0, 0)";
                         } else {
                             domElement.style.backgroundColor = "rgba(" + ((color as ReadonlyColor).r * 255) + "," + ((color as ReadonlyColor).g * 255) + "," + ((color as ReadonlyColor).b * 255) + "," + (color as ReadonlyColor).a + ")";
