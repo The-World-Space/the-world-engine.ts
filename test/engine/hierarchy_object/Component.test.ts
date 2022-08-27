@@ -15,6 +15,7 @@ import { Instantiater } from "@src/engine/Instantiater";
 import { TransformMatrixProcessor } from "@src/engine/render/TransformMatrixProcessor";
 import { Camera } from "@src/engine/script/render/Camera";
 import { Time } from "@src/engine/time/Time";
+import { Mock } from "jest-mock";
 
 const engineGlobalObject = {
     instantiater: new Instantiater({} as EngineGlobalObject),
@@ -49,7 +50,7 @@ describe("Component Test", () => {
     });
 
     afterEach(() => {
-        (window.requestAnimationFrame as jest.Mock).mockRestore();
+        (window.requestAnimationFrame as Mock).mockRestore();
     });
 
     it("override disallowMultipleComponent to true", () => {

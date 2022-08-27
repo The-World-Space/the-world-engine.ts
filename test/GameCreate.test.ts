@@ -11,6 +11,7 @@ import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider
 import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
 import { Camera } from "@src/engine/script/render/Camera";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
+import { Mock } from "jest-mock";
 import { Vector3 } from "three/src/Three";
 
 import { NonPhysicsTestBootstrapper } from "./test_project/asset/NonPhysicsTestBootstrapper";
@@ -43,7 +44,7 @@ describe("GameCreate Test", () => {
     });
 
     afterEach(() => {
-        (window.requestAnimationFrame as jest.Mock).mockRestore();
+        (window.requestAnimationFrame as Mock).mockRestore();
     });
 
     it("Game Scene Test1", () => {
@@ -158,6 +159,6 @@ describe("GameCreate Test", () => {
     it("Game Scene Test7", () => {
         jest.spyOn(console, "clear");
         createAndRunGame(TestBootstrapper);
-        (console.clear as jest.Mock).mockRestore();
+        (console.clear as Mock).mockRestore();
     });
 });
