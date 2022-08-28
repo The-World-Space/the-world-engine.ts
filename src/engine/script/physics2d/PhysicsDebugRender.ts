@@ -8,7 +8,7 @@ const debugObjectName = "physics_debug_object";
 export function getOrCreatePhysicsDebugRenderObject(engine: EngineGlobalObject): GameObject {
     let debugRenderobject: GameObject|null = null;
     engine.scene.iterateChild((transform: Transform) => {
-        if (transform.gameObject.name === debugObjectName) {
+        if (transform.gameObject.name === debugObjectName && transform.gameObject.exists) {
             debugRenderobject = transform.gameObject;
             return false;
         }
