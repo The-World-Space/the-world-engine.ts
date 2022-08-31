@@ -44,6 +44,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
     private _receiveKeyboardInput = true;
 
     private readonly _tempVector2 = new Vector2();
+    private readonly _temp2Vector2 = new Vector2();
 
     public start(): void {
         this._pathfinder = new Pathfinder(
@@ -205,7 +206,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
     private processMovement(): void {
         if (!this.isMoving) return;
         const transform = this.transform;
-        const vector2Pos = new Vector2(transform.localPosition.x, transform.localPosition.y);
+        const vector2Pos = this._tempVector2.set(transform.localPosition.x, transform.localPosition.y);
         let distance = vector2Pos.distanceTo(this._targetPosition);
         const oneStepDistance = this._speed * this.engine.time.deltaTime;
 
@@ -216,7 +217,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
             }
         }
 
-        const direction = this._tempVector2.copy(this._targetPosition).sub(vector2Pos).normalize();
+        const direction = this._temp2Vector2.copy(this._targetPosition).sub(vector2Pos).normalize();
         
         if (distance < oneStepDistance) {
             this.isMoving = false;
