@@ -1,4 +1,4 @@
-import OrderedSet from "js-sdsl/dist/esm/container/TreeContainer/OrderedSet";
+import { OrderedSet } from "js-sdsl";
 
 import { EventContainer, IEventContainer } from "../collection/EventContainer";
 import { Camera } from "../script/render/Camera";
@@ -7,7 +7,7 @@ import { ReadonlyColor } from "./ReadonlyColor";
 
 /**
  * The container that has the camera currently in use for rendering.
- * 
+ *
  * you can use Unsafe API by casting this to `CameraContainer`
  */
 export interface IReadonlyCameraContainer {
@@ -22,7 +22,7 @@ export interface IReadonlyCameraContainer {
  * do not drive this class
  */
 export class CameraContainer {
-    private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null; 
+    private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null;
     private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
     private readonly _cameraQueue: OrderedSet<{camera: Camera, info: CameraInfo}>;
     private readonly _onChangeBackgroundColor: (color: null|ReadonlyColor|THREE.Texture) => void;
@@ -50,7 +50,7 @@ export class CameraContainer {
 
     /**
      * get current camera priority
-     * 
+     *
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
@@ -60,9 +60,9 @@ export class CameraContainer {
 
     /**
      * add new camera to camera container
-     * @param camera 
-     * @param info 
-     * 
+     * @param camera
+     * @param info
+     *
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
@@ -74,8 +74,8 @@ export class CameraContainer {
 
     /**
      * remove camera from camera container
-     * @param camera 
-     * 
+     * @param camera
+     *
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
@@ -89,9 +89,9 @@ export class CameraContainer {
 
     /**
      * change camera priority
-     * @param camera 
-     * @param priority 
-     * 
+     * @param camera
+     * @param priority
+     *
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
@@ -106,9 +106,9 @@ export class CameraContainer {
 
     /**
      * change camera background color
-     * @param camera 
-     * @param color 
-     * 
+     * @param camera
+     * @param color
+     *
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
@@ -120,7 +120,7 @@ export class CameraContainer {
             this._onChangeBackgroundColor(color);
         }
     }
-    
+
     private setCamera(): void {
         if (this._cameraQueue.size() === 0) {
             this._currentCameraInfo = null;

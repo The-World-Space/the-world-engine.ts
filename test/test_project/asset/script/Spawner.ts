@@ -3,7 +3,7 @@ import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
-import Queue from "js-sdsl/dist/esm/container/OtherContainer/Queue";
+import { Deque as Queue } from "js-sdsl";
 
 /** @internal */
 export class Spawner extends Component {
