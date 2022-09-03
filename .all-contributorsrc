@@ -1,0 +1,24 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "contributors": [
+    {
+      "login": "ZLY201",
+      "name": "Zilong Yao",
+      "avatar_url": "https://avatars.githubusercontent.com/u/59038614?v=4",
+      "profile": "http://zly201.github.io",
+      "contributions": [
+        "code"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "projectName": "the-world-engine.ts",
+  "projectOwner": "The-World-Space",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "skipCi": true
+}
