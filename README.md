@@ -27,6 +27,16 @@ npm i the-world-engine
 
 - [Documentation](https://the-world-space.github.io/the-world-engine.ts/build) - I'm still working on it
 
+## Contributers
+
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
 ## Contributing
 
 Please see the [Contributing Guidelines](./CONTRIBUTING.md) for guidelines on how to contribute to the project.

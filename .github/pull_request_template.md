@@ -22,7 +22,7 @@ Please fill out the following form then we can review your pull request.
 
 <!-- Please check "x" in the box below to indicate that you have completed the task. -->
 
-- [ ] I'm not PR to the master branch.
+- [ ] I'm not PR to the main branch.
 - [ ] Commit message was checked by commitlint.
 
 ### Additional information

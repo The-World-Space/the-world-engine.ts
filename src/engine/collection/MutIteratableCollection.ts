@@ -1,4 +1,4 @@
-import OrderedSet from "js-sdsl/dist/esm/container/TreeContainer/OrderedSet";
+import { OrderedSet } from "js-sdsl";
 
 /** @internal */
 export class MutIteratableCollection<T extends { isRemoved: boolean }> {
@@ -19,7 +19,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     public get size(): number {
         return this._collection.size();
     }
-    
+
     /** Set an entry, O(log n) */
     public insert(value: T): void {
         value.isRemoved = false;
@@ -28,7 +28,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     }
 
     /**
-     * Delete an entry with the key from the tree, O(log n) 
+     * Delete an entry with the key from the tree, O(log n)
      * if the entry is not found, nothing happens
      */
     public delete(value: T): void {
@@ -38,7 +38,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
         } else this._collection.eraseElementByKey(value);
     }
 
-    /** Clear the tree, same as `Map.clear()`, O(1) 
+    /** Clear the tree, same as `Map.clear()`, O(1)
      * UB: you don't call this when iterating the tree */
     public clear(): void {
         this._collection.clear();
@@ -67,7 +67,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
         this._iterateCollection = null;
         this._deleteBuffer.forEach((value: T) => this.delete(value));
         this._insertBuffer.forEach((value: T) => this.insert(value));
-        
+
         const insertBuffer = this._insertBuffer;
         this._insertBuffer = this._insertBufferSwap;
         this._insertBufferSwap = insertBuffer;
