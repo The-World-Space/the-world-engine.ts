@@ -53,6 +53,10 @@ module.exports = {
             {
                 test: /\.(png|jpg|gif)$/,
                 type: "asset",
+            },
+            {
+                include: path.resolve(__dirname, "node_modules/js-sdsl"),
+                sideEffects: false
             }
         ],
     },
