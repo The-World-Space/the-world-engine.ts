@@ -41,7 +41,7 @@ export class CameraPrefab extends Prefab {
         return this.gameObjectBuilder
             .withComponent(Camera)
             .withComponent(TrackCameraController, c => {
-                c.lerpTrack = true;
+                c.smoothTrack = true;
                 if (this._trackObject.ref) c.setTrackTarget(this._trackObject.ref);
             })
             .getComponent(Camera, this._camera)
