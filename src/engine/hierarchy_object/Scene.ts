@@ -15,7 +15,6 @@ export class Scene {
     public constructor() {
         this._threeScene = new ThreeScene();
         this._threeScene.matrixAutoUpdate = false;
-        this._threeScene.autoUpdate = false;
     }
     
     /**
