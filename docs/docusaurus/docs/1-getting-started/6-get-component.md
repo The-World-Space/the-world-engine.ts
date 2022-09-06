@@ -67,12 +67,12 @@ export class Bootstrapper extends BaseBootstrapper {
 
             .withChild(instantiater.buildGameObject("gameObject1")
                 .withComponent(Component1, c => {
-                    c._component2 = component2.ref!; // inject the dependency
-                }))
-
-            .withChild(instantiater.buildGameObject("gameObject2")
-                .withComponent(Component2)
-                .getComponent(Component2, component2)) // set the prefab ref
+                    c._component2 = component2.ref!; // inject the dependency  <---------
+                }))                                                                    //|
+                                                                                       //|
+            .withChild(instantiater.buildGameObject("gameObject2")                     //|
+                .withComponent(Component2)                                             //|
+                .getComponent(Component2, component2)) // set the prefab ref    --------->
         ;
     }
 }
@@ -109,11 +109,11 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withComponent(Camera))
 
             .withChild(instantiater.buildGameObject("player")
-                .getGameObject(player)) // set the prefab ref
-
-            .withChild(instantiater.buildGameObject("gameObject1")
-                .withComponent(Component3, c => {
-                    c.player = player.ref!; // inject the dependency
+                .getGameObject(player)) // set the prefab ref        --------->
+                                                                            //|
+            .withChild(instantiater.buildGameObject("gameObject1")          //|
+                .withComponent(Component3, c => {                           //|
+                    c.player = player.ref!; // inject the dependency <---------
                 }))
         ;
     }
