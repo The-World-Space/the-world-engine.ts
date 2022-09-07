@@ -16,23 +16,23 @@
         "lint": "eslint src/**/*.{ts,js,jsx,tsx}"
     },
     "dependencies": {
-        "@docusaurus/core": "2.0.1",
-        "@docusaurus/preset-classic": "2.0.1",
+        "@docusaurus/core": "2.1.0",
+        "@docusaurus/preset-classic": "2.1.0",
         "@mdx-js/react": "^1.6.22",
         "clsx": "^1.2.1",
         "prism-react-renderer": "^1.3.5",
         "react": "^17.0.2",
         "react-dom": "^17.0.2",
-        "the-world-engine": "^0.4.27",
+        "the-world-engine": "^0.4.37",
         "the-world-engine-react": "^0.0.5"
     },
     "devDependencies": {
-        "@docusaurus/module-type-aliases": "2.0.0-rc.1",
+        "@docusaurus/module-type-aliases": "2.1.0",
         "@tsconfig/docusaurus": "^1.0.5",
-        "@typescript-eslint/eslint-plugin": "^5.32.0",
-        "@typescript-eslint/parser": "^5.32.0",
-        "eslint-plugin-react": "^7.30.1",
-        "typescript": "^4.7.4"
+        "@typescript-eslint/eslint-plugin": "^5.36.2",
+        "@typescript-eslint/parser": "^5.36.2",
+        "eslint-plugin-react": "^7.31.7",
+        "typescript": "^4.8.2"
     },
     "browserslist": {
         "production": [

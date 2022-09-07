@@ -266,7 +266,7 @@ export class Collider2D extends Component {
      * @param value layer name
      */
     public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>|null): void {
-        this._collisionLayer = value ? this.engine.physics.collisionLayerMask.nameToLayer(value) : null;
+        this._collisionLayer = value ? this.engine.physics.collisionLayerMask.nameToLayer<T>(value) : null;
         this.updateFixturesFilter();
     }
 

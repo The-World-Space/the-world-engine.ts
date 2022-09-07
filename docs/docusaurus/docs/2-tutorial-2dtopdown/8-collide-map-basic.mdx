@@ -1,0 +1,112 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper } from "./project-override/8-collide-map-basic";
+
+# Collide Map Basic
+
+The Collide Map handles collisions in the 2D grid system. Let's look at the basics of collide map.
+
+## Kind of CollideMap
+
+There are currently four types of collide maps available by default on the engine.
+- `GridCollideMap` - The most basic form of the Collide Map.
+- `GridObjectCollideMap` - CollideMap where you can add multiple static objects with `GridCollider` components.
+- `CssCollideTilemapRenderer` - It's a finite size of the tilemap. However, it is a component that automatically installs colliders when placing tiles.
+- `CssCollideTilemapChunkRenderer` - It's a infinite size of the tilemap. However, it is a component that automatically installs colliders when placing tiles.
+
+## Usage of `GridCollideMap`
+
+GridCollideMap is not handled by a engine global scope special system, so you must insert the collideMap directly into the object to be collidable.
+
+We are going to collide the player, so we will modify the player prefab to receive collisions information.
+
+```typescript title="src/asset/prefab/PlayerPrefab.ts"
+//...
+export class PlayerPrefab extends Prefab {
+    private readonly _collideMaps: PrefabRef<IGridCollidable>[] = [];
+
+    // we will add collide map to the player
+    public withCollideMap(collideMap: PrefabRef<IGridCollidable>): this {
+        this._collideMaps.push(collideMap);
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+        return this.gameObjectBuilder
+            //...
+            .withComponent(PlayerGridMovementController, c => {
+                //...
+                for (const collideMap of this._collideMaps) {
+                    if (collideMap.ref) c.addCollideMap(collideMap.ref);
+                }
+                c.gridPointer = this._gridPointer.ref;
+                if (this._gridPosition.ref) c.initPosition = this._gridPosition.ref;
+            })
+            .withComponent(MovementAnimationController)
+        ;
+    }
+}
+```
+
+By simply `addCollideMap` in the `PlayerGridMovementController`, collision processing is possible.
+
+Then, We will make `GridCollideMap` and put it in the player.
+
+```typescript title="src/asset/Bootstrapper.ts"
+const player = new PrefabRef<GameObject>();
+const collideMap = new PrefabRef<GridCollideMap>();
+
+return this.sceneBuilder
+    .withChild(instantiater.buildGameObject("tilemap")
+        //...    
+    )
+    
+    .withChild(instantiater.buildGameObject("collision")
+        .withComponent(GridCollideMap, c => {
+            c.showCollider = true;
+
+            const range = 3;
+            for (let i = -range; i <= range; i++) {
+                c.addCollider(range, i);
+                c.addCollider(i, range);
+                c.addCollider(-range, i);
+                c.addCollider(i, -range);
+            }
+        })
+        .getComponent(GridCollideMap, collideMap))
+
+    .withChild(instantiater.buildPrefab("player", PlayerPrefab)
+        .withCollideMap(collideMap)
+        .make()
+        .getGameObject(player))
+    //...
+```
+
+You can add colliders through `addCollider`.
+
+The `addColliderFromTwoDimensionalArray` method allows you to place colliders in two-dimensional arrays, but this is not covered here.
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll />
+
+You can see the player getting collisions from the collide map.
+
+In fact, GridCollideMap alone can handle collisions in all grids you want, but we will try other CollideMaps for convenience.
+
+## Make Boundaries
+
+First, we will install a square-shaped collider so that the player does not get out of the map.
+
+You just need to change the `range` variable to the size of the map.
+
+```typescript title="src/asset/Bootstrapper.ts"
+.withComponent(GridCollideMap, c => {
+    c.showCollider = false; // we don't need to show the collider
+
+    const range = 13; // increase it appropriately by the range you want to set as a boundary.
+    for (let i = -range; i <= range; i++) {
+        c.addCollider(range, i);
+        c.addCollider(i, range);
+        c.addCollider(-range, i);
+        c.addCollider(i, -range);
+    }
+})
+```

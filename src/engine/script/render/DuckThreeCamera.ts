@@ -80,7 +80,11 @@ export class DuckThreeCamera {
 
         (this as any).lookAt = (target: Vector3|number, y?: number, z?: number): void => {
             (object3D as any).isCamera = true;
-            object3D.lookAt(target, y, z);
+            if (typeof target === "number") {
+                object3D.lookAt(target, y as number, z as number);
+            } else {
+                object3D.lookAt(target);
+            }
             (object3D as any).isCamera = false;
         };
     }

@@ -1,7 +1,9 @@
 /**
  * Based on http://www.emagix.net/academic/mscs-project/item/camera-sync-with-css3-and-webgl-threejs
  */
-import { Camera, Matrix4, Object3D, Quaternion, Scene, Vector3 } from "three/src/Three";
+import { Camera, Matrix4, Object3D, OrthographicCamera, PerspectiveCamera, Quaternion, Scene, Vector3 } from "three/src/Three";
+
+import { CSS3DObject, CSS3DSprite } from "./CSS3DRenderer";
 
 const tempPosition = new Vector3();
 const tempQuaternion = new Quaternion();
@@ -51,23 +53,23 @@ export class OptimizedCSS3DRenderer {
     public render(renderObjects: Set<Object3D>, scene: Scene, camera: Camera): void {
         const fov = camera.projectionMatrix.elements[5] * this._heightHalf;
         if (this._cache.camera.fov !== fov) {
-            this.domElement.style.perspective = (camera as any).isPerspectiveCamera ? fov + "px" : "";
+            this.domElement.style.perspective = (camera as PerspectiveCamera).isPerspectiveCamera ? fov + "px" : "";
             this._cache.camera.fov = fov;
         }
 
-        if (scene.autoUpdate === true) scene.updateMatrixWorld();
+        if (scene.matrixAutoUpdate === true) scene.updateMatrixWorld();
         if (camera.parent === null) camera.updateMatrixWorld();
         
         let tx: number, ty: number;
-        if ((camera as any).isOrthographicCamera) {
-            tx = - ((camera as any).right + (camera as any).left) / 2;
-            ty = ((camera as any).top + (camera as any).bottom) / 2;
+        if ((camera as OrthographicCamera).isOrthographicCamera) {
+            tx = - ((camera  as OrthographicCamera).right + (camera as OrthographicCamera).left) / 2;
+            ty = ((camera as OrthographicCamera).top + (camera as OrthographicCamera).bottom) / 2;
         } else {
             tx = 1;
             ty = 1;
         }
 
-        const cameraCSSMatrix = (camera as any).isOrthographicCamera 
+        const cameraCSSMatrix = (camera as OrthographicCamera).isOrthographicCamera 
             ? "scale(" + fov + ")" + "translate(" + this.epsilon(tx) + "px," + this.epsilon(ty) + "px)" + this.getCameraCSSMatrix(camera.matrixWorldInverse)
             : "translateZ(" + fov + "px)" + this.getCameraCSSMatrix(camera.matrixWorldInverse);
         
@@ -117,16 +119,16 @@ export class OptimizedCSS3DRenderer {
         return "translate(-50%,-50%)" + matrix3d;
     }
 
-    private renderObject(object: any, scene: Scene, camera: Camera): void {
-        if (object.isCSS3DObject) {
-            object.onBeforeRender(this, scene, camera);
+    private renderObject(object: Object3D, scene: Scene, camera: Camera): void {
+        if ((object as CSS3DObject).isCSS3DObject) {
+            (object as any).onBeforeRender(this, scene, camera);
             let style;
 
-            if (object.isCSS3DSprite) {
+            if ((object as CSS3DSprite).isCSS3DSprite) {
                 // http://swiftcoder.wordpress.com/2008/11/25/constructing-a-billboard-matrix/
                 tempMatrix.copy(camera.matrixWorldInverse);
                 tempMatrix.transpose();
-                if (object.rotation2D !== 0) tempMatrix.multiply(tempMatrix2.makeRotationZ(object.rotation2D));
+                if ((object as CSS3DSprite).rotation2D !== 0) tempMatrix.multiply(tempMatrix2.makeRotationZ((object as CSS3DSprite).rotation2D));
                 object.matrixWorld.decompose(tempPosition, tempQuaternion, tempScale);
                 tempMatrix.setPosition(tempPosition);
                 tempMatrix.scale(tempScale);
@@ -141,7 +143,7 @@ export class OptimizedCSS3DRenderer {
                 style = this.getObjectCSSMatrix(object.matrixWorld);
             }
 
-            const element = object.element;
+            const element = (object as CSS3DObject).element;
             //const cachedObject = this._cache.objects.get(object);
 
             element.style.transform = style;
@@ -161,7 +163,7 @@ export class OptimizedCSS3DRenderer {
             if (element.parentNode !== this._cameraElement) {
                 this._cameraElement.appendChild(element);
             }
-            object.onAfterRender(this, scene, camera);
+            (object as any).onAfterRender(this, scene, camera);
         }
 
         //recursion is not needed, because updated data is iterated in renderObjects
