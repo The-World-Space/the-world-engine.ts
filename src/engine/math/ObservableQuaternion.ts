@@ -41,7 +41,7 @@ export class ObservableQuaternion {
         return qm.slerpQuaternions(qa, qb, t);
     }
 
-    public static slerpFlat( //TODO: pr to three-types
+    public static slerpFlat(
         dst: number[],
         dstOffset: number,
         src0: number[],
