@@ -39,20 +39,6 @@ export type ReadonlyVector3 = {
      */
     length(): number;
 
-    /**
-     * Computes the Manhattan length of this vector.
-     *
-     * see {@link http://en.wikipedia.org/wiki/Taxicab_geometry|Wikipedia: Taxicab Geometry}
-     */
-    manhattanLength(): number;
-
-    /**
-     * Computes the Manhattan length (distance) from this vector to the given vector v
-     *
-     * see {@link http://en.wikipedia.org/wiki/Taxicab_geometry|Wikipedia: Taxicab Geometry}
-     */
-    manhattanDistanceTo(v: Vector3): number;
-
     angleTo(v: ReadonlyVector3): number;
 
     /**

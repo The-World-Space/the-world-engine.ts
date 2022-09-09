@@ -649,20 +649,6 @@ export class ObservableQuaternion {
         return this;
     }
 
-    /**
-     * @deprecated Use {@link Vector#applyQuaternion vector.applyQuaternion( quaternion )} instead.
-     */
-    public multiplyVector3(_v: any): any {
-        throw new Error("deprecated");
-    }
-
-    /**
-     * @deprecated Use {@link Quaternion#invert .invert()} instead.
-     */
-    public inverse(): Quaternion {
-        throw new Error("deprecated");
-    }
-
     public *[Symbol.iterator](): Generator<number, void> {
         this._onBeforeGetComponentCallback();
         yield this._internalX;
