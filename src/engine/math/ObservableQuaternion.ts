@@ -635,7 +635,7 @@ export class ObservableQuaternion {
         return array;
     }
 
-    public fromBufferAttribute(attribute: BufferAttribute|InterleavedBufferAttribute, index: number): ObservableQuaternion { //TODO: pr to three-types
+    public fromBufferAttribute(attribute: BufferAttribute|InterleavedBufferAttribute, index: number): ObservableQuaternion {
         this._internalX = attribute.getX(index);
         this._internalY = attribute.getY(index);
         this._internalZ = attribute.getZ(index);
