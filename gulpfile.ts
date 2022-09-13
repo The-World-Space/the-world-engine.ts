@@ -89,7 +89,7 @@ gulp.task("umd", ((): import("undertaker").TaskFunction => {
             output: {
                 file: "twengine.js",
                 format: "umd",
-                name: "twengine",
+                name: "TWE",
                 globals: {
                     "three/src/Three": "THREE",
                     "three/src/math/MathUtils": "THREE.MathUtils",
