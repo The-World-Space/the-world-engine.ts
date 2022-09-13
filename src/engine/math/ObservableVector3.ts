@@ -685,23 +685,6 @@ export class ObservableVector3 {
         this._onBeforeGetComponentCallback();
         yield this._z;
     }
-
-    /**
-     * Computes Manhattan length of this vector.
-     * http://en.wikipedia.org/wiki/Taxicab_geometry
-     *
-     * @deprecated Use {@link Vector3#manhattanLength .manhattanLength()} instead.
-     */
-    public lengthManhattan(): number {
-        throw new Error("deprecated");
-    }
-
-    /**
-     * @deprecated Use {@link Vector3#manhattanDistanceTo .manhattanDistanceTo()} instead.
-     */
-    public distanceToManhattan(_v: ObservableVector3): number {
-        throw new Error("deprecated");
-    }
 }
 
 const tempVector = /*@__PURE__*/ new ObservableVector3();

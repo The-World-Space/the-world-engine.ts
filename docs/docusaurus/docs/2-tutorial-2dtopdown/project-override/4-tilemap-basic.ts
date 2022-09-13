@@ -10,6 +10,7 @@ import {
     TwoDimensionalStringMapper
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
+
 import OverworldTileset from "../project/image/Overworld_Tileset.png";
 import { BackgroundPrefab } from "../project/prefab/world/BackgroundPrefab";
 
@@ -83,7 +84,7 @@ export class Bootstrapper2 extends BaseBootstrapper {
                                 "gggg",
                                 "gggg"
                             ], {
-                                "g": () => ({ i: 0, a: 24 }),
+                                "g": () => ({ i: 0, a: 24 })
                             }),
                             0, 0
                         );

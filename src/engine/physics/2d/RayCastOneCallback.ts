@@ -1,5 +1,5 @@
-import { RayCastCallback, Vec2 } from "../../../box2d.ts/build";
-import type { b2Fixture } from "../../../box2d.ts/build/box2d";
+import type { Fixture } from "../../../box2d.ts/build/index";
+import { RayCastCallback, Vec2 } from "../../../box2d.ts/build/index";
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
 import type { IPhysics2D } from "./IPhysics2D";
@@ -44,7 +44,7 @@ export class RayCastOneCallback extends RayCastCallback {
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public override ReportFixture(
-        fixture: b2Fixture,
+        fixture: Fixture,
         point: Vec2,
         normal: Vec2,
         fraction: number

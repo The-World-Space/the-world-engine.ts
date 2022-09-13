@@ -41,7 +41,7 @@ export class ObservableQuaternion {
         return qm.slerpQuaternions(qa, qb, t);
     }
 
-    public static slerpFlat( //TODO: pr to three-types
+    public static slerpFlat(
         dst: number[],
         dstOffset: number,
         src0: number[],
@@ -635,7 +635,7 @@ export class ObservableQuaternion {
         return array;
     }
 
-    public fromBufferAttribute(attribute: BufferAttribute|InterleavedBufferAttribute, index: number): ObservableQuaternion { //TODO: pr to three-types
+    public fromBufferAttribute(attribute: BufferAttribute|InterleavedBufferAttribute, index: number): ObservableQuaternion {
         this._internalX = attribute.getX(index);
         this._internalY = attribute.getY(index);
         this._internalZ = attribute.getZ(index);
@@ -647,20 +647,6 @@ export class ObservableQuaternion {
     public _onChange(callback: () => void): ObservableQuaternion {
         this._onChangeCallback = callback;
         return this;
-    }
-
-    /**
-     * @deprecated Use {@link Vector#applyQuaternion vector.applyQuaternion( quaternion )} instead.
-     */
-    public multiplyVector3(_v: any): any {
-        throw new Error("deprecated");
-    }
-
-    /**
-     * @deprecated Use {@link Quaternion#invert .invert()} instead.
-     */
-    public inverse(): Quaternion {
-        throw new Error("deprecated");
     }
 
     public *[Symbol.iterator](): Generator<number, void> {

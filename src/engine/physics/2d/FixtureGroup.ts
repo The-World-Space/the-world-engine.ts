@@ -1,4 +1,4 @@
-import type { Body, Fixture, FixtureDef } from "../../../box2d.ts/build";
+import type { Body, Fixture, FixtureDef } from "../../../box2d.ts/build/index";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 
 /** @internal */

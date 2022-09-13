@@ -4,7 +4,7 @@ import {
     CssSpriteRenderer,
     SceneBuilder
 } from "the-world-engine";
-import { Vector3, Quaternion, MathUtils } from "three/src/Three";
+import { MathUtils, Quaternion, Vector3 } from "three/src/Three";
 
 export class Bootstrapper1 extends BaseBootstrapper {
     public run(): SceneBuilder {

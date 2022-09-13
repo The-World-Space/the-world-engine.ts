@@ -6,6 +6,7 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
+
 import { BackgroundPrefab } from "../project/prefab/world/BackgroundPrefab";
 import { DetailPrefab } from "../project/prefab/world/DetailPrefab";
 import { IslandPrefab } from "../project/prefab/world/IslandPrefab";

@@ -7,6 +7,7 @@ import {
     PrefabRef,
     SceneBuilder
 } from "the-world-engine";
+
 import { CameraPrefab } from "./CameraPrefab";
 
 export class Bootstrapper extends BaseBootstrapper {

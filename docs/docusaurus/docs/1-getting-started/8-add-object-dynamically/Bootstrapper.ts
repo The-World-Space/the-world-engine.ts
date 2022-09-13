@@ -3,6 +3,7 @@ import {
     Camera,
     SceneBuilder
 } from "the-world-engine";
+
 import { RandomSpawner1, RandomSpawner2, RandomSpawner3, RandomSpawner4, RandomSpawner5 } from "./RandomSpawner";
 
 export class Bootstrapper1 extends BaseBootstrapper {

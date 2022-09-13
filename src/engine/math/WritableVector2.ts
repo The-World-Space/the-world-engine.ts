@@ -198,11 +198,6 @@ export type WritableVector2 = {
     length(): number;
 
     /**
-     * @deprecated Use {@link Vector2#manhattanLength .manhattanLength()} instead.
-     */
-    lengthManhattan(): number;
-
-    /**
      * Computes the Manhattan length of this vector.
      *
      * see {@link http://en.wikipedia.org/wiki/Taxicab_geometry|Wikipedia: Taxicab Geometry}
@@ -228,11 +223,6 @@ export type WritableVector2 = {
      * Computes squared distance of this vector to v.
      */
     distanceToSquared(v: ReadonlyVector2): number;
-
-    /**
-     * @deprecated Use {@link Vector2#manhattanDistanceTo .manhattanDistanceTo()} instead.
-     */
-    distanceToManhattan(v: ReadonlyVector2): number;
 
     /**
      * Computes the Manhattan length (distance) from this vector to the given vector v

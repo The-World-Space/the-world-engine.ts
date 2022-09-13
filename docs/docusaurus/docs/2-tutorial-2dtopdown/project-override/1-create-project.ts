@@ -1,4 +1,5 @@
 import { Component, EditorCameraController, SceneBuilder } from "the-world-engine";
+
 import { Bootstrapper as Topdown2dBootstrapper } from "../project/Bootstrapper";
 
 export class Bootstrapper extends Topdown2dBootstrapper {
