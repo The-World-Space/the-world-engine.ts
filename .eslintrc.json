@@ -15,7 +15,7 @@
         "plugin:@typescript-eslint/recommended"
     ],
     "ignorePatterns": [
-        "**/box2d.ts/*",
+        "**/src/box2d.ts/*",
         "**/node_modules/*",
         "**/dist/*",
         "**/docs/*"
