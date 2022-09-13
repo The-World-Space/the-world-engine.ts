@@ -13,8 +13,8 @@ npm i the-world-engine
 There are umd builds available right from your browser.
 the-world-engine is based on typescripts, so there are few runtime checks, so it is not recommended to use umd build if possible.
 
-- <https://unpkg.com/js-sdsl/dist/umd/twengine.min.js>
-- <https://unpkg.com/js-sdsl/dist/umd/twengine.js>
+- <https://unpkg.com/the-world-engine/dist/umd/twengine.min.js>
+- <https://unpkg.com/the-world-engine/dist/umd/twengine.js>
 
 ```html
 <!DOCTYPE html>
@@ -25,7 +25,7 @@ the-world-engine is based on typescripts, so there are few runtime checks, so it
     <link rel="icon" href="data:,">
     <style> html, body { height: 100%; margin: 0; } </style>
     <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
-    <script src="https://unpkg.com/js-sdsl/dist/umd/twengine.min.js"></script>
+    <script src="https://unpkg.com/the-world-engine/dist/umd/twengine.min.js"></script>
 </head>
 
 <body>
