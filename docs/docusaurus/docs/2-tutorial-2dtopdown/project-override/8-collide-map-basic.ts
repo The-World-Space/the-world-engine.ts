@@ -10,6 +10,7 @@ import {
     TrackCameraController
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
+
 import { PlayerPrefab } from "../project/prefab/PlayerPrefab";
 import { BackgroundPrefab } from "../project/prefab/world/BackgroundPrefab";
 import { DetailPrefab } from "../project/prefab/world/DetailPrefab";
@@ -44,7 +45,7 @@ export class Bootstrapper extends BaseBootstrapper {
                         c.addCollider(i, range);
                         c.addCollider(-range, i);
                         c.addCollider(i, -range);
-                        c.addColliderFromTwoDimensionalArray
+                        c.addColliderFromTwoDimensionalArray;
                     }
                 })
                 .getComponent(GridCollideMap, collideMap))

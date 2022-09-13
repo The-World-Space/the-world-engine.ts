@@ -8,6 +8,7 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector2, Vector3 } from "three/src/Three";
+
 import OverworldTileset from "../project/image/Overworld_Tileset.png";
 import { DrawIndex } from "../project/script/DrawIndex";
 

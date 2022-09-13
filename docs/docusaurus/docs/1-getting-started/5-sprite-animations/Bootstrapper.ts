@@ -6,6 +6,7 @@ import {
     SpriteAtlasAnimator
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
+
 import { PlayerController } from "./PlayerController";
 
 export class Bootstrapper1 extends BaseBootstrapper {

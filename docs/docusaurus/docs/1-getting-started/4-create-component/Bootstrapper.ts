@@ -5,6 +5,7 @@ import {
     SceneBuilder
 } from "the-world-engine";
 import { Vector3 } from "three/src/Three";
+
 import { Rotator } from "./Rotator";
 
 export class Bootstrapper1 extends BaseBootstrapper {

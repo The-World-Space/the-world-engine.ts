@@ -4,6 +4,7 @@ import {
     CssSpriteRenderer,
     SceneBuilder
 } from "the-world-engine";
+
 import { RandomMovement } from "./RandomMovement";
 
 export class Bootstrapper extends BaseBootstrapper {
