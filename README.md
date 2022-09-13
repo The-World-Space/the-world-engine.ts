@@ -3,8 +3,49 @@ three.js based, unity like game engine for browser.
 
 [![npm](https://img.shields.io/npm/v/the-world-engine)](https://www.npmjs.com/package/the-world-engine) [![coverage](https://img.shields.io/codecov/c/github/The-World-Space/the-world-engine.ts/main)](https://app.codecov.io/gh/The-World-Space/the-world-engine.ts/) [![last commit](https://img.shields.io/github/last-commit/The-World-Space/the-world-engine.ts)](https://github.com/The-World-Space/the-world-engine.ts/commits/dev) [![language](https://img.shields.io/github/languages/top/The-World-Space/the-world-engine.ts)](https://www.typescriptlang.org/) [![license](https://img.shields.io/github/license/The-World-Space/the-world-engine.ts)](https://opensource.org/licenses/MIT)
 
+## npm
+Simply install `the-world-engine`, and the `three` and `@types/three` in peer-dependency will be installed together.
 ```shell
 npm i the-world-engine
+```
+
+## CDN
+There are umd builds available right from your browser.
+the-world-engine is based on typescripts, so there are few runtime checks, so it is not recommended to use umd build if possible.
+
+- <https://unpkg.com/js-sdsl/dist/umd/twengine.min.js>
+- <https://unpkg.com/js-sdsl/dist/umd/twengine.js>
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="data:,">
+    <style> html, body { height: 100%; margin: 0; } </style>
+    <script src="https://cdn.jsdelivr.net/npm/three/build/three.min.js"></script>
+    <script src="https://unpkg.com/js-sdsl/dist/umd/twengine.min.js"></script>
+</head>
+
+<body>
+    <script>
+        const game = new TWE.Game(document.body);
+        game.run(class extends TWE.Bootstrapper {
+            run() {
+                const instantiater = this.instantiater;
+                return this.sceneBuilder
+                    .withChild(instantiater.buildGameObject("camera")
+                        .withComponent(TWE.Camera))
+                    .withChild(instantiater.buildGameObject("sprite")
+                        .withComponent(TWE.CssSpriteRenderer));
+            }
+        });
+        game.inputHandler.startHandleEvents();
+    </script>
+</body>
+
+</html>
 ```
 
 #### [Demo](https://the-world-space.github.io/the-world-engine-examples/build/sans-fight-room/index.html)
