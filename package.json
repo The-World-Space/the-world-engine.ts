@@ -8,7 +8,7 @@
         "build": "gulp",
         "test": "jest",
         "webpack": "webpack --mode production",
-        "lint": "eslint -c .eslintrc.json **/*.ts --fix --cache",
+        "lint": "eslint -c .eslintrc.json --fix --cache \"**/*.ts\"",
         "prepare": "husky install"
     },
     "repository": {
