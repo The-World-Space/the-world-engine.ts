@@ -1,6 +1,6 @@
 import { Vector2 } from "three/src/Three";
 
-import type { b2Vec2 } from "../../../box2d.ts/build/box2d";
+import type { Vec2 } from "../../../box2d.ts/build/index";
 import type { Transform } from "../../hierarchy_object/Transform";
 import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import type { Collider2D } from "../../script/physics2d/collider/Collider2D";
@@ -18,12 +18,12 @@ export class RaycastHit2D {
 
     /** @internal */
     public setData(
-        centroid: b2Vec2|Vector2,
+        centroid: Vec2|Vector2,
         collider: Collider2D,
         distance: number,
         fraction: number,
-        normal: b2Vec2|Vector2,
-        point: b2Vec2|Vector2,
+        normal: Vec2|Vector2,
+        point: Vec2|Vector2,
         rigidbody: RigidBody2D|null,
         transform: Transform
     ): void {
