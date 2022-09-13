@@ -13,12 +13,10 @@
         "strict": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
-        "module": "esnext",
+        "module": "CommonJS",
         "moduleResolution": "node",
         "resolveJsonModule": true,
         "stripInternal": true,
-        //"isolatedModules": true,
-        //"noEmit": true,
         "noEmitOnError": true,
         "noImplicitAny": true,
         "noImplicitReturns": true,
@@ -26,7 +24,6 @@
         "noImplicitOverride": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
-        //"declaration": true,
         "outDir": "dist/",
         "typeRoots": [
             "src/types",
@@ -38,9 +35,5 @@
                 "src/*"
             ]
         }
-    },
-    "include": [
-        "src",
-        "test"
-    ]
+    }
 }

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
     presets: ["@babel/preset-env"],
     env: { 
         test: {
@@ -8,4 +8,4 @@ module.exports = {
             ]
         }
     }
-}
+};

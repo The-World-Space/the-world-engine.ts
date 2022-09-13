@@ -1,4 +1,4 @@
-module.exports = {
+{
     "env": {
         "browser": true,
         "es2021": true,
@@ -8,14 +8,17 @@ module.exports = {
         "page": true,
         "browser": true,
         "context": true,
-        "jestPuppeteer": true,
+        "jestPuppeteer": true
     },
     "extends": [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended"
     ],
     "ignorePatterns": [
-        "**/box2d.ts/*"
+        "**/box2d.ts/*",
+        "**/node_modules/*",
+        "**/dist/*",
+        "**/docs/*"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -141,11 +144,11 @@ module.exports = {
     },
     "settings": {
         "import/resolver": {
-            alias: {
-                map: [
+            "alias": {
+                "map": [
                     ["@src", "./src"]
                 ]
             }
         }
     }
-};
+}
