@@ -98,7 +98,8 @@ gulp.task("umd", ((): import("undertaker").TaskFunction => {
                         "three/src/Three": "THREE",
                         "three/src/math/MathUtils": "THREE.MathUtils",
                         "three/examples/jsm/postprocessing/EffectComposer": "EffectComposer",
-                        "three/examples/jsm/postprocessing/RenderPass": "RenderPass"
+                        "three/examples/jsm/postprocessing/RenderPass": "RenderPass",
+                        "b2d": "B2D"
                     },
                     intro: `
                     (function () {
@@ -377,11 +378,12 @@ gulp.task("umd", ((): import("undertaker").TaskFunction => {
                         resolveOnly: ["js-sdsl"]
                     }),
                     rollupTypescript({
+                        typescript: require("ttypescript"),
                         tsconfigOverride: {
                             compilerOptions: {
                                 target: "ES6",
                                 module: "esnext",
-                                declaration: false
+                                declaration: true
                             },
                             include: ["src"]
                         }
