@@ -61,7 +61,8 @@ export class WebglTestBootstrapper extends Bootstrapper {
                         BlueCloudFt, BlueCloudBk, BlueCloudUp, BlueCloudDn, BlueCloudRt, BlueCloudLf
                     ]);
                     c.backgroundColor.mapping = THREE.CubeReflectionMapping;
-                    c.startCoroutine(function* (): CoroutineIterator {
+
+                    (c as Camera).startCoroutine(function* (): CoroutineIterator {
                         yield new WaitForSeconds(3);
                         const daylightBox = new THREE.TextureLoader().load(DaylightBox);
                         daylightBox.mapping = THREE.EquirectangularReflectionMapping;

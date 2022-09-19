@@ -17,6 +17,7 @@ export { Component } from "./engine/hierarchy_object/Component";
 export type { ComponentConstructor } from "./engine/hierarchy_object/ComponentConstructor";
 export { GameObject } from "./engine/hierarchy_object/GameObject";
 export { GameObjectBuilder } from "./engine/hierarchy_object/GameObjectBuilder";
+export type { InitializeComponent } from "./engine/hierarchy_object/InitializeComponent";
 export { Prefab } from "./engine/hierarchy_object/Prefab";
 export type { PrefabConstructor } from "./engine/hierarchy_object/PrefabConstructor";
 export { PrefabRef } from "./engine/hierarchy_object/PrefabRef";

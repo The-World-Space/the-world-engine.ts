@@ -7,6 +7,7 @@ import { SceneProcessor } from "../SceneProcessor";
 import { Component } from "./Component";
 import { ComponentConstructor } from "./ComponentConstructor";
 import { GameObject } from "./GameObject";
+import { InitializeComponent } from "./InitializeComponent";
 import { PrefabRef } from "./PrefabRef";
 import { Transform } from "./Transform";
 
@@ -158,7 +159,7 @@ export class GameObjectBuilder {
      */
     public withComponent<T extends Component>(
         componentCtor: ComponentConstructor<T>,
-        componentInitializeFunc?: (component: T) => void
+        componentInitializeFunc?: (component: InitializeComponent<T>) => void
     ): GameObjectBuilder;
     
     /**
@@ -169,7 +170,7 @@ export class GameObjectBuilder {
      */
     public withComponent<T extends Component>(
         componentCtor: ComponentConstructor<T>,
-        componentInitializeFunc?: (component: T) => void
+        componentInitializeFunc?: (component: InitializeComponent<T>) => void
     ): GameObjectBuilder {
         const component = new componentCtor(this._gameObject);
         component.engine_internal_constructAfterProcess();

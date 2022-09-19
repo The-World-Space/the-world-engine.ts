@@ -10,14 +10,16 @@ package-lock.json
 package.json
 testbundle
 tsconfig.json
+tsconsig.webpack.json
 webpack.config.ts
 gulpfile.ts
 test
 coverage
-babel.config.ts
+babel.config.js
 jest.config.ts
 .github
 .husky
 commitlint.config.ts
 CODE_OF_CONDUCT.md
 CONTRIBUTING.md
+.all-contributorsrc
