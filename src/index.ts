@@ -134,6 +134,9 @@ export { SpriteAtlasInstance, SpriteAtlasStaticInstancer } from "./engine/script
 export { SpriteInstance, SpriteStaticInstancer } from "./engine/script/post_render/SpriteStaticInstancer";
 
 //render
+export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
+export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
+export { CssFilter } from "./engine/script/render/filter/CssFilter";
 export { Camera, CameraType } from "./engine/script/render/Camera";
 export { CameraRelativeZaxisSorter } from "./engine/script/render/CameraRelativeZaxisSorter";
 export { CssEdgeRenderer } from "./engine/script/render/CssEdgeRenderer";
@@ -149,9 +152,6 @@ export { CssSpriteRenderer, ImageRenderingMode } from "./engine/script/render/Cs
 export { CssTextRenderer, FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
 export { CssTilemapRenderer, TileAtlasItem } from "./engine/script/render/CssTilemapRenderer";
 export { DuckThreeCamera } from "./engine/script/render/DuckThreeCamera";
-export type { ICssDropShadow } from "./engine/script/render/filter/CssDropShadow";
-export { CssDropShadow } from "./engine/script/render/filter/CssDropShadow";
-export { CssFilter } from "./engine/script/render/filter/CssFilter";
 export { WebGLGlobalPostProcessVolume } from "./engine/script/render/WebGLGlobalPostProcessVolume";
 export { ZaxisSortable } from "./engine/script/render/ZaxisSortable";
 export { ZaxisSorter } from "./engine/script/render/ZaxisSorter";
