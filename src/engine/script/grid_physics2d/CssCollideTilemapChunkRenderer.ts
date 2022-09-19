@@ -1,3 +1,4 @@
+import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
@@ -95,6 +96,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         const chunkIndex = this.getKeyFromIndex(chunkIndexX, chunkIndexY);
         let cssTilemapRenderer = this._cssTilemapRendererMap.get(chunkIndex);
         if (cssTilemapRenderer === undefined) {
+            const cssTilemapRendererRef = new PrefabRef<CssCollideTilemapRenderer>();
             this.gameObject.addChildFromBuilder(
                 this.engine.instantiater.buildGameObject(
                     `css_tilemap_renderer_${chunkIndexX}_${chunkIndexY}`, 
@@ -103,7 +105,6 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
                     new Vector3().setScalar(this._tilemapScale)
                 )
                     .withComponent(CssCollideTilemapRenderer, c => {
-                        cssTilemapRenderer = c;
                         if (this._imageSources) c.imageSources = this._imageSources;
                         c.gridCellWidth = this._tileWidth;
                         c.gridCellHeight = this._tileHeight;
@@ -115,8 +116,10 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
                         c.viewScale = this._viewScale;
                         c.filter.copy(this._filter);
                     })
+                    .getComponent(CssCollideTilemapRenderer, cssTilemapRendererRef)
             );
-            this._cssTilemapRendererMap.set(chunkIndex, cssTilemapRenderer!);
+            cssTilemapRenderer = cssTilemapRendererRef.ref!;
+            this._cssTilemapRendererMap.set(chunkIndex, cssTilemapRenderer);
         }
         return cssTilemapRenderer!;
     }
