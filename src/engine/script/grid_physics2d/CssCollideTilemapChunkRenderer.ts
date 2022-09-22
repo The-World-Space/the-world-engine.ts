@@ -22,6 +22,7 @@ import { IGridCollidable } from "./IGridCollidable";
  */
 export class CssCollideTilemapChunkRenderer extends Component implements IGridCollidable, IUnknownSizeCssRenderOption, ICssImageRenderOption {
     private readonly _cssTilemapRendererMap: Map<`${number}_${number}`, CssCollideTilemapRenderer> = new Map();
+    private readonly _tilemapTileCountMap: Map<`${number}_${number}`, Set<`${number}_${number}`>> = new Map();
     //key is chunk position in string format "x_y"
     private _chunkSize = 16;
     private _tileWidth = 1;
@@ -156,7 +157,17 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         const drawOffsetX = this.chunkSize % 2 === 0 ? 0 : -0.5;
         const drawOffsetY = this.chunkSize % 2 === 0 ? 0 : 0.5;
         
-        cssTilemapRenderer!.drawTile(drawPosition.x + drawOffsetX, this._chunkSize - drawPosition.y - 1 + drawOffsetY, imageIndex, atlasIndex);
+        const tileDrawPositionX = drawPosition.x + drawOffsetX;
+        const tileDrawPositionY = this._chunkSize - drawPosition.y - 1 + drawOffsetY;
+        cssTilemapRenderer!.drawTile(tileDrawPositionX, tileDrawPositionY, imageIndex, atlasIndex);
+        
+        const chunkKey = this.getKeyFromIndex(chunkIndexX, chunkIndexY);
+        const tileCountSet = this._tilemapTileCountMap.get(chunkKey);
+        if (tileCountSet === undefined) {
+            this._tilemapTileCountMap.set(chunkKey, new Set<`${number}_${number}`>([`${tileDrawPositionX}_${tileDrawPositionY}`]));
+        } else {
+            tileCountSet.add(`${tileDrawPositionX}_${tileDrawPositionY}`);
+        }
     }
 
     /**

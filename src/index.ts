@@ -143,7 +143,7 @@ export { CssLineRenderer } from "./engine/script/render/CssLineRenderer";
 export { CssPolygonRenderer2D } from "./engine/script/render/CssPolygonRenderer2D";
 export type { ICssRenderOption, IUnknownSizeCssRenderOption } from "./engine/script/render/CssRenderer";
 export { CssRenderer } from "./engine/script/render/CssRenderer";
-export { CssSpriteAtlasRenderer } from "./engine/script/render/CssSpriteAtlasRenderer";
+export { CssSpriteAtlasRenderer, CssSpriteAtlasRenderMode } from "./engine/script/render/CssSpriteAtlasRenderer";
 export type { ICssImageRenderOption } from "./engine/script/render/CssSpriteRenderer";
 export { CssSpriteRenderer, ImageRenderingMode } from "./engine/script/render/CssSpriteRenderer";
 export { CssTextRenderer, FontWeight, TextAlign } from "./engine/script/render/CssTextRenderer";
