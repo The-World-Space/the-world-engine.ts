@@ -1,5 +1,7 @@
 import { Vector2, Vector3 } from "three/src/Three";
 
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import { WritableVector2 } from "../../math/WritableVector2";
 import { Component } from "../../hierarchy_object/Component";
 
 /**
@@ -89,14 +91,14 @@ export class ParallaxTranslater extends Component {
     /**
      * center of parallax effect
      */
-    public get center(): Vector2 {
+    public get center(): ReadonlyVector2 {
         return this._center;
     }
 
     /**
      * center of parallax effect
      */
-    public set center(value: Vector2) {
-        this._center.copy(value);
+    public set center(value: ReadonlyVector2) {
+        (this._center as WritableVector2).copy(value);
     }
 }

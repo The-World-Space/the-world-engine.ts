@@ -1,9 +1,11 @@
 import { MathUtils, Vector2, Vector3 } from "three/src/Three";
 
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { GameObject } from "../../hierarchy_object/GameObject";
 import { Camera } from "../render/Camera";
+import { WritableVector2 } from "../../math/WritableVector2";
 
 /**
  * controller for 2D track camera
@@ -75,15 +77,15 @@ export class TrackCameraController extends Component {
     /**
      * target position offset (default: (0, 0))
      */
-    public get targetOffset(): Vector2 {
+    public get targetOffset(): ReadonlyVector2 {
         return this._targetOffset;
     }
 
     /**
      * target position offset (default: (0, 0))
      */
-    public set targetOffset(value: Vector2) {
-        this._targetOffset.copy(value);
+    public set targetOffset(value: ReadonlyVector2) {
+        (this._targetOffset as WritableVector2).copy(value);
     }
 
     /**

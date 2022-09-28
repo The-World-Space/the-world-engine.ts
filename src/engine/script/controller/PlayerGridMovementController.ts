@@ -107,7 +107,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
         }
     }
 
-    private noncheckProcessInput(currentPosotion: Vector2): boolean {
+    private noncheckProcessInput(currentPosotion: ReadonlyVector2): boolean {
         const inputMap = this.engine.input.map;
         if (inputMap.get("w") || inputMap.get("ArrowUp")) {
             this.direction = Direction.Up;
@@ -293,7 +293,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
      * 
      * if object can move to target grid position return true
      */
-    public tryStartPathfind(targetGridPosition: Vector2): boolean {
+    public tryStartPathfind(targetGridPosition: ReadonlyVector2): boolean {
         if (this._movingByPathfinder) return false;
         this._pathfindStartFunction = null;
         
