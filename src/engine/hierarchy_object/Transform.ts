@@ -543,7 +543,7 @@ export class Transform {
      * get parent. if parent is scene, returns null
      */
     public get parent(): Transform | null {
-        if (this._object3D.parent instanceof Scene) return null;
+        if ((this._object3D.parent as Scene).isScene) return null;
         return this._object3D.parent!.userData as Transform;
     }
 
@@ -592,9 +592,15 @@ export class Transform {
      * get children. it returns new instance of Array, so you can change it
      */
     public get children(): Transform[] {
-        return this._object3D.children
-            .filter(child => child.userData instanceof Transform)
-            .map(child => child.userData as Transform);
+        const result: Transform[] = [];
+        const children = this._object3D.children;
+        for (let i = 0, l = children.length; i < l; ++i) {
+            const child = children[i];
+            if (child.userData instanceof Transform) {
+                result.push(child.userData);
+            }
+        }
+        return result;
     }
     
     /**
