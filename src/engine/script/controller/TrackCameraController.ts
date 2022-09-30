@@ -1,11 +1,11 @@
 import { MathUtils, Vector2, Vector3 } from "three/src/Three";
 
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Component } from "../../hierarchy_object/Component";
 import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { GameObject } from "../../hierarchy_object/GameObject";
-import { Camera } from "../render/Camera";
+import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { WritableVector2 } from "../../math/WritableVector2";
+import { Camera } from "../render/Camera";
 
 /**
  * controller for 2D track camera
