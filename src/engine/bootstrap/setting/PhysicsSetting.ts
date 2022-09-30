@@ -1,3 +1,4 @@
+import { ReadonlyVector2 } from "@src/engine/math/ReadonlyVector2";
 import { Vector2 } from "three/src/Three";
 
 import type { Physics2DLoader } from "../../physics/2d/Physics2DLoader";
@@ -35,7 +36,7 @@ export class PhysicsSetting {
      * @param value Physics2DLoader
      * @returns this
      */
-    public loader(value: typeof Physics2DLoader): PhysicsSetting {
+    public loader(value: typeof Physics2DLoader): this {
         this._physicsSettingObject.loader = value;
         return this;
     }
@@ -45,8 +46,8 @@ export class PhysicsSetting {
      * @param value gravity
      * @returns this
      */
-    public gravity(value: Vector2): this {
-        this._physicsSettingObject.gravity = value;
+    public gravity(value: ReadonlyVector2): this {
+        this._physicsSettingObject.gravity = value.clone();
         return this;
     }
 

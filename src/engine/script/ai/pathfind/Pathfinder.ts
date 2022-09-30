@@ -2,6 +2,7 @@
 
 import { Vector2 } from "three/src/Three";
 
+import { ReadonlyVector2 } from "../../../math/ReadonlyVector2";
 import { IGridCollidable } from "../../grid_physics2d/IGridCollidable";
 import { PathNode } from "./PathNode";
 
@@ -72,7 +73,7 @@ export class Pathfinder {
      * @param endGridPosition end position in grid coordinates (integers value)
      * @returns the shortest path between the two points
      */
-    public findPath(startGridPosition: Vector2, endGridPosition: Vector2): Vector2[]|null {
+    public findPath(startGridPosition: ReadonlyVector2, endGridPosition: ReadonlyVector2): Vector2[]|null {
         const startNode = new PathNode(startGridPosition.x, startGridPosition.y);
         const endNode = new PathNode(endGridPosition.x, endGridPosition.y);
 

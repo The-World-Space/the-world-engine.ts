@@ -60,9 +60,15 @@ export class Scene {
     }
 
     public get children(): Transform[] {
-        return this._threeScene.children
-            .filter(child => child.userData instanceof Transform)
-            .map(child => child.userData as Transform);
+        const result: Transform[] = [];
+        const children = this._threeScene.children;
+        for (let i = 0, l = children.length; i < l; ++i) {
+            const child = children[i];
+            if (child.userData instanceof Transform) {
+                result.push(child.userData);
+            }
+        }
+        return result;
     }
 
     public unsafeGetThreeScene(): ThreeScene {

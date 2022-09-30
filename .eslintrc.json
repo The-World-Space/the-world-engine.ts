@@ -115,7 +115,17 @@
                 "format": ["PascalCase"]
             }
         ],
-        "no-debugger": "warn",
+        "comma-dangle": [
+            "error",
+            "never"
+        ],
+        "comma-spacing": [
+            "error"
+        ],
+        "eol-last": [
+            "error",
+            "always"
+        ],
         "indent": [
             "error",
             4
@@ -124,6 +134,7 @@
             "error",
             "unix"
         ],
+        "no-debugger": "warn",
         "quotes": [
             "error",
             "double"
@@ -131,13 +142,6 @@
         "semi": [
             "error",
             "always"
-        ],
-        "comma-dangle": [
-            "error",
-            "never"
-        ],
-        "comma-spacing": [
-            "error"
         ],
         "simple-import-sort/imports": "error",
         "simple-import-sort/exports": "error"
