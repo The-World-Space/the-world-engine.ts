@@ -15,9 +15,6 @@ import {
     TileAtlasItem
 } from "the-world-engine";
 import {
-    Euler,
-    MathUtils,
-    Quaternion,
     Vector3
 } from "three/src/Three";
 
@@ -148,11 +145,7 @@ export class Bootstrapper extends BaseBootstrapper {
                 })
                 .getComponent(GridPointer, pointer))
                 
-            .withChild(instantiater.buildPrefab("camera", CameraPrefab,
-                new Vector3(0, 0, 10),
-                new Quaternion()
-                    .setFromEuler(new Euler(-10 * MathUtils.DEG2RAD, -10 * MathUtils.DEG2RAD, 0))
-                    .set(0, 0, 0, 1))
+            .withChild(instantiater.buildPrefab("camera", CameraPrefab, new Vector3(0, 0, 10))
                 .withTarget(player)
                 .getDialogController(dialogController)
                 .make())
