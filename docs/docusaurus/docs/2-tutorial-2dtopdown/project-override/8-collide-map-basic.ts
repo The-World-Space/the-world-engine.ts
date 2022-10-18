@@ -2,7 +2,6 @@ import {
     Bootstrapper as BaseBootstrapper,
     Camera,
     EditorCameraController,
-    EditorGridRenderer,
     GameObject,
     GridCollideMap,
     PrefabRef,
