@@ -1,9 +1,7 @@
 import {
-    AsyncImageLoader,
     Bootstrapper as BaseBootstrapper,
     CameraRelativeZaxisSorter,
     CssCollideTilemapChunkRenderer,
-    CssTilemapChunkRenderer,
     GameObject,
     GridCollideMap,
     GridEventMap,
@@ -11,14 +9,12 @@ import {
     GridPointer,
     PointerGridInputListener,
     PrefabRef,
-    SceneBuilder,
-    TileAtlasItem
+    SceneBuilder
 } from "the-world-engine";
 import {
     Vector3
 } from "three/src/Three";
 
-import OverworldTileset from "./image/Overworld_Tileset.png";
 import { CameraPrefab } from "./prefab/CameraPrefab";
 import { PlayerPrefab } from "./prefab/PlayerPrefab";
 import { BackgroundPrefab } from "./prefab/world/BackgroundPrefab";
@@ -27,7 +23,6 @@ import { DetailPrefab } from "./prefab/world/DetailPrefab";
 import { IslandPrefab } from "./prefab/world/IslandPrefab";
 import { ObjectsPrefab } from "./prefab/world/ObjectsPrefab";
 import { DialogController } from "./script/DialogController";
-import { DrawIndex } from "./script/DrawIndex";
 import { FontLoader } from "./script/FontLoader";
 
 export class Bootstrapper extends BaseBootstrapper {
@@ -52,44 +47,12 @@ export class Bootstrapper extends BaseBootstrapper {
                         .getCollideTilemap(collideTilemap).make())
 
                     .withChild(instantiater.buildPrefab("detail", DetailPrefab)
-                        .getCollideTilemap(collideTilemap2).make())
-
-                    .withChild(instantiater.buildGameObject("test")
-                        .active(false)
-                        .withComponent(CssTilemapChunkRenderer, c => {
-                            c.chunkSize = 15;
-                            c.filter.brightness = 1.5;
-
-                            AsyncImageLoader.loadImageFromPath(OverworldTileset).then(image => {
-                                if (!c.exists) return;
-
-                                c.imageSources = [ new TileAtlasItem(image, 18, 13) ];
-
-                                function f(a: number): { i: 0, a: number } {
-                                    return { i: 0, a: a };
-                                }
-
-                                const array2d: { i: 0; a: number; }[][] = [];
-                                for (let i = 0; i < 13; i++) {
-                                    array2d[i] = [];
-                                    for (let j = 0; j < 18; j++) {
-                                        array2d[i][j] = f(i * 18 + j);
-                                    }
-                                }
-
-                                c.drawTileFromTwoDimensionalArray(array2d, 0, 0);
-                            });
-                        })
-                        .withComponent(DrawIndex, c => {
-                            c.column = 18;
-                            c.row = 13;
-                        })))
+                        .getCollideTilemap(collideTilemap2).make()))
 
                 .withChild(instantiater.buildPrefab("collision", CollisionPrefab)
                     .getCollideMap(collideMap)
                     .getObjectCollideMap(objectCollideMap)
                     .make())
-
                 
                 .withChild(instantiater.buildGameObject("event")
                     .withComponent(GridEventMap, c => {
