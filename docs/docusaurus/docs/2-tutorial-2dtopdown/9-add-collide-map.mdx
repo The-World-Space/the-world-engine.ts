@@ -1,0 +1,131 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper } from "./project-override/9-add-collide-map";
+
+# Add Collide Map
+
+This time, we will use a collide map that operates based on static objects.
+
+## CssCollideTilemapChunkRenderer
+
+The `CssCollideTilemapChunkRender` is same as the `CssTilemapChunkRender`, but it also automatically installs the collider where the tiles are placed.
+
+By replaceing the island tilemap into a collide tilemap, we can immediately implement collision handling for island without placing colliders daily.
+
+```typescript title="src/asset/prefab/world/IslandPrefab.ts"
+//...
+
+export class IslandPrefab extends Prefab {
+    private static readonly _islandList = /* ... */;
+
+    // added: collideTilemap PrefabRef
+    private _collideTilemap = new PrefabRef<CssCollideTilemapChunkRenderer>();
+
+    public getCollideTilemap(ref: PrefabRef<CssCollideTilemapChunkRenderer>): this {
+        this._collideTilemap = ref;
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+
+        return this.gameObjectBuilder
+            // replaced: CssTilemapChunkRenderer -> CssCollideTilemapChunkRenderer
+            .withComponent(CssCollideTilemapChunkRenderer, c => {
+                //...
+            })
+
+            .withComponent(CssTilemapChunkRenderer, c => {
+                //...
+            })
+
+            // added: get CollideTilemap PrefabRef
+            .getComponent(CssCollideTilemapChunkRenderer, this._collideTilemap)
+        ;
+    }
+}
+```
+
+I just modified 'CssTilemapChunkRender' to 'CssCollideTilemapChunkRender' in the `IslandPrefab` and get component to PrefabRef to inject the collidemap to the player.
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+// added: CollideTilemap PrefabRef
+const collideTilemap = new PrefabRef<CssCollideTilemapChunkRenderer>();
+
+return this.sceneBuilder
+    .withChild(instantiater.buildGameObject("tilemap")
+        .withChild(instantiater.buildPrefab("background", BackgroundPrefab, new Vector3(0, 0, -3))
+            .make())
+
+        .withChild(instantiater.buildPrefab("islands", IslandPrefab, new Vector3(0, 0, -2))
+            // added: get CollideTilemap to PrefabRef
+            .getCollideTilemap(collideTilemap).make())
+        //...
+
+    .withChild(instantiater.buildPrefab("player", PlayerPrefab)
+        .withCollideMap(collideMap)
+        .withCollideMap(collideTilemap)// added: inject collideTilemap
+//...
+```
+
+Inject collideTilemap to the player.
+
+I'll do the same for `DetailPrefab`.
+
+```typescript title="src/asset/prefab/world/DetailPrefab.ts"
+//...
+export class DetailPrefab extends Prefab {
+    // added: collideTilemap PrefabRef
+    private _collideTilemap = new PrefabRef<CssCollideTilemapChunkRenderer>();
+
+    public getCollideTilemap(ref: PrefabRef<CssCollideTilemapChunkRenderer>): this {
+        this._collideTilemap = ref;
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+        return this.gameObjectBuilder
+            // replaced: CssTilemapChunkRenderer -> CssCollideTilemapChunkRenderer
+            .withComponent(CssCollideTilemapChunkRenderer, c => {
+                //...
+            })
+            .withComponent(CssTilemapChunkRenderer, c => {
+                //...
+            })
+            // added: get CollideTilemap PrefabRef
+            .getComponent(CssCollideTilemapChunkRenderer, this._collideTilemap)
+        ;
+    }
+}
+```
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+// added: CollideTilemap PrefabRef for DetailPrefab
+const collideTilemap2 = new PrefabRef<CssCollideTilemapChunkRenderer>();
+
+return this.sceneBuilder
+    .withChild(instantiater.buildGameObject("tilemap")
+        .withChild(instantiater.buildPrefab("background", BackgroundPrefab, new Vector3(0, 0, -3))
+            .make())
+
+        .withChild(instantiater.buildPrefab("islands", IslandPrefab, new Vector3(0, 0, -2))
+            .getCollideTilemap(collideTilemap).make())
+    
+        .withChild(instantiater.buildPrefab("detail", DetailPrefab, new Vector3(0, 0, -1))
+            // added: get CollideTilemap to PrefabRef
+            .getCollideTilemap(collideTilemap2).make())
+
+    .withChild(instantiater.buildPrefab("player", PlayerPrefab)
+        .withCollideMap(collideMap)
+        .withCollideMap(collideTilemap)
+        .withCollideMap(collideTilemap2)// added: inject collideTilemap
+//...
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll />
+
+The elements rendered in tiles are now collidable.
+
+## GridObjectCollideMap
+
+
