@@ -13,7 +13,6 @@ import { Vector3 } from "three/src/Three";
 
 import { PlayerPrefab } from "../project/prefab/PlayerPrefab";
 import { BackgroundPrefab } from "../project/prefab/world/BackgroundPrefab";
-import { CollisionPrefab } from "../project/prefab/world/CollisionPrefab";
 import { DetailPrefab } from "../project/prefab/world/DetailPrefab";
 import { IslandPrefab } from "../project/prefab/world/IslandPrefab";
 
