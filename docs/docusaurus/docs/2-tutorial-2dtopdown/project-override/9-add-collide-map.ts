@@ -37,9 +37,20 @@ export class Bootstrapper extends BaseBootstrapper {
                 .withChild(instantiater.buildPrefab("detail", DetailPrefab, new Vector3(0, 0, -1))
                     .getCollideTilemap(collideTilemap2).make()))
 
-            .withChild(instantiater.buildPrefab("collision", CollisionPrefab)
-                .getCollideMap(collideMap)
-                .make())
+                .withChild(instantiater.buildGameObject("collision")
+                    .withComponent(GridCollideMap, c => {
+                        c.showCollider = false;
+    
+                        const range = 13;
+    
+                        for (let i = -range; i <= range; i++) {
+                            c.addCollider(range, i);
+                            c.addCollider(i, range);
+                            c.addCollider(-range, i);
+                            c.addCollider(i, -range);
+                        }
+                    })
+                    .getComponent(GridCollideMap, collideMap))
 
             .withChild(instantiater.buildPrefab("player", PlayerPrefab)
                 .withCollideMap(collideMap)
