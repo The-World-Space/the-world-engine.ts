@@ -1,15 +1,15 @@
-import { CssHtmlElementRenderer, CssSpriteAtlasRenderer, GameObjectBuilder, GridCollider } from "the-world-engine";
+import { CssHtmlElementRenderer, CssSpriteAtlasRenderer, GameObjectBuilder, GridCollider, InitializeComponent } from "the-world-engine";
 import { Vector2 } from "three/src/Three";
 
 import OverworldTileset from "../../image/Overworld_Tileset.png";
 import { StaticObjectPrefabBase } from "./StaticObjectPrefabBase";
 
 export class House2Prefab extends StaticObjectPrefabBase {
-    protected rendererInitializer(c: CssSpriteAtlasRenderer): void {
-        c.destroy();
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
+        c.enabled = false;
     }
 
-    protected colliderInitializer(c: GridCollider): void {
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
         c.addColliderFromTwoDimensionalArray([
             [1, 1, 1, 1, 1],
             [1, 1, 1, 1, 1]

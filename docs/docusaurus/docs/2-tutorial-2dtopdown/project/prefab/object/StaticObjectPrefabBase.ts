@@ -3,14 +3,15 @@ import {
     GameObjectBuilder,
     GridCollider,
     GridObjectCollideMap,
+    InitializeComponent,
     Prefab,
     PrefabRef,
     ZaxisSorter
 } from "the-world-engine";
 
 export abstract class StaticObjectPrefabBase extends Prefab {
-    protected abstract rendererInitializer(c: CssSpriteAtlasRenderer): void;
-    protected abstract colliderInitializer(c: GridCollider): void;
+    protected abstract rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void;
+    protected abstract colliderInitializer(c: InitializeComponent<GridCollider>): void;
 
     private _objectCollideMap = new PrefabRef<GridObjectCollideMap>();
 

@@ -2,7 +2,6 @@ import {
     Bootstrapper as BaseBootstrapper,
     Camera,
     EditorCameraController,
-    EditorGridRenderer,
     GameObject,
     GridCollideMap,
     PrefabRef,
@@ -45,7 +44,6 @@ export class Bootstrapper extends BaseBootstrapper {
                         c.addCollider(i, range);
                         c.addCollider(-range, i);
                         c.addCollider(i, -range);
-                        c.addColliderFromTwoDimensionalArray;
                     }
                 })
                 .getComponent(GridCollideMap, collideMap))

@@ -1,11 +1,11 @@
-import { CssSpriteAtlasRenderer, GridCollider } from "the-world-engine";
+import { CssSpriteAtlasRenderer, GridCollider, InitializeComponent } from "the-world-engine";
 import { Vector2 } from "three/src/Three";
 
 import OverworldTileset from "../../image/Overworld_Tileset.png";
 import { StaticObjectPrefabBase } from "./StaticObjectPrefabBase";
 
 export class House1Prefab extends StaticObjectPrefabBase {
-    protected rendererInitializer(c: CssSpriteAtlasRenderer): void {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
         c.asyncSetImageFromPath(OverworldTileset, 18 / 6, 13 / 5);
         c.imageIndex = 2;
         c.imageWidth = 6;
@@ -14,7 +14,7 @@ export class House1Prefab extends StaticObjectPrefabBase {
         c.filter.brightness = 1.5;
     }
 
-    protected colliderInitializer(c: GridCollider): void {
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
         c.addColliderFromTwoDimensionalArray([
             [1, 1, 1, 1],
             [1, 1, 1, 1, 1]

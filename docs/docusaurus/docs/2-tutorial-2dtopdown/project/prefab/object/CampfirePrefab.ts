@@ -1,16 +1,16 @@
-import { CssSpriteAtlasRenderer, GameObjectBuilder, GridCollider, SpriteAtlasAnimator } from "the-world-engine";
+import { CssSpriteAtlasRenderer, GameObjectBuilder, GridCollider, InitializeComponent, SpriteAtlasAnimator } from "the-world-engine";
 
 import BonfirePropLit from "../../image/Props_Items_(animated)/bonfire_prop_lit_anim_strip_5.png";
 import { StaticObjectPrefabBase } from "./StaticObjectPrefabBase";
 
 export class CampfirePrefab extends StaticObjectPrefabBase {
-    protected rendererInitializer(c: CssSpriteAtlasRenderer): void {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
         c.asyncSetImageFromPath(BonfirePropLit, 5, 1);
         c.imageWidth = 1;
         c.imageHeight = 1;
     }
 
-    protected colliderInitializer(c: GridCollider): void {
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
         c.addColliderFromTwoDimensionalArray([
             [1]
         ], 0, 0);

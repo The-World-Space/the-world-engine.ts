@@ -196,7 +196,7 @@ export class RandomSpawner4 extends Component {
                     button.style.backgroundColor = "#990000";
                     button.style.color = "white";
                     button.style.padding = "10px";
-                    button.onclick = () => {
+                    button.onclick = (): void => {
                         this.destroyAllSpawnedObjects();
                     };
                     c.element = button;
@@ -261,7 +261,7 @@ export class RandomSpawner5 extends Component {
                     button.style.backgroundColor = "#990000";
                     button.style.color = "white";
                     button.style.padding = "10px";
-                    button.onclick = () => {
+                    button.onclick = (): void => {
                         this.destroyAllSpawnedObjects();
                     };
                     c.element = button;
@@ -278,7 +278,7 @@ export class RandomSpawner5 extends Component {
                     button.style.backgroundColor = "#990000";
                     button.style.color = "white";
                     button.style.padding = "10px";
-                    button.onclick = () => {
+                    button.onclick = (): void => {
                         removeAllButtonRenderer.ref!.destroy();
                     };
                     c.element = button;
