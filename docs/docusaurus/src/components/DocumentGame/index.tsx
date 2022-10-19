@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import { Game } from "the-world-engine-react";
+
 import styles from "./styles.module.css";
 
 type GetProps<T extends React.ComponentType<any>> = T extends React.ComponentType<infer P> ? P : never;
@@ -9,7 +10,7 @@ interface DocumentGameProps extends Omit<GetProps<typeof Game>, "handleEvents"> 
     allowScroll?: boolean;
 }
 
-function DocumentGame(props: DocumentGameProps) {
+function DocumentGame(props: DocumentGameProps): JSX.Element {
     const [gameFocus, setGameFocus] = useState(false);
 
     const gameFocusHandle = useCallback((bool: boolean) => {
@@ -24,18 +25,18 @@ function DocumentGame(props: DocumentGameProps) {
         }
     }, [gameFocus]);
 
-    const gameProps = useMemo(() => {
+    const gameProps = useMemo((): DocumentGameProps & { handleEvents?: boolean } => {
         return {
             ...props,
-            handleEvents: props.ignoreEvents !== true ? gameFocus : undefined,
+            handleEvents: props.ignoreEvents !== true ? gameFocus : undefined
         };
     }, [gameFocus]);
 
     return (
         <div 
             className={styles.gameContainer}
-            onMouseEnter={() => gameFocusHandle(true)}
-            onMouseLeave={() => gameFocusHandle(false)}
+            onMouseEnter={(): void => gameFocusHandle(true)}
+            onMouseLeave={(): void => gameFocusHandle(false)}
         >
             <Game {...gameProps} />
         </div>

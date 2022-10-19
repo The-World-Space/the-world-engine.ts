@@ -165,7 +165,7 @@ export class RandomSpawner extends Component {
                     button.style.backgroundColor = "#990000";
                     button.style.color = "white";
                     button.style.padding = "10px";
-                    button.onclick = () => {
+                    button.onclick = (): void => {
                         this.destroyAllSpawnedObjects();
                     };
                     c.element = button;
@@ -207,7 +207,7 @@ export class RandomSpawner extends Component {
                     button.style.backgroundColor = "#990000";
                     button.style.color = "white";
                     button.style.padding = "10px";
-                    button.onclick = () => {
+                    button.onclick = (): void => {
                         removeAllButtonRenderer.ref!.destroy(); // destroy the remove all button
                     };
                     c.element = button;
