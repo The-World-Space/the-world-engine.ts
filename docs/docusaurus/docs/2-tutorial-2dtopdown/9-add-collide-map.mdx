@@ -1,5 +1,5 @@
 import DocumentGame from "@site/src/components/DocumentGame";
-import { Bootstrapper } from "./project-override/9-add-collide-map";
+import { Bootstrapper, Bootstrapper2 } from "./project-override/9-add-collide-map";
 
 # Add Collide Map
 
@@ -128,4 +128,68 @@ The elements rendered in tiles are now collidable.
 
 ## GridObjectCollideMap
 
+`GridObjectCollideMap` creates colliders based on the position of static objects.
 
+Below is the code for the default setting for using `GridObjectCollideMap`.
+In typical situations, only one `GridObjectCollideMap` is needed in the world.
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+// added: GridObjectCollideMap PrefabRef
+const objectCollideMap = new PrefabRef<GridObjectCollideMap>();
+const collideTilemap = new PrefabRef<CssCollideTilemapChunkRenderer>();
+const collideTilemap2 = new PrefabRef<CssCollideTilemapChunkRenderer>();
+
+return this.sceneBuilder
+    //...
+    .withChild(instantiater.buildGameObject("collision")
+        .withComponent(GridCollideMap, c => {
+            //...
+        })
+        // added: GridObjectCollideMap
+        .withComponent(GridObjectCollideMap, c => {
+            c.showCollider = true;
+        })
+        .getComponent(GridCollideMap, collideMap)
+        // added: get GridObjectCollideMap to PrefabRef
+        .getComponent(GridObjectCollideMap, objectCollideMap))
+
+    .withChild(instantiater.buildPrefab("player", PlayerPrefab)
+        .withCollideMap(collideMap)
+        // added: inject GridObjectCollideMap
+        .withCollideMap(objectCollideMap)
+        //...
+```
+
+In this state, you can now add objects that have colliders to the world.
+
+```typescript title="src/asset/Bootstrapper.ts"
+.withChild(instantiater.buildGameObject("test-object", new Vector3(2, 1, 0))
+    .withComponent(CssHtmlElementRenderer, c => {
+        const div = document.createElement("div");
+        div.style.backgroundColor = "red";
+        c.element = div;
+    })
+    // GridColider is dependent on GridObjectCollideMap.
+    // Collider will be created based on the position of the object where GridCollider exists.
+    .withComponent(GridCollider, c => {
+        c.gridObjectCollideMap = objectCollideMap.ref!;
+        c.addCollider(0, 0);
+    }))
+```
+
+For this object, colliders were added to 0, 0 of object space.
+
+<DocumentGame bootstrapper={Bootstrapper2} allowScroll />
+
+If you look at the results, you can see that colliders are created in 2, 1 in the world space.
+
+Later, We will use this to create static objects easily. For now, you can erase the test object.
+
+:::tip
+Collider is placed once and not updated by object position. (for performance)
+
+However, you can also manually update `GridCollider` by disabling it once and then enabling it.
+
+It has not yet been decided whether to provide this function as a method in the future.
+:::
