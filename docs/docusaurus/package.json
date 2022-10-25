@@ -29,9 +29,9 @@
     "devDependencies": {
         "@docusaurus/module-type-aliases": "2.1.0",
         "@tsconfig/docusaurus": "^1.0.5",
-        "@typescript-eslint/eslint-plugin": "^5.40.1",
-        "@typescript-eslint/parser": "^5.40.1",
-        "eslint": "^8.25.0",
+        "@typescript-eslint/eslint-plugin": "^5.41.0",
+        "@typescript-eslint/parser": "^5.41.0",
+        "eslint": "^8.26.0",
         "eslint-import-resolver-alias": "^1.1.2",
         "eslint-plugin-import": "^2.26.0",
         "eslint-plugin-react": "^7.31.10",
