@@ -78,7 +78,7 @@
         "jest-environment-jsdom": "^29.2.2",
         "jest-environment-node": "^29.2.2",
         "jest-mock": "^29.2.2",
-        "puppeteer": "^19.1.1",
+        "puppeteer": "^19.1.2",
         "rollup-plugin-external-globals": "^0.6.1",
         "rollup-plugin-typescript2": "^0.34.1",
         "terser-webpack-plugin": "^5.3.6",
