@@ -42,6 +42,7 @@ class EffectComposerRc {
         if (effectComposerRc !== undefined) {
             effectComposerRc._referenceCount -= 1;
             if (effectComposerRc._referenceCount === 0) {
+                //TODO: dispose effect composer
                 const screen = engineGlobalObject.screen;
                 screen.onResize.removeListener(effectComposerRc.onScreenResize);
                 EffectComposerRc._map.delete(engineGlobalObject);
@@ -81,6 +82,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
             const camera = this.engine.cameraContainer.camera!;
             const [passes, disposer] = this._initializer(threeScene, camera.threeCamera!, this.engine.screen);
             this.initializeEffectComposer(this._effectComposer, this._passes, passes, this._disposer ?? undefined);
+            //TODO: update render pass support
             this._passes = passes;
             this._disposer = disposer ?? null;
         }
