@@ -1,19 +1,19 @@
 import { clamp } from "three/src/math/MathUtils";
-import { Euler, Matrix4, Quaternion, Vector3 } from "three/src/Three";
+import { Euler, EulerOrder, Matrix4, Quaternion, Vector3 } from "three/src/Three";
 
 /** @internal  */
 export class ObservableEuler {
     public readonly isEuler = true;
     
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    public static DefaultOrder = "XYZ";
+    public static DefaultOrder: EulerOrder = "XYZ";
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static RotationOrders = [ "XYZ", "YZX", "ZXY", "XZY", "YXZ", "ZYX" ];
     
     private _internalX: number;
     private _internalY: number;
     private _internalZ: number;
-    private _internalOrder: string;
+    private _internalOrder: EulerOrder;
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public _onChangeCallback: () => void;
@@ -76,13 +76,13 @@ export class ObservableEuler {
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    public get _order(): string { // this can't be private because it's used like public in three.js
+    public get _order(): EulerOrder { // this can't be private because it's used like public in three.js
         this._onBeforeGetComponentCallback();
         return this._internalOrder;
     }
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
-    public set _order(value: string) { // this can't be private because it's used like public in three.js
+    public set _order(value: EulerOrder) { // this can't be private because it's used like public in three.js
         this._internalOrder = value;
     }
 
@@ -122,19 +122,19 @@ export class ObservableEuler {
         this._onChangeCallback();
     }
 
-    public get order(): string {
+    public get order(): EulerOrder {
         this._onBeforeGetComponentCallback();
         return this._internalOrder;
     }
 
-    public set order(value: string) {
+    public set order(value: EulerOrder) {
         // if (this._internalOrder === value) return;
         this._onBeforeChangeCallback();
         this._internalOrder = value;
         this._onChangeCallback();
     }
 
-    public set(x: number, y: number, z: number, order?: string): ObservableEuler {
+    public set(x: number, y: number, z: number, order?: EulerOrder): ObservableEuler {
         // if (x === this._internalX && y === this._internalY && z === this._internalZ && order === this._internalOrder) return this;
         this._onBeforeChangeCallback();
         this._internalX = x;
@@ -163,7 +163,7 @@ export class ObservableEuler {
         return this;
     }
 
-    public setFromRotationMatrix(m: Matrix4, order?: string, update = true): ObservableEuler {
+    public setFromRotationMatrix(m: Matrix4, order?: EulerOrder, update = true): ObservableEuler {
         this._onBeforeGetComponentCallback();
 
         // assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
@@ -251,16 +251,16 @@ export class ObservableEuler {
         return this;
     }
 
-    public setFromQuaternion(q: Quaternion, order?: string, update?: boolean): ObservableEuler {
+    public setFromQuaternion(q: Quaternion, order?: EulerOrder, update?: boolean): ObservableEuler {
         tempMatrix.makeRotationFromQuaternion(q);
         return this.setFromRotationMatrix(tempMatrix, order, update);
     }
 
-    public setFromVector3(v: Vector3, order?: string): ObservableEuler {
+    public setFromVector3(v: Vector3, order?: EulerOrder): ObservableEuler {
         return this.set(v.x, v.y, v.z, order);
     }
 
-    public reorder(newOrder: string): ObservableEuler {
+    public reorder(newOrder: EulerOrder): ObservableEuler {
         // WARNING: this discards revolution information -bhouston
         tempQuaternion.setFromEuler(this);
         return this.setFromQuaternion(tempQuaternion, newOrder);

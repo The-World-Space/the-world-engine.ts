@@ -6,7 +6,6 @@ import { EngineGlobalObject } from "../../EngineGlobalObject";
 import { Component } from "../../hierarchy_object/Component";
 import { CameraContainer } from "../../render/CameraContainer";
 import { IReadonlyGameScreen } from "../../render/IReadonlyGameScreen";
-import { WebGLGlobalObject } from "../../render/WebGLGlobalObject";
 import { Camera } from "./Camera";
 
 class EffectComposerRc {
@@ -32,6 +31,7 @@ class EffectComposerRc {
             effectComposerRc = new EffectComposerRc(engineGlobalObject, effectComposer);
             screen.onResize.addListener(effectComposerRc.onScreenResize);
             EffectComposerRc._map.set(engineGlobalObject, effectComposerRc);
+            engineGlobalObject.webGL!.effectComposer = effectComposer;
         }
         effectComposerRc._referenceCount += 1;
         return effectComposerRc._effectComposer;
@@ -42,9 +42,11 @@ class EffectComposerRc {
         if (effectComposerRc !== undefined) {
             effectComposerRc._referenceCount -= 1;
             if (effectComposerRc._referenceCount === 0) {
+                effectComposerRc._effectComposer.dispose();
                 const screen = engineGlobalObject.screen;
                 screen.onResize.removeListener(effectComposerRc.onScreenResize);
                 EffectComposerRc._map.delete(engineGlobalObject);
+                engineGlobalObject.webGL!.effectComposer = null;
             }
         }
     }
@@ -81,6 +83,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
             const camera = this.engine.cameraContainer.camera!;
             const [passes, disposer] = this._initializer(threeScene, camera.threeCamera!, this.engine.screen);
             this.initializeEffectComposer(this._effectComposer, this._passes, passes, this._disposer ?? undefined);
+            //TODO: update render pass support
             this._passes = passes;
             this._disposer = disposer ?? null;
         }
@@ -118,8 +121,6 @@ export class WebGLGlobalPostProcessVolume extends Component {
             this._passes = passes;
             this._disposer = disposer ?? null;
         }
-
-        (this.engine.webGL as WebGLGlobalObject).effectComposer = effectComposer;
     }
 
     public onDisable(): void {

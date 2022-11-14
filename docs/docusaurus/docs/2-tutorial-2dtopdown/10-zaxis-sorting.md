@@ -103,3 +103,19 @@ We gave -100, -99 and -98 as offsets for the three background prefabs.
 This ensures that the z-axis of the three objects always have a distance of -100, -99, and -98 relative to the camera.
 
 It is possible to adjust what is rendered first by slightly varying the offset values in this way.
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildGameObject("tilemap")
+    .withChild(instantiater.buildPrefab("background", BackgroundPrefab, /* new Vector3(0, 0, -3) */) // remove this
+        .make())
+
+    .withChild(instantiater.buildPrefab("islands", IslandPrefab, /* new Vector3(0, 0, -2) */) // remove this
+        .getCollideTilemap(collideTilemap).make())
+        
+    .withChild(instantiater.buildPrefab("detail", DetailPrefab, /* new Vector3(0, 0, -1) */) // remove this
+        .getCollideTilemap(collideTilemap2).make()))
+//...
+```
+
+Now you can remove the position adjustment from the Bootstrapper.

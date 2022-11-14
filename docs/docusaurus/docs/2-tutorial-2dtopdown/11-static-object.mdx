@@ -1,0 +1,403 @@
+import DocumentGame from "@site/src/components/DocumentGame";
+import { Bootstrapper } from "./project-override/11-static-object";
+
+# Static Object
+
+static objects that performance friendly and easy to scale are effective in decorating game scenes.
+
+## Concept
+
+- **CSS Static Object**
+
+    For static objects rendered by the CSS Renderer, no computation are performed after creation.
+
+    Because of that, we treat HTML objects as game objects, but there is little overhead.
+
+- **Matrix Update for Static Object**
+
+    `the-world-engine` has a scheduler that performs matrix re-computation only for objects whose transforms have changed.
+
+    Therefore, no renderer will perform operations every frame unless there is a transformation.
+
+- **Prefab Inheritance**
+
+    For objects of the same family, you can create a base prefab and then inherit it to reduce code duplication and effectively create objects.
+
+## Create `StaticObjectPrefabBase`
+
+First, We will make a base prefab of the static object.
+
+All prefabs require ZaxisSorting and will render sprites through the `CssSpriteAtlasRenderer`. Each object also has a collider.
+
+```typescript title="src/asset/prefab/object/StaticObjectPrefabBase.ts"
+// some imports...
+export abstract class StaticObjectPrefabBase extends Prefab {
+    private _objectCollideMap = new PrefabRef<GridObjectCollideMap>();
+
+    public withObjectCollideMap(objectCollideMap: PrefabRef<GridObjectCollideMap>): this {
+        this._objectCollideMap = objectCollideMap;
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+        return this.gameObjectBuilder
+            .withComponent(ZaxisSorter)
+            .withComponent(CssSpriteAtlasRenderer, c => {
+                c.viewScale = 1;
+            })
+            .withComponent(GridCollider, c => {
+                if (this._objectCollideMap.ref) c.gridObjectCollideMap = this._objectCollideMap.ref;
+            })
+        ;
+    }
+}
+```
+
+Put all the shared components in.
+
+And we made it possible to inject `ObjectCollideMap` through the `withObjectCollideMap` method.
+
+And you can decide what to initialize in the prefab that inherits this prefab.
+
+```typescript title="src/asset/prefab/object/StaticObjectPrefabBase.ts"
+// some imports...
+export abstract class StaticObjectPrefabBase extends Prefab {
+    // added: abstract initialize method
+    protected abstract rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void;
+    protected abstract colliderInitializer(c: InitializeComponent<GridCollider>): void;
+
+    private _objectCollideMap = new PrefabRef<GridObjectCollideMap>();
+
+    public withObjectCollideMap(objectCollideMap: PrefabRef<GridObjectCollideMap>): this {
+        this._objectCollideMap = objectCollideMap;
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+        return this.gameObjectBuilder
+            .withComponent(ZaxisSorter)
+            .withComponent(CssSpriteAtlasRenderer, c => {
+                c.viewScale = 1;
+                // added: call initialize method
+                this.rendererInitializer(c);
+            })
+            .withComponent(GridCollider, c => {
+                if (this._objectCollideMap.ref) c.gridObjectCollideMap = this._objectCollideMap.ref;
+
+                // added: call initialize method
+                this.colliderInitializer(c);
+            })
+        ;
+    }
+}
+```
+
+If you add an initializer as abstract method, you can easily change the initial value settings of the component from the inherited object.
+
+## Create Tree Prefab
+
+Now we will create a tree prefab.
+
+```typescript title="src/asset/prefab/object/Tree1Prefab.ts"
+//...
+import OverworldTileset from "../../image/Overworld_Tileset.png";
+
+export class Tree1Prefab extends StaticObjectPrefabBase {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
+        c.asyncSetImageFromPath(OverworldTileset, 18 / 2, 13 / 3);
+        c.imageIndex = 28.5;
+        c.imageWidth = 2;
+        c.imageHeight = 3;
+        c.centerOffset = new Vector2(0, 0.3);
+        c.filter.brightness = 1.5;
+    }
+
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
+        c.addColliderFromTwoDimensionalArray([
+            [1]
+        ], 0, 1);
+    }
+}
+```
+
+You can define objects by adding render information and collider forms.
+
+## Add Tree Prefab to Scene
+
+```typescript title="src/asset/Bootstrapper.ts"
+.withChild(instantiater.buildPrefab("tree1", Tree1Prefab, new Vector3(0, 2, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+
+.withChild(instantiater.buildPrefab("tree1", Tree1Prefab, new Vector3(-5, 2, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+
+.withChild(instantiater.buildPrefab("tree1", Tree1Prefab, new Vector3(-7, 3, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll />
+
+It's neat.
+
+## Create More Prefabs
+
+below is the code for creating more prefabs.
+
+```typescript title="src/asset/prefab/object/Tree2Prefab.ts"
+//...
+import OverworldTileset from "../../image/Overworld_Tileset.png";
+
+export class Tree2Prefab extends StaticObjectPrefabBase {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
+        c.asyncSetImageFromPath(OverworldTileset, 18 / 2, 13 / 3);
+        c.imageIndex = 29.5;
+        c.imageWidth = 2;
+        c.imageHeight = 3;
+        c.centerOffset = new Vector2(0, 0.3);
+        c.filter.brightness = 1.5;
+    }
+
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
+        c.addColliderFromTwoDimensionalArray([
+            [1]
+        ], 0, 1);
+    }
+}
+```
+
+```typescript title="src/asset/prefab/object/House1Prefab.ts"
+import OverworldTileset from "../../image/Overworld_Tileset.png";
+
+export class House1Prefab extends StaticObjectPrefabBase {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
+        c.asyncSetImageFromPath(OverworldTileset, 18 / 6, 13 / 5);
+        c.imageIndex = 2;
+        c.imageWidth = 6;
+        c.imageHeight = 5;
+        c.centerOffset = new Vector2(0, 0.45);
+        c.filter.brightness = 1.5;
+    }
+
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
+        c.addColliderFromTwoDimensionalArray([
+            [1, 1, 1, 1],
+            [1, 1, 1, 1, 1]
+        ], -2, 1);
+    }
+}
+```
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildPrefab("tree2", Tree2Prefab, new Vector3(2, -1, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+
+.withChild(instantiater.buildPrefab("tree2", Tree2Prefab, new Vector3(9, 7, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+
+.withChild(instantiater.buildPrefab("tree2", Tree2Prefab, new Vector3(10, 6, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+
+.withChild(instantiater.buildPrefab("house1", House1Prefab, new Vector3(5, 6, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+//...
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll interopObject={{option2: true}} />
+
+## Custom Offset Sprite Atlas Static Object
+
+![Overworld_Tileset.png](./project/image/Overworld_Tileset.png)
+
+In the case of the second house on the tile map, it is impossible to make Sprite Atlas because it is out of position.
+
+In this case, it is possible to solve it by putting css directly by using the `CssHtmlElementRenderer`.
+
+```typescript title="src/asset/prefab/object/House2Prefab.ts"
+//...
+import OverworldTileset from "../../image/Overworld_Tileset.png";
+
+export class House2Prefab extends StaticObjectPrefabBase {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
+        c.enabled = false;
+    }
+
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
+        c.addColliderFromTwoDimensionalArray([
+            [1, 1, 1, 1, 1],
+            [1, 1, 1, 1, 1]
+        ], -2, 1);
+    }
+
+    public override make(): GameObjectBuilder {
+        return super.make()
+            .withComponent(CssHtmlElementRenderer, c => {
+                const img = document.createElement("img");
+                img.src = OverworldTileset;
+                img.style.objectFit = "none";
+                img.style.imageRendering = "pixelated";
+                img.style.objectPosition = -16 * 9 + "px " + -16 * 5 + "px";
+                c.element = img;
+                c.viewScale = 1 / 16;
+                c.elementWidth = 5;
+                c.elementHeight = 4;
+                c.centerOffset = new Vector2(0, 0.452);
+                c.filter.brightness = 1.5;
+            })
+        ;
+    }
+}
+```
+
+Disable the `CssSpriteAtlasRender` and put the `CssHtmlElementRenderer` in.
+
+Use the `object-fit` and `object-position` properties of css to match the area you want to render.
+
+:::tip
+In fact, the `CssSpriteAtlasRender` also works this way internally.
+
+If the specifications provided by the engine are insufficient, you can use the `CssHtmlElementRenderer` to produce the desired results directly using css.
+:::
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildPrefab("house2", House2Prefab, new Vector3(-5, -5, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+//...
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll interopObject={{option2: true, option3: true}} />
+
+## Animated Sprite Atlas Static Object
+
+![bonfire_prop_lit_anim_strip_5.png](./project/image/Props_Items_(animated)/bonfire_prop_lit_anim_strip_5.png)
+
+There is a campfire with animation on the Asset. Let's use it.
+
+```typescript title="src/asset/prefab/object/CampfirePrefab.ts"
+//...
+import BonfirePropLit from "../../image/Props_Items_(animated)/bonfire_prop_lit_anim_strip_5.png";
+
+export class CampfirePrefab extends StaticObjectPrefabBase {
+    protected rendererInitializer(c: InitializeComponent<CssSpriteAtlasRenderer>): void {
+        c.asyncSetImageFromPath(BonfirePropLit, 5, 1);
+        c.imageWidth = 1;
+        c.imageHeight = 1;
+    }
+
+    protected colliderInitializer(c: InitializeComponent<GridCollider>): void {
+        c.addColliderFromTwoDimensionalArray([
+            [1]
+        ], 0, 0);
+    }
+
+    public override make(): GameObjectBuilder {
+        return super.make()
+            .withComponent(SpriteAtlasAnimator, c => {
+                c.addAnimation("anim", [0, 1, 2, 3, 4]);
+                c.frameDuration = 0.1;
+                c.playAnimation("anim");
+            })
+        ;
+    }
+}
+```
+
+This time, we added `SpriteAtlasAnimator` components by overriding the `make` method because we needed animation.
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildPrefab("campfire", CampfirePrefab, new Vector3(4, 1, 0))
+    .withObjectCollideMap(objectCollideMap).make())
+//...
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll interopObject={{option2: true, option3: true, option4: true}} />
+
+:::tip tip
+The `SpriteAtlasAnimator` component uses `update(): void` messages.
+
+This means that the animation is processed every frame.
+:::
+
+## Split Object Creation Code into Prefab
+
+```typescript title="src/asset/prefab/world/ObjectsPrefab.ts"
+// some imports...
+export class ObjectsPrefab extends Prefab {
+    private _objectCollideMap = new PrefabRef<GridObjectCollideMap>();
+
+    public withObjectCollideMap(objectCollideMap: PrefabRef<GridObjectCollideMap>): this {
+        this._objectCollideMap = objectCollideMap;
+        return this;
+    }
+
+    public override make(): GameObjectBuilder {
+        const instantiater = this.instantiater;
+
+        return this.gameObjectBuilder
+            .withChild(instantiater.buildPrefab("tree1", Tree1Prefab, new Vector3(0, 2, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("tree1", Tree1Prefab, new Vector3(-5, 2, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("tree1", Tree1Prefab, new Vector3(-7, 3, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("tree2", Tree2Prefab, new Vector3(2, -1, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("tree2", Tree2Prefab, new Vector3(9, 7, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+            
+            .withChild(instantiater.buildPrefab("tree2", Tree2Prefab, new Vector3(10, 6, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("house1", House1Prefab, new Vector3(5, 6, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("house2", House2Prefab, new Vector3(-5, -5, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+
+            .withChild(instantiater.buildPrefab("campfire", CampfirePrefab, new Vector3(4, 1, 0))
+                .withObjectCollideMap(this._objectCollideMap).make())
+        ;
+    }    
+}
+```
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildGameObject("collision")
+    //...
+    )
+
+.withChild(instantiater.buildPrefab("objects", ObjectsPrefab)
+    .withObjectCollideMap(objectCollideMap).make())
+
+.withChild(instantiater.buildPrefab("player", PlayerPrefab)
+    //...
+    )
+//...
+```
+
+Since there are so many objects, We will use the prefab to separate the code.
+
+## Disable Debug Draw
+
+```typescript title="src/asset/Bootstrapper.ts"
+//...
+.withChild(instantiater.buildGameObject("collision")
+    .withComponent(GridCollideMap, c => {
+        //...
+    })
+    .withComponent(GridObjectCollideMap, c => {
+        c.showCollider = false; // disable debug draw
+    })
+//...
+```
+
+<DocumentGame bootstrapper={Bootstrapper} allowScroll interopObject={{option2: true, option3: true, option4: true, option5: true}} />
+
+We are done with all the visual part. Congratulations!.
