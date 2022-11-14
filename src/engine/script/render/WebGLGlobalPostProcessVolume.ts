@@ -42,7 +42,7 @@ class EffectComposerRc {
         if (effectComposerRc !== undefined) {
             effectComposerRc._referenceCount -= 1;
             if (effectComposerRc._referenceCount === 0) {
-                //TODO: dispose effect composer
+                effectComposerRc._effectComposer.dispose();
                 const screen = engineGlobalObject.screen;
                 screen.onResize.removeListener(effectComposerRc.onScreenResize);
                 EffectComposerRc._map.delete(engineGlobalObject);
