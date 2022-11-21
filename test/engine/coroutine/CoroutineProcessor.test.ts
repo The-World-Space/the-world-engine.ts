@@ -18,7 +18,7 @@ describe("CoroutineProcessor Test", () => {
 
     it("CoroutineProcessor.addCoroutine()", () => {
         const coroutineProcessor = new CoroutineProcessor(new Time());
-        
+
         function *testIterator(): CoroutineIterator {
             yield null;
         }
@@ -32,7 +32,7 @@ describe("CoroutineProcessor Test", () => {
 
     it("CoroutineProcessor.removeCoroutine()", () => {
         const coroutineProcessor = new CoroutineProcessor(new Time());
-        
+
         function *testIterator(): CoroutineIterator {
             yield null;
         }
@@ -133,13 +133,13 @@ describe("CoroutineProcessor Test", () => {
 
         coroutineProcessor.endFrameAfterProcess();
         coroutineProcessor.endFrameAfterProcess();
-        
+
         expect(result).toEqual([1]);
     });
 
     it("CoroutineProcessor delete and process", () => {
         const result: number[] = [];
-        
+
         const time = new Time();
         const coroutineProcessor = new CoroutineProcessor(time);
 

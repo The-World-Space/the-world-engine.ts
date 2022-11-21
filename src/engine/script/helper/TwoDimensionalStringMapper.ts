@@ -1,12 +1,12 @@
 /**
  * two dimensional string mapper
- * 
+ *
  * It's used to construct things like tilemap.
  */
 export class TwoDimensionalStringMapper {
     /**
      * map string to T
-     * 
+     *
      * it will throw error if the string is not in the map
      * @param array two dimensional string array
      * @param converter converter functions
@@ -19,7 +19,7 @@ export class TwoDimensionalStringMapper {
         const result: T[][] = [];
         for (let row = 0; row < array.length; ++row) {
             const rowArray: T[] = [];
-            
+
             const str = array[row];
             for (let column = 0; column < str.length; ++column) {
                 const char = str[column];

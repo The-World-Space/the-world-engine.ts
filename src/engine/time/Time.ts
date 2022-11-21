@@ -49,7 +49,7 @@ export class Time {
     public get unscaledTime(): number {
         return this._unscaledTime;
     }
-    
+
     /**
      * the interval in seconds from the last frame to the current one.
      */
@@ -64,14 +64,14 @@ export class Time {
         return this._unscaledDeltaTime;
     }
 
-    /** 
+    /**
      * The scale at which time passes. (default: 1)
      */
     public get timeScale(): number {
         return this._timeScale;
     }
 
-    /** 
+    /**
      * The scale at which time passes. (default: 1)
      */
     public set timeScale(value: number) {
@@ -81,7 +81,7 @@ export class Time {
     /**
      * The maximum value of Time.deltaTime in any given frame. This is a time in seconds that limits the increase of Time.time between two frames.
      * The default value is 0.333333, or one third of a second.
-     * 
+     *
      * When a very slow frame happens, maximumDeltaTime limits the value of Time.deltaTime in the following frame to avoid undesirable side-effects from very large deltaTime values.
      */
     public get maximumDeltaTime(): number {
@@ -91,7 +91,7 @@ export class Time {
     /**
      * The maximum value of Time.deltaTime in any given frame. This is a time in seconds that limits the increase of Time.time between two frames.
      * The default value is 0.333333, or one third of a second.
-     * 
+     *
      * When a very slow frame happens, maximumDeltaTime limits the value of Time.deltaTime in the following frame to avoid undesirable side-effects from very large deltaTime values.
      */
     public set maximumDeltaTime(value: number) {

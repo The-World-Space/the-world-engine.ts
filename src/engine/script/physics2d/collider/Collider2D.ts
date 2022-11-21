@@ -13,7 +13,7 @@ import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
 
 /**
  * collider2d base component
- * 
+ *
  * you can't create collider2d component directly. use drived class. e.g. BoxCollider2D
  */
 export class Collider2D extends Component {
@@ -34,7 +34,7 @@ export class Collider2D extends Component {
         this.destroyFixture();
     }
 
-    public onDestroy(): void {   
+    public onDestroy(): void {
         this._material?.onChanged.removeListener(this.updateFixturesMaterialInfo);
     }
 
@@ -117,7 +117,7 @@ export class Collider2D extends Component {
                 if (rigidBodyMaterial) material = rigidBodyMaterial;
             }
             if (!material) material = new PhysicsMaterial2D();
-            
+
             this._fixtureGroup.foreachFixture(fixture => {
                 fixture.SetFriction(material!.friction);
                 fixture.SetRestitution(material!.bounciness);
@@ -163,7 +163,7 @@ export class Collider2D extends Component {
     //             if (rigidBodyMaterial) material = rigidBodyMaterial;
     //         }
     //         if (!material) material = new PhysicsMaterial2D();
-            
+
     //         fixture.SetFriction(material.friction);
     //         fixture.SetRestitution(material.bounciness);
     //     }
@@ -172,7 +172,7 @@ export class Collider2D extends Component {
     protected createShapes(): Shape[] {
         throw new Error("You should not use Collider2D directly but one of its subclasses. e.g. BoxCollider2D");
     }
-    
+
     /**
      * The density of the collider used to calculate its mass (when auto mass is enabled). (default: 1)
      */
@@ -312,7 +312,7 @@ export class Collider2D extends Component {
     // Cast	Casts the Collider shape into the Scene starting at the Collider position ignoring the Collider itself.
     // ClosestPoint	Returns a point on the perimeter of this Collider that is closest to the specified position.
     // Distance	Calculates the minimum separation of this collider against another collider.
-    
+
     private readonly _worldManifold: WorldManifold = new WorldManifold();
 
     /**
@@ -332,7 +332,7 @@ export class Collider2D extends Component {
                 !this._fixtureGroup.contains(currentContactEdge.contact.GetFixtureB())) {
                 continue;
             }
-            
+
             const manifold = currentContactEdge.contact.GetManifold();
             for (let i = 0; i < manifold.pointCount; ++i) {
                 if (!out[insertPos]) out[insertPos] = new ContactPoint2D();

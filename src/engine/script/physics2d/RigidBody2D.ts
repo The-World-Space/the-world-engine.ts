@@ -48,10 +48,10 @@ export enum ForceMode2D {
 
 /**
  * Rigidbody physics component for 2D.
- * 
+ *
  * Adding a Rigidbody2D component to a sprite puts it under the control of the physics engine. By itself, this means that the gameObject will be affected by gravity and can be controlled from scripts using forces. By adding the appropriate collider component, the sprite will also respond to collisions with other sprites. This behaviour comes entirely from physics system; very little code is required to get impressive and authentic physical behaviour and allows for "emergent" gameplay that was not explicitly coded into the game.
- * 
- * 
+ *
+ *
  * disallow multiple component
  */
 export class RigidBody2D extends Component {
@@ -92,7 +92,7 @@ export class RigidBody2D extends Component {
         bodyDef.gravityScale = this._gravityScale;
         bodyDef.bullet = this._collisionDetection === CollisionDetectionMode2D.Continuous;
         bodyDef.allowSleep = this._sleepMode !== RigidbodySleepMode2D.NeverSleep;
-        bodyDef.awake = this._sleepMode === RigidbodySleepMode2D.StartAwake || 
+        bodyDef.awake = this._sleepMode === RigidbodySleepMode2D.StartAwake ||
             this._sleepMode === RigidbodySleepMode2D.NeverSleep;
         bodyDef.fixedRotation = this._freezeRotation;
         bodyDef.position
@@ -112,7 +112,7 @@ export class RigidBody2D extends Component {
         if (isNaN(this._inertia)) {
             this._inertia = this._body.GetInertia();
         }
-        
+
         this.updateMassData();
     }
 
@@ -154,7 +154,7 @@ export class RigidBody2D extends Component {
         if (!this._body) this.awake();
         return this._body!;
     }
-    
+
     private readonly _massData: MassData = new MassData();
 
     private updateMassData(): void {
@@ -225,7 +225,7 @@ export class RigidBody2D extends Component {
 
     /**
      * Indicates whether the rigid body should be simulated or not by the physics system.
-     * 
+     *
      * this value is same as the `enabled` property of the rigid body.
      */
     public get simulated(): boolean {
@@ -234,7 +234,7 @@ export class RigidBody2D extends Component {
 
     /**
      * Indicates whether the rigid body should be simulated or not by the physics system.
-     * 
+     *
      * this value is same as the `enabled` property of the rigid body.
      */
     public set simulated(value: boolean) {
@@ -322,7 +322,7 @@ export class RigidBody2D extends Component {
         this._gravityScale = value;
         this._body?.SetGravityScale(value);
     }
-    
+
     /**
      * The method used by the physics engine to check if two objects have collided. (default: discrete)
      */
@@ -401,7 +401,7 @@ export class RigidBody2D extends Component {
         this._collisionLayer = value;
         this.updateCollidersFilter();
     }
-    
+
     /**
      * The center of mass of the rigidBody in local space.
      */
@@ -568,7 +568,7 @@ export class RigidBody2D extends Component {
 
     /**
      * The velocity of the rigidbody at the point Point in global space.
-     * 
+     *
      * GetPointVelocity will take the angularVelocity of the rigidbody into account when calculating the velocity.
      * @param point The global space point to calculate velocity for.
      * @param out Receives the velocity. if this is `undefined`, a new Vector2 will be created.
@@ -630,15 +630,15 @@ export class RigidBody2D extends Component {
     // Cast    All the Collider2D shapes attached to the Rigidbody2D are cast into the Scene starting at each Collider position ignoring the Colliders attached to the same Rigidbody2D.
     // ClosestPoint    Returns a point on the perimeter of all enabled Colliders attached to this Rigidbody that is closest to the specified position. https://rotatingcanvas.com/calculate-closest-point-of-box2d-body-in-libgdx/
     // Distance    Calculates the minimum distance of this collider against all Collider2D attached to this Rigidbody2D.
-    
+
     /**
      * Returns all Collider2D that are attached to this Rigidbody2D.
-     * 
+     *
      * Calculates all Collider2D that are attached to this Rigidbody2D and returns them in the results array.
-     * 
+     *
      * if array size is not enough, it will be resized.
      * @param out An array of Collider2D used to receive the results.
-     * @returns the number of Collider2D placed in the `out` array. 
+     * @returns the number of Collider2D placed in the `out` array.
      */
     public getAttachedColliders(out: Collider2D[]): number {
         const colliders = this.getPhysicsObject().colliders;
@@ -650,7 +650,7 @@ export class RigidBody2D extends Component {
         }
         return colliders.length;
     }
-    
+
     private readonly _worldManifold: WorldManifold = new WorldManifold();
 
     /**
@@ -665,7 +665,7 @@ export class RigidBody2D extends Component {
         while (contactEdge) {
             const currentContactEdge = contactEdge;
             contactEdge = contactEdge.next;
-            
+
             const manifold = currentContactEdge.contact.GetManifold();
             for (let i = 0; i < manifold.pointCount; ++i) {
                 if (!out[insertPos]) out[insertPos] = new ContactPoint2D();
@@ -682,11 +682,11 @@ export class RigidBody2D extends Component {
         }
         return insertPos;
     }
-    
+
     // IsTouching    Checks whether the collider is touching any of the collider(s) attached to this rigidbody or not.
     // IsTouchingLayers    Checks whether any of the collider(s) attached to this rigidbody are touching any colliders on the specified layerMask or not.
     // OverlapCollider    Get a list of all Colliders that overlap all Colliders attached to this Rigidbody2D.
-    
+
     /**
      * Check if any of the Rigidbody2D colliders overlap a point in space.
      * @param point A point in world space.

@@ -3,7 +3,7 @@ import { ReadonlyColor } from "../../../render/ReadonlyColor";
 
 /**
  * css drop shadow record interface
- * 
+ *
  * this interface is used for hide onChange event of css drop shadow
  */
 export interface ICssDropShadow {
@@ -30,7 +30,7 @@ export class CssDropShadow implements ICssDropShadow {
     private readonly _color: Color;
 
     /**
-     * 
+     *
      * @param offsetX dropshadow offset x in pixels (default: 0)
      * @param offsetY dropshadow offset y in pixels (default: 0)
      * @param blur dropshadow blur radius in pixels (default: 0)
@@ -133,7 +133,7 @@ export class CssDropShadow implements ICssDropShadow {
 
     /**
      * clones this dropshadow
-     * @returns 
+     * @returns
      */
     public clone(): CssDropShadow {
         return new CssDropShadow(this._offsetX, this._offsetY, this._blur, this._color.clone());
@@ -141,9 +141,9 @@ export class CssDropShadow implements ICssDropShadow {
 
     /**
      * converts this dropshadow to css string
-     * 
+     *
      * format: `drop-shadow(<offsetX>px <offsetY>px <blur>px <color>)`
-     * @returns 
+     * @returns
      */
     public toString(): string {
         return "drop-shadow(" + this._offsetX + "px " + this._offsetY + "px " + this._blur + "px " + this._color.toString() + ")";

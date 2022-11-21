@@ -6,7 +6,7 @@ import path from "path";
 
 const dir = path.join(os.tmpdir(), "jest_puppeteer_global_setup");
 
-module.exports = async function (): Promise<void> {
+module.exports = async function(): Promise<void> {
     await (globalThis as any).__BROWSER_GLOBAL__.close();
     await fs.rm(dir, {recursive: true, force: true});
     //await teardownDevServer();

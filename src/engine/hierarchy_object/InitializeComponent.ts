@@ -1,6 +1,6 @@
 import { Component } from "./Component";
 
-type ComponentMessages = 
+type ComponentMessages =
     "start"|
     "update"|
 

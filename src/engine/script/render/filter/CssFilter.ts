@@ -5,7 +5,7 @@ import { CssDropShadow, ICssDropShadow } from "./CssDropShadow";
  */
 export class CssFilter {
     private readonly _onChange: (() => void)|null;
-    
+
     private _blur = 0;
     private _brightness = 1;
     private _contrast = 1;
@@ -17,7 +17,7 @@ export class CssFilter {
     private _sepia = 0;
 
     /**
-     * 
+     *
      * @param onChange callback to call when filter changes. It's an internal function, so you don't need to use it
      */
     public constructor(onChange: (() => void)|null = null) {
@@ -26,7 +26,7 @@ export class CssFilter {
 
     /**
      * copy filter from another CssFilter
-     * 
+     *
      * onChange callback will not be copied
      */
     public copy(other: CssFilter): void {
@@ -50,7 +50,7 @@ export class CssFilter {
 
     /**
      * clone filter
-     * 
+     *
      * onChange callback will not be cloned
      */
     public clone(): CssFilter {
@@ -88,7 +88,7 @@ export class CssFilter {
         this._brightness = value;
         this._onChange?.();
     }
-    
+
     /**
      * contrast filter in 0-1 range (default: 1)
      */
@@ -127,7 +127,7 @@ export class CssFilter {
             }
         }
     }
-    
+
     /**
      * gray scale filter in 0-1 range (default: 0)
      */
@@ -205,9 +205,9 @@ export class CssFilter {
 
     /**
      * converts this css filter to a css string
-     * 
+     *
      * format: `blur(<blur>px) brightness(<brightness>) contrast(<contrast>) grayscale(<grayscale>) hue-rotate(<hue-rotate>deg) invert(<invert>) saturate(<saturate>) sepia(<sepia>) <drop-shadow>`
-     * @returns 
+     * @returns
      */
     public toString(): string {
         let result = "";

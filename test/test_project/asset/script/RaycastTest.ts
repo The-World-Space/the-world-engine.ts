@@ -44,7 +44,7 @@ export class RaycastTest extends Component {
             this.gameObject.transform.position.x,
             this.gameObject.transform.position.y
         );
-        
+
         {
             const result = this.engine.physics.raycastOne(position, direction, this._raycastHit);
             if (result?.point) {

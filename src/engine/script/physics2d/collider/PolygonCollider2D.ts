@@ -48,7 +48,7 @@ export class PolygonCollider2D extends Collider2D {
                                 c.pointerEvents = false;
                             })
                             .getComponent(CssPolygonRenderer2D, debugRenderer)));
-                
+
                 this._debugRenderer = debugRenderer.ref;
                 objectAttacher!.target = this._debugObject;
             }
@@ -94,7 +94,7 @@ export class PolygonCollider2D extends Collider2D {
         this.updateFixture();
         this.updateDebugDraw();
     }
-    
+
     /**
      * set shape to regular polygon with given number of sides and radius
      * @param sides number of sides

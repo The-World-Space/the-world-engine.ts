@@ -39,8 +39,8 @@ export class GameObjectBuilder {
 
     /**
      * set active in hierarchy
-     * @param active 
-     * @returns 
+     * @param active
+     * @returns
      */
     public active(active: boolean): GameObjectBuilder {
         this._gameObject.activeSelf = active;
@@ -51,8 +51,8 @@ export class GameObjectBuilder {
 
     /**
      * get gameObject as call by reference
-     * @param gameObjectRef 
-     * @returns 
+     * @param gameObjectRef
+     * @returns
      */
     public getGameObject(gameObjectRef: PrefabRef<GameObject>): GameObjectBuilder {
         gameObjectRef.ref = this._gameObject;
@@ -61,9 +61,9 @@ export class GameObjectBuilder {
 
     /**
      * get component of componentCtor: ComponentConstructor<T> as call by reference
-     * @param componentCtor 
-     * @param componentRef 
-     * @returns 
+     * @param componentCtor
+     * @param componentRef
+     * @returns
      */
     public getComponent<T extends Component>(componentCtor: ComponentConstructor<T>, componentRef: PrefabRef<T>): GameObjectBuilder {
         componentRef.ref = this._gameObject.getComponent(componentCtor);
@@ -72,25 +72,25 @@ export class GameObjectBuilder {
 
     /**
      * get all components as call by reference
-     * @param componentsRef 
+     * @param componentsRef
      * @returns
      */
     public getComponents(componentsRef: PrefabRef<Component[]>): GameObjectBuilder;
 
     /**
      * get all components of componentCtor: ComponentConstructor<T> as call by reference
-     * @param componentsRef 
-     * @param componentCtor 
+     * @param componentsRef
+     * @param componentCtor
      * @returns
      */
     public getComponents<T extends Component>(componentsRef: PrefabRef<T[]>, componentCtor: ComponentConstructor<T>): GameObjectBuilder;
 
     /**
      * get all components of componentCtor: ComponentConstructor<T> as call by reference
-     * @param componentsRef 
-     * @param componentCtor 
+     * @param componentsRef
+     * @param componentCtor
      * @returns
-     * @returns 
+     * @returns
      */
     public getComponents<T extends Component>(componentsRef: PrefabRef<T[]>, componentCtor?: ComponentConstructor<T>): GameObjectBuilder {
         if (componentCtor) {
@@ -103,9 +103,9 @@ export class GameObjectBuilder {
 
     /**
      * get component of componentCtor: ComponentConstructor<T> in GameObject or any of its children as call by reference
-     * @param componentCtor 
-     * @param componentRef 
-     * @returns 
+     * @param componentCtor
+     * @param componentRef
+     * @returns
      */
     public getComponentInChildren<T extends Component>(componentCtor: ComponentConstructor<T>, componentRef: PrefabRef<T>): GameObjectBuilder {
         componentRef.ref = this._gameObject.getComponentInChildren(componentCtor);
@@ -114,15 +114,15 @@ export class GameObjectBuilder {
 
     /**
      * get all components in GameObject or any of its children as call by reference
-     * @param componentsRef 
+     * @param componentsRef
      * @returns
      */
     public getComponentsInChildren(componentsRef: PrefabRef<Component[]>): GameObjectBuilder;
 
     /**
      * get all components of componentCtor: ComponentConstructor<T> in GameObject or any of its children as call by reference
-     * @param componentsRef 
-     * @param componentCtor 
+     * @param componentsRef
+     * @param componentCtor
      * @returns
      */
     public getComponentsInChildren<T extends Component>(componentsRef: PrefabRef<T[]>, componentCtor: ComponentConstructor<T>): GameObjectBuilder;
@@ -146,26 +146,26 @@ export class GameObjectBuilder {
 
     /**
      * add component of componentCtor: ComponentConstructor<T> to GameObject
-     * @param componentCtor 
+     * @param componentCtor
      * @returns
      */
     public withComponent<T extends Component>(componentCtor: ComponentConstructor<T>): GameObjectBuilder;
 
     /**
      * add component of componentCtor: ComponentConstructor<T> to GameObject with initialize function
-     * @param componentCtor 
-     * @param componentInitializeFunc 
+     * @param componentCtor
+     * @param componentInitializeFunc
      * @returns
      */
     public withComponent<T extends Component>(
         componentCtor: ComponentConstructor<T>,
         componentInitializeFunc?: (component: InitializeComponent<T>) => void
     ): GameObjectBuilder;
-    
+
     /**
      * add component of componentCtor: ComponentConstructor<T> to GameObject with initialize function
-     * @param componentCtor 
-     * @param componentInitializeFunc 
+     * @param componentCtor
+     * @param componentInitializeFunc
      * @returns
      */
     public withComponent<T extends Component>(
@@ -184,7 +184,7 @@ export class GameObjectBuilder {
         }
         this._gameObject.components.push(component);
         this._gameObject.gameObjectEventContainer.registerComponent(component);
-        
+
         if (componentInitializeFunc) {
             this._componentInitializeFuncList.push(() => componentInitializeFunc(component));
         }
@@ -193,8 +193,8 @@ export class GameObjectBuilder {
 
     /**
      * with child GameObject
-     * @param child 
-     * @returns 
+     * @param child
+     * @returns
      */
     public withChild(child: GameObjectBuilder): GameObjectBuilder {
         this._children.push(child);
@@ -281,7 +281,7 @@ export class GameObjectBuilder {
                 component._engine_internal_componentEventContainer.tryCallAwake();
             }
         }
-        
+
         //onEnable start update
         for (let i = 0; i < components.length; ++i) {
             const component = components[i];

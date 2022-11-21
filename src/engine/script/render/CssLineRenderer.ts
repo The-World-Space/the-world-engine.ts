@@ -9,7 +9,7 @@ import { CssRenderer } from "./CssRenderer";
 
 /**
  * css2d line renderer
- * 
+ *
  * this renderer use div tag to render single line
  */
 export class CssLineRenderer extends CssRenderer<HTMLDivElement> {
@@ -36,14 +36,14 @@ export class CssLineRenderer extends CssRenderer<HTMLDivElement> {
 
         const width = Math.max(Math.abs(this._point1.x), Math.abs(this._point2.x)) * 2;
         const height = Math.max(Math.abs(this._point1.y), Math.abs(this._point2.y)) * 2;
-        
+
         const x = (this._point1.x + this._point2.x) / 2;
         const y = (this._point1.y + this._point2.y) / 2;
         this.css3DObject.position.set(
             width * this.centerOffset.x + x,
             height * this.centerOffset.y + y, 0
         );
-        
+
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -52,7 +52,7 @@ export class CssLineRenderer extends CssRenderer<HTMLDivElement> {
 
     protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         const value = this.viewScale;
 
         this.css3DObject.element.style.width = (this._lineWidth / value) + "px";

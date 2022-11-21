@@ -14,7 +14,7 @@ import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
 import { DeepReadonly } from "./type/DeepReadonly";
 
-/** 
+/**
  * do not drive this class
  */
 export class EngineGlobalObject {
@@ -28,12 +28,12 @@ export class EngineGlobalObject {
     private readonly _physics2DProcessor: Physics2DProcessor;
     private readonly _domElement: HTMLElement;
     private _webGLGlobalObject: WebGLGlobalObject|null = null;
-    
+
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
     private readonly _coroutineProcessor: CoroutineProcessor;
     private readonly _transformMatrixProcessor: TransformMatrixProcessor;
-    
+
     /** @internal */
     public constructor(
         scene: Scene,
@@ -85,9 +85,9 @@ export class EngineGlobalObject {
 
     /**
      * You can get the camera through the camera container.
-     * 
+     *
      * `cameraContainer.camera` value is null until the `onEnable()` message of the camera is called.
-     * 
+     *
      * This problem can be solved by placing the components that use the camera at the bottom of the tree rather than the Camera components.
      */
     public get cameraContainer(): IReadonlyCameraContainer {
@@ -111,7 +111,7 @@ export class EngineGlobalObject {
 
     /**
      * time information.
-     * 
+     *
      * typically used to get delta time.
      */
     public get time(): Time {
@@ -141,7 +141,7 @@ export class EngineGlobalObject {
 
     /**
      * dom element.
-     * 
+     *
      * You can use it when you want to receive the event directly from the dom element.
      */
     public get domElement(): HTMLElement {
@@ -150,7 +150,7 @@ export class EngineGlobalObject {
 
     /**
      * webGL object.
-     * 
+     *
      * if you not use WebGL, this value is null.
      */
     public get webGL(): WebGLGlobalObject|null {

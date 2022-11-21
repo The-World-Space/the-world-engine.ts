@@ -16,7 +16,7 @@ export type ReadonlyVector3 = {
      */
     readonly z: number;
     readonly isVector3: true;
-    
+
     getComponent(index: number): number;
 
     /**

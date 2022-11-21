@@ -6,7 +6,7 @@ import puppeteer from "puppeteer";
 
 const dir = path.join(os.tmpdir(), "jest_puppeteer_global_setup");
 
-export default async function (): Promise<void> {
+export default async function(): Promise<void> {
     // await setupDevServer({
     //     command: "npm run start -- --port=20310",
     //     launchTimeout: 100000,

@@ -16,7 +16,7 @@ export class TopDownScenePrefab extends Prefab {
 
     public make(): GameObjectBuilder {
         const instantiater = this.instantiater;
-        
+
         const gridMap = new PrefabRef<CssCollideTilemapChunkRenderer>();
 
         return this.gameObjectBuilder
@@ -27,7 +27,7 @@ export class TopDownScenePrefab extends Prefab {
                     c.textWidth = 50;
                     c.textAlign = TextAlign.Center;
                 }))
-                
+
             .withChild(instantiater.buildPrefab("sans_fight_room", SansFightRoomPrefab, new Vector3(-28, 0, 0))
                 .getColideTilemapChunkRendererRef(gridMap)
                 .make()

@@ -20,7 +20,7 @@ import { WebGLGlobalObject } from "./render/WebGLGlobalObject";
 import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
 import { DeepReadonly } from "./type/DeepReadonly";
-    
+
 /**
  * game engine class
  */
@@ -55,7 +55,7 @@ export class Game {
     private readonly _loopBind: () => void;
 
     /**
-     * 
+     *
      * @param container html element that mount the game view
      * @param autoResize if true, the game view will be resized when the window is resized. (default: true)
      */
@@ -99,15 +99,15 @@ export class Game {
                 }
             );
         }
-        
+
         this._time = new Time();
         this._gameState = new GameState(GameStateKind.WaitingForStart);
-        
+
         this._sceneProcessor = new SceneProcessor();
         this._coroutineProcessor = new CoroutineProcessor(this._time);
         this._transformMatrixProcessor = new TransformMatrixProcessor();
         this._physics2DProcessor = new Physics2DProcessor();
-        
+
         this._engineGlobalObject = new EngineGlobalObject(
             this._rootScene,
             this._cameraContainer,
@@ -119,10 +119,10 @@ export class Game {
             this._coroutineProcessor,
             this._transformMatrixProcessor,
             this._physics2DProcessor,
-            
+
             container
         );
-        
+
         this._animationFrameId = null;
         this._isDisposed = false;
         this._autoResize = autoResize;
@@ -164,7 +164,7 @@ export class Game {
 
         this._gameState.kind = GameStateKind.Initializing;
         this._time.start();
-        
+
         const bootstrapper = new bootstrapperCtor(this._engineGlobalObject, interopObject);
         const scene = bootstrapper.run();
         this._gameSetting = bootstrapper.getGameSettingObject();
@@ -200,7 +200,7 @@ export class Game {
                 this._webglRendererDomElement.style.position = "absolute";
                 container.appendChild(this._webglRendererDomElement);
 
-                this._webGLGlobalObject = new WebGLGlobalObject(  
+                this._webGLGlobalObject = new WebGLGlobalObject(
                     renderer,
                     rendererIsWebGLRenderer ? renderer as WebGLRenderer : null
                 );
@@ -230,7 +230,7 @@ export class Game {
         }
 
         scene.build();
-        
+
         //If a camera exists in the bootstrapper,
         //it is certain that the camera exists in the global variable from this point on.
         if (!this._cameraContainer.camera) throw new Error("Camera is not exist or not active in the scene.");
@@ -306,16 +306,16 @@ export class Game {
 
     /**
      * dispose game
-     * 
+     *
      * dispose game will dispose all resources used by game.
-     * 
+     *
      * game will be unmounted from the dom.
-     * 
+     *
      * after dispose, you can't use game anymore.
      */
     public dispose(): void {
         if (this._isDisposed) return;
-        
+
         if (this._gameState.kind === GameStateKind.Running) {
             this._gameState.kind = GameStateKind.Finalizing;
             if (this._animationFrameId) cancelAnimationFrame(this._animationFrameId);
@@ -325,9 +325,9 @@ export class Game {
             for (let i = 0; i < rootChildren.length; ++i) {
                 rootChildren[i].gameObject.destroy();
             }
-            
+
             if (this._css3DRenderer) this._container.removeChild(this._css3DRenderer.domElement);
-            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);  
+            if (this._webglRendererDomElement) this._container.removeChild(this._webglRendererDomElement);
             if (this._webGLGlobalObject) this._webGLGlobalObject.dispose();
         } else {
             this._engineGlobalObject.dispose();
@@ -335,7 +335,7 @@ export class Game {
 
         if (this._autoResize) window.removeEventListener("resize", this._resizeFrameBufferBind);
         this._container.remove();
-        
+
         this._isDisposed = true;
         this._gameState.kind = GameStateKind.Finalized;
     }

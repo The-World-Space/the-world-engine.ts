@@ -238,7 +238,7 @@ describe("Component Test", () => {
         class TestComponent extends Component { }
         const component = new TestComponent(createGameObject());
         component.engine_internal_constructAfterProcess();
-        
+
         expect(component.enabled).toBe(true);
     });
 
@@ -262,7 +262,7 @@ describe("Component Test", () => {
             public run = (): SceneBuilder => this.sceneBuilder
                 .withChild(this.instantiater.buildGameObject("camera")
                     .withComponent(Camera))
-                
+
                 .withChild(this.instantiater.buildGameObject("test")
                     .withComponent(TestComponent)
                     .getComponent(TestComponent, this.interopObject!.testComponent));
@@ -281,7 +281,7 @@ describe("Component Test", () => {
             public run = (): SceneBuilder => this.sceneBuilder
                 .withChild(this.instantiater.buildGameObject("camera")
                     .withComponent(Camera))
-                
+
                 .withChild(this.instantiater.buildGameObject("test")
                     .withComponent(TestComponent, c => c.enabled = false)
                     .getComponent(TestComponent, this.interopObject!.testComponent));
@@ -300,7 +300,7 @@ describe("Component Test", () => {
             public run = (): SceneBuilder => this.sceneBuilder
                 .withChild(this.instantiater.buildGameObject("camera")
                     .withComponent(Camera))
-                
+
                 .withChild(this.instantiater.buildGameObject("test")
                     .withComponent(TestComponent)
                     .getComponent(TestComponent, this.interopObject!.testComponent));
@@ -320,7 +320,7 @@ describe("Component Test", () => {
             public run = (): SceneBuilder => this.sceneBuilder
                 .withChild(this.instantiater.buildGameObject("camera")
                     .withComponent(Camera))
-                
+
                 .withChild(this.instantiater.buildGameObject("test")
                     .withComponent(TestComponent)
                     .getComponent(TestComponent, this.interopObject!.testComponent));
@@ -341,7 +341,7 @@ describe("Component Test", () => {
             public run = (): SceneBuilder => this.sceneBuilder
                 .withChild(this.instantiater.buildGameObject("camera")
                     .withComponent(Camera))
-                
+
                 .withChild(this.instantiater.buildGameObject("test")
                     .withComponent(TestComponent)
                     .getComponent(TestComponent, this.interopObject!.testComponent));
@@ -362,12 +362,12 @@ describe("Component Test", () => {
             public run = (): SceneBuilder => this.sceneBuilder
                 .withChild(this.instantiater.buildGameObject("camera")
                     .withComponent(Camera))
-                
+
                 .withChild(this.instantiater.buildGameObject("test")
                     .withComponent(TestComponent)
                     .getComponent(TestComponent, this.interopObject!.testComponent));
         }, interopObject);
-        
+
         interopObject.testComponent.ref!.destroy();
         expect(() => {
             interopObject.testComponent.ref!.enabled = false;
@@ -434,7 +434,7 @@ describe("Component Test", () => {
                     }));
         });
     });
-    
+
     it("Component.initialized getter when initialized", () => {
         requestAnimationFrameCount = 1;
 
@@ -497,7 +497,7 @@ describe("Component Test", () => {
         requestAnimationFrameCount = 1;
 
         class TestComponent extends Component { }
-        
+
         const interopObject = { testComponent: new PrefabRef<TestComponent>() };
         new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
             public run = (): SceneBuilder => this.sceneBuilder
@@ -518,7 +518,7 @@ describe("Component Test", () => {
         requestAnimationFrameCount = 1;
 
         class TestComponent extends Component { }
-        
+
         const interopObject = { testComponent: new PrefabRef<TestComponent>() };
         new Game(document.body).run(class extends Bootstrapper<typeof interopObject> {
             public run = (): SceneBuilder => this.sceneBuilder

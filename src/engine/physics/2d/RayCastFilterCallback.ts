@@ -90,7 +90,7 @@ export class RayCastFilterCallback extends RayCastCallback {
     ): number {
         return -1; // ignore particles
     }
-    
+
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public override ShouldQueryParticleSystem(
     // system: b2ParticleSystem

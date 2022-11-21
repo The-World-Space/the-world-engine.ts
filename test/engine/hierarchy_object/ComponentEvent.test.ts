@@ -116,7 +116,7 @@ describe("ComponentEvent Test", () => {
 
         const instantiater = new Instantiater({} as EngineGlobalObject);
         const eventFunc = (): void => {
-            result.push("eventFunc"); 
+            result.push("eventFunc");
         };
         const event = ComponentEvent.createAwakeEvent(instantiater, eventFunc);
 

@@ -8,7 +8,7 @@ export type ReadonlyMatrix4 = {
     readonly elements: readonly number[];
 
     clone(): Matrix4;
-    
+
     /**
      * Copies the rotation component of the supplied matrix m into this matrix rotation component.
      */

@@ -12,7 +12,7 @@ import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { WebGLGlobalPostProcessVolume } from "@src/engine/script/render/WebGLGlobalPostProcessVolume";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
 import { FullScreenQuad } from "three/examples/jsm/postprocessing/Pass";
-import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass"; 
+import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector3, WebGLRenderer } from "three/src/Three";
 import * as THREE from "three/src/Three";
@@ -95,7 +95,7 @@ export class WebglTestBootstrapper extends Bootstrapper {
                     });
                     (globalThis as any).volume = c;
                 }))
-            
+
             .withChild(instantiater.buildGameObject("postprocess-volume")
                 .withComponent(WebGLGlobalPostProcessVolume, c => {
                     c.willAddRenderPass = false;
@@ -108,7 +108,7 @@ export class WebglTestBootstrapper extends Bootstrapper {
                     });
                     (globalThis as any).volume2 = c;
                 }))
-                
+
             .withChild(instantiater.buildGameObject("ambient-light")
                 .withComponent(Object3DContainer<AmbientLight>, c => {
                     c.setObject3D(new AmbientLight(0xFFFFFF), object3D => object3D.dispose());
@@ -161,7 +161,7 @@ export class WebglTestBootstrapper extends Bootstrapper {
                         object3D.material.dispose();
                     });
                 }))
-            
+
             .withChild(instantiater.buildGameObject("plane",
                 new Vector3(0, -5, 0),
                 new Quaternion().setFromAxisAngle(new Vector3(1, 0, 0), -Math.PI / 2))

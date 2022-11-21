@@ -47,14 +47,14 @@ export class PointerGridEvent {
 
 /**
  * pointer grid input listener
- * 
+ *
  * this component create div element and receive pointer events
- * 
+ *
  * when use this component on orthographic camera, i recommend to attach this component to camera
- * 
+ *
  * when event does not fired, increase z coordinate of transform and expend inputWidth and inputHeight
- * 
- * 
+ *
+ *
  * disallow multiple component
  */
 export class PointerGridInputListener extends Component {
@@ -136,7 +136,7 @@ export class PointerGridInputListener extends Component {
             //it's safe because _css3DObject is not a GameObject and i'm removing it from the scene in onDestroy
         }
     }
-    
+
     public onWorldMatrixUpdated(): void {
         if (this._css3DObject) {
             Transform.updateRawObject3DWorldMatrixRecursively(this._css3DObject);
@@ -149,10 +149,10 @@ export class PointerGridInputListener extends Component {
         offsetY = offsetY * this._viewScale;
 
         const worldPosition = this.transform.position;
-        
-        const positionX = this._css3DObject!.position.x + worldPosition.x - this._inputWidth / 2 + 
+
+        const positionX = this._css3DObject!.position.x + worldPosition.x - this._inputWidth / 2 +
             offsetX - this._gridCenter.x;
-        const positionY = this._css3DObject!.position.y + worldPosition.y - this._inputHeight / 2 + 
+        const positionY = this._css3DObject!.position.y + worldPosition.y - this._inputHeight / 2 +
             (this._inputHeight - offsetY) - this._gridCenter.y;
 
         const gridPositionX = Math.floor((positionX + this._gridCellWidth * 0.5) / this._gridCellWidth);
@@ -169,7 +169,7 @@ export class PointerGridInputListener extends Component {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerDownEvent.invoke(gridEvent);
     };
-    
+
     private readonly onMouseUp = (event: MouseEvent): void => {
         const gridEvent = this.createPointerGridEventFromOffset(event.offsetX, event.offsetY, event.button);
         this._onPointerUpEvent.invoke(gridEvent);
@@ -277,7 +277,7 @@ export class PointerGridInputListener extends Component {
     public set gridCenter(value: ReadonlyVector2) {
         (this._gridCenter as WritableVector2).copy(value);
     }
-    
+
     /**
      * grid cell width (default: 1)
      */
@@ -305,7 +305,7 @@ export class PointerGridInputListener extends Component {
     public set gridCellHeight(value: number) {
         this._gridCellHeight = value;
     }
-    
+
     public setGridInfoFromCollideMap(collideMap: IGridCollidable): void {
         this._gridCellWidth = collideMap.gridCellWidth;
         this._gridCellHeight = collideMap.gridCellHeight;

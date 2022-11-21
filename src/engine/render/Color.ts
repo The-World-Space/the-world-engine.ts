@@ -21,16 +21,16 @@ export class Color implements ReadonlyColor {
     public constructor(r = 0, g = 0, b = 0, a = 1) {
         if (1 < r) r = 1;
         else if (0 > r) r = 0;
-        
+
         if (1 < g) g = 1;
         else if (0 > g) g = 0;
-        
+
         if (1 < b) b = 1;
         else if (0 > b) b = 0;
-        
+
         if (1 < a) a = 1;
         else if (0 > a) a = 0;
-        
+
         this._r = r;
         this._g = g;
         this._b = b;
@@ -47,16 +47,16 @@ export class Color implements ReadonlyColor {
     public set(r: number, g: number, b: number, a = 1): Color {
         if (1 < r) r = 1;
         else if (0 > r) r = 0;
-        
+
         if (1 < g) g = 1;
         else if (0 > g) g = 0;
-        
+
         if (1 < b) b = 1;
         else if (0 > b) b = 0;
-        
+
         if (1 < a) a = 1;
         else if (0 > a) a = 0;
-        
+
         this._r = r;
         this._g = g;
         this._b = b;
@@ -162,7 +162,7 @@ export class Color implements ReadonlyColor {
     /**
      * get the color as a string with the format rgb(r, g, b)
      * r, g, b values is range [0, 255]
-     * @returns 
+     * @returns
      */
     public toString(): string {
         return "rgb(" + this._r * 255 + ", " + this._g * 255 + ", " + this._b * 255 + ")";
@@ -172,7 +172,7 @@ export class Color implements ReadonlyColor {
      * get the color as a string with the format rgba(r, g, b, a)
      * r, g, b values is range [0, 255]
      * a value is range [0, 1]
-     * @returns 
+     * @returns
      */
     public toStringWithAlpha(): string {
         return "rgba(" + this._r * 255 + ", " + this._g * 255 + ", " + this._b * 255 + ", " + this._a + ")";
@@ -180,13 +180,13 @@ export class Color implements ReadonlyColor {
 
     /**
      * get the color as a hex string with the format #rrggbb it loses alpha information
-     * @returns 
+     * @returns
      */
     public toHex(): string {
         return "#" + (
-            (Math.round(this._r * 255) << 8*2) +
-            (Math.round(this._g * 255) << 8*1) +
-            (Math.round(this._b * 255) << 8*0)
+            (Math.round(this._r * 255) << 8 * 2) +
+            (Math.round(this._g * 255) << 8 * 1) +
+            (Math.round(this._b * 255) << 8 * 0)
         ).toString(16).padStart(6, "0");
         // return "#" +
         //     (Math.round(this._r * 255)).toString(16).padStart(2, "0") +
@@ -196,13 +196,13 @@ export class Color implements ReadonlyColor {
 
     /**
      * get the color as a hex string with the format #rrggbbaa
-     * @returns 
+     * @returns
      */
     public toHexWithAlpha(): string {
         return "#" + (
-            (Math.round(this._r * 255) << 8*2) +
-            (Math.round(this._g * 255) << 8*1) +
-            (Math.round(this._b * 255) << 8*0)
+            (Math.round(this._r * 255) << 8 * 2) +
+            (Math.round(this._g * 255) << 8 * 1) +
+            (Math.round(this._b * 255) << 8 * 0)
         ).toString(16).padStart(6, "0") +
             (Math.round(this._a * 255)).toString(16).padStart(2, "0");
         // return "#" +
@@ -214,7 +214,7 @@ export class Color implements ReadonlyColor {
 
     /**
      * get the color as an array with the format [r, g, b, a]
-     * @returns 
+     * @returns
      */
     public toArray(): number[] {
         return [this._r, this._g, this._b, this._a];
@@ -222,8 +222,8 @@ export class Color implements ReadonlyColor {
 
     /**
      * build a color from a hex string with the format #rrggbb alpha is set to 1
-     * @param hex 
-     * @returns 
+     * @param hex
+     * @returns
      */
     public static fromHex(hex: string): Color {
         const r = parseInt(hex.slice(1, 3), 16) / 255;
@@ -234,8 +234,8 @@ export class Color implements ReadonlyColor {
 
     /**
      * build a color from an array with the format [r, g, b, a]
-     * @param array 
-     * @returns 
+     * @param array
+     * @returns
      */
     public static fromArray(array: number[]): Color {
         return new Color(array[0], array[1], array[2], array[3]);
@@ -243,8 +243,8 @@ export class Color implements ReadonlyColor {
 
     /**
      * build a color from a string with the format rgba(r, g, b, a)
-     * @param str 
-     * @returns 
+     * @param str
+     * @returns
      */
     public static fromString(str: string): Color {
         const match = str.match(/^rgba\((\d+),\s*(\d+),\s*(\d+),\s*(\d*(?:\.\d+)?)\)$/);
@@ -421,7 +421,7 @@ export class Color implements ReadonlyColor {
             case b:
                 h = (r - g) / d + 4;
                 break;
-            
+
             default:
                 throw new Error("Unreachable");
             }

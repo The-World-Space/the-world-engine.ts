@@ -83,7 +83,7 @@ export class ContactFilter2D {
     public isFilteringTrigger(collider: Collider2D): boolean {
         return !this.useTriggers && collider.isTrigger;
     }
-    
+
     public isFilteringLayerMask(layer: number): boolean {
         return this.useLayerMask && (this.layerMask & layer) == 0;
     }
@@ -107,7 +107,7 @@ export class ContactFilter2D {
 
     private isFilteringNormalAngleUsingAngle(angle: number): boolean {
         if (!this.useNormalAngle) return false;
-        
+
         if (this.minNormalAngle >  this.maxNormalAngle) {
             const minNormalAngle = this.minNormalAngle;
             this.minNormalAngle = this.maxNormalAngle;

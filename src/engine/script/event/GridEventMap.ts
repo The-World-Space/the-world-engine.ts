@@ -7,9 +7,9 @@ import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
 /**
  * event map for grid system
- * 
+ *
  * coordinate system is same as world coordinate system (positive x is right, positive y is up)
- * 
+ *
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
  */
@@ -19,7 +19,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     private _gridCellHeight = 1;
     private _showCollider = false;
     private readonly _eventVisualizeImages: GameObject[] = [];
-    
+
     private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
 
@@ -37,7 +37,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
      * @param x x position in grid
      * @param y y position in grid
      * @param callback event callback
-     * @returns 
+     * @returns
      */
     public addEvent(x: number, y: number, callback: (gridX: number, gridY: number, target: GameObject) => void): void {
         if (!this._started) {
@@ -57,7 +57,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
      * @param array array that contains event callback
      * @param xOffset array x offset, if you want to add event from array[1][3] to (2, 3) you should set xOffset = 1
      * @param yOffset array y offset, if you want to add event from array[3][1] to (3, 2) you should set yOffset = 1
-     * @returns 
+     * @returns
      */
     public addEventsFromTwoDimensionalArray(
         array: (((gridX: number, gridY: number, target: GameObject) => void)|null)[][],
@@ -70,7 +70,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
             });
             return;
         }
-        
+
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === null) continue;
@@ -93,7 +93,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         }
         this._eventVisualizeImages.length = 0;
     }
-    
+
     private addDebugImage(x: number, y: number): void {
         const gameObjectRef: {ref: GameObject|null} = {ref: null};
         this.gameObject.addChildFromBuilder(
@@ -121,12 +121,12 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         const worldPosition = this.transform.position;
         x -= worldPosition.x;
         y -= worldPosition.y;
-        
+
         const left = Math.floor(x / this.gridCellWidth);
         const right = Math.floor((x + width) / this.gridCellWidth);
         const top = Math.floor(y / this.gridCellHeight);
         const bottom = Math.floor((y + height) / this.gridCellHeight);
-        
+
         let invoked = false;
         for (let y = top; y <= bottom; y++) {
             for (let x = left; x <= right; x++) {

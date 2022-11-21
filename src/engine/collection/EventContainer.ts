@@ -62,7 +62,7 @@ class LinkedList<T> {
                 this.removeNode(current);
                 return;
             }
-            
+
             current = current.next;
         }
     }

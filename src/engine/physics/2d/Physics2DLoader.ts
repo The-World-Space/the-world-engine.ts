@@ -89,7 +89,7 @@ export class Physics2DLoader {
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static readonly PhysicsObject2D: typeof PhysicsObject2D = PhysicsObject2D;
-    
+
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static readonly TriggerEventPool: typeof TriggerEventPool = TriggerEventPool;

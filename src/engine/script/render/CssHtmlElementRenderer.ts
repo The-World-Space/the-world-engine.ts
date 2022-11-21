@@ -3,9 +3,9 @@ import { CssRenderer } from "./CssRenderer";
 
 /**
  * css html element renderer
- * 
+ *
  * you can use this renderer to render html element
- * 
+ *
  * You can draw anything that can be drawn in HTML
  */
 export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
@@ -52,7 +52,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
             width * this.centerOffset.x,
             height * this.centerOffset.y, 0
         );
-        
+
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -61,7 +61,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         const value = this.viewScale;
 
         if (!this._autoSize) {
@@ -96,7 +96,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
             this._initializeFunction = (): void => this.setElementInternal(element);
             return;
         }
-        
+
         this.setElementInternal(element);
     }
 
@@ -108,7 +108,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
             htmlElement.style.width = (this._elementWidth / this.viewScale) + "px";
             htmlElement.style.height = (this._elementHeight / this.viewScale) + "px";
         }
-        
+
         const css3DObject = this.initializeBaseComponents(true);
         Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
@@ -116,7 +116,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     /**
      * element width (default: 1)
-     * 
+     *
      * if autoSize is true, this value can't be modified
      */
     public get elementWidth(): number {
@@ -135,7 +135,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     /**
      * element width (default: 1)
-     * 
+     *
      * if autoSize is true, this value can't be modified
      */
     public set elementWidth(value: number) {
@@ -150,7 +150,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     /**
      * element height (default: 1)
-     * 
+     *
      * if autoSize is true, this value can't be modified
      */
     public get elementHeight(): number {
@@ -169,7 +169,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     /**
      * element height (default: 1)
-     * 
+     *
      * if autoSize is true, this value can't be modified
      */
     public set elementHeight(value: number) {
@@ -184,7 +184,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     /**
      * auto size (default: false)
-     * 
+     *
      * if autoSize is true, elementWidth and elementHeight calculated automatically by html element size
      */
     public get autoSize(): boolean {
@@ -193,7 +193,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
 
     /**
      * auto size (default: false)
-     * 
+     *
      * if autoSize is true, elementWidth and elementHeight calculated automatically by html element size
      */
     public set autoSize(value: boolean) {

@@ -4,11 +4,11 @@ import { Object3D } from "three/src/Three";
 
 /**
  * Object3D wrapper for hierarchy object.
- * 
+ *
  * You can use this component to render any object that inherits Object3D.
- * 
+ *
  * The world matrix of Object3D is automatically updated when `gameObject.transform` is updated.
- * 
+ *
  * If you need to update the matrix even if the transform does not change (like animation), use `Object3DContainer.updateWorldMatrix()` method.
  */
 export class Object3DContainer<T extends Object3D> extends Component {
@@ -82,7 +82,7 @@ export class Object3DContainer<T extends Object3D> extends Component {
                 this._onDispose?.(this._object3D);
                 this.transform.unsafeGetObject3D().remove(this._object3D);
             }
-            
+
             this._object3D = object3D;
             this._onDispose = onDispose ?? null;
 
@@ -112,7 +112,7 @@ export class Object3DContainer<T extends Object3D> extends Component {
 
     /**
      * if true, this component is finish to be initialized.
-     * 
+     *
      * Do not modify the scene until the component is initialized.
      */
     protected get ready(): boolean {

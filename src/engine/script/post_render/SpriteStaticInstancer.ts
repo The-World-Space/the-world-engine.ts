@@ -9,7 +9,7 @@ import { ZaxisSorter } from "../render/ZaxisSorter";
 
 /**
  * represents a sprite instance
- * 
+ *
  * this class is used from the SpriteStaticInstancer
  */
 export class SpriteInstance {
@@ -19,11 +19,11 @@ export class SpriteInstance {
     private readonly _rotation?: Quaternion;
     private readonly _scale?: Vector3;
     private readonly _centerOffset?: Vector2;
-    
+
     public constructor(
         width: number,
         height: number,
-        position: Vector3, 
+        position: Vector3,
         rotation?: Quaternion,
         scale?: Vector3,
         centerOffset?: Vector2
@@ -81,7 +81,7 @@ export class SpriteInstance {
 
 /**
  * this component draws multiple sprite instances
- * 
+ *
  * drawcall optimization is not yet available
  */
 export class SpriteStaticInstancer extends Component implements IUnknownSizeCssRenderOption, ICssImageRenderOption {
@@ -91,7 +91,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
     private _pointerEvents = true;
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
-    
+
     private readonly _filter: CssFilter = new CssFilter();
 
     private _initializeFunction: (() => void)|null = null;
@@ -105,7 +105,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
     /**
      * set instances to be drawn
      * @param instances instances to be drawn
-     * @returns 
+     * @returns
      */
     public setInstances(instances: SpriteInstance[]): void {
         if (!this._started) {
@@ -132,7 +132,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
                     c.imageRenderingMode = this._imageRenderingMode;
                     c.filter.copy(this._filter);
                 });
-            
+
             if (this._useZaxisSorter) {
                 spriteBuilder.withComponent(ZaxisSorter, c => c.offset = this._zaxisSortOffset);
             }
@@ -144,7 +144,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * image source of the sprite
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get imageSource(): string {
@@ -153,7 +153,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * image source of the sprite
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set imageSource(value: string) {
@@ -163,7 +163,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
     /**
      * if this is true, the zaxis sorter will be attached to the sprite atlas instances
      * otherwise the zaxis initializer will be attached
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get useZindexSorter(): boolean {
@@ -173,7 +173,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
     /**
      * if this is true, the zaxis sorter will be attached to the sprite atlas instances
      * otherwise the zaxis initializer will be attached
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set useZindexSorter(value: boolean) {
@@ -182,9 +182,9 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * offset of the zaxis sorter
-     * 
+     *
      * this is only used if useZindexSorter is true
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get zindexSortOffset(): number {
@@ -193,9 +193,9 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * offset of the zaxis sorter
-     * 
+     *
      * this is only used if useZindexSorter is true
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set zindexSortOffset(value: number) {
@@ -204,7 +204,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * if this is true, the sprite atlas instances can be clicked
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get pointerEvents(): boolean {
@@ -213,7 +213,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * if this is true, the sprite atlas instances can be clicked
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set pointerEvents(value: boolean) {
@@ -222,11 +222,11 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      * @param value
      */
@@ -236,11 +236,11 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      * @param value
      */
@@ -250,18 +250,18 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * css filter
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get filter(): CssFilter {
         return this._filter;
     }
-    
+
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get imageRenderingMode(): ImageRenderingMode {
@@ -270,9 +270,9 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set imageRenderingMode(value: ImageRenderingMode) {

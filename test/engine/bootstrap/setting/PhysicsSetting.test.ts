@@ -49,7 +49,7 @@ describe("PhysicsSetting Test", () => {
 
         expect(settingObject.defaultMaterial).toBeUndefined();
     });
-    
+
     it("PhysicsSetting.defaultMaterial() defined", () => {
         const settingObject = PhysicsSetting.createDefaultObject();
         const setting = new PhysicsSetting(settingObject);
@@ -63,7 +63,7 @@ describe("PhysicsSetting Test", () => {
 
         expect(settingObject.velocityIterations).toBeUndefined();
     });
-    
+
     it("PhysicsSetting.velocityIterations() defined", () => {
         const settingObject = PhysicsSetting.createDefaultObject();
         const setting = new PhysicsSetting(settingObject);
@@ -77,7 +77,7 @@ describe("PhysicsSetting Test", () => {
 
         expect(settingObject.positionIterations).toBeUndefined();
     });
-    
+
     it("PhysicsSetting.positionIterations() defined", () => {
         const settingObject = PhysicsSetting.createDefaultObject();
         const setting = new PhysicsSetting(settingObject);
@@ -91,7 +91,7 @@ describe("PhysicsSetting Test", () => {
 
         expect(settingObject.queriesHitTriggers).toBeUndefined();
     });
-    
+
     it("PhysicsSetting.queriesHitTriggers() defined", () => {
         const settingObject = PhysicsSetting.createDefaultObject();
         const setting = new PhysicsSetting(settingObject);
@@ -119,7 +119,7 @@ describe("PhysicsSetting Test", () => {
 
         expect(settingObject.collisionLayerMaskMatrix).toBeUndefined();
     });
-    
+
     it("PhysicsSetting.layerCollisionMatrix() defined 1", () => {
         const settingObject = PhysicsSetting.createDefaultObject();
         const setting = new PhysicsSetting(settingObject);
@@ -133,7 +133,7 @@ describe("PhysicsSetting Test", () => {
         });
     });
 
-    
+
     it("PhysicsSetting.layerCollisionMatrix() defined 2", () => {
         const settingObject = PhysicsSetting.createDefaultObject();
         const setting = new PhysicsSetting(settingObject);

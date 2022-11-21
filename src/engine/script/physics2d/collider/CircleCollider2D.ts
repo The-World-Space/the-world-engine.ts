@@ -98,7 +98,7 @@ export class CircleCollider2D extends Collider2D {
      */
     public set debugDraw(value: boolean) {
         this._debugDraw = value;
-        
+
         if (this.enabled && this.gameObject.activeInHierarchy) {
             if (value) {
                 this.updateDebugDraw();

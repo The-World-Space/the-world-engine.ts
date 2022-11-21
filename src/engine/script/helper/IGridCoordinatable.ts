@@ -2,7 +2,7 @@ import { Vector2 } from "three/src/Three";
 
 /**
  * Interface for objects that has grid coordinate system
- * 
+ *
  * coordinate system is same as world coordinate system (positive x is right, positive y is up)
  */
 export interface IGridCoordinatable {
@@ -20,7 +20,7 @@ export interface IGridCoordinatable {
      * grid coordinate center position x
      */
     get gridCenterX(): number;
-    
+
     /**
      * grid coordinate center position y
      */

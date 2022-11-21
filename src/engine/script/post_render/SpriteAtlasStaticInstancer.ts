@@ -13,7 +13,7 @@ import { ZaxisSorter } from "../render/ZaxisSorter";
 
 /**
  * represents a sprite atlas instance
- * 
+ *
  * this class is used from the SpriteAtlasStaticInstancer
  */
 export class SpriteAtlasInstance {
@@ -29,7 +29,7 @@ export class SpriteAtlasInstance {
         width: number,
         height: number,
         atlasIndex: number,
-        position: Vector3, 
+        position: Vector3,
         rotation?: Quaternion,
         scale?: Vector3,
         centerOffset?: Vector2
@@ -56,7 +56,7 @@ export class SpriteAtlasInstance {
     public get height(): number {
         return this._height;
     }
-    
+
     /**
      * sprite atlas instance atlas index
      */
@@ -95,7 +95,7 @@ export class SpriteAtlasInstance {
 
 /**
  * this component draws multiple sprite atlas instances
- * 
+ *
  * drawcall optimization is not yet available
  */
 export class SpriteAtlasStaticInstancer extends Component implements IUnknownSizeCssRenderOption, ICssImageRenderOption {
@@ -107,7 +107,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
     private _pointerEvents = true;
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
-    
+
     private readonly _filter: CssFilter = new CssFilter();
 
     private _initializeFunction: (() => void)|null = null;
@@ -121,7 +121,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
     /**
      * set instances to be drawn
      * @param instances instances to be drawn
-     * @returns 
+     * @returns
      */
     public setInstances(instances: SpriteAtlasInstance[]): void {
         if (!this._started) {
@@ -149,7 +149,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
                     c.imageRenderingMode = this._imageRenderingMode;
                     c.filter.copy(this._filter);
                 });
-            
+
             if (this._useZaxisSorter) {
                 spriteBuilder.withComponent(ZaxisSorter, c => c.offset = this._zaxisSortOffset);
             }
@@ -161,7 +161,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * set the number of rows and columns of the sprite atlas
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      * @param columnCount number of columns
      * @param rowCount number of rows
@@ -173,7 +173,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * image source of the sprite atlas (default: `GlobalConfig.defaultSpriteSrc`)
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get imageSource(): string {
@@ -182,7 +182,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * image source of the sprite atlas (default: `GlobalConfig.defaultSpriteSrc`)
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set imageSource(value: string) {
@@ -206,7 +206,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
     /**
      * if this is true, the zaxis sorter will be attached to the sprite atlas instances
      * otherwise the zaxis initializer will be attached (default: false)
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get useZindexSorter(): boolean {
@@ -216,7 +216,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
     /**
      * if this is true, the zaxis sorter will be attached to the sprite atlas instances
      * otherwise the zaxis initializer will be attached (default: false)
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set useZindexSorter(value: boolean) {
@@ -225,9 +225,9 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * offset of the zaxis sorter (default: 0)
-     * 
+     *
      * this is only used if useZindexSorter is true
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get zindexSortOffset(): number {
@@ -236,9 +236,9 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * offset of the zaxis sorter (default: 0)
-     * 
+     *
      * this is only used if useZindexSorter is true
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set zindexSortOffset(value: number) {
@@ -247,7 +247,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * if this is true, the sprite atlas instances can be clicked (default: true)
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get pointerEvents(): boolean {
@@ -256,7 +256,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * if this is true, the sprite atlas instances can be clicked (default: true)
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set pointerEvents(value: boolean) {
@@ -265,11 +265,11 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      * @param value
      */
@@ -279,11 +279,11 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      * @param value
      */
@@ -293,18 +293,18 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * css filter
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get filter(): CssFilter {
         return this._filter;
     }
-    
+
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public get imageRenderingMode(): ImageRenderingMode {
@@ -313,9 +313,9 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
-     * 
+     *
      * Even if you change this value after the instance is created. Objects that have already been created will not be changed
      */
     public set imageRenderingMode(value: ImageRenderingMode) {

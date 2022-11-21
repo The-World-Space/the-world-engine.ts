@@ -36,7 +36,7 @@ export class Physics2DProcessor implements IPhysics2D {
     private _defaultMaterial: PhysicsMaterial2D|null = null;
     private _velocityIterations = 8;
     private _positionIterations = 3;
-    
+
     // private _velocityThreshold: number = 1;
     // private _defaultContactOffset: number = 0.01;
 
@@ -49,11 +49,11 @@ export class Physics2DProcessor implements IPhysics2D {
     private _world: B2World|null = null;
     private readonly _gameObjectToBodyMap = new Map<GameObject, PhysicsObject2D>();
     private _loader: typeof Physics2DLoader|null = null;
-    private _physicsEventDispatcher: PhysicsEventDispatcher|null = null; 
+    private _physicsEventDispatcher: PhysicsEventDispatcher|null = null;
 
     /** @internal */
     public applyPhysicsSettings(physicSetting: DeepReadonly<PhysicsSettingObject>): void {
-        if(!physicSetting.loader) return;
+        if (!physicSetting.loader) return;
 
         this._loader = physicSetting.loader;
         this._world = new this._loader.World(new this._loader.Vec2(0, -9.81));
@@ -64,7 +64,7 @@ export class Physics2DProcessor implements IPhysics2D {
 
             private readonly _triggerEventPool: TriggerEventPool;
             private readonly _collisionEventPool: CollisionEventPool;
-        
+
             public constructor(physicsProcessor: Physics2DProcessor) {
                 super();
                 this._physicsProcessor = physicsProcessor;
@@ -103,7 +103,7 @@ export class Physics2DProcessor implements IPhysics2D {
                     }
                 }
             }
-        
+
             // eslint-disable-next-line @typescript-eslint/naming-convention
             public override EndContact(contact: B2Contact<B2Shape, B2Shape>): void {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
@@ -133,7 +133,7 @@ export class Physics2DProcessor implements IPhysics2D {
                     }
                 }
             }
-        
+
             // eslint-disable-next-line @typescript-eslint/naming-convention
             public override PreSolve(contact: B2Contact<B2Shape, B2Shape>, _oldManifold: B2Manifold): void {
                 const collider2dA = contact.GetFixtureA().GetUserData() as Collider2D;
@@ -188,7 +188,7 @@ export class Physics2DProcessor implements IPhysics2D {
         if (physicSetting.collisionLayerMaskMatrix) {
             this._collisionLayerMaskConverter = new this._loader.CollisionLayerMaskConverter(physicSetting.collisionLayerMaskMatrix);
         } else {
-            this._collisionLayerMaskConverter = new this._loader.CollisionLayerMaskConverter({ 
+            this._collisionLayerMaskConverter = new this._loader.CollisionLayerMaskConverter({
                 default: { default: true }
             });
         }
@@ -291,7 +291,7 @@ export class Physics2DProcessor implements IPhysics2D {
     /** @internal */
     public removeRigidBody(gameObject: GameObject): void {
         const physicsObject = this._gameObjectToBodyMap.get(gameObject);
-        if (!physicsObject) throw new Error("PhysicsObject2D not found"); 
+        if (!physicsObject) throw new Error("PhysicsObject2D not found");
         physicsObject.removeRigidBody();
     }
 
@@ -307,7 +307,7 @@ export class Physics2DProcessor implements IPhysics2D {
     /** @internal */
     public addCollider(gameObject: GameObject, collider: Collider2D): FixtureGroup {
         if (!this._world) throw new Error("Physics2D is not loaded.");
-        
+
         let physicsObject = this._gameObjectToBodyMap.get(gameObject);
         if (!physicsObject) {
             physicsObject = new this._loader!.PhysicsObject2D(
@@ -434,7 +434,7 @@ export class Physics2DProcessor implements IPhysics2D {
     // }
 
     public reuseCollisionCallbacks = true;
-    
+
     public get collisionLayerMask(): CollisionLayerMaskConverter {
         return this._collisionLayerMaskConverter!;
     }
@@ -485,7 +485,7 @@ export class Physics2DProcessor implements IPhysics2D {
             .copy(direction)
             .multiplyScalar(distance === Number.POSITIVE_INFINITY ? 10000000 : distance)
             .add(origin);
-        
+
         this._raycastFilterCallback!.setRaycastData(
             results,
             origin,

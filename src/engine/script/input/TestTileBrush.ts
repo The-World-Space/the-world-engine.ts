@@ -8,7 +8,7 @@ import { PointerGridEvent } from "./PointerGridInputListener";
  */
 export class TestTileBrush extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
-    
+
     private _gridPointer: GridPointer|null = null;
     private _colideTilemapChunk: CssCollideTilemapChunkRenderer|null = null;
     private _pointerDown = false;

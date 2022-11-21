@@ -30,7 +30,7 @@ describe("YieldInstruction Test", () => {
 
         expect(waitUntil).toBeDefined();
     });
-    
+
     it("WaitUntil.predicate", () => {
         const waitUntil = new WaitUntil(() => true);
 

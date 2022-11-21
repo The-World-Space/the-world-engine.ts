@@ -9,7 +9,7 @@ export type GameSettingObject = {
 
 export class GameSetting {
     private readonly _gameSettingObject: GameSettingObject;
-    
+
     private readonly _renderSetting: RenderSetting;
     private readonly _physicsSetting: PhysicsSetting;
 

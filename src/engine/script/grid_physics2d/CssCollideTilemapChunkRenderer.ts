@@ -12,11 +12,11 @@ import { IGridCollidable } from "./IGridCollidable";
 /**
  * collision map with tilemap for grid system
  * there is no limitation of tilemap size, it use multiple tilemap as chunk
- * 
+ *
  * this component will auto generate collision map from tilemap
- * 
+ *
  * coordinate system is same as world coordinate system (positive x is right, positive y is up)
- * 
+ *
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
  */
@@ -35,7 +35,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     private _collideEnabled = false;
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
-    
+
     private readonly onFilterUpdate = (): void => {
         this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.filter.copy(this._filter);
@@ -43,7 +43,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     };
 
     private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
-    
+
     private readonly _initializeFunctions: (() => void)[] = [];
     private _started = false;
 
@@ -100,7 +100,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
             const cssTilemapRendererRef = new PrefabRef<CssCollideTilemapRenderer>();
             this.gameObject.addChildFromBuilder(
                 this.engine.instantiater.buildGameObject(
-                    `css_tilemap_renderer_${chunkIndexX}_${chunkIndexY}`, 
+                    `css_tilemap_renderer_${chunkIndexX}_${chunkIndexY}`,
                     new Vector3(chunkIndexX * this._chunkSize * this._tileWidth, chunkIndexY * this._chunkSize * this._tileHeight, 0),
                     undefined,
                     new Vector3().setScalar(this._tilemapScale)
@@ -140,7 +140,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
      * @param y y position in grid
      * @param imageIndex index of image in imageSources
      * @param atlasIndex index of atlas in imageSources
-     * @returns 
+     * @returns
      */
     public drawTile(x: number, y: number, imageIndex: number, atlasIndex?: number): void {
         if (!this._started) {
@@ -156,11 +156,11 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         const drawPosition = this.computeDrawPosition(chunkIndexX, chunkIndexY, x, y);
         const drawOffsetX = this.chunkSize % 2 === 0 ? 0 : -0.5;
         const drawOffsetY = this.chunkSize % 2 === 0 ? 0 : 0.5;
-        
+
         const tileDrawPositionX = drawPosition.x + drawOffsetX;
         const tileDrawPositionY = this._chunkSize - drawPosition.y - 1 + drawOffsetY;
         cssTilemapRenderer!.drawTile(tileDrawPositionX, tileDrawPositionY, imageIndex, atlasIndex);
-        
+
         const chunkKey = this.getKeyFromIndex(chunkIndexX, chunkIndexY);
         const tileCountSet = this._tilemapTileCountMap.get(chunkKey);
         if (tileCountSet === undefined) {
@@ -172,12 +172,12 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * draw tile from two dimensional array. collide info will be automatically added
-     * 
+     *
      * array left bottom is (0, 0) in grid coordinate system
      * @param array array of image index. { i: 0, a: 1 } means imageSources[0] in atlas[1]
      * @param xOffset array x offset, if you want to add tile from array[1][3] to (2, 3) you should set xOffset = 1
      * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
-     * @returns 
+     * @returns
      */
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
@@ -186,7 +186,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
             });
             return;
         }
-        
+
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === null) continue;
@@ -199,7 +199,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
      * clear tile at position. collide info will be automatically removed
      * @param x x position in grid
      * @param y y position in grid
-     * @returns 
+     * @returns
      */
     public clearTile(x: number, y: number): void {
         if (!this._started) {
@@ -215,14 +215,14 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
         const drawPosition = this.computeDrawPosition(chunkIndexX, chunkIndexY, x, y);
         const drawOffsetX = this.chunkSize % 2 === 0 ? 0 : -0.5;
         const drawOffsetY = this.chunkSize % 2 === 0 ? 0 : 0.5;
-        cssTilemapRenderer!.clearTile(drawPosition.x + drawOffsetX, this._chunkSize - drawPosition.y - 1 + drawOffsetY);   
+        cssTilemapRenderer!.clearTile(drawPosition.x + drawOffsetX, this._chunkSize - drawPosition.y - 1 + drawOffsetY);
     }
 
     /**
      * add collider at position
      * @param x x position in grid
      * @param y y position in grid
-     * @returns 
+     * @returns
      */
     public addCollider(x: number, y: number): void {
         if (!this._started) {
@@ -353,7 +353,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * tile resolution x. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public get tileResolutionX(): number {
@@ -362,7 +362,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * tile resolution x. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public set tileResolutionX(value: number) {
@@ -375,7 +375,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * tile resolution y. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public get tileResolutionY(): number {
@@ -384,7 +384,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * tile resolution y. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public set tileResolutionY(value: number) {
@@ -397,7 +397,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * tilemaps scale. (default: 1.001)
-     * 
+     *
      * If this value is 1 due to precision issues, there's a gap between the tilemaps.
      */
     public get tilemapScale(): number {
@@ -406,7 +406,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * tilemaps scale. (default: 1.001)
-     * 
+     *
      * If this value is 1 due to precision issues, there's a gap between the tilemaps.
      */
     public set tilemapScale(value: number) {
@@ -419,7 +419,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * grid coordinate center position
-     * 
+     *
      * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenter(): Vector2 {
@@ -431,7 +431,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * grid coordinate center position x
-     * 
+     *
      * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterX(): number {
@@ -442,7 +442,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * grid coordinate center position y
-     * 
+     *
      * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterY(): number {
@@ -453,9 +453,9 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -465,9 +465,9 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -484,10 +484,10 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
     public get filter(): CssFilter {
         return this._filter;
     }
-    
+
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public get imageRenderingMode(): ImageRenderingMode {
@@ -496,7 +496,7 @@ export class CssCollideTilemapChunkRenderer extends Component implements IGridCo
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public set imageRenderingMode(value: ImageRenderingMode) {

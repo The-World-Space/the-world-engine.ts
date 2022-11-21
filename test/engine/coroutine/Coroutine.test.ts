@@ -117,7 +117,7 @@ describe("Coroutine Test", () => {
         function *testCoroutine(): CoroutineIterator {
             yield new WaitForSeconds(1.0);
         }
-        
+
         const component = createComponent();
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         const coroutine = new Coroutine(component, testCoroutine(), () => { });
@@ -149,7 +149,7 @@ describe("Coroutine Test", () => {
 
         const component = createComponent();
         const coroutine = new Coroutine(component, testCoroutine(), () => {
-            onFinishCalled += 1; 
+            onFinishCalled += 1;
         });
 
         coroutine.fatchNextInstruction();

@@ -5,7 +5,7 @@ export class Mulberry32 {
     private _a: number;
 
     /**
-     * 
+     *
      * @param seed random seed
      */
     public constructor(seed: number) {
@@ -14,7 +14,7 @@ export class Mulberry32 {
 
     /**
      * get next random number
-     * @returns 
+     * @returns
      */
     public next(): number {
         let t = this._a += 0x6D2B79F5;

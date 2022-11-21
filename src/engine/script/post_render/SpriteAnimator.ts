@@ -5,18 +5,18 @@ import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
 /**
  * simple sprite animator
- * 
+ *
  * this component will switch sprite image every interval time
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `CssSpriteRenderer`
  */
 export class SpriteAnimator extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
-    
+
     private _spriteRenderer: CssSpriteRenderer|null = null;
     private readonly _animations: Map<string, HTMLImageElement[]> = new Map();
     private _playingAnimationName: string|null = null;
@@ -26,7 +26,7 @@ export class SpriteAnimator extends Component {
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
     private _pendingPlayAnimation: string|null = null;
-    
+
     public awake(): void {
         this._spriteRenderer = this.gameObject.getComponent(CssSpriteRenderer);
 
@@ -35,7 +35,7 @@ export class SpriteAnimator extends Component {
             this._pendingPlayAnimation = null;
         }
     }
-    
+
     public update(): void {
         if (!this._playing) return;
 
@@ -53,7 +53,7 @@ export class SpriteAnimator extends Component {
     /**
      * play animation by name
      * @param name animation name
-     * @returns 
+     * @returns
      */
     public playAnimation(name: string): void {
         if (this._spriteRenderer === null) {
@@ -80,12 +80,12 @@ export class SpriteAnimator extends Component {
         this._playing = false;
         this._pendingPlayAnimation = null;
     }
-    
+
     /**
      * add animation from image array
      * @param name animation name
      * @param animationFrames animation frames
-     * @returns 
+     * @returns
      */
     public addAnimation(name: string, animationFrames: HTMLImageElement[]): void {
         if (animationFrames.length === 0) {
@@ -114,7 +114,7 @@ export class SpriteAnimator extends Component {
 
     /**
      * frame duration (default: 2)
-     * 
+     *
      * larger value means slower animation
      */
     public get frameDuration(): number {
@@ -123,7 +123,7 @@ export class SpriteAnimator extends Component {
 
     /**
      * frame duration (default: 2)
-     * 
+     *
      * larger value means slower animation
      */
     public set frameDuration(value: number) {

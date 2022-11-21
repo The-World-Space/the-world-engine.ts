@@ -10,18 +10,18 @@ import { CssRendererConst } from "../render/CssRenderer";
 
 /**
  * editor grid renderer for debug
- * 
+ *
  * just add this component to your camera it will render grid
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `Camera`
  */
 export class EditorGridRenderer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [Camera];
-    
+
     private _cssHtmlRenderer: CssHtmlElementRenderer|null = null;
     private _cssHtmlRendererObject: GameObject|null = null;
     private _gridCellWidth = 1;
@@ -56,7 +56,7 @@ export class EditorGridRenderer extends Component {
                     c.viewScale = CssRendererConst.LengthUnitScalar;
                 })
                 .getComponent(CssHtmlElementRenderer, cssHtmlRendererRef));
-        
+
         this._cssHtmlRenderer = cssHtmlRendererRef.ref;
     }
 
@@ -86,7 +86,7 @@ export class EditorGridRenderer extends Component {
             const rendererPosition = this._cssHtmlRendererObject!.transform.position;
             rendererPosition.copy(position);
             rendererPosition.z += this._zOffset;
-            this._cssHtmlRenderer!.element!.style.backgroundPosition = 
+            this._cssHtmlRenderer!.element!.style.backgroundPosition =
                 (-position.x * worldToElementScale + xRemainder + scaledGridCellWidth / 2 - 0.5) + "px " +
                 (position.y * worldToElementScale + yRemainder + scaledGridCellHeight / 2 - 0.5) + "px";
         }
@@ -137,7 +137,7 @@ export class EditorGridRenderer extends Component {
 
     /**
      * render width. (default: 18)
-     * 
+     *
      * if grid does not cover the whole screen, you must increase this value
      */
     public get renderWidth(): number {
@@ -146,7 +146,7 @@ export class EditorGridRenderer extends Component {
 
     /**
      * render width. (default: 18)
-     * 
+     *
      * if grid does not cover the whole screen, you must increase this value
      */
     public set renderWidth(value: number) {
@@ -159,7 +159,7 @@ export class EditorGridRenderer extends Component {
 
     /**
      * render height. (default: 10)
-     * 
+     *
      * if grid does not cover the whole screen, you must increase this value
      */
     public get renderHeight(): number {
@@ -168,7 +168,7 @@ export class EditorGridRenderer extends Component {
 
     /**
      * render height. (default: 10)
-     * 
+     *
      * if grid does not cover the whole screen, you must increase this value
      */
     public set renderHeight(value: number) {
@@ -181,7 +181,7 @@ export class EditorGridRenderer extends Component {
 
     /**
      * grid line width. (default: 0.2)
-     * 
+     *
      * if line width is too small, grid will not be visible on screen
      */
     public get lineWidth(): number {
@@ -190,7 +190,7 @@ export class EditorGridRenderer extends Component {
 
     /**
      * grid line width. (default: 0.2)
-     * 
+     *
      * if line width is too small, grid will not be visible on screen
      */
     public set lineWidth(value: number) {

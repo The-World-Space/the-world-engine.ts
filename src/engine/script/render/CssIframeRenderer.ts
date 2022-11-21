@@ -3,7 +3,7 @@ import { CssRenderer } from "./CssRenderer";
 
 /**
  * css iframe renderer
- * 
+ *
  * you can use this renderer to render iframe tag
  */
 export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
@@ -52,7 +52,7 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         this.htmlElement!.width = (this._width / this.viewScale).toString();
         this.htmlElement!.height = (this._height / this.viewScale).toString();
         this.css3DObject.scale.set(value, value, value);
-        
+
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -127,7 +127,7 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
      */
     public set allow(value: string) {
         this._allow = value;
-        
+
         if (this.htmlElement) {
             this.htmlElement.allow = value;
         }
@@ -147,7 +147,7 @@ export class CssIframeRenderer extends CssRenderer<HTMLIFrameElement> {
         this._allowFullscreen = value;
     }
 
-    
+
     /**
      * Retrieves the document object of the page or frame.
      */

@@ -48,7 +48,7 @@ export class RaycastTestPrefab extends Prefab {
                         new Vector2(15, 0)
                     ];
                 }))
-            
+
             .withChild(instantiater.buildGameObject("circle", new Vector3(2, -3, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Static;

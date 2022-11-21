@@ -33,7 +33,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private _textalign: TextAlign = TextAlign.Left;
     private readonly _textColor: Color = new Color(1, 1, 1, 1);
     private _text: string|null = null;
-    
+
     private _initializeFunction: (() => void)|null = null;
 
     private static readonly _defaultText: string = "Text";
@@ -76,7 +76,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
             width * this.centerOffset.x,
             height * this.centerOffset.y, 0
         );
-        
+
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -85,7 +85,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
 
     protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         const value = this.viewScale;
 
         if (!this._autoSize) {
@@ -127,7 +127,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private setTextInternal(value: string|null): void {
         if (!this.htmlElement) this.htmlElement = document.createElement("div");
         this.htmlElement.textContent = value ?? "";
-        
+
         if (this._autoSize) {
             this.htmlElement.style.width = "auto";
             this.htmlElement.style.height = "auto";
@@ -142,7 +142,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this.htmlElement.style.textAlign = this._textalign;
         this.htmlElement.style.color = this._textColor.toHex();
         this.htmlElement.style.opacity = this._textColor.a.toString();
-        
+
         const css3DObject = this.initializeBaseComponents(false);
         Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
         this.transform.enqueueRenderAttachedObject3D(css3DObject);
@@ -150,9 +150,9 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
 
     /**
      * text render width (default: 2)
-     * 
+     *
      * this property is modifiable only when autoSize is false
-     * 
+     *
      * Outside of this range, css text will be overflowed
      */
     public get textWidth(): number {
@@ -171,9 +171,9 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
 
     /**
      * text render width (default: 2)
-     * 
+     *
      * this property is modifiable only when autoSize is false
-     * 
+     *
      * Outside of this range, css text will be overflowed
      */
     public set textWidth(value: number) {
@@ -188,9 +188,9 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
 
     /**
      * text render height (default: 1)
-     * 
+     *
      * this property is modifiable only when autoSize is false
-     * 
+     *
      * Outside of this range, css text will be overflowed
      */
     public get textHeight(): number {
@@ -209,9 +209,9 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
 
     /**
      * text render height (default: 1)
-     * 
+     *
      * this property is modifiable only when autoSize is false
-     * 
+     *
      * Outside of this range, css text will be overflowed
      */
     public set textHeight(value: number) {

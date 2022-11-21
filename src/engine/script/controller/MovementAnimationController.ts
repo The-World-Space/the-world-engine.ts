@@ -5,16 +5,16 @@ import { SpriteAtlasAnimator } from "../post_render/SpriteAtlasAnimator";
 
 /**
  * controller for 2D Character
- * 
+ *
  * Simple animation controller that handles idle and walk status
- * 
+ *
  * `SpriteAtlasAnimator` must have animation
  * "up_idle", "up_walk", "down_idle", "down_walk", "left_idle", "left_walk", "right_idle", "right_walk"
  * for this component to function properly.
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `Directable`, `SpriteAtlasAnimator`
  */
 export class MovementAnimationController extends Component {
@@ -34,7 +34,7 @@ export class MovementAnimationController extends Component {
     public update(): void {
         const direction = this._directable!.direction;
         const isMoving = this._directable!.isMoving;
-        
+
         if (isMoving) {
             if (direction === Direction.Up) {
                 if (this._lastIsMoving !== isMoving || this._lastDirection !== direction) {

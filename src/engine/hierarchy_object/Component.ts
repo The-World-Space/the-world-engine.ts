@@ -8,7 +8,7 @@ import { Transform } from "./Transform";
 
 /**
  * component is the base class from which every engine script derives
- * 
+ *
  * do not override constructor it's break the engine
  */
 export abstract class Component {
@@ -16,12 +16,12 @@ export abstract class Component {
      * if this true, this component can't be added multiple times to the same game object
      */
     public readonly disallowMultipleComponent: boolean = false;
-    
+
     /**
      * if this array is not empty, this component can be added only if all of the components in this array are already added to the game object
      */
     public readonly requiredComponents: ComponentConstructor[] = [];
-    
+
     /**
      * script execution order of this component
      */
@@ -32,7 +32,7 @@ export abstract class Component {
     private readonly _gameObject: GameObject;
     private readonly _instanceId: number;
     private readonly _runningCoroutines: Coroutine[] = [];
-    
+
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public _engine_internal_componentEventContainer: ComponentEventContainer;
@@ -65,11 +65,11 @@ export abstract class Component {
                 writable: false
             }
         });
-    }   
+    }
 
     /**
      * starts a coroutine
-     * 
+     *
      * if component is destroyed this will throw an error
      * @param coroutineIterator coroutine iterator
      * @returns coroutine instance. you can stop coroutine by calling stopCoroutine(coroutine: ICoroutine) with this variable
@@ -93,7 +93,7 @@ export abstract class Component {
 
     /**
      * stop all coroutines executed by this component
-     * 
+     *
      * if component is destroyed this will throw an error
      */
     public stopAllCoroutines(): void {
@@ -112,7 +112,7 @@ export abstract class Component {
 
     /**
      * stop coroutine that is executed by this component
-     * 
+     *
      * if component is destroyed this will throw an error
      * @param coroutine coroutine instance
      */
@@ -137,7 +137,7 @@ export abstract class Component {
 
     /**
      * enabled components are updated, disabled components are not
-     * 
+     *
      * if component is destroyed this will throw an error
      */
     public set enabled(value: boolean) {
@@ -147,7 +147,7 @@ export abstract class Component {
         this._enabled = value;
 
         if (!this._gameObject.initialized) return;
-        
+
         if (this._gameObject.activeInHierarchy) {
             if (this._enabled) {
                 this._engine_internal_componentEventContainer.tryRegisterOnEnable();
@@ -223,9 +223,9 @@ export abstract class Component {
         }
         this.stopAllCoroutines();
         this._engine_internal_componentEventContainer.tryRegisterOnDestroy();
-        
+
         this._engine_internal_destroyed = true;
-        
+
         this.engine.sceneProcessor.tryStartProcessSyncedEvent();
         this.engine.sceneProcessor.addRemoveComponent(this);
     }

@@ -11,7 +11,7 @@ export class SceneProcessor {
 
     private readonly _removeGameObjects: GameObject[];
     private readonly _removeComponents: Component[];
-    
+
     public constructor() {
         this._nonSyncedEvents = new MutIteratableCollection(ComponentEvent.comparator);
         this._syncedEvents = new MutIteratableCollection(ComponentEvent.comparator);
@@ -59,7 +59,7 @@ export class SceneProcessor {
         for (let i = 0; i < removeComponents.length; ++i) {
             removeComponents[i].gameObject.removeComponent(removeComponents[i]);
         }
-        
+
         const removeGameObjects = this._removeGameObjects;
         for (let i = 0; i < removeGameObjects.length; ++i) {
             removeGameObjects[i].removeFromParent();

@@ -19,9 +19,9 @@ export enum CameraType {
 
 /**
  * camera component
- * 
+ *
  * it's a wrapper for `THREE.Camera`
- * 
+ *
  * At least one camera component must exist in the scene
  */
 export class Camera extends Component {
@@ -112,7 +112,7 @@ export class Camera extends Component {
         } else {
             throw new Error("Camera type not supported");
         }
-        
+
         Transform.updateRawObject3DWorldMatrixRecursively(this._camera);
         this._cameraContainer!.addCamera(this, new CameraInfo(this._priority, this._backgroundColor));
     }
@@ -166,9 +166,9 @@ export class Camera extends Component {
 
     /**
      * camera projection type (default: `CameraType.Orthographic`)
-     * 
+     *
      * perspective: Camera will render objects with perspective intact
-     * 
+     *
      * orthographic: Camera will render objects uniformly, with no sense of perspective
      */
     public get cameraType(): CameraType {
@@ -177,9 +177,9 @@ export class Camera extends Component {
 
     /**
      * camera projection type (default: `CameraType.Orthographic`)
-     * 
+     *
      * perspective: Camera will render objects with perspective intact
-     * 
+     *
      * orthographic: Camera will render objects uniformly, with no sense of perspective
      */
     public set cameraType(value: CameraType) {
@@ -192,7 +192,7 @@ export class Camera extends Component {
 
     /**
      * field of view (default: 75)
-     * 
+     *
      * only available when cameraType is Perspective
      */
     public get fov(): number {
@@ -204,7 +204,7 @@ export class Camera extends Component {
 
     /**
      * field of view (default: 75)
-     * 
+     *
      * only available when cameraType is Perspective
      */
     public set fov(value: number) {
@@ -220,7 +220,7 @@ export class Camera extends Component {
 
     /**
      * view size (default: 5)
-     * 
+     *
      * only available when cameraType is Orthographic
      */
     public get viewSize(): number {
@@ -232,7 +232,7 @@ export class Camera extends Component {
 
     /**
      * view size (default: 5)
-     * 
+     *
      * only available when cameraType is Orthographic
      */
     public set viewSize(value: number) {
@@ -280,7 +280,7 @@ export class Camera extends Component {
 
     /**
      * near clipping plane (default: 0.1)
-     * 
+     *
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public get near(): number {
@@ -290,10 +290,10 @@ export class Camera extends Component {
 
         return this._near;
     }
-    
+
     /**
      * near clipping plane (default: 0.1)
-     * 
+     *
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public set near(value: number) {
@@ -310,7 +310,7 @@ export class Camera extends Component {
 
     /**
      * far clipping plane (default: 1000)
-     * 
+     *
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public get far(): number {
@@ -323,7 +323,7 @@ export class Camera extends Component {
 
     /**
      * far clipping plane (default: 1000)
-     * 
+     *
      * this property is not available when using CssRenderer because css does not support frustum culling
      */
     public set far(value: number) {
@@ -340,7 +340,7 @@ export class Camera extends Component {
 
     /**
      * priority of the camera (default: 0)
-     * 
+     *
      * If there are multiple cameras in the scene, higher priority cameras will be rendered
      */
     public get priority(): number {
@@ -349,7 +349,7 @@ export class Camera extends Component {
 
     /**
      * priority of the camera (default: 0)
-     * 
+     *
      * If there are multiple cameras in the scene, higher priority cameras will be rendered
      */
     public set priority(value: number) {
@@ -361,9 +361,9 @@ export class Camera extends Component {
 
     /**
      * background color of the camera (default: null)
-     * 
+     *
      * This color will fill the empty space of the scene
-     * 
+     *
      * When used with WebGLRenderer, you can specify a texture background. And in the case of color, the alpha channel is ignored
      */
     public get backgroundColor(): null|ReadonlyColor|THREE.Texture {
@@ -372,9 +372,9 @@ export class Camera extends Component {
 
     /**
      * background color of the camera (default: null)
-     * 
+     *
      * This color will fill the empty space of the scene
-     * 
+     *
      * When used with WebGLRenderer, you can specify a texture background. And in the case of color, the alpha channel is ignored
      */
     public set backgroundColor(value: null|ReadonlyColor|THREE.Texture) {

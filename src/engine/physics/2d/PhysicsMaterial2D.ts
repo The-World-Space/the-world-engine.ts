@@ -28,7 +28,7 @@ export class PhysicsMaterial2D {
         this._bounciness = value;
         this._onChangedEvent.invoke();
     }
-    
+
     public get onChanged(): IEventContainer<() => void> {
         return this._onChangedEvent;
     }

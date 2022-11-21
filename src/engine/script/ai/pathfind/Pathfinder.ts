@@ -19,11 +19,11 @@ export class Pathfinder {
     private readonly _collideMaps: IGridCollidable[];
 
     /**
-     * 
+     *
      * @param collideMaps collide maps to use for collision detection
      * @param checkCollisioWidth width of the collision check,
      * this value should be set to "gridCellWidth / 2",
-     * if character is bigger than one grid cell you can increase the value accordingly.  
+     * if character is bigger than one grid cell you can increase the value accordingly.
      * @param checkCollisionHeight height of the collision check,
      * this value should be set to "gridCellHeight / 2",
      * if character is bigger than one grid cell you can increase the value accordingly.
@@ -43,7 +43,7 @@ export class Pathfinder {
 
     /**
      * adds a new collide map to the list of collide maps
-     * @param collideMap 
+     * @param collideMap
      */
     public addCollideMap(collideMap: IGridCollidable): void {
         this._collideMaps.push(collideMap);
@@ -82,7 +82,7 @@ export class Pathfinder {
 
         const openList: PathNode[] = [];
         const closedList: PathNode[] = [];
-        
+
         startNode.gCost = 0;
         startNode.hCost = this.calculateDistanceCost(startNode, endNode);
         startNode.calculateFCost();
@@ -105,7 +105,7 @@ export class Pathfinder {
                 const neighbor = neighbors[i];
                 if (closedList.find(node => node.equals(neighbor)) !== undefined) continue; //already visited
                 else {
-                    neighbor.gCost = Number.MAX_VALUE; 
+                    neighbor.gCost = Number.MAX_VALUE;
                     neighbor.calculateFCost();
                     neighbor.previousNode = null;
                 }

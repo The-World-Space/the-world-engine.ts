@@ -12,7 +12,7 @@ import { Rotator2 } from "../script/Rotator2";
 export class ParentChangeTestPrefab extends Prefab {
 
     public make(): GameObjectBuilder {
-        
+
         const instantiater = this.instantiater;
 
         const parent1 = new PrefabRef<GameObject>();
@@ -24,7 +24,7 @@ export class ParentChangeTestPrefab extends Prefab {
                 .withComponent(CssSpriteRenderer)
                 .withComponent(Rotator2)
                 .getGameObject(parent1))
-                
+
             .withChild(instantiater.buildGameObject("parent2", new Vector3(16 * -1, 0, 0))
                 //.active(false)
                 .withComponent(CssSpriteRenderer)

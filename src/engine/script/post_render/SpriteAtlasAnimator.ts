@@ -4,18 +4,18 @@ import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
 
 /**
  * simple sprite atlas animator
- * 
+ *
  * this component will switch sprite atlas index every interval time
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `CssSpriteAtlasRenderer`
  */
 export class SpriteAtlasAnimator extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteAtlasRenderer];
-    
+
     private _spriteAtlasRenderer: CssSpriteAtlasRenderer|null = null;
     private _animations: { [key: string]: number[] } = {};
     private _playingAnimationName: string|null = null;
@@ -25,16 +25,16 @@ export class SpriteAtlasAnimator extends Component {
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
     private _pendingPlayAnimation: string|null = null;
-    
+
     public awake(): void {
         this._spriteAtlasRenderer = this.gameObject.getComponent(CssSpriteAtlasRenderer);
-        
+
         if (this._pendingPlayAnimation !== null) {
             this.playAnimation(this._pendingPlayAnimation);
             this._pendingPlayAnimation = null;
         }
     }
-    
+
     public update(): void {
         if (this._spriteAtlasRenderer === null) return;
         if (!this._playing) return;
@@ -53,7 +53,7 @@ export class SpriteAtlasAnimator extends Component {
     /**
      * play animation by name
      * @param name animation name
-     * @returns 
+     * @returns
      */
     public playAnimation(name: string): void {
         if (this._spriteAtlasRenderer === null) {
@@ -77,12 +77,12 @@ export class SpriteAtlasAnimator extends Component {
         this._playing = false;
         this._pendingPlayAnimation = null;
     }
-    
+
     /**
      * add animation from atlas index array
      * @param name animation name
      * @param animationFrames animation frames
-     * @returns 
+     * @returns
      */
     public addAnimation(name: string, animationFrames: number[]): void {
         if (animationFrames.length === 0) {
@@ -94,7 +94,7 @@ export class SpriteAtlasAnimator extends Component {
 
     /**
      * frame duration (default: 2)
-     * 
+     *
      * larger value means slower animation
      */
     public get frameDuration(): number {
@@ -103,7 +103,7 @@ export class SpriteAtlasAnimator extends Component {
 
     /**
      * frame duration (default: 2)
-     * 
+     *
      * larger value means slower animation
      */
     public set frameDuration(value: number) {

@@ -9,16 +9,16 @@ import { ICssImageRenderOption, ImageRenderingMode } from "./CssSpriteRenderer";
 export enum CssSpriteAtlasRenderMode {
     /**
      * This option clips images using object-fit css property.
-     * 
+     *
      * The object-fit uses less resources than the clip-path.
      * However, in object-fit mode, the viewScale value must be fixed to 1.
-     * 
+     *
      * If you don't have any problems, you'd better use this method
      */
     ObjectFit,
     /**
      * This option clips images using clip-path css property.
-     * 
+     *
      * The object-fit uses less resources than the clip-path.
      * However, in object-fit mode, the viewScale value must be fixed to 1.
      */
@@ -27,7 +27,7 @@ export enum CssSpriteAtlasRenderMode {
 
 /**
  * css sprite atlas renderer
- * 
+ *
  * this compoenent slices the image into column and rows, it's memory efficient and fast to animate.
  */
 export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implements ICssImageRenderOption {
@@ -42,11 +42,11 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     private _columnCount = 1;
     private _rowCount = 1;
     private _currentImageIndex = 0;
-    
+
     // used for object-fit
     private _croppedImageWidth = 0;
     private _croppedImageHeight = 0;
-    
+
     private _initializeFunction: (() => void)|null = null;
 
     protected override renderInitialize(): void {
@@ -65,7 +65,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
                 this._imageWidth * this.centerOffset.x,
                 this._imageHeight * this.centerOffset.y, 0
             );
-                
+
             if (updateTransform) {
                 Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
                 this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -74,7 +74,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
             const columnIndex = this._currentImageIndex % this._columnCount;
             const rowIndex = Math.floor(this._currentImageIndex / this._columnCount);
 
-            const columnScalar = this._imageFlipX 
+            const columnScalar = this._imageFlipX
                 ? -(this._imageWidth * this._columnCount / 2 - this._imageWidth / 2) + columnIndex * this._imageWidth
                 : (this._imageWidth * this._columnCount / 2 - this._imageWidth / 2) - columnIndex * this._imageWidth;
 
@@ -87,7 +87,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
                 this._imageHeight * this.centerOffset.y + rowScalar,
                 0
             );
-                
+
             if (updateTransform) {
                 Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
                 this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -97,11 +97,11 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         if (this._renderMode === CssSpriteAtlasRenderMode.ObjectFit) {
             const value = this.viewScale;
             //const image = this.htmlElement!;
-            
+
             //image.style.width = (this._croppedImageWidth / value) + "px";
             //image.style.height = (this._croppedImageHeight / value) + "px";
             const xScalar = this._imageFlipX ? -1 : 1;
@@ -116,10 +116,10 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
                 Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
                 this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
             }
-        } else /* if (this._renderMode === CssSpriteAtlasRenderMode.ClipPath) */ {   
+        } else /* if (this._renderMode === CssSpriteAtlasRenderMode.ClipPath) */ {
             const value = this.viewScale;
             const image = this.htmlElement!;
-            
+
             image.style.width = (this._imageWidth * this._columnCount / value) + "px";
             image.style.height = (this._imageHeight * this._rowCount / value) + "px";
             const xScalar = this._imageFlipX ? -1 : 1;
@@ -147,8 +147,8 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
         } else /* if (this._renderMode === CssSpriteAtlasRenderMode.ClipPath) */ {
             const rowIndex = Math.floor(this._currentImageIndex / this._columnCount);
             const columnIndex = this._columnCount - this._currentImageIndex % this._columnCount - 1;
-            this.htmlElement.style.clipPath = 
-                "inset(" + 
+            this.htmlElement.style.clipPath =
+                "inset(" +
                 (100 / this._rowCount * rowIndex) + "% " +
                 (100 / this._columnCount * columnIndex) + "% " +
                 (100 - ((100 / this._rowCount * rowIndex) + (100 / this._rowCount))) + "% " +
@@ -169,7 +169,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
      * @param columnCount sprite atlas column count
      * @param rowCount sprite atlas row count
      * @param onComplete on complete callback
-     * @returns 
+     * @returns
      */
     public asyncSetImageFromPath(path: string, columnCount: number, rowCount: number, onComplete?: () => void): void {
         if (!this.readyToDraw) {
@@ -230,9 +230,9 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * render mode (default: CssSpriteAtlasRenderMode.ObjectFit)
-     * 
+     *
      * Decide which css method to clip the image
-     * 
+     *
      * Change this option if you have a render problem.
      */
     public get renderMode(): CssSpriteAtlasRenderMode {
@@ -241,9 +241,9 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * render mode (default: CssSpriteAtlasRenderMode.ObjectFit)
-     * 
+     *
      * Decide which css method to clip the image
-     * 
+     *
      * Change this option if you have a render problem.
      */
     public set renderMode(value: CssSpriteAtlasRenderMode) {
@@ -284,9 +284,9 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image index (default: 0)
-     * 
+     *
      * Decide which image to display
-     * 
+     *
      * Index increases from left to right from top to bottom
      */
     public get imageIndex(): number {
@@ -295,9 +295,9 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image index (default: 0)
-     * 
+     *
      * Decide which image to display
-     * 
+     *
      * Index increases from left to right from top to bottom
      */
     public set imageIndex(value: number) {
@@ -324,7 +324,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image width (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public get imageWidth(): number {
@@ -333,7 +333,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image width (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public set imageWidth(value: number) {
@@ -354,7 +354,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image height (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public get imageHeight(): number {
@@ -363,7 +363,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image height (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public set imageHeight(value: number) {
@@ -465,7 +465,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public get imageRenderingMode(): ImageRenderingMode {
@@ -474,7 +474,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public set imageRenderingMode(value: ImageRenderingMode) {

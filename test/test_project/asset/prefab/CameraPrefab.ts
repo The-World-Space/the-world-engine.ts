@@ -34,7 +34,7 @@ export class CameraPrefab extends Prefab {
                 if (this._backgroundColor.ref) {
                     c.backgroundColor = this._backgroundColor.ref;
                 }
-                
+
                 if (this._viewSize.ref) {
                     c.viewSize = this._viewSize.ref;
                 }

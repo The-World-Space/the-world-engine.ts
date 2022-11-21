@@ -78,7 +78,7 @@ export class PhysicsObject2D implements IPhysicsObject2D {
             this._sharedMaterial?.onChanged.removeListener(this.updateMaterialInfo);
             this._sharedMaterial = null;
         }
-        
+
         this.updateMaterialInfo();
     }
 

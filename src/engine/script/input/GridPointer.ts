@@ -10,12 +10,12 @@ import { PointerGridEvent, PointerGridInputListener } from "./PointerGridInputLi
 
 /**
  * grid pointer
- * 
+ *
  * draw grid aligned rectangle cursor and receive pointer events
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `PointerGridInputListener`
  */
 export class GridPointer extends Component {
@@ -133,7 +133,7 @@ export class GridPointer extends Component {
 
     /**
      * pointer z offset from gameObject.transform.position.z. default: 0
-     * 
+     *
      * if cursor is not visible, set this to a big positive value
      */
     public get pointerZoffset(): number {
@@ -142,7 +142,7 @@ export class GridPointer extends Component {
 
     /**
      * pointer z offset from gameObject.transform.position.z. (default: 0)
-     * 
+     *
      * if cursor is not visible, set this to a big positive value
      */
     public set pointerZoffset(value: number) {

@@ -14,7 +14,7 @@ describe("GameSetting Test", () => {
 
     it("GameSetting.createDefaultObject()", () => {
         const settingObject = GameSetting.createDefaultObject();
-        
+
         expect(settingObject).toEqual({
             render: {
                 useCss3DRenderer: true
