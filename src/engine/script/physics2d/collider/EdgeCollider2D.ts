@@ -15,7 +15,7 @@ import { Collider2D } from "./Collider2D";
  * Collider for 2D physics representing an arbitrary set of connected edges (lines) defined by its vertices.
  */
 export class EdgeCollider2D extends Collider2D {
-    private _points: Vector2[] = [
+    private readonly _points: Vector2[] = [
         new Vector2(-2, 0),
         new Vector2(2, 0)
     ];

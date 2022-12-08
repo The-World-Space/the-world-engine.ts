@@ -14,7 +14,7 @@ import { CssRenderer } from "./CssRenderer";
  */
 export class CssPolygonRenderer2D extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolygonElement|null = null;
-    private _points: Vector2[] = [
+    private readonly _points: Vector2[] = [
         new Vector2(-2, -2),
         new Vector2(2, -2),
         new Vector2(2, 2),

@@ -16,7 +16,7 @@ import { Collider2D } from "./Collider2D";
  * Collider for 2D physics representing an arbitrary polygon defined by its vertices.
  */
 export class PolygonCollider2D extends Collider2D {
-    private _points: Vector2[] = [
+    private readonly _points: Vector2[] = [
         new Vector2(-2, -2),
         new Vector2(2, -2),
         new Vector2(2, 2),

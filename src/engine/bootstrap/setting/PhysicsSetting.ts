@@ -21,7 +21,7 @@ export type PhysicsSettingObject = {
 }
 
 export class PhysicsSetting {
-    private _physicsSettingObject: PhysicsSettingObject;
+    private readonly _physicsSettingObject: PhysicsSettingObject;
 
     public constructor(physicsSettingObject: PhysicsSettingObject) {
         this._physicsSettingObject = physicsSettingObject;

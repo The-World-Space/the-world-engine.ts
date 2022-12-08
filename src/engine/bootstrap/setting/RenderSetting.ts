@@ -8,7 +8,7 @@ export type RenderSettingObject = {
 };
 
 export class RenderSetting {
-    private _renderSettingObject: RenderSettingObject;
+    private readonly _renderSettingObject: RenderSettingObject;
 
     public constructor(renderSettingObject: RenderSettingObject) {
         this._renderSettingObject = renderSettingObject;

@@ -14,7 +14,7 @@ import { CssRenderer } from "./CssRenderer";
  */
 export class CssEdgeRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolylineElement|null = null;
-    private _points: Vector2[] = [
+    private readonly _points: Vector2[] = [
         new Vector2(-2, -2),
         new Vector2(2, -2),
         new Vector2(2, 2),
