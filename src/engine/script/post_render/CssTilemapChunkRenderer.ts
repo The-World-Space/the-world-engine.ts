@@ -11,9 +11,9 @@ import { CssFilter } from "../render/filter/CssFilter";
 /**
  * tilemap for grid system
  * there is no limitation of tilemap size, it use multiple tilemap as chunk
- * 
+ *
  * coordinate system is same as world coordinate system (positive x is right, positive y is up)
- * 
+ *
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
  */
@@ -31,7 +31,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     private _pointerEvents = true;
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
-    
+
     private readonly onFilterUpdate = (): void => {
         this._cssTilemapRendererMap.forEach((renderer, _key) => {
             renderer.filter.copy(this._filter);
@@ -39,7 +39,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     };
 
     private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
-    
+
     private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
 
@@ -88,7 +88,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
             const cssTilemapRendererRef = new PrefabRef<CssTilemapRenderer>();
             this.gameObject.addChildFromBuilder(
                 this.engine.instantiater.buildGameObject(
-                    "css_tilemap_renderer_" + chunkIndexX + "_" + chunkIndexY, 
+                    "css_tilemap_renderer_" + chunkIndexX + "_" + chunkIndexY,
                     new Vector3(chunkIndexX * this._chunkSize * this._tileWidth, chunkIndexY * this._chunkSize * this._tileHeight, 0),
                     undefined,
                     new Vector3().setScalar(this._tilemapScale)
@@ -121,14 +121,14 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         }
         return cssTilemapRenderer;
     }
-    
+
     /**
      * draw tile at position.
      * @param x x position in grid
      * @param y y position in grid
      * @param imageIndex index of image in imageSources
      * @param atlasIndex index of atlas in imageSources
-     * @returns 
+     * @returns
      */
     public drawTile(x: number, y: number, imageIndex: number, atlasIndex?: number): void {
         if (!this._started) {
@@ -148,7 +148,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         const tileDrawPositionX = drawPosition.x + drawOffsetX;
         const tileDrawPositionY = this._chunkSize - drawPosition.y - 1 + drawOffsetY;
         cssTilemapRenderer!.drawTile(tileDrawPositionX, tileDrawPositionY, imageIndex, atlasIndex);
-        
+
         const chunkKey = this.getKeyFromIndex(chunkIndexX, chunkIndexY);
         const tileCountSet = this._tilemapTileCountMap.get(chunkKey);
         if (tileCountSet === undefined) {
@@ -160,12 +160,12 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * draw tile from two dimensional array.
-     * 
+     *
      * array left bottom is (0, 0) in grid coordinate system
      * @param array array of image index. { i: 0, a: 1 } means imageSources[0] in atlas[1]
      * @param xOffset array x offset, if you want to add tile from array[1][3] to (2, 3) you should set xOffset = 1
      * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
-     * @returns 
+     * @returns
      */
     public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
@@ -174,7 +174,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
             });
             return;
         }
-        
+
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === null) continue;
@@ -187,7 +187,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
      * clear tile at position.
      * @param x x position in grid
      * @param y y position in grid
-     * @returns 
+     * @returns
      */
     public clearTile(x: number, y: number): void {
         if (!this._started) {
@@ -239,7 +239,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
             renderer.columnCount = this._chunkSize;
         });
     }
-    
+
     /**
      * image sources for drawing.
      */
@@ -316,7 +316,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * tile resolution x. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public get tileResolutionX(): number {
@@ -325,7 +325,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * tile resolution x. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public set tileResolutionX(value: number) {
@@ -338,7 +338,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * tile resolution y. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public get tileResolutionY(): number {
@@ -347,7 +347,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * tile resolution y. (default: 16)
-     * 
+     *
      * higher value means higher quality of rendering.
      */
     public set tileResolutionY(value: number) {
@@ -360,7 +360,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * tilemaps scale. (default: 1.001)
-     * 
+     *
      * If this value is 1 due to precision issues, there's a gap between the tilemaps.
      */
     public get tilemapScale(): number {
@@ -369,7 +369,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * tilemaps scale. (default: 1.001)
-     * 
+     *
      * If this value is 1 due to precision issues, there's a gap between the tilemaps.
      */
     public set tilemapScale(value: number) {
@@ -382,7 +382,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * grid coordinate center position
-     * 
+     *
      * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenter(): Vector2 {
@@ -390,10 +390,10 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         const offsetY = this._chunkSize % 2 === 1 ? 0 : this._tileHeight / 2;
         return new Vector2(this.transform.localPosition.x + offsetX, this.transform.localPosition.y + offsetY);
     }
-    
+
     /**
      * grid coordinate center position x
-     * 
+     *
      * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterX(): number {
@@ -403,7 +403,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * grid coordinate center position y
-     * 
+     *
      * if chunkSize is even, The center position will be skewed by half the chunkSize.
      */
     public get gridCenterY(): number {
@@ -413,9 +413,9 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -425,9 +425,9 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -444,10 +444,10 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     public get filter(): CssFilter {
         return this._filter;
     }
-    
+
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public get imageRenderingMode(): ImageRenderingMode {
@@ -456,7 +456,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public set imageRenderingMode(value: ImageRenderingMode) {

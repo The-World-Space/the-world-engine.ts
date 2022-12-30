@@ -3,7 +3,7 @@ import * as Index from "@src/index";
 describe("index Test", () => {
     it("Bootstrapper export", () => expect(Index.Bootstrapper).toBeDefined());
     it("SceneBuilder export", () => expect(Index.SceneBuilder).toBeDefined());
-    
+
     it("EventContainer export", () => expect(Index.EventContainer).toBeDefined());
 
     it("Coroutine export", () => expect(Index.Coroutine).toBeDefined());
@@ -58,7 +58,7 @@ describe("index Test", () => {
     it("AsyncImageLoader export", () => expect(Index.AsyncImageLoader).toBeDefined());
     it("Direction export", () => expect(Index.Direction).toBeDefined());
     it("Directable export", () => expect(Index.Directable).toBeDefined());
-    
+
     it("GridPointer export", () => expect(Index.GridPointer).toBeDefined());
     it("PointerGridEvent export", () => expect(Index.PointerGridEvent).toBeDefined());
     it("PointerGridInputListener export", () => expect(Index.PointerGridInputListener).toBeDefined());

@@ -4,7 +4,7 @@ import { BufferAttribute, Euler, InterleavedBufferAttribute, Matrix4, Quaternion
 /** @internal */
 export class ObservableQuaternion {
     public readonly isQuaternion = true;
-    
+
     private _internalX: number;
     private _internalY: number;
     private _internalZ: number;
@@ -69,7 +69,7 @@ export class ObservableQuaternion {
             return;
         }
 
-        if ( t === 1 ) {
+        if (t === 1) {
             dst[dstOffset + 0] = x1;
             dst[dstOffset + 1] = y1;
             dst[dstOffset + 2] = z1;
@@ -80,7 +80,7 @@ export class ObservableQuaternion {
         if (w0 !== w1 || x0 !== x1 || y0 !== y1 || z0 !== z1) {
             let s = 1 - t;
             const cos = x0 * x1 + y0 * y1 + z0 * z1 + w0 * w1,
-                dir = ( cos >= 0 ? 1 : - 1 ),
+                dir = (cos >= 0 ? 1 : -1),
                 sqrSin = 1 - cos * cos;
 
             // Skip the Slerp for tiny steps to avoid numeric problems:
@@ -405,13 +405,13 @@ export class ObservableQuaternion {
             // vFrom and vTo point in opposite directions
             r = 0;
             if (Math.abs(vFrom.x) > Math.abs(vFrom.z)) {
-                this._internalX = - vFrom.y;
+                this._internalX = -vFrom.y;
                 this._internalY = vFrom.x;
                 this._internalZ = 0;
                 this._internalW = r;
             } else {
                 this._internalX = 0;
-                this._internalY = - vFrom.z;
+                this._internalY = -vFrom.z;
                 this._internalZ = vFrom.y;
                 this._internalW = r;
             }
@@ -476,7 +476,7 @@ export class ObservableQuaternion {
     public normalize(): ObservableQuaternion {
         let l = this.length();
 
-        if ( l === 0 ) {
+        if (l === 0) {
             this._onBeforeChangeCallback();
             this._internalX = 0;
             this._internalY = 0;
@@ -539,10 +539,10 @@ export class ObservableQuaternion {
 
         this._onBeforeChangeCallback();
         if (cosHalfTheta < 0) {
-            this._internalW = - qb._w;
-            this._internalX = - qb._x;
-            this._internalY = - qb._y;
-            this._internalZ = - qb._z;
+            this._internalW = -qb._w;
+            this._internalX = -qb._x;
+            this._internalY = -qb._y;
+            this._internalZ = -qb._z;
 
             cosHalfTheta = -cosHalfTheta;
         } else {
@@ -613,10 +613,10 @@ export class ObservableQuaternion {
         return (quaternion._x === this._internalX) && (quaternion._y === this._internalY) && (quaternion._z === this._internalZ) && (quaternion._w === this._internalW);
     }
 
-    public fromArray(array: number[]|ArrayLike<number>, offset = 0 ): ObservableQuaternion {
+    public fromArray(array: number[]|ArrayLike<number>, offset = 0): ObservableQuaternion {
         if (this._internalX === array[offset] && this._internalY === array[offset + 1] && this._internalZ === array[offset + 2] && this._internalW === array[offset + 3]) return this;
         this._onBeforeChangeCallback();
-        
+
         this._internalX = array[offset];
         this._internalY = array[offset + 1];
         this._internalZ = array[offset + 2];

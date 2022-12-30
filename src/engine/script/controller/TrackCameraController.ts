@@ -9,14 +9,14 @@ import { Camera } from "../render/Camera";
 
 /**
  * controller for 2D track camera
- * 
+ *
  * it requires a camera component to control
- * 
+ *
  * it supports pixel perfect and smooth damping
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `Camera`
  */
 export class TrackCameraController extends Component {
@@ -68,7 +68,7 @@ export class TrackCameraController extends Component {
 
     /**
      * set the target to track
-     * @param target 
+     * @param target
      */
     public setTrackTarget(target: GameObject): void {
         this._trackTarget = target;
@@ -146,7 +146,7 @@ export class TrackCameraController extends Component {
 
     /**
      * smooth damp lambda (default: 6)
-     * 
+     *
      * higher value make camera movement more faster
      */
     public get smoothLambda(): number {
@@ -155,7 +155,7 @@ export class TrackCameraController extends Component {
 
     /**
      * smooth damp lambda (default: 6)
-     * 
+     *
      * higher value make camera movement more faster
      */
     public set smoothLambda(value: number) {

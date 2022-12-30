@@ -98,7 +98,7 @@ describe("EventContainer Test", () => {
 
     it("EventContainer.invoke() with empty container", () => {
         const eventContainer = new EventContainer<() => void>();
-        
+
         expect(() => {
             eventContainer.invoke();
         }).not.toThrow();
@@ -124,7 +124,7 @@ describe("EventContainer Test", () => {
 
         eventContainer.addListener(f1);
         eventContainer.addListener(f2);
-        
+
         eventContainer.invoke();
 
         expect(result).toEqual(["f1", "f3"]);
@@ -145,7 +145,7 @@ describe("EventContainer Test", () => {
 
         eventContainer.addListener(f1);
         eventContainer.addListener(f2);
-        
+
         eventContainer.invoke();
 
         expect(result).toEqual(["f1"]);

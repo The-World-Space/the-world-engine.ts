@@ -6,10 +6,10 @@ import { GridEventMap } from "./GridEventMap";
 /**
  * for player interact with GridEventMap you should add this component to your player
  * and use PlayerGridEventInvoker.addGridEventMap to register your grid event map
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `PlayerGridMovementController`
  */
 export class PlayerGridEventInvoker extends Component {
@@ -70,9 +70,9 @@ export class PlayerGridEventInvoker extends Component {
 
     /**
      * collide size of `tryInvokeEvent` (default: 0.5)
-     * 
+     *
      * The larger this value, the greater the range of event invocation
-     * 
+     *
      * The default is to match the tile size of 1x1
      */
     public get collideSize(): number {
@@ -81,9 +81,9 @@ export class PlayerGridEventInvoker extends Component {
 
     /**
      * collide size of `tryInvokeEvent` (default: 0.5)
-     * 
+     *
      * The larger this value, the greater the range of event invocation
-     * 
+     *
      * The default is to match the tile size of 1x1
      */
     public set collideSize(value: number) {

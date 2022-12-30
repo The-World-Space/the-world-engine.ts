@@ -30,7 +30,7 @@ export class PhysicsTestPrefab extends Prefab {
                     c.textWidth = 50;
                     c.textAlign = TextAlign.Center;
                 }))
-            
+
             .withChild(instantiater.buildGameObject("spawner")
                 .withComponent(Spawner, c => {
                     c.prefabCtor = IframeDynamicBoxPrefab;
@@ -74,7 +74,7 @@ export class PhysicsTestPrefab extends Prefab {
                     c.imageWidth = 1;
                     c.imageHeight = 1;
                 }))
-            
+
             .withChild(instantiater.buildGameObject("circle", new Vector3(2, 0, 0))
                 .withComponent(RigidBody2D, c => {
                     c.bodyType = RigidbodyType2D.Dynamic;

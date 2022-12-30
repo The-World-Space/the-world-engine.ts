@@ -24,14 +24,14 @@ export class Collision2D {
     /** @internal */
     public setData(contact: Contact): void {
         this._contact = contact;
-        
+
         const fixtureA = contact.GetFixtureA();
         const fixtureB = contact.GetFixtureB();
         const collider2dA = fixtureA.GetUserData() as Collider2D;
         const collider2dB = fixtureB.GetUserData() as Collider2D;
         const bodyA = fixtureA.GetBody();
         const bodyB = fixtureB.GetBody();
-        
+
         this._collider = collider2dA;
         this._rigidbody = (bodyA.GetUserData() as IPhysicsObject2D).rigidbody;
         this._otherCollider = collider2dB;
@@ -43,7 +43,7 @@ export class Collision2D {
         const relativeVelocity = aVelocity.SelfSub(bodyB.GetLinearVelocity());
         this._relativeVelocity.set(relativeVelocity.x, relativeVelocity.y);
     }
-    
+
     private static readonly _tempVec = new Vec2();
 
     public get collider(): Collider2D {

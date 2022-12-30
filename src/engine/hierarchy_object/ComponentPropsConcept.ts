@@ -1,6 +1,6 @@
 /**
  * It's a concept that's being considered for addition
- * 
+ *
  * This code allows the builder to expose only certain properties of a component.
  * But do users accept this type of operation?
  */

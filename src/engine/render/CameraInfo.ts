@@ -10,9 +10,9 @@ export class CameraInfo {
     private _backgroundColor: null|Color|THREE.Texture;
 
     /**
-     * 
-     * @param priority 
-     * @param backgroundColor 
+     *
+     * @param priority
+     * @param backgroundColor
      */
     public constructor(
         priority: number,

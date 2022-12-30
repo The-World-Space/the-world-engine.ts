@@ -6,14 +6,14 @@ import { Camera } from "../render/Camera";
 
 /**
  * controller for 2D editor free camera
- * 
+ *
  * it requires a camera component to control
- * 
+ *
  * camera type is must be set to CameraType.Orthographic
- * 
- * 
+ *
+ *
  * disallow multiple component
- * 
+ *
  * require components: `Camera`
  */
 export class EditorCameraController extends Component {

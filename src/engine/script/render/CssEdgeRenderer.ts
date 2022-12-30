@@ -9,12 +9,12 @@ import { CssRenderer } from "./CssRenderer";
 
 /**
  * css 2d edge renderer
- * 
+ *
  * this renderer use svg tag to render edge
  */
 export class CssEdgeRenderer extends CssRenderer<HTMLDivElement> {
     private _svgElement: SVGPolylineElement|null = null;
-    private _points: Vector2[] = [
+    private readonly _points: Vector2[] = [
         new Vector2(-2, -2),
         new Vector2(2, -2),
         new Vector2(2, 2),
@@ -32,17 +32,17 @@ export class CssEdgeRenderer extends CssRenderer<HTMLDivElement> {
             const svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
             svgElement.setAttribute("width", "100%");
             svgElement.setAttribute("height", "100%");
-            
+
             const svgPolyLine = document.createElementNS("http://www.w3.org/2000/svg", "polyline");
             svgPolyLine.style.fill = "none";
             svgPolyLine.style.stroke = this._edgeColor.toHexWithAlpha();
             svgPolyLine.style.strokeWidth = this._edgeWidth + "px";
-            
+
             svgElement.appendChild(svgPolyLine);
             this.htmlElement.appendChild(svgElement);
             this._svgElement = svgPolyLine;
             const css3DObject = this.initializeBaseComponents(false);
-            
+
             Transform.updateRawObject3DWorldMatrixRecursively(css3DObject);
             this.transform.enqueueRenderAttachedObject3D(css3DObject);
         }
@@ -64,7 +64,7 @@ export class CssEdgeRenderer extends CssRenderer<HTMLDivElement> {
 
     protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         const value = this.viewScale;
         this.updateCssSize();
         this._svgElement!.setAttribute("points", this.createPolygonPoints());
@@ -99,7 +99,7 @@ export class CssEdgeRenderer extends CssRenderer<HTMLDivElement> {
 
             const pointX = (rawPoint.x + (this._width / 2)) / this.viewScale;
             const pointY = (this._height - (rawPoint.y + (this._height / 2))) / this.viewScale;
-            
+
             result += pointX + "," + pointY;
             if (i < points.length - 1) {
                 result += " ";

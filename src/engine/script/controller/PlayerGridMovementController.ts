@@ -12,11 +12,11 @@ import { PointerGridEvent } from "../input/PointerGridInputListener";
 
 /**
  * make gameobject moves on grid coordinates
- * 
+ *
  * supports keyboard wasd and arrow keys input
- * 
+ *
  * supports pathfinding as optional feature
- * 
+ *
  * disallow multiple component
  */
 export class PlayerGridMovementController extends Directable implements IGridPositionable {
@@ -48,7 +48,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
 
     public start(): void {
         this._pathfinder = new Pathfinder(
-            this._collideMaps, 
+            this._collideMaps,
             this._gridCellWidth * this._collideSize,
             this._gridCellHeight * this._collideSize
         );
@@ -218,7 +218,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
         }
 
         const direction = this._temp2Vector2.copy(this._targetPosition).sub(vector2Pos).normalize();
-        
+
         if (distance < oneStepDistance) {
             this.isMoving = false;
             this._currentPosition.copy(this._targetPosition);
@@ -234,15 +234,15 @@ export class PlayerGridMovementController extends Directable implements IGridPos
     }
 
     /**
-     * 
+     *
      * @param x local position x
      * @param y local position y
-     * @returns 
+     * @returns
      */
     private checkCollision(x: number, y: number): boolean {
         x += this._cachedParentWorldPosition.x;
         y += this._cachedParentWorldPosition.y;
-        
+
         const collideMaps = this._collideMaps;
         for (let i = 0; i < collideMaps.length; ++i) {
             if (collideMaps[i].checkCollision(x, y, this._collideSize, this._collideSize)) {
@@ -275,28 +275,28 @@ export class PlayerGridMovementController extends Directable implements IGridPos
         if (this._movingByPathfinder) {
             this._movingByPathfinder = false;
             this._pathfindStartFunction = (): void => {
-                this.tryStartPathfind(event.gridPosition); 
+                this.tryStartPathfind(event.gridPosition);
             };
             return;
         }
         this._pathfindStartFunction = (): void => {
-            this.tryStartPathfind(event.gridPosition); 
+            this.tryStartPathfind(event.gridPosition);
         };
     }
 
     /**
      * try to move to target grid position
-     * @param targetGridPosition 
+     * @param targetGridPosition
      * @returns if object already moving by pathfinder return false,
-     * 
+     *
      * if object can't move to target grid position return false,
-     * 
+     *
      * if object can move to target grid position return true
      */
     public tryStartPathfind(targetGridPosition: ReadonlyVector2): boolean {
         if (this._movingByPathfinder) return false;
         this._pathfindStartFunction = null;
-        
+
         const foundedPath = this._foundedPath = this._pathfinder!.findPath(this.positionInGrid, targetGridPosition);
         if (!foundedPath || foundedPath.length <= 1) return false;
         for (let i = 0; i < foundedPath.length; ++i) {
@@ -346,7 +346,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
             .add(this._gridCenter);
         (this._targetPosition as WritableVector2)
             .copy(this._currentPosition);
-        
+
         this.transform.localPosition.x = this._currentPosition.x;
         this.transform.localPosition.y = this._currentPosition.y;
         this.invokeOnMoveToTarget();
@@ -411,7 +411,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
 
     /**
      * initial grid position (default: (0, 0))
-     * 
+     *
      * this option is valid only when evaluated before PlayerGridMovementController.start()
      */
     public set initPosition(value: ReadonlyVector2) {
@@ -440,7 +440,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
 
     /**
      * add collide map for collision detection
-     * @param collideMap 
+     * @param collideMap
      */
     public addCollideMap(collideMap: IGridCollidable): void {
         this._collideMaps.push(collideMap);
@@ -488,7 +488,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
 
     /**
      * receive keyboard input (default: true)
-     * 
+     *
      * if set true, this object will receive keyboard w, a, s, d, arrow up, arrow down, arrow left, arrow right input
      */
     public get receiveKeyboardInput(): boolean {
@@ -497,7 +497,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
 
     /**
      * receive keyboard input (default: true)
-     * 
+     *
      * if set true, this object will receive keyboard w, a, s, d, arrow up, arrow down, arrow left, arrow right input
      */
     public set receiveKeyboardInput(value: boolean) {

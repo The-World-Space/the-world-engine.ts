@@ -31,7 +31,7 @@ export class InputHandler implements IInputEventHandleable {
 
     /**
      * keyboard input map. key is key name, value is pressed or not
-     * 
+     *
      * important: upper case single letter key name is mapped to lower case single letter key name
      * for example, "A" is mapped to "a"
      */
@@ -106,7 +106,7 @@ export class InputHandler implements IInputEventHandleable {
         this._map.set(key, true);
         this._onKeyDownEvent.invoke(event);
     };
-    
+
     private readonly handleKeyUp = (event: KeyboardEvent): void => {
         const key = event.key.length === 1 ? event.key.toLowerCase() : event.key;
         this._map.set(key, false);

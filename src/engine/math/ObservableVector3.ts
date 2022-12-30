@@ -39,7 +39,7 @@ export class ObservableVector3 {
         this._onBeforeChangeCallback();
         this._x = value;
     }
-    
+
     public get y(): number {
         this._onBeforeGetComponentCallback();
         return this._y;
@@ -108,7 +108,7 @@ export class ObservableVector3 {
     public setComponent(index: number, value: number): ObservableVector3 {
         switch (index) {
         case 0:
-            // if (this._x === value) return this; 
+            // if (this._x === value) return this;
             this._onBeforeChangeCallback();
             this._x = value;
             break;
@@ -141,7 +141,7 @@ export class ObservableVector3 {
         this._onBeforeGetComponentCallback();
         return new Vector3(this._x, this._y, this._z);
     }
-    
+
     public copy(v: ObservableVector3): ObservableVector3 {
         // if (this._x === v.x && this._y === v.y && this._z === v.z) return this;
         this._onBeforeChangeCallback();
@@ -153,7 +153,7 @@ export class ObservableVector3 {
 
     public add(v: ObservableVector3, w: undefined): ObservableVector3 {
         if (w !== undefined) {
-            console.warn( "THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead." );
+            console.warn("THREE.Vector3: .add() now only accepts one argument. Use .addVectors( a, b ) instead.");
             return this.addVectors(v, w);
         }
         if (v.x === 0 && v.y === 0 && v.z === 0) return this;
@@ -194,7 +194,7 @@ export class ObservableVector3 {
 
     public sub(v: ObservableVector3, w?: ObservableVector3): ObservableVector3 {
         if (w !== undefined) {
-            console.warn( "THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead." );
+            console.warn("THREE.Vector3: .sub() now only accepts one argument. Use .subVectors( a, b ) instead.");
             return this.subVectors(v, w);
         }
         if (v.x === 0 && v.y === 0 && v.z === 0) return this;
@@ -226,7 +226,7 @@ export class ObservableVector3 {
 
     public multiply(v: ObservableVector3, w?: ObservableVector3): ObservableVector3 {
         if (w !== undefined) {
-            console.warn( "THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead." );
+            console.warn("THREE.Vector3: .multiply() now only accepts one argument. Use .multiplyVectors( a, b ) instead.");
             return this.multiplyVectors(v, w);
         }
         if (v.x === 1 && v.y === 1 && v.z === 1) return this;
@@ -258,7 +258,7 @@ export class ObservableVector3 {
 
     public applyEuler(euler: Euler): ObservableVector3 {
         if (!(euler && euler.isEuler)) {
-            console.error( "THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order." );
+            console.error("THREE.Vector3: .applyEuler() now expects an Euler rotation rather than a Vector3 and order.");
         }
         return this.applyQuaternion(tempQuaternion.setFromEuler(euler));
     }
@@ -281,7 +281,7 @@ export class ObservableVector3 {
     }
 
     public applyNormalMatrix(m: Matrix3): ObservableVector3 {
-        return this.applyMatrix3( m ).normalize();
+        return this.applyMatrix3(m).normalize();
     }
 
     public applyMatrix4(m: Matrix4): ObservableVector3 {
@@ -308,13 +308,13 @@ export class ObservableVector3 {
         const ix = qw * x + qy * z - qz * y;
         const iy = qw * y + qz * x - qx * z;
         const iz = qw * z + qx * y - qy * x;
-        const iw = - qx * x - qy * y - qz * z;
+        const iw = -qx * x - qy * y - qz * z;
 
         this._onBeforeChangeCallback();
         // calculate result * inverse quat
-        this._x = ix * qw + iw * - qx + iy * - qz - iz * - qy;
-        this._y = iy * qw + iw * - qy + iz * - qx - ix * - qz;
-        this._z = iz * qw + iw * - qz + ix * - qy - iy * - qx;
+        this._x = ix * qw + iw * -qx + iy * -qz - iz * -qy;
+        this._y = iy * qw + iw * -qy + iz * -qx - ix * -qz;
+        this._z = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 
         return this;
     }
@@ -437,9 +437,9 @@ export class ObservableVector3 {
     public negate(): ObservableVector3 {
         this._onBeforeGetComponentCallback();
         this._onBeforeChangeCallback();
-        this._x = - this._x;
-        this._y = - this._y;
-        this._z = - this._z;
+        this._x = -this._x;
+        this._y = -this._y;
+        this._z = -this._z;
         return this;
     }
 
@@ -517,8 +517,8 @@ export class ObservableVector3 {
     }
 
     public projectOnPlane(planeNormal: ObservableVector3): ObservableVector3 {
-        tempVector.copy( this ).projectOnVector( planeNormal );
-        return this.sub( tempVector );
+        tempVector.copy(this).projectOnVector(planeNormal);
+        return this.sub(tempVector);
     }
 
     public reflect(normal: ObservableVector3): ObservableVector3 {
@@ -533,7 +533,7 @@ export class ObservableVector3 {
         const theta = this.dot(v) / denominator;
 
         // clamp, to handle numerical problems
-        return Math.acos(clamp(theta, - 1, 1));
+        return Math.acos(clamp(theta, -1, 1));
     }
 
     public distanceTo(v: ObservableVector3): number {

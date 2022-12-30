@@ -123,7 +123,7 @@ export class CollisionLayerMaskConverter {
             this._layerMasks.set(key, value);
         }
     }
-    
+
     /** @internal */
     public clone(): CollisionLayerMaskConverter {
         const result = new CollisionLayerMaskConverter({});

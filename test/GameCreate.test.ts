@@ -86,7 +86,7 @@ describe("GameCreate Test", () => {
                         .getGameObject(this.interopObject!.object1))
                 ;
             }
-        }, interopObject, 2, 
+        }, interopObject, 2,
         (o?: typeof interopObject) => {
             expect(o!.object1.ref!.transform.position.y).toBeLessThan(0);
         }
@@ -133,7 +133,7 @@ describe("GameCreate Test", () => {
                 ;
             }
         }, undefined, 1);
-        
+
         expect(result).toEqual([
             "TestComponent.awake",
             "TestComponent.onEnable",

@@ -6,7 +6,7 @@ export class YieldInstruction { }
 /**
  * waits until the end of the frame after engine has rendererd every Camera
  */
-export class WaitForEndOfFrame extends YieldInstruction { 
+export class WaitForEndOfFrame extends YieldInstruction {
     private static readonly _instance: WaitForEndOfFrame = new WaitForEndOfFrame();
     public static get instance(): WaitForEndOfFrame {
         return WaitForEndOfFrame._instance;

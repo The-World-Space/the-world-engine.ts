@@ -11,13 +11,13 @@ import { Vector3 } from "three/src/Three";
 export class ObjectPoolTestBootstrapper extends Bootstrapper {
     public run(): SceneBuilder {
         const instantiater = this.instantiater;
-        
+
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera")
                 .withComponent(Camera)
                 .withComponent(EditorCameraController)
                 .withComponent(EditorGridRenderer)
-                
+
                 .withComponent(class PoolTest extends Component {
                     private readonly _objectPool: GameObject[] = [];
                     private readonly _activeObjects: GameObject[] = [];

@@ -4,12 +4,12 @@ import { Euler, EulerOrder, Matrix4, Quaternion, Vector3 } from "three/src/Three
 /** @internal  */
 export class ObservableEuler {
     public readonly isEuler = true;
-    
+
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static DefaultOrder: EulerOrder = "XYZ";
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public static RotationOrders = [ "XYZ", "YZX", "ZXY", "XZY", "YXZ", "ZYX" ];
-    
+
     private _internalX: number;
     private _internalY: number;
     private _internalZ: number;
@@ -25,7 +25,7 @@ export class ObservableEuler {
         this._internalY = y;
         this._internalZ = z;
         this._internalOrder = order;
-        
+
         // eslint-disable-next-line @typescript-eslint/no-empty-function
         this._onChangeCallback = (): void => { };
         // eslint-disable-next-line @typescript-eslint/no-empty-function
@@ -189,7 +189,7 @@ export class ObservableEuler {
 
         case "YXZ":
             this._internalX = Math.asin(-clamp(m23, -1, 1));
-            if ( Math.abs(m23) < 0.9999999) {
+            if (Math.abs(m23) < 0.9999999) {
                 this._internalY = Math.atan2(m13, m33);
                 this._internalZ = Math.atan2(m21, m22);
             } else {
@@ -211,7 +211,7 @@ export class ObservableEuler {
 
         case "ZYX":
             this._internalY = Math.asin(-clamp(m31, -1, 1));
-            if ( Math.abs(m31) < 0.9999999) {
+            if (Math.abs(m31) < 0.9999999) {
                 this._internalX = Math.atan2(m32, m33);
                 this._internalZ = Math.atan2(m21, m11);
             } else {
@@ -272,7 +272,7 @@ export class ObservableEuler {
     }
 
     public fromArray(array: any[]): ObservableEuler {
-        if(this._internalX === array[0] && this._internalY === array[1] && this._internalZ === array[2] && this._internalOrder === array[3]) return this;
+        if (this._internalX === array[0] && this._internalY === array[1] && this._internalZ === array[2] && this._internalOrder === array[3]) return this;
         this._onBeforeChangeCallback();
         this._internalX = array[0];
         this._internalY = array[1];

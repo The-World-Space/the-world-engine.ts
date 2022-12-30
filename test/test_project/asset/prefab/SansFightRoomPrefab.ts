@@ -85,7 +85,7 @@ export class SansFightRoomPrefab extends Prefab {
 
                         AsyncImageLoader.loadImageFromPath(SansFightRoomTileAtlas).then(tilemap3 => {
                             if (!c.exists) return;
-                            
+
                             c.imageSources = [
                                 new TileAtlasItem(tilemap3, 3, 20)
                             ];
@@ -123,7 +123,7 @@ export class SansFightRoomPrefab extends Prefab {
                                     "      B   C B   C B   C B   C B   C B   C B   C B   C"
                                 ], converter), -2, 7
                             );
-                            
+
                             c.addCollider(-3, 1);
                             c.addCollider(-3, 0);
                             c.addCollider(-3, -1);
@@ -228,7 +228,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 11, -2, 0))
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
@@ -243,7 +243,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 17, -2, 0))
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
@@ -258,7 +258,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 23, -2, 0))
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
@@ -273,7 +273,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 29, -2, 0))
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
@@ -288,7 +288,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 35, -2, 0))
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
@@ -303,7 +303,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 41, -2, 0))
                     //.active(false)
                     .withComponent(CssSpriteRenderer, c => {
@@ -318,7 +318,7 @@ export class SansFightRoomPrefab extends Prefab {
                         c.offsetY = 0;
                     })
                     .withComponent(CameraRelativeZaxisSorter, c => c.offset = -6))
-                    
+
                 .withChild(instantiater.buildGameObject("pillar", new Vector3(0.5 + 47, -2, 0))
                     .active(false)
                     .withComponent(CssSpriteRenderer, c => {

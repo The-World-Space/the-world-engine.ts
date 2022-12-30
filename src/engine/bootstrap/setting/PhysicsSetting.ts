@@ -21,7 +21,7 @@ export type PhysicsSettingObject = {
 }
 
 export class PhysicsSetting {
-    private _physicsSettingObject: PhysicsSettingObject;
+    private readonly _physicsSettingObject: PhysicsSettingObject;
 
     public constructor(physicsSettingObject: PhysicsSettingObject) {
         this._physicsSettingObject = physicsSettingObject;
@@ -40,7 +40,7 @@ export class PhysicsSetting {
         this._physicsSettingObject.loader = value;
         return this;
     }
-    
+
     /**
      * The gravity applied to all rigid bodies in the Scene. (default: (0, -9.81))
      * @param value gravity
@@ -63,7 +63,7 @@ export class PhysicsSetting {
 
     /**
      * The number of iterations of the physics solver when considering objects' velocities. (default: 8)
-     * 
+     *
      * A higher number of interations will improve accuracy at the expense of processing overhead.
      * @param value velocity iterations
      * @returns this
@@ -75,7 +75,7 @@ export class PhysicsSetting {
 
     /**
      * The number of iterations of the physics solver when considering objects' positions. (default: 3)
-     * 
+     *
      * A higher number of interations will improve accuracy at the expense of processing overhead.
      * @param value position iterations
      * @returns this
@@ -112,18 +112,18 @@ export class PhysicsSetting {
 
     /**
      * Determines whether the garbage collector should reuse only a single instance of a Collision type for all collision callbacks.
-     * 
+     *
      * When an Component.onCollisionEnter, Component.onCollisionStay or Component.onCollisionExit collision callback occurs,
      * the Collision object passed to it is created for each individual callback.
      * This means the garbage collector has to remove each object, which reduces performance.
-     * 
+     *
      * When this option is true,
      * only a single instance of the Collision type is created and reused for each individual callback.
      * This reduces waste for the garbage collector to handle and improves performance.
-     * 
+     *
      * You would only set this option to false if the Collision object is referenced outside of the collision callback for processing later,
      * so recycling the Collision object is not required.
-     * 
+     *
      * (default: true)
      * @param value if true, reuse Collision object.
      * @returns this
@@ -132,19 +132,19 @@ export class PhysicsSetting {
         this._physicsSettingObject.reuseCollisionCallbacks = value;
         return this;
     }
-    
+
     // #region CollisionLayer Collision Matrix Overloads
-    
+
     /**
      * Layer-based collision detection is a way to make a GameObject collide with another GameObject that is set up to a specific Layer or Layers.
-     * 
+     *
      * layerCollisionMatrix can define layers and their collision behavior.
-     * 
+     *
      * for example:
-     * 
+     *
      * ```typescript
      * type MyLayer = ["default", "player", "enemy"];
-     * 
+     *
      * this.setting.physics.layerCollisionMatrix<MyLayer>({
      *     default: { enemy: true, player: true, default: true },
      *     player:  { enemy: false, player: true },
@@ -154,7 +154,7 @@ export class PhysicsSetting {
      * means that the default layer will collide with all layers,
      * the player layer will collide with the default and themself,
      * and the enemy layer will collide with the default and themself.
-     * 
+     *
      * @param collisionMatrix The collision matrix.
      * @returns this
      */
@@ -1343,7 +1343,7 @@ export class PhysicsSetting {
     ): this;
 
     // #endregion
-    
+
     public layerCollisionMatrix<T extends CollisionLayer>(
         collisionMatrix: { [key in T[number]]: { [key in T[number]]: boolean } }
     ): this {

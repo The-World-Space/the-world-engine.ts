@@ -54,7 +54,7 @@ describe("Bootstrapper Test", () => {
         const bootstrapper = new TestBootstrapper(createEngineGlobalObject());
         bootstrapper.run();
         const gameSetting = bootstrapper.getGameSettingObject();
-        
+
         expect(gameSetting).toEqual({
             physics: {
                 defaultMaterial: new PhysicsMaterial2D(12, 34),
@@ -118,7 +118,7 @@ describe("Bootstrapper Test", () => {
             public run(): SceneBuilder {
                 return this.sceneBuilder;
             }
-            
+
             public getInteropObject(): {test: string} {
                 return this.interopObject!;
             }

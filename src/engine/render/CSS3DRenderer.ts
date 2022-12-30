@@ -8,7 +8,7 @@ export class CSS3DObject extends Object3D {
     public isCSS3DObject = true;
     public element: HTMLElement;
 
-    public constructor(element: HTMLElement = document.createElement( "div" )) {
+    public constructor(element: HTMLElement = document.createElement("div")) {
         super();
         this.element = element;
         this.element.style.position = "absolute";
@@ -38,13 +38,13 @@ export class CSS3DSprite extends CSS3DObject {
     public isCSS3DSprite = true;
     public rotation2D: number;
 
-    public constructor( element: HTMLElement ) {
-        super( element );
+    public constructor(element: HTMLElement) {
+        super(element);
         this.rotation2D = 0;
     }
 
     public override copy(source: this, recursive: boolean): this {
-        super.copy( source, recursive );
+        super.copy(source, recursive);
         this.rotation2D = source.rotation2D;
         return this;
     }
@@ -81,7 +81,7 @@ export class CSS3DRenderer {
         //     this.domElement.scrollLeft = 0;
         //     this.domElement.scrollTop = 0;
         // };
-        
+
         this._cameraElement = document.createElement("div");
         this._cameraElement.style.transformStyle = "preserve-3d";
         this._cameraElement.style.pointerEvents = "none";
@@ -104,20 +104,20 @@ export class CSS3DRenderer {
 
         if (scene.matrixAutoUpdate === true) scene.updateMatrixWorld();
         if (camera.parent === null) camera.updateMatrixWorld();
-        
+
         let tx: number, ty: number;
         if ((camera as OrthographicCamera).isOrthographicCamera) {
-            tx = - ((camera as OrthographicCamera).right + (camera as OrthographicCamera).left) / 2;
+            tx = -((camera as OrthographicCamera).right + (camera as OrthographicCamera).left) / 2;
             ty = ((camera as OrthographicCamera).top + (camera as OrthographicCamera).bottom) / 2;
         } else {
             tx = 1;
             ty = 1;
         }
 
-        const cameraCSSMatrix = (camera as OrthographicCamera).isOrthographicCamera 
+        const cameraCSSMatrix = (camera as OrthographicCamera).isOrthographicCamera
             ? "scale(" + fov + ")" + "translate(" + this.epsilon(tx) + "px," + this.epsilon(ty) + "px)" + this.getCameraCSSMatrix(camera.matrixWorldInverse)
             : "translateZ(" + fov + "px)" + this.getCameraCSSMatrix(camera.matrixWorldInverse);
-        
+
         const style = cameraCSSMatrix + "translate(" + this._widthHalf + "px," + this._heightHalf + "px)";
 
         if (this._cache.camera.style !== style) {

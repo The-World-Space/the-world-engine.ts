@@ -73,7 +73,8 @@ const config: Configuration & { devServer?: any } = {
         }),
         new ESLintPlugin({
             extensions: ["ts"],
-            cache: true
+            cache: true,
+            fix: true
         })
         //new BundleAnalyzerPlugin()
     ],

@@ -6,12 +6,12 @@ import { WritableVector2 } from "../../math/WritableVector2";
 
 /**
  * this component will translate gameObject's position to parallax effect relative to camera
- * 
+ *
  * This effect allows 2D objects to move as if they were 3D.
- * 
+ *
  * important: This component is only available for static objects. (Moving game objects does not guarantee normal operation)
- * 
- * 
+ *
+ *
  * disallow multiple component
  */
 export class ParallaxTranslater extends Component {

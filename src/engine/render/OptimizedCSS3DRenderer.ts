@@ -36,7 +36,7 @@ export class OptimizedCSS3DRenderer {
         //     this.domElement.scrollLeft = 0;
         //     this.domElement.scrollTop = 0;
         // };
-        
+
         this._cameraElement = document.createElement("div");
         this._cameraElement.style.transformStyle = "preserve-3d";
         this._cameraElement.style.pointerEvents = "none";
@@ -59,20 +59,20 @@ export class OptimizedCSS3DRenderer {
 
         if (scene.matrixAutoUpdate === true) scene.updateMatrixWorld();
         if (camera.parent === null) camera.updateMatrixWorld();
-        
+
         let tx: number, ty: number;
         if ((camera as OrthographicCamera).isOrthographicCamera) {
-            tx = - ((camera  as OrthographicCamera).right + (camera as OrthographicCamera).left) / 2;
+            tx = -((camera  as OrthographicCamera).right + (camera as OrthographicCamera).left) / 2;
             ty = ((camera as OrthographicCamera).top + (camera as OrthographicCamera).bottom) / 2;
         } else {
             tx = 1;
             ty = 1;
         }
 
-        const cameraCSSMatrix = (camera as OrthographicCamera).isOrthographicCamera 
+        const cameraCSSMatrix = (camera as OrthographicCamera).isOrthographicCamera
             ? "scale(" + fov + ")" + "translate(" + this.epsilon(tx) + "px," + this.epsilon(ty) + "px)" + this.getCameraCSSMatrix(camera.matrixWorldInverse)
             : "translateZ(" + fov + "px)" + this.getCameraCSSMatrix(camera.matrixWorldInverse);
-        
+
         const style = cameraCSSMatrix + "translate(" + this._widthHalf + "px," + this._heightHalf + "px)";
 
         if (this._cache.camera.style !== style) {
@@ -149,7 +149,7 @@ export class OptimizedCSS3DRenderer {
             element.style.transform = style;
 
             //remove cached object for optimization
-            
+
             // if (cachedObject === undefined || cachedObject.style !== style) {
             //     element.style.transform = style;
             //     const objectData = {

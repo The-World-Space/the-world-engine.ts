@@ -178,7 +178,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
 
     /**
      * set initializer for effect composer. this callback will be called multiple times when switching camera. or when screen size is changed.
-     * 
+     *
      * i recommend you make this callback as pure function.
      * @param initializer its return value is tuple of passes and disposer. you must dispose passes in disposer.
      */
@@ -191,7 +191,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
         }
 
         this._initializer = initializer;
-        
+
         if (this._effectComposer) {
             const threeScene = this.engine.scene.unsafeGetThreeScene();
             const camera = this.engine.cameraContainer.camera!;

@@ -14,9 +14,9 @@ import { CssFilter } from "./filter/CssFilter";
 export interface IUnknownSizeCssRenderOption {
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -40,7 +40,7 @@ export interface IUnknownSizeCssRenderOption {
 export interface ICssRenderOption extends IUnknownSizeCssRenderOption {
     /**
      * centerOffset is offset from center of object.
-     * 
+     *
      * if centerOffset is (0.5, 0), object center is left center.
      * if centerOffset is (0.5, 0.5), object center is top left center.
      */
@@ -49,11 +49,11 @@ export interface ICssRenderOption extends IUnknownSizeCssRenderOption {
 
 /**
  * precision problems occur when css space and actual game space are 1:1
- * 
+ *
  * This constant specifies the ratio of css space to match the game space
- * 
+ *
  * The default value is 0.1, and the css space and game space correspond to 10:1
- * 
+ *
  * This value is not designed to be changed by default. However, if an engine bug occurs in the future, the value may change.
  */
 export const enum CssRendererConst {
@@ -62,7 +62,7 @@ export const enum CssRendererConst {
 
 /**
  * css renderer base class
- * 
+ *
  * you can't use this class directly, but you can use its subclasses e.g. `CssSpriteRenderer`, `CssTextRenderer`
  */
 export class CssRenderer<T extends HTMLElement> extends Component implements ICssRenderOption {
@@ -80,12 +80,12 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
     };
 
     private readonly _filter: CssFilter = new CssFilter(this.onFilterUpdate);
-    
+
     private _readyToDraw = false;
 
     /**
      * start method will initialize css3DObject and add it to scene.
-     * 
+     *
      * process:
      * 1. set `readyToDraw` to true.
      * 2. call `renderInitialize()` method.
@@ -97,7 +97,7 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * when object is destroyed, this method will be called.
-     * 
+     *
      * process:
      * 1. enqueue css3DObject to render queue for update viewport
      * 2. remove css3DObject from scene
@@ -114,7 +114,7 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * when object is enabled, this method will be called.
-     * 
+     *
      * process:
      * 1. show css3DObject
      * 2. enqueue css3DObject to render queue for update viewport
@@ -128,7 +128,7 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * when object is disabled, this method will be called.
-     * 
+     *
      * process:
      * 1. hide css3DObject
      * 2. enqueue css3DObject to render queue for update viewport
@@ -139,10 +139,10 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
         }
     }
-    
+
     /**
      * when world matrix is updated, this method will be called
-     * 
+     *
      * process:
      * 1. enqueue css3DObject to render queue for update viewport
      * 2. update raw Three.js object's matrix recursively
@@ -156,9 +156,9 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * initialize css3DObject. you must implement this method in derived class.
-     * 
+     *
      * this method is called when start() message is invoked.
-     * 
+     *
      * this method must set `css3DObject` and `htmlElement` to non-null value.
      */
     protected renderInitialize(): void {
@@ -168,7 +168,7 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
     /**
      * create css3DObject with basic properties
      * you must call this method in renderInitialize() for create css3DObject
-     * 
+     *
      * @param reCreate if true, recreate css3DObject else use existing css3DObject
      * @returns css3DObject
      */
@@ -203,17 +203,17 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
             if (this.enabled && this.gameObject.activeInHierarchy) this.css3DObject.visible = true;
             else this.css3DObject.visible = false;
         }
- 
+
         //update viewScale
         this.updateViewScale(false);
-        
+
         //update centerOffset
         this.updateCenterOffset(false);
 
         this.transform.unsafeGetObject3D().add(this.css3DObject);
         return this.css3DObject;
     }
-    
+
     /**
      * update centerOffset. you must implement this method in derived class.
      * @param _updateTransform if true, matrix will be updated and render will be enqueued
@@ -232,7 +232,7 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * centerOffset is offset from center of object.
-     * 
+     *
      * if centerOffset is (0.5, 0), object center is left center.
      * if centerOffset is (0.5, 0.5), object center is top left center.
      */
@@ -242,7 +242,7 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * centerOffset is offset from center of object.
-     * 
+     *
      * if centerOffset is (0.5, 0), object center is left center.
      * if centerOffset is (0.5, 0.5), object center is top left center.
      */
@@ -253,9 +253,9 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */
@@ -265,9 +265,9 @@ export class CssRenderer<T extends HTMLElement> extends Component implements ICs
 
     /**
      * element viewScale
-     * 
+     *
      * value to scaling html element. the smaller value, the higher resolution of element.
-     * 
+     *
      * note: if the viewScale is greater than 1, render will have different behaviour depending on the browser. In the case of firefox, normal operation is guaranteed.
      * @param value
      */

@@ -7,12 +7,12 @@ import { GridObjectCollideMap } from "./GridObjectCollideMap";
 
 /**
  * collider work with `GridObjectCollideMap`
- * 
+ *
  * coordinate system is same as world coordinate system (positive x is right, positive y is up)
- * 
+ *
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
- * 
+ *
  * don't use this component on dynamic gameObject you can only use this component on static gameObject (don't move your gameObject)
  */
 export class GridCollider extends Component {
@@ -65,7 +65,7 @@ export class GridCollider extends Component {
      * add collider, relative to object space center
      * @param x x position in object space grid
      * @param y y position in object space grid
-     * @returns 
+     * @returns
      */
     public addCollider(x: number, y: number): void {
         if (!this._started) {
@@ -91,7 +91,7 @@ export class GridCollider extends Component {
      * @param array array that contains 1 or 0. 1 means collider is there
      * @param xOffset array x offset, if you want to add collider from array[1][3] to (2, 3) you should set xOffset = 1
      * @param yOffset array y offset, if you want to add collider from array[3][1] to (3, 2) you should set yOffset = 1
-     * @returns 
+     * @returns
      */
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
@@ -100,7 +100,7 @@ export class GridCollider extends Component {
             });
             return;
         }
-        
+
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === 1) {
@@ -114,7 +114,7 @@ export class GridCollider extends Component {
      * remove collider at position
      * @param x x position in grid
      * @param y y position in grid
-     * @returns 
+     * @returns
      */
     public removeCollider(x: number, y: number): void {
         if (!this._started) {
@@ -123,7 +123,7 @@ export class GridCollider extends Component {
             });
             return;
         }
-        
+
         this._collideMap.delete(`${x}_${y}`);
         if (this._showCollideSpot) {
             this.removeDebugImage(x, y);
@@ -146,7 +146,7 @@ export class GridCollider extends Component {
         });
         this._colliderImages.clear();
     }
-    
+
     private addDebugImage(x: number, y: number): void {
         if (!this._gridObjectCollideMap) return;
         const gridCellWidth = this._gridObjectCollideMap.gridCellWidth;
@@ -178,7 +178,7 @@ export class GridCollider extends Component {
 
     private addCollideInfoToMap(x: number, y: number): void {
         if (!this._gridObjectCollideMap) return;
-        
+
         const worldPosition = this.transform.position;
         const gridCellWidth = this._gridObjectCollideMap.gridCellWidth;
         const gridCellHeight = this._gridObjectCollideMap.gridCellHeight;
@@ -199,16 +199,16 @@ export class GridCollider extends Component {
 
         this._collideMap.forEach((_value, key) => {
             const [x, y] = key.split("_").map(Number);
-            
+
             const gridObjectCollideMapX = Math.round(x + worldPosition.x / gridCellWidth + gridCenter.x);
             const gridObjectCollideMapY = Math.round(y + worldPosition.y / gridCellHeight + gridCenter.y);
             this._gridObjectCollideMap!.addCollider(gridObjectCollideMapX, gridObjectCollideMapY);
         });
     }
-    
+
     private removeCollideInfoFromMap(x: number, y: number): void {
         if (!this._gridObjectCollideMap) return;
-        
+
         const worldPosition = this.transform.position;
         const gridCellWidth = this._gridObjectCollideMap.gridCellWidth;
         const gridCellHeight = this._gridObjectCollideMap.gridCellHeight;
@@ -230,7 +230,7 @@ export class GridCollider extends Component {
 
         this._collideMap.forEach((_value, key) => {
             const [x, y] = key.split("_").map(Number);
-            
+
             const gridObjectCollideMapX = Math.round(x + (worldPosition.x + gridCenter.x) / gridCellWidth);
             const gridObjectCollideMapY = Math.round(y + (worldPosition.y + gridCenter.y) / gridCellHeight);
             this._gridObjectCollideMap!.removeCollider(gridObjectCollideMapX, gridObjectCollideMapY);
@@ -239,7 +239,7 @@ export class GridCollider extends Component {
 
     /**
      * `GridObjectCollideMap` component is used to store collider information in a grid. (default: null)
-     * 
+     *
      * when set this property, it will automatically add collider information to grid.
      */
     public get gridObjectCollideMap(): GridObjectCollideMap|null {
@@ -248,7 +248,7 @@ export class GridCollider extends Component {
 
     /**
      * `GridObjectCollideMap` component is used to store collider information in a grid. (default: null)
-     * 
+     *
      * when set this property, it will automatically add collider information to grid.
      */
     public set gridObjectCollideMap(value: GridObjectCollideMap|null) {
@@ -264,7 +264,7 @@ export class GridCollider extends Component {
             this.addColliderImages();
         }
     }
-    
+
     /**
      * if this property is true, collider will be displayed. (default: false)
      */

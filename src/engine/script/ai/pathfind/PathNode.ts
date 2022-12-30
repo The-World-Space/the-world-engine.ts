@@ -1,11 +1,11 @@
 export class PathNode {
     private readonly _x: number;
     private readonly _y: number;
-    
+
     private _gCost: number;
     private _hCost: number;
     private _fCost: number;
-    
+
     private _isWalkable: boolean;
     private _previousNode: PathNode|null;
 

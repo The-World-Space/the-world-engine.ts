@@ -8,7 +8,7 @@ export interface IReadonlyGameScreen {
      * get the width of the screen
      */
     get width(): number;
-    
+
     /**
      * get the height of the screen
      */

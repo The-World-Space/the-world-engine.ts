@@ -15,7 +15,7 @@ import { Collider2D } from "./Collider2D";
  * Collider for 2D physics representing an arbitrary set of connected edges (lines) defined by its vertices.
  */
 export class EdgeCollider2D extends Collider2D {
-    private _points: Vector2[] = [
+    private readonly _points: Vector2[] = [
         new Vector2(-2, 0),
         new Vector2(2, 0)
     ];
@@ -28,7 +28,7 @@ export class EdgeCollider2D extends Collider2D {
         if (this._debugDraw) {
             let objectAttacher = this.gameObject.getComponent(ObjectAttacher2D);
             if (!objectAttacher) objectAttacher = this.gameObject.addComponent(ObjectAttacher2D)!;
-            
+
             if (this._debugObject) {
                 this._debugRenderer!.points = this._points;
             } else {
@@ -45,7 +45,7 @@ export class EdgeCollider2D extends Collider2D {
                                 c.pointerEvents = false;
                             })
                             .getComponent(CssEdgeRenderer, debugRenderer)));
-                
+
                 this._debugRenderer = debugRenderer.ref;
                 objectAttacher!.target = this._debugObject;
             }

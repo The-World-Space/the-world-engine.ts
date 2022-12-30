@@ -40,7 +40,7 @@ export class ContactPoint2D {
         this._rigidbody = (fixtureA.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
         this._otherCollider = fixtureB.GetUserData() as Collider2D;
         this._otherRigidbody = (fixtureB.GetBody().GetUserData() as IPhysicsObject2D).rigidbody;
-        
+
         if (relativeVelocity) {
             (this._relativeVelocity as WritableVector2).copy(relativeVelocity);
         } else {
@@ -55,7 +55,7 @@ export class ContactPoint2D {
         this._tangentImpulse = manifoldPoint.tangentImpulse;
         this._separation = separation;
     }
-    
+
     private static readonly _tempVec = new Vec2();
 
     public get enabled(): boolean {

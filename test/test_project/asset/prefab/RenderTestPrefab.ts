@@ -66,7 +66,7 @@ export class RenderTestPrefab extends Prefab {
                     c.elementHeight = 10;
                     c.centerOffset = new Vector2(0.5, 0.5);
                 }))
-                
+
             .withChild(instantiater.buildGameObject("text_render_test_object", new Vector3(-20, 0, 0))
                 .withComponent(CssTextRenderer, c => {
                     c.enabled = true;
@@ -76,7 +76,7 @@ export class RenderTestPrefab extends Prefab {
                     c.text = "lorem ipsum dolor sit amet, consectetur";
                     c.textAlign = TextAlign.Center;
                 }))
-                
+
             .withChild(instantiater.buildGameObject("polygon_render_test_object", new Vector3(0, 0, 0))
                 .withComponent(CssPolygonRenderer2D, c => {
                     c.enabled = true;
@@ -84,7 +84,7 @@ export class RenderTestPrefab extends Prefab {
                     c.setShapeToRegularPolygon(10, 6);
                     c.color = new Color(0.2, 0.2, 0.2, 1);
                 }))
-                
+
             .withChild(instantiater.buildGameObject("edge_render_test_object", new Vector3(20, 0, 0))
                 .withComponent(CssEdgeRenderer, c => {
                     c.edgeWidth = 2;

@@ -39,7 +39,7 @@ describe("ComponentEventContainer Test", () => {
         (engineGlobalObject.coroutineProcessor as CoroutineProcessor) = new CoroutineProcessor(new Time());
         (engineGlobalObject.sceneProcessor as SceneProcessor) = new SceneProcessor();
     });
-    
+
     it("ComponentEventContainer.tryCallAwake()", () => {
         const result: string[] = [];
 

@@ -15,7 +15,7 @@ export class GameObject {
     private _activeInHierarchy: boolean;
     private _activeSelf: boolean;
     private readonly _transform: Transform;
-    
+
     /** @internal */
     // eslint-disable-next-line @typescript-eslint/naming-convention
     public _initialized: boolean;
@@ -39,7 +39,7 @@ export class GameObject {
 
     /**
      * add a child game object
-     * @param gameObjectBuilder 
+     * @param gameObjectBuilder
      */
     public addChildFromBuilder(gameObjectBuilder: GameObjectBuilder): GameObject {
         this.checkGameObjectIsExist();
@@ -73,7 +73,7 @@ export class GameObject {
         this.checkGameObjectIsExist();
         const component = new componentCtor(this);
         component.engine_internal_constructAfterProcess();
-        
+
         if (component.disallowMultipleComponent) {
             const existingComponent = this.getComponent(componentCtor);
             if (existingComponent) {
@@ -109,7 +109,7 @@ export class GameObject {
 
     /**
      * get component of componentCtor: ComponentConstructor<T> in the GameObject
-     * @param componentCtor 
+     * @param componentCtor
      * @returns if success, return the component instance
      */
     public getComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
@@ -129,15 +129,15 @@ export class GameObject {
 
     /**
      * get components of componentCtor: ComponentConstructor<T> in the GameObject
-     * @param componentCtor 
-     * @returns 
+     * @param componentCtor
+     * @returns
      */
     public getComponents<T extends Component>(componentCtor: ComponentConstructor<T>): T[];
 
     /**
      * get components of componentCtor: ComponentConstructor<T> in the GameObject
-     * @param componentCtor 
-     * @returns 
+     * @param componentCtor
+     * @returns
      */
     public getComponents<T extends Component>(componentCtor?: ComponentConstructor<T>): T[] {
         this.checkGameObjectIsExist();
@@ -155,8 +155,8 @@ export class GameObject {
 
     /**
      * returns the component of componentCtor: ComponentConstructor<T> in the GameObject or any of its children using depth first search
-     * @param componentCtor 
-     * @returns 
+     * @param componentCtor
+     * @returns
      */
     public getComponentInChildren<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
         this.checkGameObjectIsExist();
@@ -181,14 +181,14 @@ export class GameObject {
 
     /**
      * returns all components of componentCtor: ComponentConstructor<T> in the GameObject or any of its children using depth first search
-     * @param componentCtor 
+     * @param componentCtor
      */
     public getComponentsInChildren<T extends Component>(componentCtor: ComponentConstructor<T>): T[];
 
     /**
      * returns all components of componentCtor: ComponentConstructor<T> in the GameObject or any of its children using depth first search
-     * @param componentCtor 
-     * @returns 
+     * @param componentCtor
+     * @returns
      */
     public getComponentsInChildren<T extends Component>(componentCtor?: ComponentConstructor<T>): T[] {
         this.checkGameObjectIsExist();
@@ -212,23 +212,23 @@ export class GameObject {
 
     /**
      * foreach component in the GameObject
-     * @param callback 
+     * @param callback
      * @internal
      */
     public foreachComponent(callback: (component: Component) => void): void;
 
     /**
      * foreach component of componentCtor: ComponentConstructor<T> in the GameObject
-     * @param callback 
-     * @param componentCtor 
+     * @param callback
+     * @param componentCtor
      * @internal
      */
     public foreachComponent<T extends Component>(callback: (component: T) => void, componentCtor: ComponentConstructor<T>): void;
 
     /**
      * foreach component of componentCtor: ComponentConstructor<T> in the GameObject
-     * @param callback 
-     * @param componentCtor 
+     * @param callback
+     * @param componentCtor
      * @internal
      */
     public foreachComponent<T extends Component>(callback: (component: T) => void, componentCtor?: ComponentConstructor<T>): void {
@@ -250,23 +250,23 @@ export class GameObject {
 
     /**
      * foreach component in the GameObject or any of its children using depth first search
-     * @param callback 
+     * @param callback
      * @internal
      */
     public foreachComponentInChildren(callback: (component: Component) => void): void;
 
     /**
      * foreach component of componentCtor: ComponentConstructor<T> in the GameObject or any of its children using depth first search
-     * @param callback 
-     * @param componentCtor 
+     * @param callback
+     * @param componentCtor
      * @internal
      */
     public foreachComponentInChildren<T extends Component>(callback: (component: T) => void, componentCtor: ComponentConstructor<T>): void;
 
     /**
      * foreach component of componentCtor: ComponentConstructor<T> in the GameObject or any of its children using depth first search
-     * @param callback 
-     * @param componentCtor 
+     * @param callback
+     * @param componentCtor
      * @internal
      */
     public foreachComponentInChildren<T extends Component>(callback: (component: T) => void, componentCtor?: ComponentConstructor<T>): void {
@@ -378,7 +378,7 @@ export class GameObject {
                         component._engine_internal_componentEventContainer.tryRegisterOnDisable();
                         //dequeue update
                         component._engine_internal_componentEventContainer.tryUnregisterUpdate();
-                        
+
                         component.stopAllCoroutines();
                     }
                 }

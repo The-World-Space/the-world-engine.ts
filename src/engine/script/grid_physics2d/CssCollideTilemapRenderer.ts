@@ -6,11 +6,11 @@ import { CssTilemapRenderer } from "../render/CssTilemapRenderer";
 /**
  * collision map with tilemap for grid system
  * there is limitation of tilemap size
- * 
+ *
  * this component will auto generate collision map from tilemap
- * 
+ *
  * coordinate system is row column (positive x is right, positive y is down)
- * 
+ *
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
  */
@@ -34,7 +34,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
      * @param row row in tilemap
      * @param imageIndex index of image in imageSources
      * @param atlasIndex index of atlas in imageSources
-     * @returns 
+     * @returns
      */
     public override drawTile(column: number, row: number, imageIndex: number, atlasIndex?: number): void {
         super.drawTile(column, row, imageIndex, atlasIndex);
@@ -46,12 +46,12 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
 
     /**
      * draw tile from two dimensional array. collide info will be automatically added
-     * 
+     *
      * array left upper corner is (0, 0) in tilemap
      * @param array array of image index. { i: 0, a: 1 } means imageSources[0] in atlas[1]
      * @param xOffset array x offset, if you want to add tile from array[1][3] to (2, 3) you should set xOffset = 1
      * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
-     * @returns 
+     * @returns
      */
     public override drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
         super.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset);
@@ -76,7 +76,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
      * clear tile at position. collide info will be automatically removed
      * @param column column in tilemap
      * @param row row in tilemap
-     * @returns 
+     * @returns
      */
     public override clearTile(column: number, row: number): void {
         super.clearTile(column, row);
@@ -89,7 +89,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
      * add collider at position
      * @param column column in tilemap
      * @param row row in tilemap
-     * @returns 
+     * @returns
      */
     public addCollider(column: number, row: number): void {
         const colideX = Math.ceil(column - this.columnCount / 2);
@@ -111,7 +111,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
      * @param y world position y
      * @param width aabb collision width
      * @param height aabb collision height
-     * @returns 
+     * @returns
      */
     public checkCollision(x: number, y: number, width: number, height: number): boolean {
         if (!this._collideEnabled) return false;
@@ -125,7 +125,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
         if (this.rowCount % 2 === 0) {
             y -= this.gridCellHeight;
         }
-        
+
         if (this.rowCount % 2 === 0) y += this.gridCellHeight / 2;
         if (this.columnCount % 2 === 0)  x += this.gridCellWidth / 2;
         const left = Math.floor(x / this.gridCellWidth);

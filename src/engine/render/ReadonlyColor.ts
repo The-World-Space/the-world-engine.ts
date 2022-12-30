@@ -28,31 +28,31 @@ export interface ReadonlyColor {
 
     /**
      * get the color as a string with the format rgb(r, g, b)
-     * @returns 
+     * @returns
      */
     toString(): string;
 
     /**
      * get the color as a string with the format rgba(r, g, b, a)
-     * @returns 
+     * @returns
      */
     toStringWithAlpha(): string;
 
     /**
      * get the color as a hex string with the format #rrggbb it loses alpha information
-     * @returns 
+     * @returns
      */
     toHex(): string;
 
     /**
      * get the color as a hex string with the format #rrggbbaa
-     * @returns 
+     * @returns
      */
     toHexWithAlpha(): string;
 
     /**
      * get the color as an array with the format [r, g, b, a]
-     * @returns 
+     * @returns
      */
     toArray(): number[];
 

@@ -34,7 +34,7 @@ export class TestBootstrapper extends Bootstrapper {
         const instantiater = this.instantiater;
 
         return this.sceneBuilder
-        
+
         // .withChild(instantiater.buildPrefab("raycast_test", RaycastTestPrefab, new Vector3(0, 0, 0)).make())
 
             .withChild(instantiater.buildPrefab("physics_test", PhysicsTestPrefab, new Vector3(0, 0, 0)).make())
@@ -42,7 +42,7 @@ export class TestBootstrapper extends Bootstrapper {
             .withChild(instantiater.buildPrefab("render_test", RenderTestPrefab, new Vector3(0, -25, 0)).make())
 
             .withChild(instantiater.buildPrefab("top_down_scene", TopDownScenePrefab,  new Vector3(0, -50, 0)).make())
-            
+
             .withChild(instantiater.buildGameObject("editor_camera", new Vector3(0, 0, 80))
                 .withComponent(Camera, c => {
                     c.viewSize = 10;

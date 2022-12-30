@@ -8,7 +8,7 @@ import { CssRenderer, CssRendererConst } from "./CssRenderer";
 export interface ICssImageRenderOption {
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     imageRenderingMode: ImageRenderingMode;
@@ -63,7 +63,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
             this._imageWidth * this.centerOffset.x,
             this._imageHeight * this.centerOffset.y, 0
         );
-            
+
         if (updateTransform) {
             Transform.updateRawObject3DWorldMatrixRecursively(this.css3DObject);
             this.transform.enqueueRenderAttachedObject3D(this.css3DObject);
@@ -72,7 +72,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
 
     protected override updateViewScale(updateTransform: boolean): void {
         if (!this.css3DObject) return;
-        
+
         const value = this.viewScale;
         const image = this.htmlElement!;
 
@@ -103,7 +103,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
      * set image from path asynchronously
      * @param path image path
      * @param onComplete on complete callback
-     * @returns 
+     * @returns
      */
     public asyncSetImageFromPath(path: string, onComplete?: () => void): void {
         if (!this.readyToDraw) {
@@ -126,7 +126,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
     /**
      * set image from `HTMLImageElement`
      * @param image image must be loaded
-     * @returns 
+     * @returns
      */
     public setImage(image: HTMLImageElement): void {
         if (!image.complete) throw new Error(`Image {${image.src}} is not loaded.`);
@@ -152,7 +152,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
 
     /**
      * image width (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public get imageWidth(): number {
@@ -161,7 +161,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
 
     /**
      * image width (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public set imageWidth(value: number) {
@@ -174,7 +174,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
 
     /**
      * image height (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public get imageHeight(): number {
@@ -183,7 +183,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
 
     /**
      * image height (default: 0)
-     * 
+     *
      * if this value is 0, it will automatically update when image is set
      */
     public set imageHeight(value: number) {
@@ -264,10 +264,10 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
             this.htmlElement.style.opacity = this._opacity.toString();
         }
     }
-    
+
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public get imageRenderingMode(): ImageRenderingMode {
@@ -276,7 +276,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
 
     /**
      * image rendering mode (default: ImageRenderingMode.Pixelated)
-     * 
+     *
      * @see https://developer.mozilla.org/en-US/docs/Web/CSS/image-rendering
      */
     public set imageRenderingMode(value: ImageRenderingMode) {

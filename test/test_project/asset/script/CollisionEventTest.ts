@@ -7,14 +7,14 @@ export class CollisionEventTest extends Component {
     private readonly _contactBuffer: ContactPoint2D[] = [];
 
     public onCollisionEnter2D(collision: Collision2D): void {
-        let str = 
+        let str =
             "CollisionEventTest.onCollisionEnter2D\n" +
             `a: ${collision.collider.gameObject.name}\n` +
             `b: ${collision.otherCollider.gameObject.name}\n` +
             `a.velocity: ${collision.rigidbody?.velocity.x}, ${collision.rigidbody?.velocity.y}\n` +
             `b.velocity: ${collision.otherRigidbody?.velocity.x}, ${collision.otherRigidbody?.velocity.y}\n` +
             `relativeVelocity: ${collision.relativeVelocity.x}, ${collision.relativeVelocity.y}\n\n`;
-        
+
         const contacts = this._contactBuffer;
         const contactCount = collision.getContacts(contacts);
 

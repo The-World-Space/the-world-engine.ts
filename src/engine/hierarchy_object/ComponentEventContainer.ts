@@ -57,7 +57,7 @@ type OnCollisionEnter2DableComponent = Component & { onCollisionEnter2D(collisio
 function isOnCollisionEnter2DableComponent(component: Component): component is OnCollisionEnter2DableComponent {
     return (component as OnCollisionEnter2DableComponent).onCollisionEnter2D !== undefined;
 }
- 
+
 /**
  * called every frame where an incoming collider stays in contact with this object's collider (2D physics only)
  */
@@ -67,7 +67,7 @@ type OnCollisionStay2DableComponent = Component & { onCollisionStay2D(collision:
 function isOnCollisionStay2DableComponent(component: Component): component is OnCollisionStay2DableComponent {
     return (component as OnCollisionStay2DableComponent).onCollisionStay2D !== undefined;
 }
- 
+
 /**
  * called when a collider on another object stops touching this object's collider (2D physics only)
  */
@@ -77,7 +77,7 @@ type OnCollisionExit2DableComponent = Component & { onCollisionExit2D(collision:
 function isOnCollisionExit2DableComponent(component: Component): component is OnCollisionExit2DableComponent {
     return (component as OnCollisionExit2DableComponent).onCollisionExit2D !== undefined;
 }
- 
+
 /**
  * called when another object enters a trigger collider attached to this object (2D physics only)
  */
@@ -87,7 +87,7 @@ type OnTriggerEnter2DableComponent = Component & { onTriggerEnter2D(collider: Co
 function isOnTriggerEnter2DableComponent(component: Component): component is OnTriggerEnter2DableComponent {
     return (component as OnTriggerEnter2DableComponent).onTriggerEnter2D !== undefined;
 }
- 
+
 /**
  * called every frame where another object stays in a trigger collider attached to this object (2D physics only)
  */
@@ -97,7 +97,7 @@ type OnTriggerStay2DableComponent = Component & { onTriggerStay2D(collider: Coll
 function isOnTriggerStay2DableComponent(component: Component): component is OnTriggerStay2DableComponent {
     return (component as OnTriggerStay2DableComponent).onTriggerStay2D !== undefined;
 }
- 
+
 /**
  * called when another object leaves a trigger collider attached to this object (2D physics only)
  */
@@ -151,10 +151,10 @@ export class ComponentEventContainer {
 
     public constructor(component: Component) {
         this._component = component;
-        this._sceneProcessor = component.engine.sceneProcessor; 
+        this._sceneProcessor = component.engine.sceneProcessor;
         this._instantiater = component.engine.instantiater;
         this._eventState = new ComponentEventState();
-        
+
         if (isAwakeableComponent(component)) {
             this._awake = ComponentEvent.createAwakeEvent(
                 this._instantiater,
@@ -176,7 +176,7 @@ export class ComponentEventContainer {
                     this._instantiater,
                     collision => component.onCollisionEnter2D(collision),
                     component.executionOrder
-                );      
+                );
             }
 
             if (isOnCollisionStay2DableComponent(component)) {

@@ -5,7 +5,7 @@ import { Camera } from "./Camera";
 
 /**
  * duck-type camera that is compatible with object3d
- * 
+ *
  * Use with raw three.js object
  */
 export class DuckThreeCamera {
@@ -94,9 +94,9 @@ export class DuckThreeCamera {
 
     /**
      * create duck type interface of camera component
-     * 
+     *
      * If this method is called without the camera's onEnable message being invoked error will be thrown
-     * 
+     *
      * This API is experimental because I'm currently looking for the most appropriate method
      * @param camera camera component
      * @param matrixAutoUpdate if true, the matrix will be updated automatically when the camera is updated
@@ -116,6 +116,6 @@ export class DuckThreeCamera {
     }
 }
 
-Camera.removeCameraFromDuckPool = function (camera: ThreeCamera): void {
+Camera.removeCameraFromDuckPool = function(camera: ThreeCamera): void {
     DuckThreeCamera.duckPool.delete(camera);
 };

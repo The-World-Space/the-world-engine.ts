@@ -33,13 +33,13 @@ export abstract class Bootstrapper<T = any> {
 
     /**
      * get instantiater
-     * 
+     *
      * You can instantiate object through instantiater
      */
     protected get instantiater(): Instantiater {
         return this._instantiater;
     }
-    
+
     /**
      * get interop object
      */

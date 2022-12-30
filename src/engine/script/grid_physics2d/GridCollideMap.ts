@@ -8,9 +8,9 @@ import { IGridCollidable } from "./IGridCollidable";
 
 /**
  * collide map for grid system
- * 
+ *
  * coordinate system is same as world coordinate system (positive x is right, positive y is up)
- * 
+ *
  * important: grid position data is stored as string ("x_y" format)
  * so this component might not work properly if this component's gameObject.position is not integer
  */
@@ -22,7 +22,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
     private _colliderIsShowing = false;
     private readonly _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
     private _collideEnabled = false;
-    
+
     private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
 
@@ -53,7 +53,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
      * add collider at position
      * @param x x position in grid
      * @param y y position in grid
-     * @returns 
+     * @returns
      */
     public addCollider(x: number, y: number): void {
         if (!this._started) {
@@ -74,7 +74,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
      * @param array array that contains 1 or 0. 1 means collider is there
      * @param xOffset array x offset, if you want to add collider from array[1][3] to (2, 3) you should set xOffset = 1
      * @param yOffset array y offset, if you want to add collider from array[3][1] to (3, 2) you should set yOffset = 1
-     * @returns 
+     * @returns
      */
     public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
@@ -83,7 +83,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
             });
             return;
         }
-        
+
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === 1) {
@@ -97,7 +97,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
      * remove collider at position
      * @param x x position in grid
      * @param y y position in grid
-     * @returns 
+     * @returns
      */
     public removeCollider(x: number, y: number): void {
         if (!this._started) {
@@ -106,7 +106,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
             });
             return;
         }
-        
+
         this._collideMap.delete(`${x}_${y}`);
         if (this._showCollider) {
             this.removeDebugImage(x * this.gridCellWidth, y * this.gridCellHeight);
@@ -134,7 +134,7 @@ export class GridCollideMap extends Component implements IGridCollidable {
         });
         this._colliderImages.clear();
     }
-    
+
     private addDebugImage(x: number, y: number): void {
         const gameObjectRef = new PrefabRef<GameObject>();
         this.gameObject.addChildFromBuilder(
@@ -171,12 +171,12 @@ export class GridCollideMap extends Component implements IGridCollidable {
         const worldPosition = this.transform.position;
         x -= worldPosition.x;
         y -= worldPosition.y;
-        
+
         const left = Math.floor(x / this.gridCellWidth);
         const right = Math.floor((x + width) / this.gridCellWidth);
         const top = Math.floor(y / this.gridCellHeight);
         const bottom = Math.floor((y + height) / this.gridCellHeight);
-        
+
         for (let y = top; y <= bottom; y++) {
             for (let x = left; x <= right; x++) {
                 if (this._collideMap.get(`${x}_${y}`)) { //note: intended memory leak
@@ -206,14 +206,14 @@ export class GridCollideMap extends Component implements IGridCollidable {
     public get gridCellWidth(): number {
         return this._gridCellWidth;
     }
-    
+
     /**
      * grid cell width, if this value is not integer, might not work properly (default: 1)
      */
     public set gridCellWidth(value: number) {
         this._gridCellWidth = value;
     }
-    
+
     /**
      * grid cell height, if this value is not integer, might not work properly (default: 1)
      */

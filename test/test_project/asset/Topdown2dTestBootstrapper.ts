@@ -34,7 +34,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
         const gridCollideMap = new PrefabRef<GridCollideMap>();
         const gridObjectCollideMap = new PrefabRef<GridObjectCollideMap>();
         const player = new PrefabRef<GameObject>();
-        
+
         return this.sceneBuilder
             .withChild(instantiater.buildGameObject("camera", new Vector3(0, 0, 10))
                 .withComponent(Camera, c => {
@@ -61,7 +61,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                 .withComponent(GridPointer)
                 .getComponent(GridPointer, gridPointer))
 
-            
+
             .withChild(instantiater.buildGameObject("world")
                 .withComponent(CameraRelativeZaxisSorter, c => {
                     c.offset = -200;
@@ -78,7 +78,7 @@ export class Topdown2dTestBootstrapper extends Bootstrapper {
                         ], 0, 0);
                     })
                     .getComponent(GridCollideMap, gridCollideMap))
-                
+
                 .withChild(instantiater.buildGameObject("object-collide-map")
                     .withComponent(GridObjectCollideMap, c => {
                         c.gridCellHeight = gridCellSize;

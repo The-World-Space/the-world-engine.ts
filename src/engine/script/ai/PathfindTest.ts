@@ -51,7 +51,7 @@ export class PathfindTest extends Component {
             }
         }
     }
-    
+
     private addDebugImage(x: number, y: number): void {
         const gameObjectRef: {ref: GameObject|null} = {ref: null};
         this.gameObject.addChildFromBuilder(

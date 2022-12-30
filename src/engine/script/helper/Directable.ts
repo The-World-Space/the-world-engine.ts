@@ -12,7 +12,7 @@ export enum Direction {
 
 /**
  * component that has direction information for movement
- * 
+ *
  * this component is used for 2d grid-based game
  */
 export class Directable extends Component {
@@ -32,7 +32,7 @@ export class Directable extends Component {
     protected set direction(direction: Direction) {
         this._direction = direction;
     }
-    
+
     /**
      * if this component is moving this value will be true
      */

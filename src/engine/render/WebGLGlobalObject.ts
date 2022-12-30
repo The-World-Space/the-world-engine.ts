@@ -3,7 +3,7 @@ import type { Renderer, WebGLRenderer } from "three/src/Three";
 
 /**
  * webgl global object.
- * 
+ *
  * you can use Unsafe API by casting this to `WebGLGlobalObject`
  */
 export interface IReadonlyWebGLGlobalObject {
@@ -33,7 +33,7 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
     public dispose(): void {
         if (this._webglRenderer) this._webglRenderer.dispose();
     }
-    
+
     /**
      * get abstract renderer.
      */
@@ -50,7 +50,7 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
 
     /**
      * get effect composer.
-     * 
+     *
      * if you not use post process, this value is null.
      */
     public get effectComposer(): EffectComposer|null {
@@ -59,7 +59,7 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
 
     /**
      * set effect composer.
-     * 
+     *
      * this is unsafe API that use only for post process volume.
      */
     public set effectComposer(effectComposer: EffectComposer|null) {

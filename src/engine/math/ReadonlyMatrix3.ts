@@ -11,7 +11,7 @@ export type ReadonlyMatrix3 = {
     extractBasis(xAxis: Vector3, yAxis: Vector3, zAxis: Vector3): Matrix3;
     determinant(): number;
     equals(matrix: ReadonlyMatrix3): boolean;
-    
+
     /**
      * Returns an array with the values of this matrix, or copies them into the provided array.
      * @param array (optional) array to store the matrix to. If this is not provided, a new array will be created.

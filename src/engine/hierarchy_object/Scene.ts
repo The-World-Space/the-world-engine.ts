@@ -16,7 +16,7 @@ export class Scene {
         this._threeScene = new ThreeScene();
         this._threeScene.matrixAutoUpdate = false;
     }
-    
+
     /**
      * add gameObject to scene
      * @param gameObjectBuilder
@@ -29,9 +29,9 @@ export class Scene {
 
     /**
      * foreach children transform
-     * 
+     *
      * you must not change length of children array while iterating
-     * @param callback 
+     * @param callback
      */
     public foreachChild(callback: (transform: Transform) => void): void {
         const object3DChildren = this._threeScene.children;
@@ -42,10 +42,10 @@ export class Scene {
             }
         }
     }
-    
+
     /**
      * iterate children transfrom
-     * 
+     *
      * you must not change length of children array while iterating
      * @param callback if return false, stop iteration
      */
