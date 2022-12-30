@@ -53,13 +53,11 @@ export type WritableMatrix3 = {
 
     translate(tx: number, ty: number): WritableMatrix3;
 
-    // todo: remove comment when three.js types is updated
+    makeTranslation(x: number, y: number): WritableMatrix3;
 
-    // makeTranslation(x: number, y: number): WritableMatrix3;
+    makeRotation(theta: number): WritableMatrix3;
 
-    // makeRotation(theta: number): WritableMatrix3;
-
-    // makeScale(x: number, y: number): WritableMatrix3;
+    makeScale(x: number, y: number): WritableMatrix3;
 
     equals(matrix: ReadonlyMatrix3): boolean;
 
