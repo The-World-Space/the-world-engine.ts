@@ -801,7 +801,7 @@ export class Transform {
      */
     public transformPoint(position: Vector3): Vector3 {
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
-        return this._object3D.localToWorld(position);
+        return position.applyMatrix4(this._object3D.matrixWorld);
     }
 
     /**
@@ -810,7 +810,7 @@ export class Transform {
      */
     public inverseTransformPoint(position: Vector3): Vector3 {
         this.updateWorldMatrixFromLocalMatrixAndParentWorldMatrix();
-        return this._object3D.worldToLocal(position);
+        return position.applyMatrix4(Transform._matrix4Buffer.copy(this._object3D.matrixWorld).invert());
     }
 
     /**
