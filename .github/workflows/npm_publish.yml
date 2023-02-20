@@ -17,6 +17,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - uses: JS-DevTools/npm-publish@v1
+      
+      - uses: mmarchini-oss/npm-otp-publish@v0
         with:
-          token: ${{ secrets.NPM_TOKEN }}
+          npm_token: ${{ secrets.NPM_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_actor: ${{ github.actor }}
