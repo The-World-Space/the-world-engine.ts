@@ -1,11 +1,15 @@
 name: npm_publish
 
 on:
-  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   publish:
     runs-on: ubuntu-latest
+    if: ${{ contains(github.event.head_commit.message, 'publish@') }}
 
     steps:
       - uses: actions/checkout@v3
@@ -13,10 +17,12 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-      
+
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - uses: JS-DevTools/npm-publish@v1
+
+      - uses: mmarchini-oss/npm-otp-publish@v0
         with:
-          token: ${{ secrets.NPM_TOKEN }}
+          npm_token: ${{ secrets.NPM_TOKEN }}
+          github_actor: ${{ github.actor }}
