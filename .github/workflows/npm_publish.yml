@@ -2,8 +2,9 @@ name: npm_publish
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   publish:
@@ -16,7 +17,7 @@ jobs:
         with:
           node-version: 16
           cache: 'npm'
-          
+
       - run: npm ci
       - run: npm test
       - run: npm run build
