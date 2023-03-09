@@ -2,8 +2,9 @@ name: npm_publish
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   publish:
