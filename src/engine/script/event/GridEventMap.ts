@@ -74,7 +74,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === null) continue;
-                this.addEvent(x + xOffset, array.length - (y + yOffset), array[y][x]!);
+                this.addEvent(x + xOffset, array.length - (y + yOffset) - 1, array[y][x]!);
             }
         }
     }
