@@ -104,7 +104,7 @@ export class GridCollider extends Component {
         for (let y = 0; y < array.length; y++) {
             for (let x = 0; x < array[y].length; x++) {
                 if (array[y][x] === 1) {
-                    this.addCollider(x + xOffset, array.length - y - 1 + yOffset);
+                    this.addCollider(x + xOffset, array.length - y + yOffset - 1);
                 }
             }
         }

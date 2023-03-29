@@ -3,6 +3,7 @@ node_modules
 src
 docs
 .babelrc
+.eslintcache
 .eslintrc.json
 .gitattributes
 .gitignore
@@ -10,7 +11,7 @@ package-lock.json
 package.json
 testbundle
 tsconfig.json
-tsconsig.webpack.json
+tsconfig.webpack.json
 webpack.config.ts
 gulpfile.ts
 test

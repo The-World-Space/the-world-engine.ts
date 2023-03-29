@@ -18,8 +18,8 @@ import { SpriteAtlasAnimator } from "../post_render/SpriteAtlasAnimator";
  * require components: `Directable`, `SpriteAtlasAnimator`
  */
 export class MovementAnimationController extends Component {
-    protected readonly _disallowMultipleComponent: boolean = true;
-    protected readonly _requiredComponents: ComponentConstructor[] = [Directable, SpriteAtlasAnimator];
+    public override readonly disallowMultipleComponent: boolean = true;
+    public override readonly requiredComponents: ComponentConstructor[] = [Directable, SpriteAtlasAnimator];
 
     private _directable: Directable|null = null;
     private _spriteAtlasAnimator: SpriteAtlasAnimator|null = null;
