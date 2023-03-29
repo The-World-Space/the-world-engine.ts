@@ -24,7 +24,7 @@ export class TwoDimensionalStringMapper {
             for (let column = 0; column < str.length; ++column) {
                 const char = str[column];
                 if (converter[char] === undefined) {
-                    throw new Error(`conversion not found for ${char}`);
+                    throw new Error(`conversion not found for '${char}'`);
                 }
                 rowArray.push(converter[char](column, row));
             }
