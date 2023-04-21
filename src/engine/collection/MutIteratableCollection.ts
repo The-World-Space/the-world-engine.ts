@@ -23,8 +23,10 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     /** Set an entry, O(log n) */
     public insert(value: T): void {
         value.isRemoved = false;
-        if (this._iterateCollection !== null) this._insertBuffer.insert(value);
-        else this._collection.insert(value);
+        if (this._iterateCollection !== null) {
+            this._insertBuffer.insert(value);
+            this._deleteBuffer.eraseElementByKey(value);
+        } else this._collection.insert(value);
     }
 
     /**
@@ -34,6 +36,7 @@ export class MutIteratableCollection<T extends { isRemoved: boolean }> {
     public delete(value: T): void {
         if (this._iterateCollection !== null) {
             value.isRemoved = true;
+            this._insertBuffer.eraseElementByKey(value);
             this._deleteBuffer.insert(value);
         } else this._collection.eraseElementByKey(value);
     }
