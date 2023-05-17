@@ -31,8 +31,8 @@
     },
     "homepage": "https://github.com/noname0310/the-world-engine.ts#readme",
     "peerDependencies": {
-        "@types/three": "^0.150.2",
-        "three": "^0.150.1"
+        "@types/three": "^0.152.0",
+        "three": "^0.152.2"
     },
     "devDependencies": {
         "@babel/core": "^7.21.8",
