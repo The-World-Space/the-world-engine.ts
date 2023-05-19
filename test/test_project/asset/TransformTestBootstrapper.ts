@@ -1,6 +1,6 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
-import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { Color } from "@src/engine/render/Color";
 import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";

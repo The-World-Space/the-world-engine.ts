@@ -1,5 +1,6 @@
 import { clamp } from "three/src/math/MathUtils";
-import { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute, Matrix3, Matrix4, Quaternion, Spherical, Vector3 } from "three/src/Three";
+import type { BufferAttribute, Camera, Cylindrical, Euler, InterleavedBufferAttribute, Matrix3, Matrix4, Spherical} from "three/src/Three";
+import { Quaternion, Vector3 } from "three/src/Three";
 
 //duck typed class of THREE.Vector3
 /** @internal */
@@ -623,7 +624,7 @@ export class ObservableVector3 {
         return ((v.x === this._x) && (v.y === this._y) && (v.z === this._z));
     }
 
-    public fromArray(array: number[]|ArrayLike<number>, offset = 0): ObservableVector3 {
+    public fromArray(array: number[] | ArrayLike<number>, offset = 0): ObservableVector3 {
         if (this._x === array[offset] && this._y === array[offset + 1] && this._z === array[offset + 2]) return this;
         this._onBeforeChangeCallback();
         this._x = array[offset];
@@ -641,7 +642,7 @@ export class ObservableVector3 {
     }
 
     public fromBufferAttribute(
-        attribute: BufferAttribute|InterleavedBufferAttribute,
+        attribute: BufferAttribute | InterleavedBufferAttribute,
         index: number,
         offset: undefined
     ): ObservableVector3 {

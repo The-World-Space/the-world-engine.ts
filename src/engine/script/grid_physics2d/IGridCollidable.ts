@@ -1,4 +1,4 @@
-import { IGridCoordinatable } from "../helper/IGridCoordinatable";
+import type { IGridCoordinatable } from "../helper/IGridCoordinatable";
 
 /**
  * Interface for objects that has grid coordinate system and can be collided with other objects

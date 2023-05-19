@@ -1,14 +1,15 @@
 import { Vector2 } from "three/src/Three";
 
-import { EventContainer, IEventContainer } from "../../collection/EventContainer";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../math/WritableVector2";
+import type { IEventContainer } from "../../collection/EventContainer";
+import { EventContainer } from "../../collection/EventContainer";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
 import { Pathfinder } from "../ai/pathfind/Pathfinder";
-import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
+import type { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 import { Directable, Direction } from "../helper/Directable";
-import { IGridPositionable } from "../helper/IGridPositionable";
-import { GridPointer } from "../input/GridPointer";
-import { PointerGridEvent } from "../input/PointerGridInputListener";
+import type { IGridPositionable } from "../helper/IGridPositionable";
+import type { GridPointer } from "../input/GridPointer";
+import type { PointerGridEvent } from "../input/PointerGridInputListener";
 
 /**
  * make gameobject moves on grid coordinates
@@ -34,12 +35,12 @@ export class PlayerGridMovementController extends Directable implements IGridPos
     private readonly _onMoveToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
     private readonly _onMovedToTargetEvent = new EventContainer<(x: number, y: number) => void>(); //integer position
 
-    private _gridPointer: GridPointer|null = null;
-    private _pathfinder: Pathfinder|null = null;
+    private _gridPointer: GridPointer | null = null;
+    private _pathfinder: Pathfinder | null = null;
     private _movingByPathfinder = false;
-    private _foundedPath: Vector2[]|null = null;
+    private _foundedPath: Vector2[] | null = null;
     private _currentPathIndex = 0;
-    private _pathfindStartFunction: (() => void)|null = null;
+    private _pathfindStartFunction: (() => void) | null = null;
     private readonly _cachedParentWorldPosition: Vector2 = new Vector2();
     private _receiveKeyboardInput = true;
 
@@ -172,7 +173,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
         const currentPath = this._foundedPath![this._currentPathIndex];
         const distance = currentPath.distanceTo(currentPositionVector2);
         if (distance < this._speed * this.engine.time.deltaTime) {
-            this._currentPathIndex++;
+            this._currentPathIndex += 1;
             if (this._currentPathIndex >= this._foundedPath!.length) {
                 this._movingByPathfinder = false;
                 return;
@@ -421,7 +422,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
     /**
      * grid pointer for pathfinding (default: null)
      */
-    public set gridPointer(value: GridPointer|null) {
+    public set gridPointer(value: GridPointer | null) {
         if (this._gridPointer) {
             this._gridPointer.onPointerDown.removeListener(this.onPointerDown);
         }
@@ -434,7 +435,7 @@ export class PlayerGridMovementController extends Directable implements IGridPos
     /**
      * grid pointer for pathfinding (default: null)
      */
-    public get gridPointer(): GridPointer|null {
+    public get gridPointer(): GridPointer | null {
         return this._gridPointer;
     }
 

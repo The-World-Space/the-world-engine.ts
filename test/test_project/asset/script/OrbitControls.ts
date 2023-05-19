@@ -1,6 +1,6 @@
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { ReadonlyVector3 } from "@src/engine/math/ReadonlyVector3";
-import { WritableVector3 } from "@src/engine/math/WritableVector3";
+import type { ReadonlyVector3 } from "@src/engine/math/ReadonlyVector3";
+import type { WritableVector3 } from "@src/engine/math/WritableVector3";
 import { Camera } from "@src/engine/script/render/Camera";
 import { DuckThreeCamera } from "@src/engine/script/render/DuckThreeCamera";
 import { OrbitControls as ThreeOrbitControls } from "three/examples/jsm/controls/OrbitControls";

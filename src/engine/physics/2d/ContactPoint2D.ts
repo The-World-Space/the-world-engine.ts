@@ -9,13 +9,13 @@ import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 
 export class ContactPoint2D {
-    private _contact: Contact|null = null;
+    private _contact: Contact | null = null;
 
-    private _collider: Collider2D|null = null;
-    private _rigidbody: RigidBody2D|null = null;
+    private _collider: Collider2D | null = null;
+    private _rigidbody: RigidBody2D | null = null;
 
-    private _otherCollider: Collider2D|null = null;
-    private _otherRigidbody: RigidBody2D|null = null;
+    private _otherCollider: Collider2D | null = null;
+    private _otherRigidbody: RigidBody2D | null = null;
 
     private readonly _relativeVelocity: Vector2 = new Vector2();
     private readonly _point: Vector2 = new Vector2();
@@ -62,19 +62,19 @@ export class ContactPoint2D {
         return this._contact?.IsEnabled() ?? false;
     }
 
-    public get collider(): Collider2D|null {
+    public get collider(): Collider2D | null {
         return this._collider;
     }
 
-    public get rigidbody(): RigidBody2D|null {
+    public get rigidbody(): RigidBody2D | null {
         return this._rigidbody;
     }
 
-    public get otherCollider(): Collider2D|null {
+    public get otherCollider(): Collider2D | null {
         return this._otherCollider;
     }
 
-    public get otherRigidbody(): RigidBody2D|null {
+    public get otherRigidbody(): RigidBody2D | null {
         return this._otherRigidbody;
     }
 

@@ -1,6 +1,6 @@
-import { Component } from "../hierarchy_object/Component";
-import { CoroutineIterator } from "./CoroutineIterator";
-import { YieldInstruction } from "./YieldInstruction";
+import type { Component } from "../hierarchy_object/Component";
+import type { CoroutineIterator } from "./CoroutineIterator";
+import type { YieldInstruction } from "./YieldInstruction";
 
 /**
  * do not drive this class
@@ -9,9 +9,9 @@ export class Coroutine {
     private readonly _component: Component;
     private _elapsedTime: number;
     private readonly _coroutineIterator: CoroutineIterator;
-    private _currentYieldInstruction: YieldInstruction|null;
+    private _currentYieldInstruction: YieldInstruction | null;
     private _isCurrenYieldInstructionExist: boolean;
-    private _onFinish: (() => void)|null;
+    private _onFinish: (() => void) | null;
 
     /** @internal */
     public constructor(component: Component, coroutineIterator: CoroutineIterator, onFinish: () => void) {
@@ -39,7 +39,7 @@ export class Coroutine {
     }
 
     /** @internal */
-    public get currentYieldInstruction(): YieldInstruction|null {
+    public get currentYieldInstruction(): YieldInstruction | null {
         return this._currentYieldInstruction;
     }
 
@@ -49,7 +49,7 @@ export class Coroutine {
     }
 
     /** @internal */
-    public fatchNextInstruction(): YieldInstruction|null {
+    public fatchNextInstruction(): YieldInstruction | null {
         const result = this._coroutineIterator.next();
         if (result.done) {
             this._currentYieldInstruction = null;

@@ -1,15 +1,16 @@
-import { EngineGlobalObject } from "../EngineGlobalObject";
-import { Instantiater } from "../Instantiater";
-import { DeepReadonly } from "../type/DeepReadonly";
+import type { EngineGlobalObject } from "../EngineGlobalObject";
+import type { Instantiater } from "../Instantiater";
+import type { DeepReadonly } from "../type/DeepReadonly";
 import { SceneBuilder } from "./SceneBuilder";
-import { GameSetting, GameSettingObject } from "./setting/GameSetting";
+import type { GameSettingObject } from "./setting/GameSetting";
+import { GameSetting } from "./setting/GameSetting";
 
 /**
  * make game scene with interop object and scene builder
  */
 export abstract class Bootstrapper<T = any> {
     private readonly _instantiater: Instantiater;
-    private readonly _interopObject: T|null;
+    private readonly _interopObject: T | null;
     private readonly _sceneBuilder: SceneBuilder;
     private readonly _gameSetting: GameSetting;
 
@@ -43,7 +44,7 @@ export abstract class Bootstrapper<T = any> {
     /**
      * get interop object
      */
-    protected get interopObject(): T|null {
+    protected get interopObject(): T | null {
         return this._interopObject;
     }
 

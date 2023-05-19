@@ -1,5 +1,6 @@
-import { EventContainer, IEventContainer } from "../collection/EventContainer";
-import { IInputEventHandleable } from "./IInputEventHandleable";
+import type { IEventContainer } from "../collection/EventContainer";
+import { EventContainer } from "../collection/EventContainer";
+import type { IInputEventHandleable } from "./IInputEventHandleable";
 
 /**
  * engine global input event handler
@@ -18,9 +19,9 @@ export class InputHandler implements IInputEventHandleable {
     private readonly _onPointerLeaveEvent = new EventContainer<((event: MouseEvent) => void)>();
     private readonly _onPointerMoveEvent = new EventContainer<((event: MouseEvent) => void)>();
     private _touchMoveOccured = false;
-    private _onTouchStartFunc: (() => void)|null = null;
-    private _lastMouseDownEvent: MouseEvent|null = null;
-    private _lastMouseEnterEvent: MouseEvent|null = null;
+    private _onTouchStartFunc: (() => void) | null = null;
+    private _lastMouseDownEvent: MouseEvent | null = null;
+    private _lastMouseEnterEvent: MouseEvent | null = null;
 
     /** @internal */
     public constructor(renderTargetDom: HTMLElement) {

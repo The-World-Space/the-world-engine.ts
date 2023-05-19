@@ -1,6 +1,6 @@
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { GameObject } from "@src/engine/hierarchy_object/GameObject";
-import { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
+import type { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import type { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
 import { Vector3 } from "three/src/Three";
 
 export class HorizontalObjectsAnimator extends Component {

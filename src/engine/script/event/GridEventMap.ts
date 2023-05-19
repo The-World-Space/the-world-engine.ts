@@ -1,8 +1,8 @@
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { GameObject } from "../../hierarchy_object/GameObject";
-import { IGridCoordinatable } from "../helper/IGridCoordinatable";
+import type { GameObject } from "../../hierarchy_object/GameObject";
+import type { IGridCoordinatable } from "../helper/IGridCoordinatable";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
 /**
@@ -60,7 +60,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
      * @returns
      */
     public addEventsFromTwoDimensionalArray(
-        array: (((gridX: number, gridY: number, target: GameObject) => void)|null)[][],
+        array: (((gridX: number, gridY: number, target: GameObject) => void) | null)[][],
         xOffset: number,
         yOffset: number
     ): void {
@@ -95,7 +95,7 @@ export class GridEventMap extends Component implements IGridCoordinatable {
     }
 
     private addDebugImage(x: number, y: number): void {
-        const gameObjectRef: {ref: GameObject|null} = {ref: null};
+        const gameObjectRef: {ref: GameObject | null} = {ref: null};
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
                 "debug-image", new Vector3(x, y, 10000))

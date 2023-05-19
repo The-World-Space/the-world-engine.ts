@@ -1,5 +1,5 @@
 import { GameObjectBuilder } from "../hierarchy_object/GameObjectBuilder";
-import { SceneProcessor } from "../SceneProcessor";
+import type { SceneProcessor } from "../SceneProcessor";
 
 /**
  * an object that makes a scene

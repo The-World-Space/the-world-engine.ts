@@ -1,4 +1,4 @@
-import { Vector2, Vector2Tuple } from "three/src/Three";
+import type { Vector2, Vector2Tuple } from "three/src/Three";
 
 export type ReadonlyVector2 = {
     /**

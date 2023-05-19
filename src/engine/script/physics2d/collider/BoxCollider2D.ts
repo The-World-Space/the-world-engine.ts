@@ -17,7 +17,7 @@ export class BoxCollider2D extends Collider2D {
     private readonly _size: Vector2 = new Vector2(1, 1);
     private _edgeRadius = 0;
     private _debugDraw = true;
-    private _debugObject: GameObject|null = null;
+    private _debugObject: GameObject | null = null;
 
     private updateDebugDraw(): void {
         if (this._debugDraw) {

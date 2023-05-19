@@ -1,4 +1,4 @@
-import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import type { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { CssTextRenderer } from "@src/engine/script/render/CssTextRenderer";

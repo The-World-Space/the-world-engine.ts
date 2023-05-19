@@ -1,8 +1,8 @@
 import { jest } from "@jest/globals";
 import { CoroutineProcessor } from "@src/engine/coroutine/CoroutineProcessor";
-import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
+import type { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { ComponentConstructor } from "@src/engine/hierarchy_object/ComponentConstructor";
+import type { ComponentConstructor } from "@src/engine/hierarchy_object/ComponentConstructor";
 import { ComponentEventContainer } from "@src/engine/hierarchy_object/ComponentEventContainer";
 import { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { Scene } from "@src/engine/hierarchy_object/Scene";

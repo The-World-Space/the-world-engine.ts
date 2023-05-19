@@ -1,4 +1,4 @@
-import { Component } from "./Component";
+import type { Component } from "./Component";
 
 type ComponentMessages =
     "start"|
@@ -20,6 +20,6 @@ type ComponentMessages =
 
 type ComponentKeys = keyof Component | ComponentMessages;
 
-type InitializeDisallowedMembers = Exclude<ComponentKeys, "enabled"|"instanceId"|"initialized"|"exists">;
+type InitializeDisallowedMembers = Exclude<ComponentKeys, "enabled" | "instanceId" | "initialized" | "exists">;
 
 export type InitializeComponent<T extends Component> = Pick<T, Exclude<keyof T, InitializeDisallowedMembers>>;

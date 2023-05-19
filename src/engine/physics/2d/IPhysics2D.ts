@@ -10,7 +10,7 @@ export interface IPhysics2D {
     get gravity(): Vector2;
     set gravity(value: Vector2);
 
-    get defaultMaterial(): PhysicsMaterial2D|null;
+    get defaultMaterial(): PhysicsMaterial2D | null;
 
     get velocityIterations(): number;
     set velocityIterations(value: number);
@@ -61,7 +61,7 @@ export interface IPhysics2D {
         layerMask?: number,
         minDepth?: number,
         maxDepth?: number
-    ): RaycastHit2D|null;
+    ): RaycastHit2D | null;
 
     raycast(
         origin: ReadonlyVector2,

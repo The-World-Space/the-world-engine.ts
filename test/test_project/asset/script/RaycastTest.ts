@@ -1,6 +1,6 @@
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { GameObject } from "@src/engine/hierarchy_object/GameObject";
-import { WritableVector2 } from "@src/engine/math/WritableVector2";
+import type { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import type { WritableVector2 } from "@src/engine/math/WritableVector2";
 import { ContactFilter2D } from "@src/engine/physics/2d/ContactFilter2D";
 import { RaycastHit2D } from "@src/engine/physics/2d/RaycastHit2D";
 import { Color } from "@src/engine/render/Color";

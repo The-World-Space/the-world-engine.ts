@@ -17,12 +17,12 @@ import { CollisionLayerConst } from "../../../physics/CollisionLayerConst";
  * you can't create collider2d component directly. use drived class. e.g. BoxCollider2D
  */
 export class Collider2D extends Component {
-    private _fixtureGroup: FixtureGroup|null = null;
+    private _fixtureGroup: FixtureGroup | null = null;
     private _density = 1;
-    private _material: PhysicsMaterial2D|null = null;
+    private _material: PhysicsMaterial2D | null = null;
     private _isTrigger = false;
     private readonly _offset: Vector2 = new Vector2();
-    private _collisionLayer: number|null = null;
+    private _collisionLayer: number | null = null;
 
     public onEnable(): void {
         this.createFixture();
@@ -109,7 +109,7 @@ export class Collider2D extends Component {
     /** @internal */
     public readonly updateFixturesMaterialInfo = (): void => {
         if (this._fixtureGroup) {
-            let material: PhysicsMaterial2D|null = null;
+            let material: PhysicsMaterial2D | null = null;
             if (this._material) {
                 material = this._material;
             } else if (this._fixtureGroup) {
@@ -154,7 +154,7 @@ export class Collider2D extends Component {
 
     // private updateFixtureMaterialInfo(fixture: Fixture): void {
     //     if (fixture) {
-    //         let material: PhysicsMaterial2D|null = null;
+    //         let material: PhysicsMaterial2D | null = null;
     //         if (this._material) {
     //             material = this._material;
     //         } else if (fixture) {
@@ -199,14 +199,14 @@ export class Collider2D extends Component {
     /**
      * The PhysicsMaterial2D that is applied to this collider. (default: null)
      */
-    public get material(): PhysicsMaterial2D|null {
+    public get material(): PhysicsMaterial2D | null {
         return this._material;
     }
 
     /**
      * The PhysicsMaterial2D that is applied to this collider. (default: null)
      */
-    public set material(value: PhysicsMaterial2D|null) {
+    public set material(value: PhysicsMaterial2D | null) {
         if (value) {
             if (!this._material) {
                 this._material = new PhysicsMaterial2D(value.friction, value.bounciness);
@@ -257,7 +257,7 @@ export class Collider2D extends Component {
      * get collision layer of this collider as string.
      * @returns layer name
      */
-    public getLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T>|null {
+    public getLayerToName<T extends CollisionLayer>(): CollisionLayerParm<T> | null {
         return this._collisionLayer ? this.engine.physics.collisionLayerMask.layerToName<T>(this._collisionLayer) : null;
     }
 
@@ -265,7 +265,7 @@ export class Collider2D extends Component {
      * set collision layer of this collider from string.
      * @param value layer name
      */
-    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T>|null): void {
+    public setLayerFromName<T extends CollisionLayer>(value: CollisionLayerParm<T> | null): void {
         this._collisionLayer = value ? this.engine.physics.collisionLayerMask.nameToLayer<T>(value) : null;
         this.updateFixturesFilter();
     }
@@ -273,14 +273,14 @@ export class Collider2D extends Component {
     /**
      * collision layer of this collider. (default: null)
      */
-    public get layer(): number|null {
+    public get layer(): number | null {
         return this._collisionLayer;
     }
 
     /**
      * collision layer of this collider. (default: null)
      */
-    public set layer(value: number|null) {
+    public set layer(value: number | null) {
         this._collisionLayer = value;
         this.updateFixturesFilter();
     }

@@ -21,8 +21,8 @@ export class EdgeCollider2D extends Collider2D {
     ];
     private _edgeRadius = 0;
     private _debugDraw = true;
-    private _debugObject: GameObject|null = null;
-    private _debugRenderer: CssEdgeRenderer|null = null;
+    private _debugObject: GameObject | null = null;
+    private _debugRenderer: CssEdgeRenderer | null = null;
 
     private updateDebugDraw(): void {
         if (this._debugDraw) {

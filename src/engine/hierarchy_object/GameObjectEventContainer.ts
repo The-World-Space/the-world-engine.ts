@@ -1,7 +1,7 @@
 import { MutIteratableCollection } from "../collection/MutIteratableCollection";
-import { Collision2D } from "../physics/2d/Collision2D";
-import { Collider2D } from "../script/physics2d/collider/Collider2D";
-import { Component } from "./Component";
+import type { Collision2D } from "../physics/2d/Collision2D";
+import type { Collider2D } from "../script/physics2d/collider/Collider2D";
+import type { Component } from "./Component";
 import { ComponentEvent } from "./ComponentEvent";
 
 /**

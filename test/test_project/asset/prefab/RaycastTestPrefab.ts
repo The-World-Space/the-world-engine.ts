@@ -1,4 +1,4 @@
-import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import type { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PlayerGridMovementController } from "@src/engine/script/controller/PlayerGridMovementController";
 import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";
@@ -10,7 +10,7 @@ import { CssTextRenderer, TextAlign } from "@src/engine/script/render/CssTextRen
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { RaycastTest } from "../script/RaycastTest";
-import { TestLayer } from "../TestLayer";
+import type { TestLayer } from "../TestLayer";
 
 /** @internal */
 export class RaycastTestPrefab extends Prefab {

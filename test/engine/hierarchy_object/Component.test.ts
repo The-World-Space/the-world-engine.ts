@@ -1,8 +1,8 @@
 import { jest } from "@jest/globals";
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
-import { Coroutine } from "@src/engine/coroutine/Coroutine";
-import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { Coroutine } from "@src/engine/coroutine/Coroutine";
+import type { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { CoroutineProcessor } from "@src/engine/coroutine/CoroutineProcessor";
 import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
 import { Game } from "@src/engine/Game";
@@ -15,7 +15,7 @@ import { Instantiater } from "@src/engine/Instantiater";
 import { TransformMatrixProcessor } from "@src/engine/render/TransformMatrixProcessor";
 import { Camera } from "@src/engine/script/render/Camera";
 import { Time } from "@src/engine/time/Time";
-import { Mock } from "jest-mock";
+import type { Mock } from "jest-mock";
 
 const engineGlobalObject = {
     instantiater: new Instantiater({} as EngineGlobalObject),

@@ -10,10 +10,10 @@ import { PhysicsMaterial2D } from "./PhysicsMaterial2D";
 export interface IPhysicsObject2D {
     readonly gameObject: GameObject;
     readonly body: Body;
-    get rigidbody(): RigidBody2D|null;
+    get rigidbody(): RigidBody2D | null;
     get colliders(): readonly Collider2D[];
-    get sharedMaterial(): PhysicsMaterial2D|null;
-    setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void;
+    get sharedMaterial(): PhysicsMaterial2D | null;
+    setSharedPhysicsMaterial(material: PhysicsMaterial2D | null): void;
 }
 
 /** @internal */
@@ -21,8 +21,8 @@ export class PhysicsObject2D implements IPhysicsObject2D {
     public readonly gameObject: GameObject;
     public readonly body: Body;
     private readonly _onDestroy: () => void;
-    private _sharedMaterial: PhysicsMaterial2D|null = null;
-    private _rigidBody: RigidBody2D|null = null;
+    private _sharedMaterial: PhysicsMaterial2D | null = null;
+    private _rigidBody: RigidBody2D | null = null;
     private readonly _colliders: Collider2D[] = [];
 
     public constructor(gameObject: GameObject, body: Body, onDestroy: () => void) {
@@ -66,7 +66,7 @@ export class PhysicsObject2D implements IPhysicsObject2D {
         }
     }
 
-    public setSharedPhysicsMaterial(material: PhysicsMaterial2D|null): void {
+    public setSharedPhysicsMaterial(material: PhysicsMaterial2D | null): void {
         if (material) {
             if (!this._sharedMaterial) {
                 this._sharedMaterial = new PhysicsMaterial2D(material.friction, material.bounciness);
@@ -89,11 +89,11 @@ export class PhysicsObject2D implements IPhysicsObject2D {
         }
     };
 
-    public get sharedMaterial(): PhysicsMaterial2D|null {
+    public get sharedMaterial(): PhysicsMaterial2D | null {
         return this._sharedMaterial;
     }
 
-    public get rigidbody(): RigidBody2D|null {
+    public get rigidbody(): RigidBody2D | null {
         return this._rigidBody;
     }
 

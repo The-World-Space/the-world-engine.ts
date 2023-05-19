@@ -1,10 +1,10 @@
-import { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from "three/src/Three";
+import type { Matrix4, Matrix4Tuple, Quaternion, Vector3 } from "three/src/Three";
 
-import { ReadonlyEuler } from "./ReadonlyEuler";
-import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
-import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
-import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
-import { ReadonlyVector3 } from "./ReadonlyVector3";
+import type { ReadonlyEuler } from "./ReadonlyEuler";
+import type { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import type { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import type { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableMatrix4 = {
     /**

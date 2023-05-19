@@ -1,6 +1,6 @@
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { Transform } from "@src/engine/hierarchy_object/Transform";
-import { Object3D } from "three/src/Three";
+import type { Object3D } from "three/src/Three";
 
 /**
  * Object3D wrapper for hierarchy object.
@@ -12,9 +12,9 @@ import { Object3D } from "three/src/Three";
  * If you need to update the matrix even if the transform does not change (like animation), use `Object3DContainer.updateWorldMatrix()` method.
  */
 export class Object3DContainer<T extends Object3D> extends Component {
-    private _object3D: T|null = null;
+    private _object3D: T | null = null;
     private _ready = false;
-    private _onDispose: ((object3D: T) => void)|null = null;
+    private _onDispose: ((object3D: T) => void) | null = null;
 
     public awake(): void {
         this._ready = true;
@@ -67,7 +67,7 @@ export class Object3DContainer<T extends Object3D> extends Component {
     /**
      * Object3D object to add to the hierarchy.
      */
-    public get object3D(): T|null {
+    public get object3D(): T | null {
         return this._object3D;
     }
 

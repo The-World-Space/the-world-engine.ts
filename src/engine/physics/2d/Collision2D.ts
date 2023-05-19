@@ -9,14 +9,14 @@ import { ContactPoint2D } from "./ContactPoint2D";
 import type { IPhysicsObject2D } from "./PhysicsObject2D";
 
 export class Collision2D {
-    private _contact: Contact|null = null;
+    private _contact: Contact | null = null;
     private readonly _worldManifold: WorldManifold = new WorldManifold();
 
-    private _collider: Collider2D|null = null;
-    private _rigidbody: RigidBody2D|null = null;
+    private _collider: Collider2D | null = null;
+    private _rigidbody: RigidBody2D | null = null;
 
-    private _otherCollider: Collider2D|null = null;
-    private _otherRigidbody: RigidBody2D|null = null;
+    private _otherCollider: Collider2D | null = null;
+    private _otherRigidbody: RigidBody2D | null = null;
 
     private _contactCount = 0;
     private readonly _relativeVelocity: Vector2 = new Vector2();
@@ -50,7 +50,7 @@ export class Collision2D {
         return this._collider!;
     }
 
-    public get rigidbody(): RigidBody2D|null {
+    public get rigidbody(): RigidBody2D | null {
         return this._rigidbody;
     }
 
@@ -58,7 +58,7 @@ export class Collision2D {
         return this._otherCollider!;
     }
 
-    public get otherRigidbody(): RigidBody2D|null {
+    public get otherRigidbody(): RigidBody2D | null {
         return this._otherRigidbody;
     }
 
@@ -86,7 +86,7 @@ export class Collision2D {
         return insertPos;
     }
 
-    public getContact(index: number, out?: ContactPoint2D): ContactPoint2D|null {
+    public getContact(index: number, out?: ContactPoint2D): ContactPoint2D | null {
         if (!this._contact) return null;
         const manifold = this._contact.GetManifold();
         if (index < 0 || manifold.pointCount <= index) return null;

@@ -1,4 +1,4 @@
-import { IEventContainer } from "../collection/EventContainer";
+import type { IEventContainer } from "../collection/EventContainer";
 
 /**
  * readonly game screen interface

@@ -1,13 +1,15 @@
-import { Quaternion, Vector2, Vector3 } from "three/src/Three";
+import type { Quaternion, Vector2, Vector3 } from "three/src/Three";
 
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Component } from "../../hierarchy_object/Component";
-import { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { ReadonlyVector3 } from "../../math/ReadonlyVector3";
-import { CssRendererConst, IUnknownSizeCssRenderOption } from "../render/CssRenderer";
+import type { ReadonlyQuaternion } from "../../math/ReadonlyQuaternion";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { ReadonlyVector3 } from "../../math/ReadonlyVector3";
+import type { IUnknownSizeCssRenderOption } from "../render/CssRenderer";
+import { CssRendererConst } from "../render/CssRenderer";
 import { CssSpriteAtlasRenderer } from "../render/CssSpriteAtlasRenderer";
-import { ICssImageRenderOption, ImageRenderingMode } from "../render/CssSpriteRenderer";
+import type { ICssImageRenderOption} from "../render/CssSpriteRenderer";
+import { ImageRenderingMode } from "../render/CssSpriteRenderer";
 import { CssFilter } from "../render/filter/CssFilter";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
@@ -21,9 +23,9 @@ export class SpriteAtlasInstance {
     private readonly _height: number;
     private readonly _atlasIndex: number;
     private readonly _position: Vector3;
-    private readonly _rotation?: Quaternion;
-    private readonly _scale?: Vector3;
-    private readonly _centerOffset?: Vector2;
+    private readonly _rotation: Quaternion | undefined;
+    private readonly _scale: Vector3 | undefined;
+    private readonly _centerOffset: Vector2 | undefined;
 
     public constructor(
         width: number,
@@ -74,21 +76,21 @@ export class SpriteAtlasInstance {
     /**
      * sprite atlas instance rotation
      */
-    public get rotation(): ReadonlyQuaternion|undefined {
+    public get rotation(): ReadonlyQuaternion | undefined {
         return this._rotation;
     }
 
     /**
      * sprite atlas instance scale
      */
-    public get scale(): ReadonlyVector3|undefined {
+    public get scale(): ReadonlyVector3 | undefined {
         return this._scale;
     }
 
     /**
      * sprite atlas instance center offset
      */
-    public get centerOffset(): ReadonlyVector2|undefined {
+    public get centerOffset(): ReadonlyVector2 | undefined {
         return this._centerOffset;
     }
 }
@@ -110,7 +112,7 @@ export class SpriteAtlasStaticInstancer extends Component implements IUnknownSiz
 
     private readonly _filter: CssFilter = new CssFilter();
 
-    private _initializeFunction: (() => void)|null = null;
+    private _initializeFunction: (() => void) | null = null;
     private _started = false;
 
     public start(): void {

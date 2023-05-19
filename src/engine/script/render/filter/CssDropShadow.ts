@@ -1,5 +1,5 @@
 import { Color } from "../../../render/Color";
-import { ReadonlyColor } from "../../../render/ReadonlyColor";
+import type { ReadonlyColor } from "../../../render/ReadonlyColor";
 
 /**
  * css drop shadow record interface
@@ -22,7 +22,7 @@ export interface ICssDropShadow {
  * css drop shadow record for use in CssRenderer
  */
 export class CssDropShadow implements ICssDropShadow {
-    private _onChange: (() => void)|null;
+    private _onChange: (() => void) | null;
 
     private _offsetX: number;
     private _offsetY: number;
@@ -39,9 +39,9 @@ export class CssDropShadow implements ICssDropShadow {
     public constructor(offsetX?: number, offsetY?: number, blur?: number, color?: Color);
 
     /** @internal */
-    public constructor(offsetX?: number, offsetY?: number, blur?: number, color?: ReadonlyColor, onChange?: (() => void)|null);
+    public constructor(offsetX?: number, offsetY?: number, blur?: number, color?: ReadonlyColor, onChange?: (() => void) | null);
 
-    public constructor(offsetX = 0, offsetY = 0, blur = 0, color: ReadonlyColor = new Color(), onChange: (() => void)|null = null) {
+    public constructor(offsetX = 0, offsetY = 0, blur = 0, color: ReadonlyColor = new Color(), onChange: (() => void) | null = null) {
         this._offsetX = offsetX;
         this._offsetY = offsetY;
         this._blur = blur;
@@ -50,12 +50,12 @@ export class CssDropShadow implements ICssDropShadow {
     }
 
     /** @internal */
-    public get onChange(): (() => void)|null {
+    public get onChange(): (() => void) | null {
         return this._onChange;
     }
 
     /** @internal */
-    public set onChange(value: (() => void)|null) {
+    public set onChange(value: (() => void) | null) {
         this._onChange = value;
     }
 

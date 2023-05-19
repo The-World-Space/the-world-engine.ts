@@ -1,4 +1,4 @@
-import * as CollisionLayerConstType from "./CollisionLayerConstType";
+import type * as CollisionLayerConstType from "./CollisionLayerConstType";
 
 export type CollisionLayer<l extends number = 32, acc extends string[] = [CollisionLayerConstType.DefaultLayerName]> =
     acc["length"] extends l

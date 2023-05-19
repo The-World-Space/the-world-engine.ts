@@ -8,8 +8,8 @@ import type { Renderer, WebGLRenderer } from "three/src/Three";
  */
 export interface IReadonlyWebGLGlobalObject {
     get renderer(): Omit<Renderer, "domElement">;
-    get webglRenderer(): WebGLRenderer|null;
-    get effectComposer(): EffectComposer|null;
+    get webglRenderer(): WebGLRenderer | null;
+    get effectComposer(): EffectComposer | null;
 }
 
 /**
@@ -17,12 +17,12 @@ export interface IReadonlyWebGLGlobalObject {
  */
 export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
     private readonly _renderer: Omit<Renderer, "domElement">;
-    private readonly _webglRenderer: WebGLRenderer|null;
-    private _effectComposer: EffectComposer|null;
+    private readonly _webglRenderer: WebGLRenderer | null;
+    private _effectComposer: EffectComposer | null;
 
     public constructor(
         renderer: Omit<Renderer, "domElement">,
-        webglRenderer: WebGLRenderer|null
+        webglRenderer: WebGLRenderer | null
     ) {
         this._renderer = renderer;
         this._webglRenderer = webglRenderer;
@@ -44,7 +44,7 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
     /**
      * get webgl renderer.
      */
-    public get webglRenderer(): WebGLRenderer|null {
+    public get webglRenderer(): WebGLRenderer | null {
         return this._webglRenderer;
     }
 
@@ -53,7 +53,7 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
      *
      * if you not use post process, this value is null.
      */
-    public get effectComposer(): EffectComposer|null {
+    public get effectComposer(): EffectComposer | null {
         return this._effectComposer;
     }
 
@@ -62,7 +62,7 @@ export class WebGLGlobalObject implements IReadonlyWebGLGlobalObject {
      *
      * this is unsafe API that use only for post process volume.
      */
-    public set effectComposer(effectComposer: EffectComposer|null) {
+    public set effectComposer(effectComposer: EffectComposer | null) {
         this._effectComposer = effectComposer;
     }
 }

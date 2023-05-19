@@ -12,7 +12,7 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
     private _elementWidth = 1;
     private _elementHeight = 1;
     private _autoSize = false;
-    private _initializeFunction: (() => void)|null = null;
+    private _initializeFunction: (() => void) | null = null;
 
     protected override renderInitialize(): void {
         this._initializeFunction?.call(this);
@@ -82,14 +82,14 @@ export class CssHtmlElementRenderer extends CssRenderer<HTMLElement> {
     /**
      * html element (default: null)
      */
-    public get element(): HTMLElement|null {
+    public get element(): HTMLElement | null {
         return this.htmlElement;
     }
 
     /**
      * html element (default: null)
      */
-    public set element(value: HTMLElement|null) {
+    public set element(value: HTMLElement | null) {
         const element = this.htmlElement = value ?? document.createElement("div");
 
         if (!this.readyToDraw) {

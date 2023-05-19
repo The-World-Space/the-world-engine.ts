@@ -1,12 +1,13 @@
-import { EffectComposer, Pass } from "three/examples/jsm/postprocessing/EffectComposer";
+import type { Pass } from "three/examples/jsm/postprocessing/EffectComposer";
+import { EffectComposer } from "three/examples/jsm/postprocessing/EffectComposer";
 import { RenderPass } from "three/examples/jsm/postprocessing/RenderPass";
-import { WebGLRenderer } from "three/src/Three";
+import type { WebGLRenderer } from "three/src/Three";
 
-import { EngineGlobalObject } from "../../EngineGlobalObject";
+import type { EngineGlobalObject } from "../../EngineGlobalObject";
 import { Component } from "../../hierarchy_object/Component";
-import { CameraContainer } from "../../render/CameraContainer";
-import { IReadonlyGameScreen } from "../../render/IReadonlyGameScreen";
-import { Camera } from "./Camera";
+import type { CameraContainer } from "../../render/CameraContainer";
+import type { IReadonlyGameScreen } from "../../render/IReadonlyGameScreen";
+import type { Camera } from "./Camera";
 
 class EffectComposerRc {
     private static readonly _map = new Map<EngineGlobalObject, EffectComposerRc>();
@@ -53,16 +54,16 @@ class EffectComposerRc {
 }
 
 export class WebGLGlobalPostProcessVolume extends Component {
-    private _renderPass: RenderPass|null = null;
-    private _effectComposer: EffectComposer|null = null;
+    private _renderPass: RenderPass | null = null;
+    private _effectComposer: EffectComposer | null = null;
     private _willAddRenderPass = true;
     private _reInitializeWhenCameraChanged = true;
     private _reinitializeWhenScreenSizeChanged = true;
 
     private _passes: readonly Pass[] = [];
 
-    private _initializer: ((scene: THREE.Scene, camera: THREE.Camera, screen: IReadonlyGameScreen) => readonly[readonly Pass[], (() => void)?])|null = null;
-    private _disposer: (() => void)|null = null;
+    private _initializer: ((scene: THREE.Scene, camera: THREE.Camera, screen: IReadonlyGameScreen) => readonly[readonly Pass[], (() => void)?]) | null = null;
+    private _disposer: (() => void) | null = null;
 
     private readonly onCameraChanged = (camera: Camera): void => {
         if (this._renderPass !== null) {
@@ -146,7 +147,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
     private removeAndDisposePasses(effectComposer: EffectComposer, passes: readonly Pass[], disposer?: () => void): void {
         const startIndex = effectComposer.passes.indexOf(passes[0]);
         if (startIndex !== -1) {
-            for (let i = 0; i < passes.length; i++) {
+            for (let i = 0; i < passes.length; ++i) {
                 effectComposer.removePass(passes[i]);
             }
         }
@@ -158,7 +159,7 @@ export class WebGLGlobalPostProcessVolume extends Component {
         if (0 < oldPasses.length) {
             startIndex = effectComposer.passes.indexOf(oldPasses[0]);
             if (startIndex !== -1) {
-                for (let i = 0; i < oldPasses.length; i++) {
+                for (let i = 0; i < oldPasses.length; ++i) {
                     effectComposer.removePass(oldPasses[i]);
                 }
             }
@@ -166,11 +167,11 @@ export class WebGLGlobalPostProcessVolume extends Component {
         }
 
         if (startIndex === -1) {
-            for (let i = 0; i < newPasses.length; i++) {
+            for (let i = 0; i < newPasses.length; ++i) {
                 effectComposer.addPass(newPasses[i]);
             }
         } else {
-            for (let i = 0; i < newPasses.length; i++) {
+            for (let i = 0; i < newPasses.length; ++i) {
                 effectComposer.insertPass(newPasses[i], startIndex + i);
             }
         }

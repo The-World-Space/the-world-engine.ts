@@ -1,13 +1,14 @@
 import { Vector2, Vector3 } from "three/src/Three";
 
-import { EventContainer, IEventContainer } from "../../collection/EventContainer";
+import type { IEventContainer } from "../../collection/EventContainer";
+import { EventContainer } from "../../collection/EventContainer";
 import { Component } from "../../hierarchy_object/Component";
 import { Transform } from "../../hierarchy_object/Transform";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../math/WritableVector2";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
 import { CSS3DObject } from "../../render/CSS3DRenderer"; //use duck typed class for tree shaking
 //import { CSS3DObject } from "three/examples/jsm/renderers/CSS3DRenderer";
-import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
+import type { IGridCollidable } from "../grid_physics2d/IGridCollidable";
 
 /**
  * pointer grid event object
@@ -60,8 +61,8 @@ export class PointerGridEvent {
 export class PointerGridInputListener extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
 
-    private _css3DObject: CSS3DObject|null = null;
-    private _htmlDivElement: HTMLDivElement|null = null;
+    private _css3DObject: CSS3DObject | null = null;
+    private _htmlDivElement: HTMLDivElement | null = null;
     private _gridCellWidth = 1;
     private _gridCellHeight = 1;
     private readonly _gridCenter: Vector2 = new Vector2();
@@ -73,7 +74,7 @@ export class PointerGridInputListener extends Component {
     private readonly _onPointerEnterEvent = new EventContainer<(event: PointerGridEvent) => void>();
     private readonly _onPointerLeaveEvent = new EventContainer<(event: PointerGridEvent) => void>();
     private readonly _onPointerMoveEvent = new EventContainer<(event: PointerGridEvent) => void>();
-    private _onTouchStartFunc: (() => void)|null = null;
+    private _onTouchStartFunc: (() => void) | null = null;
     private _touchMoveOccured = false;
     private _started = false;
 

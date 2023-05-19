@@ -1,7 +1,7 @@
 class LinkedListNode<T> {
     public value: T;
-    public next: LinkedListNode<T>|null = null;
-    public prev: LinkedListNode<T>|null = null;
+    public next: LinkedListNode<T> | null = null;
+    public prev: LinkedListNode<T> | null = null;
 
     public constructor(value: T) {
         this.value = value;
@@ -9,8 +9,8 @@ class LinkedListNode<T> {
 }
 
 class LinkedList<T> {
-    private _head: LinkedListNode<T>|null;
-    private _tail: LinkedListNode<T>|null;
+    private _head: LinkedListNode<T> | null;
+    private _tail: LinkedListNode<T> | null;
     private _length: number;
 
     public constructor() {
@@ -35,7 +35,7 @@ class LinkedList<T> {
             this._tail = node;
         }
 
-        this._length++;
+        this._length += 1;
     }
 
     private removeNode(node: LinkedListNode<T>): void {
@@ -51,7 +51,7 @@ class LinkedList<T> {
             this._tail = node.prev;
         }
 
-        this._length--;
+        this._length -= 1;
     }
 
     public remove(value: T): void {

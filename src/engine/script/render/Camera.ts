@@ -1,13 +1,14 @@
-import { Camera as ThreeCamera, OrthographicCamera as ThreeOrthographicCamera, PerspectiveCamera as ThreePerspectiveCamera } from "three/src/Three";
+import type { Camera as ThreeCamera} from "three/src/Three";
+import { OrthographicCamera as ThreeOrthographicCamera, PerspectiveCamera as ThreePerspectiveCamera } from "three/src/Three";
 
 import { Transform } from "../../../engine/hierarchy_object/Transform";
 import { Component } from "../../hierarchy_object/Component";
-import { CameraContainer } from "../../render/CameraContainer";
+import type { CameraContainer } from "../../render/CameraContainer";
 import { CameraInfo } from "../../render/CameraInfo";
 import { Color } from "../../render/Color";
-import { ReadonlyColor } from "../../render/ReadonlyColor";
+import type { ReadonlyColor } from "../../render/ReadonlyColor";
 
-type PerspectiveOrOrthographicCamera = ThreePerspectiveCamera|ThreeOrthographicCamera;
+type PerspectiveOrOrthographicCamera = ThreePerspectiveCamera | ThreeOrthographicCamera;
 
 /**
  * caamera projection type
@@ -25,7 +26,7 @@ export enum CameraType {
  * At least one camera component must exist in the scene
  */
 export class Camera extends Component {
-    private _camera: ThreeCamera|null = null;
+    private _camera: ThreeCamera | null = null;
     private _cameraType: CameraType = CameraType.Orthographic;
     private _fov = 75;
     private _viewSize = 5;
@@ -33,8 +34,8 @@ export class Camera extends Component {
     private _near = 0.1;
     private _far = 1000;
     private _priority = 0;
-    private _backgroundColor: null|Color|THREE.Texture = null;
-    private _cameraContainer: CameraContainer|null = null;
+    private _backgroundColor: null | Color | THREE.Texture = null;
+    private _cameraContainer: CameraContainer | null = null;
 
     private readonly onScreenResize = (width: number, height: number): void => {
         const aspectRatio = width / height;
@@ -366,7 +367,7 @@ export class Camera extends Component {
      *
      * When used with WebGLRenderer, you can specify a texture background. And in the case of color, the alpha channel is ignored
      */
-    public get backgroundColor(): null|ReadonlyColor|THREE.Texture {
+    public get backgroundColor(): null | ReadonlyColor | THREE.Texture {
         return this._backgroundColor;
     }
 
@@ -377,7 +378,7 @@ export class Camera extends Component {
      *
      * When used with WebGLRenderer, you can specify a texture background. And in the case of color, the alpha channel is ignored
      */
-    public set backgroundColor(value: null|ReadonlyColor|THREE.Texture) {
+    public set backgroundColor(value: null | ReadonlyColor | THREE.Texture) {
         if (value === null) {
             this._backgroundColor = null;
         } else if (value instanceof Color) {
@@ -396,7 +397,7 @@ export class Camera extends Component {
     }
 
     /** @internal */
-    public get threeCamera(): ThreeCamera|null {
+    public get threeCamera(): ThreeCamera | null {
         return this._camera;
     }
 

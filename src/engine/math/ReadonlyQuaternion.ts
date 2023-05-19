@@ -1,4 +1,4 @@
-import { Quaternion } from "three/src/Three";
+import type { Quaternion } from "three/src/Three";
 
 export type ReadonlyQuaternion = {
     /**

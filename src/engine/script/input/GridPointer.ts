@@ -1,12 +1,14 @@
 import { Vector3 } from "three/src/Three";
 
-import { EventContainer, IEventContainer } from "../../collection/EventContainer";
+import type { IEventContainer } from "../../collection/EventContainer";
+import { EventContainer } from "../../collection/EventContainer";
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
-import { GameObject } from "../../hierarchy_object/GameObject";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { GameObject } from "../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 import { CssHtmlElementRenderer } from "../render/CssHtmlElementRenderer";
-import { PointerGridEvent, PointerGridInputListener } from "./PointerGridInputListener";
+import type { PointerGridEvent} from "./PointerGridInputListener";
+import { PointerGridInputListener } from "./PointerGridInputListener";
 
 /**
  * grid pointer
@@ -22,10 +24,10 @@ export class GridPointer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [PointerGridInputListener];
 
-    private _pointerGridInputListener: PointerGridInputListener|null = null;
+    private _pointerGridInputListener: PointerGridInputListener | null = null;
     private _pointerZoffset = 0;
-    private _pointerObject: GameObject|null = null;
-    private _pointerRenderer: CssHtmlElementRenderer|null = null;
+    private _pointerObject: GameObject | null = null;
+    private _pointerRenderer: CssHtmlElementRenderer | null = null;
     private readonly _onPointerDownEvent = new EventContainer<((event: PointerGridEvent) => void)>();
     private readonly _onPointerUpEvent = new EventContainer<((event: PointerGridEvent) => void)>();
     private readonly _onPointerMoveEvent = new EventContainer<((event: PointerGridEvent) => void)>();

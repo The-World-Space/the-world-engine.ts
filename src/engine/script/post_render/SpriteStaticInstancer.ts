@@ -1,9 +1,11 @@
-import { Quaternion, Vector2, Vector3 } from "three/src/Three";
+import type { Quaternion, Vector2, Vector3 } from "three/src/Three";
 
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Component } from "../../hierarchy_object/Component";
-import { CssRendererConst, IUnknownSizeCssRenderOption } from "../render/CssRenderer";
-import { CssSpriteRenderer, ICssImageRenderOption, ImageRenderingMode } from "../render/CssSpriteRenderer";
+import type { IUnknownSizeCssRenderOption } from "../render/CssRenderer";
+import { CssRendererConst } from "../render/CssRenderer";
+import type { ICssImageRenderOption} from "../render/CssSpriteRenderer";
+import { CssSpriteRenderer, ImageRenderingMode } from "../render/CssSpriteRenderer";
 import { CssFilter } from "../render/filter/CssFilter";
 import { ZaxisSorter } from "../render/ZaxisSorter";
 
@@ -16,9 +18,9 @@ export class SpriteInstance {
     private readonly _width: number;
     private readonly _height: number;
     private readonly _position: Vector3;
-    private readonly _rotation?: Quaternion;
-    private readonly _scale?: Vector3;
-    private readonly _centerOffset?: Vector2;
+    private readonly _rotation: Quaternion | undefined;
+    private readonly _scale: Vector3 | undefined;
+    private readonly _centerOffset: Vector2 | undefined;
 
     public constructor(
         width: number,
@@ -60,21 +62,21 @@ export class SpriteInstance {
     /**
      * sprite instance rotation
      */
-    public get rotation(): Quaternion|undefined {
+    public get rotation(): Quaternion | undefined {
         return this._rotation?.clone();
     }
 
     /**
      * sprite instance scale
      */
-    public get scale(): Vector3|undefined {
+    public get scale(): Vector3 | undefined {
         return this._scale?.clone();
     }
 
     /**
      * sprite instance center offset
      */
-    public get centerOffset(): Vector2|undefined {
+    public get centerOffset(): Vector2 | undefined {
         return this._centerOffset?.clone();
     }
 }
@@ -94,7 +96,7 @@ export class SpriteStaticInstancer extends Component implements IUnknownSizeCssR
 
     private readonly _filter: CssFilter = new CssFilter();
 
-    private _initializeFunction: (() => void)|null = null;
+    private _initializeFunction: (() => void) | null = null;
     private _started = false;
 
     public start(): void {

@@ -32,6 +32,12 @@
         "simple-import-sort"
     ],
     "rules": {
+        "@typescript-eslint/consistent-type-imports": [
+            "error",
+            {
+                "prefer": "type-imports"
+            }
+        ],
         "@typescript-eslint/no-non-null-assertion": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-unused-vars": "off",
@@ -138,6 +144,12 @@
             "error"
         ],
         "no-debugger": "warn",
+        "no-plusplus": [
+            "error",
+            {
+                "allowForLoopAfterthoughts": true
+            }
+        ],
         "no-trailing-spaces": [
             "error"
         ],

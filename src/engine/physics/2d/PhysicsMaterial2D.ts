@@ -1,4 +1,5 @@
-import { EventContainer, IEventContainer } from "../../collection/EventContainer";
+import type { IEventContainer } from "../../collection/EventContainer";
+import { EventContainer } from "../../collection/EventContainer";
 
 export class PhysicsMaterial2D {
     private readonly _onChangedEvent = new EventContainer<() => void>();

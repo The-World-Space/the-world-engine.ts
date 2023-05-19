@@ -1,5 +1,5 @@
 import { Color } from "./Color";
-import { ReadonlyColor } from "./ReadonlyColor";
+import type { ReadonlyColor } from "./ReadonlyColor";
 
 /**
  * camera info object
@@ -7,7 +7,7 @@ import { ReadonlyColor } from "./ReadonlyColor";
  */
 export class CameraInfo {
     private _priority: number;
-    private _backgroundColor: null|Color|THREE.Texture;
+    private _backgroundColor: null | Color | THREE.Texture;
 
     /**
      *
@@ -16,7 +16,7 @@ export class CameraInfo {
      */
     public constructor(
         priority: number,
-        backgroundColor: null|ReadonlyColor|THREE.Texture
+        backgroundColor: null | ReadonlyColor | THREE.Texture
     ) {
         this._priority = priority;
         if (backgroundColor === null) {
@@ -45,14 +45,14 @@ export class CameraInfo {
     /**
      * get camera background color
      */
-    public get backgroundColor(): null|ReadonlyColor|THREE.Texture {
+    public get backgroundColor(): null | ReadonlyColor | THREE.Texture {
         return this._backgroundColor;
     }
 
     /**
      * set camera background color
      */
-    public set backgroundColor(value: null|ReadonlyColor|THREE.Texture) {
+    public set backgroundColor(value: null | ReadonlyColor | THREE.Texture) {
         if (value === null) {
             this._backgroundColor = null;
         } else if (value instanceof Color) {

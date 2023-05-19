@@ -53,7 +53,7 @@ export class CssCollideTilemapRenderer extends CssTilemapRenderer {
      * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
      * @returns
      */
-    public override drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
+    public override drawTileFromTwoDimensionalArray(array: ({i: number, a: number} | null)[][], columnOffset: number, rowOffset: number): void {
         super.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset);
         for (let row = 0; row < array.length; row++) {
             for (let column = 0; column < array[row].length; column++) {

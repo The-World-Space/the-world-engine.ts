@@ -1,4 +1,4 @@
-import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import type { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";
 import { CircleCollider2D } from "@src/engine/script/physics2d/collider/CircleCollider2D";
@@ -13,7 +13,7 @@ import { BodyDisposer } from "../script/BodyDisposer";
 import { ContactTest } from "../script/ContactTest";
 import { PhysicsController } from "../script/PhysicsController";
 import { Spawner } from "../script/Spawner";
-import { TestLayer } from "../TestLayer";
+import type { TestLayer } from "../TestLayer";
 import { IframeDynamicBoxPrefab } from "./IframeDynamicBoxPrefab";
 
 /** @internal */

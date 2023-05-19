@@ -1,9 +1,9 @@
-import { Quaternion } from "three/src/Three";
+import type { Quaternion } from "three/src/Three";
 
-import { ReadonlyEuler } from "./ReadonlyEuler";
-import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
-import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
-import { ReadonlyVector3 } from "./ReadonlyVector3";
+import type { ReadonlyEuler } from "./ReadonlyEuler";
+import type { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import type { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableQuaternion = {
     /**

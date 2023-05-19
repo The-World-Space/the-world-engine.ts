@@ -1,11 +1,11 @@
 import { Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { GameObject } from "../../hierarchy_object/GameObject";
-import { IGridCollidable } from "../grid_physics2d/IGridCollidable";
-import { IGridPositionable } from "../helper/IGridPositionable";
-import { GridPointer } from "../input/GridPointer";
-import { PointerGridEvent } from "../input/PointerGridInputListener";
+import type { GameObject } from "../../hierarchy_object/GameObject";
+import type { IGridCollidable } from "../grid_physics2d/IGridCollidable";
+import type { IGridPositionable } from "../helper/IGridPositionable";
+import type { GridPointer } from "../input/GridPointer";
+import type { PointerGridEvent } from "../input/PointerGridInputListener";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 import { Pathfinder } from "./pathfind/Pathfinder";
 
@@ -13,10 +13,10 @@ import { Pathfinder } from "./pathfind/Pathfinder";
  * Pathfind visualizer component for testing purposes
  */
 export class PathfindTest extends Component {
-    private _player: IGridPositionable|null = null;
-    private _collideMaps: IGridCollidable[]|null = null;
-    private _gridPointer: GridPointer|null = null;
-    private _pathfinder: Pathfinder|null = null;
+    private _player: IGridPositionable | null = null;
+    private _collideMaps: IGridCollidable[] | null = null;
+    private _gridPointer: GridPointer | null = null;
+    private _pathfinder: Pathfinder | null = null;
     private readonly _debugImages: GameObject[] = [];
 
     private readonly _onPointerDownBind = this.onPointerDown.bind(this);
@@ -53,7 +53,7 @@ export class PathfindTest extends Component {
     }
 
     private addDebugImage(x: number, y: number): void {
-        const gameObjectRef: {ref: GameObject|null} = {ref: null};
+        const gameObjectRef: {ref: GameObject | null} = {ref: null};
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
                 "debug-image", new Vector3(x, y, 10000))
@@ -73,42 +73,42 @@ export class PathfindTest extends Component {
     /**
      * player to use pathfinding on (default: null)
      */
-    public get player(): IGridPositionable|null {
+    public get player(): IGridPositionable | null {
         return this._player;
     }
 
     /**
      * player to use pathfinding on (default: null)
      */
-    public set player(value: IGridPositionable|null) {
+    public set player(value: IGridPositionable | null) {
         this._player = value;
     }
 
     /**
      * collide maps to use for pathfinding (default: null)
      */
-    public get collideMaps(): IGridCollidable[]|null {
+    public get collideMaps(): IGridCollidable[] | null {
         return this._collideMaps;
     }
 
     /**
      * collide maps to use for pathfinding (default: null)
      */
-    public set collideMaps(value: IGridCollidable[]|null) {
+    public set collideMaps(value: IGridCollidable[] | null) {
         this._collideMaps = value;
     }
 
     /**
      * grid pointer to use for selecting the end point (default: null)
      */
-    public get gridPointer(): GridPointer|null {
+    public get gridPointer(): GridPointer | null {
         return this._gridPointer;
     }
 
     /**
      * grid pointer to use for selecting the end point (default: null)
      */
-    public set gridPointer(value: GridPointer|null) {
+    public set gridPointer(value: GridPointer | null) {
         this._gridPointer = value;
     }
 }

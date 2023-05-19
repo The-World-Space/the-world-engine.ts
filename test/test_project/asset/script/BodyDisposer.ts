@@ -1,7 +1,7 @@
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { Collider2D } from "@src/engine/script/physics2d/collider/Collider2D";
 
-import { TestLayer } from "../TestLayer";
+import type { TestLayer } from "../TestLayer";
 
 /** @internal */
 export class BodyDisposer extends Component {

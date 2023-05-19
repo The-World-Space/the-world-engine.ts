@@ -1,6 +1,6 @@
-import { Object3D } from "three/src/Three";
+import type { Object3D } from "three/src/Three";
 
-import { Transform } from "../hierarchy_object/Transform";
+import type { Transform } from "../hierarchy_object/Transform";
 
 /** @internal */
 export class TransformMatrixProcessor {

@@ -1,7 +1,8 @@
 import { GlobalConfig } from "../../../GlobalConfig";
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer, CssRendererConst } from "./CssRenderer";
-import { ICssImageRenderOption, ImageRenderingMode } from "./CssSpriteRenderer";
+import type { ICssImageRenderOption} from "./CssSpriteRenderer";
+import { ImageRenderingMode } from "./CssSpriteRenderer";
 
 /**
  * css sprite atlas render mode
@@ -47,7 +48,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     private _croppedImageWidth = 0;
     private _croppedImageHeight = 0;
 
-    private _initializeFunction: (() => void)|null = null;
+    private _initializeFunction: (() => void) | null = null;
 
     protected override renderInitialize(): void {
         if (this._initializeFunction) {
@@ -159,7 +160,7 @@ export class CssSpriteAtlasRenderer extends CssRenderer<HTMLImageElement> implem
     /**
      * image (default: null)
      */
-    public get image(): HTMLImageElement|null {
+    public get image(): HTMLImageElement | null {
         return this.htmlElement;
     }
 

@@ -1,8 +1,8 @@
 import { jest } from "@jest/globals";
 import { Coroutine } from "@src/engine/coroutine/Coroutine";
-import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import type { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
-import { Component } from "@src/engine/hierarchy_object/Component";
+import type { Component } from "@src/engine/hierarchy_object/Component";
 
 const createComponent = jest.fn<() => Component>(() => {
     return {

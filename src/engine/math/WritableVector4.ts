@@ -1,8 +1,8 @@
-import { BufferAttribute, Vector4, Vector4Tuple } from "three/src/Three";
+import type { BufferAttribute, Vector4, Vector4Tuple } from "three/src/Three";
 
-import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
-import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
-import { ReadonlyVector4 } from "./ReadonlyVector4";
+import type { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import type { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import type { ReadonlyVector4 } from "./ReadonlyVector4";
 
 export type WritableVector4 = {
     /**

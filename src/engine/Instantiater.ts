@@ -1,9 +1,9 @@
-import { EngineGlobalObject } from "./EngineGlobalObject";
+import type { EngineGlobalObject } from "./EngineGlobalObject";
 import { GameObjectBuilder } from "./hierarchy_object/GameObjectBuilder";
-import { Prefab } from "./hierarchy_object/Prefab";
-import { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
-import { ReadonlyQuaternion } from "./math/ReadonlyQuaternion";
-import { ReadonlyVector3 } from "./math/ReadonlyVector3";
+import type { Prefab } from "./hierarchy_object/Prefab";
+import type { PrefabConstructor } from "./hierarchy_object/PrefabConstructor";
+import type { ReadonlyQuaternion } from "./math/ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "./math/ReadonlyVector3";
 
 /**
  * instantiate a game object

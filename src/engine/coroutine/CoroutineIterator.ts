@@ -1,3 +1,3 @@
-import { YieldInstruction } from "./YieldInstruction";
+import type { YieldInstruction } from "./YieldInstruction";
 
-export type CoroutineIterator = IterableIterator<YieldInstruction|null>;
+export type CoroutineIterator = IterableIterator<YieldInstruction | null>;

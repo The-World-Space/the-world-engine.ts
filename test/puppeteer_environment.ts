@@ -1,11 +1,11 @@
-import { JestEnvironmentConfig } from "@jest/environment";
-import { EnvironmentContext } from "@jest/environment";
+import type { JestEnvironmentConfig } from "@jest/environment";
+import type { EnvironmentContext } from "@jest/environment";
 import { readFile } from "fs/promises";
 import NodeEnvironment from "jest-environment-node";
 import os from "os";
 import path from "path";
 import puppeteer from "puppeteer";
-import { Context } from "vm";
+import type { Context } from "vm";
 
 const dir = path.join(os.tmpdir(), "jest_puppeteer_global_setup");
 

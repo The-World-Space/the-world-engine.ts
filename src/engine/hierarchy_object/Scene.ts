@@ -1,7 +1,7 @@
 import { Scene as ThreeScene } from "three/src/Three";
 
-import { GameObject } from "./GameObject";
-import { GameObjectBuilder } from "./GameObjectBuilder";
+import type { GameObject } from "./GameObject";
+import type { GameObjectBuilder } from "./GameObjectBuilder";
 import { Transform } from "./Transform";
 
 /**

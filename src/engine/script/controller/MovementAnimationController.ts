@@ -1,5 +1,5 @@
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { Directable, Direction } from "../helper/Directable";
 import { SpriteAtlasAnimator } from "../post_render/SpriteAtlasAnimator";
 
@@ -21,8 +21,8 @@ export class MovementAnimationController extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [Directable, SpriteAtlasAnimator];
 
-    private _directable: Directable|null = null;
-    private _spriteAtlasAnimator: SpriteAtlasAnimator|null = null;
+    private _directable: Directable | null = null;
+    private _spriteAtlasAnimator: SpriteAtlasAnimator | null = null;
     private _lastDirection: Direction = Direction.Down;
     private _lastIsMoving = false;
 

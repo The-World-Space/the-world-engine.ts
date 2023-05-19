@@ -1,7 +1,8 @@
 /**
  * Based on http://www.emagix.net/academic/mscs-project/item/camera-sync-with-css3-and-webgl-threejs
  */
-import { Camera, Matrix4, Object3D, OrthographicCamera, PerspectiveCamera, Quaternion, Scene, Vector3 } from "three/src/Three";
+import type { Camera, OrthographicCamera, PerspectiveCamera, Scene} from "three/src/Three";
+import { Matrix4, Object3D, Quaternion, Vector3 } from "three/src/Three";
 
 /** @internal */
 export class CSS3DObject extends Object3D {

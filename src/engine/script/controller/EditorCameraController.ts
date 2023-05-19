@@ -1,7 +1,7 @@
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { Camera } from "../render/Camera";
 
 /**
@@ -20,7 +20,7 @@ export class EditorCameraController extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [Camera];
 
-    private _camera: Camera|null = null;
+    private _camera: Camera | null = null;
     private _mouseMoveButtonDown = false;
     private _mouseMoveButton = 1;
     private readonly _lastOffset: Vector2 = new Vector2();

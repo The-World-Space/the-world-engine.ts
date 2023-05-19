@@ -1,10 +1,10 @@
 import { MathUtils, Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
-import { GameObject } from "../../hierarchy_object/GameObject";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../math/WritableVector2";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { GameObject } from "../../hierarchy_object/GameObject";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
 import { Camera } from "../render/Camera";
 
 /**
@@ -23,7 +23,7 @@ export class TrackCameraController extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [Camera];
 
-    private _trackTarget: GameObject|null = null;
+    private _trackTarget: GameObject | null = null;
     private readonly _targetOffset: Vector2 = new Vector2();
     private _cameraDistanceOffset = 20;
     private _pixelPerfectUnit = 1;

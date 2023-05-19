@@ -1,7 +1,7 @@
-import { Matrix3, Matrix3Tuple, Matrix4, Vector3 } from "three/src/Three";
+import type { Matrix3, Matrix3Tuple, Matrix4, Vector3 } from "three/src/Three";
 
-import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
-import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import type { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import type { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
 
 export type WritableMatrix3 = {
     /**

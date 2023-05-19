@@ -1,6 +1,6 @@
 import { Transform } from "../../hierarchy_object/Transform";
 import { Color } from "../../render/Color";
-import { ReadonlyColor } from "../../render/ReadonlyColor";
+import type { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
 /**
@@ -32,9 +32,9 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     private _fontFamily = "Arial";
     private _textalign: TextAlign = TextAlign.Left;
     private readonly _textColor: Color = new Color(1, 1, 1, 1);
-    private _text: string|null = null;
+    private _text: string | null = null;
 
-    private _initializeFunction: (() => void)|null = null;
+    private _initializeFunction: (() => void) | null = null;
 
     private static readonly _defaultText: string = "Text";
 
@@ -106,14 +106,14 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
     /**
      * text that is displayed (default: null)
      */
-    public get text(): string|null {
+    public get text(): string | null {
         return this._text;
     }
 
     /**
      * text that is displayed (default: null)
      */
-    public set text(value: string|null) {
+    public set text(value: string | null) {
         this._text = value;
 
         if (!this.readyToDraw) {
@@ -124,7 +124,7 @@ export class CssTextRenderer extends CssRenderer<HTMLDivElement> {
         this.setTextInternal(value);
     }
 
-    private setTextInternal(value: string|null): void {
+    private setTextInternal(value: string | null): void {
         if (!this.htmlElement) this.htmlElement = document.createElement("div");
         this.htmlElement.textContent = value ?? "";
 
