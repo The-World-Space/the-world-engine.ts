@@ -121,6 +121,12 @@ export type WritableQuaternion = {
      * @return The provided array-like.
      */
     toArray(array: ArrayLike<number>, offset?: number): ArrayLike<number>;
+    
+    /**
+     * This method defines the serialization result of Quaternion.
+     * @return The numerical elements of this quaternion in an array of format [x, y, z, w].
+     */
+    toJSON(): [number, number, number, number];
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _onChange(callback: () => void): WritableQuaternion;

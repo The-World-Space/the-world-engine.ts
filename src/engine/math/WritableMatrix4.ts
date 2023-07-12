@@ -103,6 +103,7 @@ export type WritableMatrix4 = {
     /**
      * Sets this matrix as translation transform.
      */
+    makeTranslation(v: Vector3): WritableMatrix4;
     makeTranslation(x: number, y: number, z: number): WritableMatrix4;
 
     /**

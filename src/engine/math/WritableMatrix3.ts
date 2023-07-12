@@ -1,4 +1,4 @@
-import type { Matrix3, Matrix3Tuple, Matrix4, Vector3 } from "three/src/Three";
+import type { Matrix3, Matrix3Tuple, Matrix4, Vector2, Vector3 } from "three/src/Three";
 
 import type { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
 import type { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
@@ -53,6 +53,7 @@ export type WritableMatrix3 = {
 
     translate(tx: number, ty: number): WritableMatrix3;
 
+    makeTranslation(v: Vector2): WritableMatrix3;
     makeTranslation(x: number, y: number): WritableMatrix3;
 
     makeRotation(theta: number): WritableMatrix3;
