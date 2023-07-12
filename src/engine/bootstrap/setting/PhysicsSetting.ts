@@ -1,10 +1,10 @@
-import { ReadonlyVector2 } from "@src/engine/math/ReadonlyVector2";
-import { Vector2 } from "three/src/Three";
+import type { ReadonlyVector2 } from "@src/engine/math/ReadonlyVector2";
+import type { Vector2 } from "three/src/Three";
 
 import type { Physics2DLoader } from "../../physics/2d/Physics2DLoader";
 import type { PhysicsMaterial2D } from "../../physics/2d/PhysicsMaterial2D";
 import type { CollisionLayer } from "../../physics/CollisionLayer";
-import * as CollisionLayerConstType from "../../physics/CollisionLayerConstType";
+import type * as CollisionLayerConstType from "../../physics/CollisionLayerConstType";
 
 export type PhysicsSettingObject = {
     loader?: typeof Physics2DLoader,

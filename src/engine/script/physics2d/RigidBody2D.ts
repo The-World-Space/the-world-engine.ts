@@ -57,8 +57,8 @@ export enum ForceMode2D {
 export class RigidBody2D extends Component {
     public override readonly disallowMultipleComponent = true;
 
-    private _physicsObject: IPhysicsObject2D|null = null;
-    private _body: Body|null = null;
+    private _physicsObject: IPhysicsObject2D | null = null;
+    private _body: Body | null = null;
 
     private _bodyType: BodyType = BodyType.b2_dynamicBody; // Body Type
     // Material
@@ -212,14 +212,14 @@ export class RigidBody2D extends Component {
     /**
      * The PhysicsMaterial2D that is applied to all Collider2D attached to this Rigidbody2D. (default: null)
      */
-    public get material(): PhysicsMaterial2D|null {
+    public get material(): PhysicsMaterial2D | null {
         return this.getPhysicsObject().sharedMaterial;
     }
 
     /**
      * The PhysicsMaterial2D that is applied to all Collider2D attached to this Rigidbody2D. (default: null)
      */
-    public set material(value: PhysicsMaterial2D|null) {
+    public set material(value: PhysicsMaterial2D | null) {
         this.getPhysicsObject().setSharedPhysicsMaterial(value);
     }
 

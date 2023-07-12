@@ -1,25 +1,25 @@
 import type { Renderer, WebGLRenderer } from "three/src/Three";
 
-import { Bootstrapper } from "./bootstrap/Bootstrapper";
-import { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
-import { GameSettingObject } from "./bootstrap/setting/GameSetting";
+import type { Bootstrapper } from "./bootstrap/Bootstrapper";
+import type { BootstrapperConstructor } from "./bootstrap/BootstrapperConstructor";
+import type { GameSettingObject } from "./bootstrap/setting/GameSetting";
 import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
 import { EngineGlobalObject } from "./EngineGlobalObject";
 import { GameState, GameStateKind } from "./GameState";
 import { Scene } from "./hierarchy_object/Scene";
-import { IInputEventHandleable } from "./input/IInputEventHandleable";
+import type { IInputEventHandleable } from "./input/IInputEventHandleable";
 import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
 import { CameraContainer } from "./render/CameraContainer";
 import { Color } from "./render/Color";
 import { GameScreen } from "./render/GameScreen";
 import { OptimizedCSS3DRenderer } from "./render/OptimizedCSS3DRenderer";
-import { ReadonlyColor } from "./render/ReadonlyColor";
+import type { ReadonlyColor } from "./render/ReadonlyColor";
 import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
 import { WebGLGlobalObject } from "./render/WebGLGlobalObject";
 //import type { WebGLRendererLoader } from "./render/WebGLRendererLoader";
 import { SceneProcessor } from "./SceneProcessor";
 import { Time } from "./time/Time";
-import { DeepReadonly } from "./type/DeepReadonly";
+import type { DeepReadonly } from "./type/DeepReadonly";
 
 /**
  * game engine class
@@ -47,8 +47,8 @@ export class Game {
     private _webGLGlobalObject?: WebGLGlobalObject;
 
     private readonly _container: HTMLElement;
-    private _gameSetting: DeepReadonly<GameSettingObject>|null = null;
-    private _animationFrameId: number|null;
+    private _gameSetting: DeepReadonly<GameSettingObject> | null = null;
+    private _animationFrameId: number | null;
     private _isDisposed: boolean;
     private readonly _autoResize: boolean;
     private readonly _resizeFrameBufferBind: () => void;
@@ -73,7 +73,7 @@ export class Game {
 
         {
             this._cameraContainer = new CameraContainer(
-                (color: null|ReadonlyColor|THREE.Texture): void => {
+                (color: null | ReadonlyColor | THREE.Texture): void => {
                     if (this._webglRenderer) {
                         const threeScene = this._rootScene.unsafeGetThreeScene();
                         if (color instanceof Color) {
@@ -83,7 +83,7 @@ export class Game {
                             threeColor!.b = color.b;
                             threeScene.background = threeColor;
                         } else {
-                            threeScene.background = color as null|THREE.Texture;
+                            threeScene.background = color as null | THREE.Texture;
                         }
                     } else if (this._css3DRenderer) {
                         const domElement = this._css3DRenderer.domElement;
@@ -178,7 +178,7 @@ export class Game {
                 this._threeColor = new this._gameSetting.render.webGLRendererLoader.Color();
 
                 const initilizerResult = this._gameSetting.render.webGLRendererInitilizer();
-                let renderer: WebGLRenderer|Omit<Renderer, "domElement">;
+                let renderer: WebGLRenderer | Omit<Renderer, "domElement">;
                 let domElement: HTMLCanvasElement;
                 let rendererIsWebGLRenderer: boolean;
                 if (initilizerResult instanceof Array) {

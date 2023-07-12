@@ -1,15 +1,15 @@
-import { EngineGlobalObject } from "../EngineGlobalObject";
-import { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
-import { ReadonlyVector3 } from "../math/ReadonlyVector3";
-import { WritableQuaternion } from "../math/WritableQuaternion";
-import { WritableVector3 } from "../math/WritableVector3";
-import { SceneProcessor } from "../SceneProcessor";
-import { Component } from "./Component";
-import { ComponentConstructor } from "./ComponentConstructor";
+import type { EngineGlobalObject } from "../EngineGlobalObject";
+import type { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "../math/ReadonlyVector3";
+import type { WritableQuaternion } from "../math/WritableQuaternion";
+import type { WritableVector3 } from "../math/WritableVector3";
+import type { SceneProcessor } from "../SceneProcessor";
+import type { Component } from "./Component";
+import type { ComponentConstructor } from "./ComponentConstructor";
 import { GameObject } from "./GameObject";
-import { InitializeComponent } from "./InitializeComponent";
-import { PrefabRef } from "./PrefabRef";
-import { Transform } from "./Transform";
+import type { InitializeComponent } from "./InitializeComponent";
+import type { PrefabRef } from "./PrefabRef";
+import type { Transform } from "./Transform";
 
 /**
  * builder for GameObject
@@ -207,7 +207,7 @@ export class GameObjectBuilder {
         for (let i = 0; i < components.length; ++i) {
             const component = components[i];
             const requiredComponents = component.requiredComponents;
-            for (let j = 0; j < requiredComponents.length; j++) {
+            for (let j = 0; j < requiredComponents.length; ++j) {
                 const requiredComponentCtor = requiredComponents[j];
                 const requiredComponent = gameObject.getComponent(requiredComponentCtor);
                 if (!requiredComponent) {
@@ -221,7 +221,7 @@ export class GameObjectBuilder {
     }
 
     /** @internal */
-    public build(parent: Transform|null): GameObject {
+    public build(parent: Transform | null): GameObject {
         if (this._isBuilt) throw new Error("GameObjectBuilder is already built");
         this._isBuilt = true;
 
@@ -231,7 +231,7 @@ export class GameObjectBuilder {
         return this._gameObject;
     }
 
-    private registerTransform(parent: Transform|null): void {
+    private registerTransform(parent: Transform | null): void {
         this._gameObject.transform.setParent(parent, false);
 
         const children = this._children;

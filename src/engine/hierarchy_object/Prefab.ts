@@ -1,7 +1,7 @@
-import { EngineGlobalObject } from "../EngineGlobalObject";
-import { Instantiater } from "../Instantiater";
-import { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
-import { ReadonlyVector3 } from "../math/ReadonlyVector3";
+import type { EngineGlobalObject } from "../EngineGlobalObject";
+import type { Instantiater } from "../Instantiater";
+import type { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "../math/ReadonlyVector3";
 import { GameObjectBuilder } from "./GameObjectBuilder";
 
 /**

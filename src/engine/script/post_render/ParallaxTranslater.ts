@@ -1,8 +1,8 @@
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
-import { WritableVector2 } from "../../math/WritableVector2";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { WritableVector2 } from "../../math/WritableVector2";
 
 /**
  * this component will translate gameObject's position to parallax effect relative to camera

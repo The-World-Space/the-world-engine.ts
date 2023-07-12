@@ -1,8 +1,8 @@
-import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import type { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { GameObject } from "@src/engine/hierarchy_object/GameObject";
-import { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
+import type { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import type { PrefabConstructor } from "@src/engine/hierarchy_object/PrefabConstructor";
 import { Queue } from "js-sdsl";
 
 /** @internal */
@@ -24,8 +24,9 @@ export class Spawner extends Component {
     public onKeyDown = (e: KeyboardEvent): void => {
         if (e.key === "e") {
             this._queue.push(this.gameObject.addChildFromBuilder(
-                this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()
+                this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter, this.prefabCtor!).make()
             ));
+            this._objectCounter += 1;
         } else if (e.key === "d") {
             let front = this._queue.front();
             if (front) {
@@ -45,8 +46,9 @@ export class Spawner extends Component {
     private *spawninitObjects(): CoroutineIterator {
         for (let i = 0; i < this.initSpawnCount; ++i) {
             this._queue.push(this.gameObject.addChildFromBuilder(
-                this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter++, this.prefabCtor!).make()
+                this.engine.instantiater.buildPrefab("spawned_object_" + this._objectCounter, this.prefabCtor!).make()
             ));
+            this._objectCounter += 1;
             yield new WaitForSeconds(1);
         }
     }

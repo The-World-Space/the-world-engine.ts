@@ -1,7 +1,7 @@
 import { MutIteratableCollection } from "./collection/MutIteratableCollection";
-import { Component } from "./hierarchy_object/Component";
+import type { Component } from "./hierarchy_object/Component";
 import { ComponentEvent } from "./hierarchy_object/ComponentEvent";
-import { GameObject } from "./hierarchy_object/GameObject";
+import type { GameObject } from "./hierarchy_object/GameObject";
 
 /** @internal */
 export class SceneProcessor {

@@ -2,6 +2,7 @@
 import alias from "@gulp-plugin/alias";
 import rollupAlias from "@rollup/plugin-alias";
 import { nodeResolve } from "@rollup/plugin-node-resolve";
+import type { TaskFunction } from "gulp";
 import gulp from "gulp";
 import cleanDest from "gulp-clean-dest";
 import filter from "gulp-filter";
@@ -46,7 +47,7 @@ const tsProject = ts.createProject("tsconfig.json", {
     module: "esnext"
 });
 
-gulp.task("esm", ((): import("undertaker").TaskFunction => {
+gulp.task("esm", ((): TaskFunction => {
     const src = ["src/**/*.ts", "src/**/*.js"];
     const dest = "dist/esm";
 
@@ -78,7 +79,7 @@ gulp.task("esm", ((): import("undertaker").TaskFunction => {
     return gulp.series(clean, tsBuild, tsMangleBuild);
 })());
 
-gulp.task("umd", ((): import("undertaker").TaskFunction => {
+gulp.task("umd", ((): TaskFunction => {
     const dest = "dist/umd";
 
     function clean(): NodeJS.ReadWriteStream {

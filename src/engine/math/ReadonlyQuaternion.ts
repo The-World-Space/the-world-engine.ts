@@ -1,4 +1,4 @@
-import { Quaternion } from "three/src/Three";
+import type { Quaternion } from "three/src/Three";
 
 export type ReadonlyQuaternion = {
     /**
@@ -53,4 +53,10 @@ export type ReadonlyQuaternion = {
      * @return The provided array-like.
      */
     toArray(array: ArrayLike<number>, offset?: number): ArrayLike<number>;
+    
+    /**
+     * This method defines the serialization result of Quaternion.
+     * @return The numerical elements of this quaternion in an array of format [x, y, z, w].
+     */
+    toJSON(): [number, number, number, number];
 };

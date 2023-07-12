@@ -46,7 +46,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
     private _opacity = 1;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
 
-    private _initializeFunction: (() => void)|null = null;
+    private _initializeFunction: (() => void) | null = null;
 
     protected override renderInitialize(): void {
         if (this._initializeFunction) {
@@ -95,7 +95,7 @@ export class CssSpriteRenderer extends CssRenderer<HTMLImageElement> implements 
     /**
      * image (default: null)
      */
-    public get image(): HTMLImageElement|null {
+    public get image(): HTMLImageElement | null {
         return this.htmlElement;
     }
 

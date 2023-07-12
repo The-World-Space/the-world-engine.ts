@@ -2,7 +2,8 @@ import { Vector2 } from "three/src/Three";
 
 import { Transform } from "../../hierarchy_object/Transform";
 import { CssRenderer } from "./CssRenderer";
-import { ICssImageRenderOption, ImageRenderingMode } from "./CssSpriteRenderer";
+import type { ICssImageRenderOption} from "./CssSpriteRenderer";
+import { ImageRenderingMode } from "./CssSpriteRenderer";
 
 /**
  * represents a sprite atlas that is used by tilemap
@@ -63,7 +64,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> implement
     private _tileHeight = 1;
     private _tileResolutionX = 16;
     private _tileResolutionY = 16;
-    private _imageSources: TileAtlasItem[]|null = null;
+    private _imageSources: TileAtlasItem[] | null = null;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
 
     private readonly _initializeFunctions: ((() => void))[] = [];
@@ -179,7 +180,7 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> implement
      * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
      * @returns
      */
-    public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], columnOffset: number, rowOffset: number): void {
+    public drawTileFromTwoDimensionalArray(array: ({i: number, a: number} | null)[][], columnOffset: number, rowOffset: number): void {
         if (!this.readyToDraw) {
             this._initializeFunctions.push(() => this.drawTileFromTwoDimensionalArray(array, columnOffset, rowOffset));
             return;
@@ -187,9 +188,9 @@ export class CssTilemapRenderer extends CssRenderer<HTMLCanvasElement> implement
 
         const context: CanvasRenderingContext2D = this.htmlElement!.getContext("2d")!;
         for (let rowIndex = 0; rowIndex < array.length; rowIndex++) {
-            const row: ({i: number, a: number}|null)[] = array[rowIndex];
+            const row: ({i: number, a: number} | null)[] = array[rowIndex];
             for (let columnIndex = 0; columnIndex < row.length; columnIndex++) {
-                const tile: ({i: number, a: number}|null) = row[columnIndex];
+                const tile: ({i: number, a: number} | null) = row[columnIndex];
                 if (tile === null) continue;
                 const imageSource: TileAtlasItem = this._imageSources![tile.i];
                 if (imageSource.rowCount === 1 && imageSource.columnCount === 1) {

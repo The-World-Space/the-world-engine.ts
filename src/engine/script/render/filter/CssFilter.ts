@@ -1,15 +1,16 @@
-import { CssDropShadow, ICssDropShadow } from "./CssDropShadow";
+import type { ICssDropShadow } from "./CssDropShadow";
+import { CssDropShadow } from "./CssDropShadow";
 
 /**
  * css filter record for use in CssRenderer
  */
 export class CssFilter {
-    private readonly _onChange: (() => void)|null;
+    private readonly _onChange: (() => void) | null;
 
     private _blur = 0;
     private _brightness = 1;
     private _contrast = 1;
-    private _dropShadow: CssDropShadow|null = null;
+    private _dropShadow: CssDropShadow | null = null;
     private _grayscale = 0;
     private _hueRotate = 0;
     private _invert = 0;
@@ -20,7 +21,7 @@ export class CssFilter {
      *
      * @param onChange callback to call when filter changes. It's an internal function, so you don't need to use it
      */
-    public constructor(onChange: (() => void)|null = null) {
+    public constructor(onChange: (() => void) | null = null) {
         this._onChange = onChange;
     }
 
@@ -107,14 +108,14 @@ export class CssFilter {
     /**
      * drop shadow filter (default: null)
      */
-    public get dropShadow(): ICssDropShadow|null {
+    public get dropShadow(): ICssDropShadow | null {
         return this._dropShadow;
     }
 
     /**
      * drop shadow filter (default: null)
      */
-    public set dropShadow(value: ICssDropShadow|null) {
+    public set dropShadow(value: ICssDropShadow | null) {
         if (value) {
             if (!this._dropShadow) {
                 this._dropShadow = new CssDropShadow(undefined, undefined, undefined, undefined, this._onChange);

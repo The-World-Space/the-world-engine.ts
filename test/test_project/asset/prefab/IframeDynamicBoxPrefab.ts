@@ -1,4 +1,4 @@
-import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import type { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";

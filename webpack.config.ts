@@ -4,8 +4,8 @@ import HtmlWebpackPlugin from "html-webpack-plugin";
 import path from "path";
 import TerserPlugin from "terser-webpack-plugin";
 import minifyPrivatesTransformer from "ts-transformer-minify-privates";
-import { Program } from "typescript";
-import { Configuration } from "webpack";
+import type { Program } from "typescript";
+import type { Configuration } from "webpack";
 //import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer";
 //const propertiesRenameTransformer = require('ts-transformer-properties-rename').default;
 

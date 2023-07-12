@@ -1,10 +1,10 @@
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { GameObject } from "../../hierarchy_object/GameObject";
+import type { GameObject } from "../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
-import { IGridCollidable } from "./IGridCollidable";
+import type { IGridCollidable } from "./IGridCollidable";
 
 
 /**
@@ -80,7 +80,7 @@ export class GridObjectCollideMap extends Component implements IGridCollidable {
      * @param yOffset array y offset, if you want to add collider from array[3][1] to (3, 2) you should set yOffset = 1
      * @returns
      */
-    public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
+    public addColliderFromTwoDimensionalArray(array: (1 | 0)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.addColliderFromTwoDimensionalArray(array, xOffset, yOffset);

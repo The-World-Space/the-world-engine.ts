@@ -1,5 +1,5 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Component } from "@src/engine/hierarchy_object/Component";
 import { Camera } from "@src/engine/script/render/Camera";
 

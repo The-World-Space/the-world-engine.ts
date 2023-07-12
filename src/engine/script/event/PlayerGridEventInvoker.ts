@@ -1,7 +1,7 @@
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { PlayerGridMovementController } from "../controller/PlayerGridMovementController";
-import { GridEventMap } from "./GridEventMap";
+import type { GridEventMap } from "./GridEventMap";
 
 /**
  * for player interact with GridEventMap you should add this component to your player
@@ -17,7 +17,7 @@ export class PlayerGridEventInvoker extends Component {
     public override readonly requiredComponents: ComponentConstructor[] = [PlayerGridMovementController];
 
     private _collideSize = 0.5;
-    private _playerGridMovementController: PlayerGridMovementController|null = null;
+    private _playerGridMovementController: PlayerGridMovementController | null = null;
     private readonly _gridEventMaps: GridEventMap[] = [];
 
     private readonly onMoveToTarget = (x: number, y: number): void => {

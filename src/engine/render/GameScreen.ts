@@ -1,5 +1,6 @@
-import { EventContainer, IEventContainer } from "../collection/EventContainer";
-import { IReadonlyGameScreen } from "./IReadonlyGameScreen";
+import type { IEventContainer } from "../collection/EventContainer";
+import { EventContainer } from "../collection/EventContainer";
+import type { IReadonlyGameScreen } from "./IReadonlyGameScreen";
 
 /** @internal */
 export class GameScreen implements IReadonlyGameScreen {

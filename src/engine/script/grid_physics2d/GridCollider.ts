@@ -1,9 +1,9 @@
 import { Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { GameObject } from "../../hierarchy_object/GameObject";
+import type { GameObject } from "../../hierarchy_object/GameObject";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
-import { GridObjectCollideMap } from "./GridObjectCollideMap";
+import type { GridObjectCollideMap } from "./GridObjectCollideMap";
 
 /**
  * collider work with `GridObjectCollideMap`
@@ -20,7 +20,7 @@ export class GridCollider extends Component {
     private _showCollideSpot = false;
     private _collideSpotIsShowing = false;
     private readonly _colliderImages: Map<`${number}_${number}`, GameObject> = new Map();
-    private _gridObjectCollideMap: GridObjectCollideMap|null = null;
+    private _gridObjectCollideMap: GridObjectCollideMap | null = null;
     private _collideInfoAddedToMap = false;
     private readonly _initializeFunctions: ((() => void))[] = [];
     private _started = false;
@@ -93,7 +93,7 @@ export class GridCollider extends Component {
      * @param yOffset array y offset, if you want to add collider from array[3][1] to (3, 2) you should set yOffset = 1
      * @returns
      */
-    public addColliderFromTwoDimensionalArray(array: (1|0)[][], xOffset: number, yOffset: number): void {
+    public addColliderFromTwoDimensionalArray(array: (1 | 0)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.addColliderFromTwoDimensionalArray(array, xOffset, yOffset);
@@ -155,7 +155,7 @@ export class GridCollider extends Component {
         const localX = x * gridCellWidth;
         const localY = y * gridCellHeight;
 
-        const gameObjectRef: {ref: GameObject|null} = {ref: null};
+        const gameObjectRef: {ref: GameObject | null} = {ref: null};
         this.gameObject.addChildFromBuilder(
             this.engine.instantiater.buildGameObject(
                 "debug-image", new Vector3(localX, localY, 410000))
@@ -242,7 +242,7 @@ export class GridCollider extends Component {
      *
      * when set this property, it will automatically add collider information to grid.
      */
-    public get gridObjectCollideMap(): GridObjectCollideMap|null {
+    public get gridObjectCollideMap(): GridObjectCollideMap | null {
         return this._gridObjectCollideMap;
     }
 
@@ -251,7 +251,7 @@ export class GridCollider extends Component {
      *
      * when set this property, it will automatically add collider information to grid.
      */
-    public set gridObjectCollideMap(value: GridObjectCollideMap|null) {
+    public set gridObjectCollideMap(value: GridObjectCollideMap | null) {
         if (this._collideInfoAddedToMap) {
             this.removeAllCollideInfoFromMap();
         }

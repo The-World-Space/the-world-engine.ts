@@ -1,4 +1,4 @@
-import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import type { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { Color } from "@src/engine/render/Color";
 import { CssEdgeRenderer } from "@src/engine/script/render/CssEdgeRenderer";

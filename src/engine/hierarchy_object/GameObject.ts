@@ -1,7 +1,7 @@
-import { EngineGlobalObject } from "../EngineGlobalObject";
-import { Component } from "./Component";
-import { ComponentConstructor } from "./ComponentConstructor";
-import { GameObjectBuilder } from "./GameObjectBuilder";
+import type { EngineGlobalObject } from "../EngineGlobalObject";
+import type { Component } from "./Component";
+import type { ComponentConstructor } from "./ComponentConstructor";
+import type { GameObjectBuilder } from "./GameObjectBuilder";
 import { GameObjectEventContainer } from "./GameObjectEventContainer";
 import { Transform } from "./Transform";
 
@@ -48,7 +48,7 @@ export class GameObject {
         return gameObject;
     }
 
-    private onChangeParent(_oldParent: Transform|null, newParent: Transform|null): void {
+    private onChangeParent(_oldParent: Transform | null, newParent: Transform | null): void {
         if (newParent && this._engineGlobalObject !== newParent.gameObject._engineGlobalObject) {
             throw new Error("can't change parent to another engine instance");
         }
@@ -69,7 +69,7 @@ export class GameObject {
      * @param componentCtor
      * @returns if success, return the component instance
      */
-    public addComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T|null {
+    public addComponent<T extends Component>(componentCtor: ComponentConstructor<T>): T | null {
         this.checkGameObjectIsExist();
         const component = new componentCtor(this);
         component.engine_internal_constructAfterProcess();

@@ -8,23 +8,23 @@ import type { RigidBody2D } from "../../script/physics2d/RigidBody2D";
 
 export class RaycastHit2D {
     private readonly _centroid: Vector2 = new Vector2();
-    private _collider: Collider2D|null = null;
+    private _collider: Collider2D | null = null;
     private _distance = 0;
     private _fraction = 0;
     private readonly _normal: Vector2 = new Vector2();
     private readonly _point: Vector2 = new Vector2();
-    private _rigidbody: RigidBody2D|null = null;
-    private _transform: Transform|null = null;
+    private _rigidbody: RigidBody2D | null = null;
+    private _transform: Transform | null = null;
 
     /** @internal */
     public setData(
-        centroid: Vec2|Vector2,
+        centroid: Vec2 | Vector2,
         collider: Collider2D,
         distance: number,
         fraction: number,
-        normal: Vec2|Vector2,
-        point: Vec2|Vector2,
-        rigidbody: RigidBody2D|null,
+        normal: Vec2 | Vector2,
+        point: Vec2 | Vector2,
+        rigidbody: RigidBody2D | null,
         transform: Transform
     ): void {
         this._centroid.set(centroid.x, centroid.y);
@@ -41,7 +41,7 @@ export class RaycastHit2D {
         return this._centroid;
     }
 
-    public get collider(): Collider2D|null {
+    public get collider(): Collider2D | null {
         return this._collider;
     }
 
@@ -61,11 +61,11 @@ export class RaycastHit2D {
         return this._point;
     }
 
-    public get rigidbody(): RigidBody2D|null {
+    public get rigidbody(): RigidBody2D | null {
         return this._rigidbody;
     }
 
-    public get transform(): Transform|null {
+    public get transform(): Transform | null {
         return this._transform;
     }
 }

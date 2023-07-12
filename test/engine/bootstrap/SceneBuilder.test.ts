@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
-import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
+import type { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
 import { Scene } from "@src/engine/hierarchy_object/Scene";
 import { Instantiater } from "@src/engine/Instantiater";
 import { TransformMatrixProcessor } from "@src/engine/render/TransformMatrixProcessor";

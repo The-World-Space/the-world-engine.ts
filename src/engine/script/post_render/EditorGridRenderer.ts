@@ -1,8 +1,8 @@
 import { Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
-import { GameObject } from "../../hierarchy_object/GameObject";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { GameObject } from "../../hierarchy_object/GameObject";
 import { PrefabRef } from "../../hierarchy_object/PrefabRef";
 import { Camera } from "../render/Camera";
 import { CssHtmlElementRenderer } from "../render/CssHtmlElementRenderer";
@@ -22,8 +22,8 @@ export class EditorGridRenderer extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [Camera];
 
-    private _cssHtmlRenderer: CssHtmlElementRenderer|null = null;
-    private _cssHtmlRendererObject: GameObject|null = null;
+    private _cssHtmlRenderer: CssHtmlElementRenderer | null = null;
+    private _cssHtmlRendererObject: GameObject | null = null;
     private _gridCellWidth = 1;
     private _gridCellHeight = 1;
     private _renderWidth = 18;

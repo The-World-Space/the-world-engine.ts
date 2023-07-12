@@ -1,9 +1,10 @@
 import { OrderedSet } from "js-sdsl";
 
-import { EventContainer, IEventContainer } from "../collection/EventContainer";
-import { Camera } from "../script/render/Camera";
-import { CameraInfo } from "./CameraInfo";
-import { ReadonlyColor } from "./ReadonlyColor";
+import type { IEventContainer } from "../collection/EventContainer";
+import { EventContainer } from "../collection/EventContainer";
+import type { Camera } from "../script/render/Camera";
+import type { CameraInfo } from "./CameraInfo";
+import type { ReadonlyColor } from "./ReadonlyColor";
 
 /**
  * The container that has the camera currently in use for rendering.
@@ -14,7 +15,7 @@ export interface IReadonlyCameraContainer {
     /**
      * get current render camera
      */
-    get camera(): Camera|null;
+    get camera(): Camera | null;
 }
 
 /**
@@ -22,14 +23,14 @@ export interface IReadonlyCameraContainer {
  * do not drive this class
  */
 export class CameraContainer {
-    private _currentCameraInfo: {camera: Camera, info: CameraInfo}|null = null;
+    private _currentCameraInfo: {camera: Camera, info: CameraInfo} | null = null;
     private readonly _cameraInfoMap: Map<Camera, CameraInfo>;
     private readonly _cameraQueue: OrderedSet<{camera: Camera, info: CameraInfo}>;
-    private readonly _onChangeBackgroundColor: (color: null|ReadonlyColor|THREE.Texture) => void;
+    private readonly _onChangeBackgroundColor: (color: null | ReadonlyColor | THREE.Texture) => void;
     private readonly _onCameraChangedEvent: EventContainer<(camera: Camera) => void>;
 
     /** @internal */
-    public constructor(onChangeBackgroundColor: (color: null|ReadonlyColor|THREE.Texture) => void) {
+    public constructor(onChangeBackgroundColor: (color: null | ReadonlyColor | THREE.Texture) => void) {
         this._cameraInfoMap = new Map();
         this._cameraQueue = new OrderedSet(undefined, (a, b) => {
             if (a.info.priority === b.info.priority) {
@@ -44,7 +45,7 @@ export class CameraContainer {
     /**
      * get current render camera
      */
-    public get camera(): Camera|null {
+    public get camera(): Camera | null {
         return this._currentCameraInfo?.camera ?? null;
     }
 
@@ -112,7 +113,7 @@ export class CameraContainer {
      * This is the API used to make wrapper of three.js Camera
      * There is no use unless you use raw three.js objects that are not managed by the engine
      */
-    public changeCameraBackgroundColor(camera: Camera, color: null|ReadonlyColor|THREE.Texture): void {
+    public changeCameraBackgroundColor(camera: Camera, color: null | ReadonlyColor | THREE.Texture): void {
         const info = this._cameraInfoMap.get(camera);
         if (!info) return;
         info.backgroundColor = color;

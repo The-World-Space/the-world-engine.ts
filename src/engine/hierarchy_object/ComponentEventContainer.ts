@@ -1,8 +1,8 @@
-import { Instantiater } from "../Instantiater";
-import { Collision2D } from "../physics/2d/Collision2D";
-import { SceneProcessor } from "../SceneProcessor";
-import { Collider2D } from "../script/physics2d/collider/Collider2D";
-import { Component } from "./Component";
+import type { Instantiater } from "../Instantiater";
+import type { Collision2D } from "../physics/2d/Collision2D";
+import type { SceneProcessor } from "../SceneProcessor";
+import type { Collider2D } from "../script/physics2d/collider/Collider2D";
+import type { Component } from "./Component";
 import { ComponentEvent } from "./ComponentEvent";
 import { ComponentEventState } from "./ComponentEventState";
 
@@ -136,18 +136,18 @@ export class ComponentEventContainer {
     private readonly _instantiater: Instantiater;
     private readonly _eventState: ComponentEventState;
 
-    private readonly _awake: ComponentEvent|null = null;
-    private readonly _onDestroy: ComponentEvent|null = null;
+    private readonly _awake: ComponentEvent | null = null;
+    private readonly _onDestroy: ComponentEvent | null = null;
 
-    private readonly _onCollisionEnter2D: ComponentEvent<(collision: Collision2D) => void>|null = null;
-    private readonly _onCollisionStay2D: ComponentEvent<(collision: Collision2D) => void>|null = null;
-    private readonly _onCollisionExit2D: ComponentEvent<(collision: Collision2D) => void>|null = null;
-    private readonly _onTriggerEnter2D: ComponentEvent<(other: Collider2D) => void>|null = null;
-    private readonly _onTriggerStay2D: ComponentEvent<(other: Collider2D) => void>|null = null;
-    private readonly _onTriggerExit2D: ComponentEvent<(other: Collider2D) => void>|null = null;
+    private readonly _onCollisionEnter2D: ComponentEvent<(collision: Collision2D) => void> | null = null;
+    private readonly _onCollisionStay2D: ComponentEvent<(collision: Collision2D) => void> | null = null;
+    private readonly _onCollisionExit2D: ComponentEvent<(collision: Collision2D) => void> | null = null;
+    private readonly _onTriggerEnter2D: ComponentEvent<(other: Collider2D) => void> | null = null;
+    private readonly _onTriggerStay2D: ComponentEvent<(other: Collider2D) => void> | null = null;
+    private readonly _onTriggerExit2D: ComponentEvent<(other: Collider2D) => void> | null = null;
 
-    private readonly _start: ComponentEvent|null = null;
-    private readonly _update: ComponentEvent|null = null;
+    private readonly _start: ComponentEvent | null = null;
+    private readonly _update: ComponentEvent | null = null;
 
     public constructor(component: Component) {
         this._component = component;
@@ -311,27 +311,27 @@ export class ComponentEventContainer {
         this._sceneProcessor.removeEventFromNonSyncedCollection(this._update);
     }
 
-    public get onCollisionEnter2D(): ComponentEvent<(collision: Collision2D) => void>|null {
+    public get onCollisionEnter2D(): ComponentEvent<(collision: Collision2D) => void> | null {
         return this._onCollisionEnter2D;
     }
 
-    public get onCollisionStay2D(): ComponentEvent<(collision: Collision2D) => void>|null {
+    public get onCollisionStay2D(): ComponentEvent<(collision: Collision2D) => void> | null {
         return this._onCollisionStay2D;
     }
 
-    public get onCollisionExit2D(): ComponentEvent<(collision: Collision2D) => void>|null {
+    public get onCollisionExit2D(): ComponentEvent<(collision: Collision2D) => void> | null {
         return this._onCollisionExit2D;
     }
 
-    public get onTriggerEnter2D(): ComponentEvent<(other: Collider2D) => void>|null {
+    public get onTriggerEnter2D(): ComponentEvent<(other: Collider2D) => void> | null {
         return this._onTriggerEnter2D;
     }
 
-    public get onTriggerStay2D(): ComponentEvent<(other: Collider2D) => void>|null {
+    public get onTriggerStay2D(): ComponentEvent<(other: Collider2D) => void> | null {
         return this._onTriggerStay2D;
     }
 
-    public get onTriggerExit2D(): ComponentEvent<(other: Collider2D) => void>|null {
+    public get onTriggerExit2D(): ComponentEvent<(other: Collider2D) => void> | null {
         return this._onTriggerExit2D;
     }
 }

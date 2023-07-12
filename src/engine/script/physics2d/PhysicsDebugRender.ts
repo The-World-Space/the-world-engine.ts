@@ -1,12 +1,12 @@
-import { EngineGlobalObject } from "../../EngineGlobalObject";
-import { GameObject } from "../../hierarchy_object/GameObject";
-import { Transform } from "../../hierarchy_object/Transform";
+import type { EngineGlobalObject } from "../../EngineGlobalObject";
+import type { GameObject } from "../../hierarchy_object/GameObject";
+import type { Transform } from "../../hierarchy_object/Transform";
 
 const debugObjectName = "physics_debug_object";
 
 /** @internal */
 export function getOrCreatePhysicsDebugRenderObject(engine: EngineGlobalObject): GameObject {
-    let debugRenderobject: GameObject|null = null;
+    let debugRenderobject: GameObject | null = null;
     engine.scene.iterateChild((transform: Transform) => {
         if (transform.gameObject.name === debugObjectName && transform.gameObject.exists) {
             debugRenderobject = transform.gameObject;

@@ -1,6 +1,7 @@
-import { Camera as ThreeCamera, EventDispatcher, Vector3 } from "three/src/Three";
+import type { Camera as ThreeCamera, Vector3 } from "three/src/Three";
+import { EventDispatcher } from "three/src/Three";
 
-import { Transform } from "../../hierarchy_object/Transform";
+import type { Transform } from "../../hierarchy_object/Transform";
 import { Camera } from "./Camera";
 
 /**
@@ -56,7 +57,7 @@ export class DuckThreeCamera {
         //traverseVisible
 
         const propertyNames = ["id", "uuid", "name", "parent", "children", "up", "position", "rotation", "quaternion", "scale", "matrix", "matrixWorld"];
-        for (let i = 0; i < propertyNames.length; i++) {
+        for (let i = 0; i < propertyNames.length; ++i) {
             const propertyName = propertyNames[i];
             Object.defineProperty(this, propertyName, {
                 get: () => (object3D as any)[propertyName],
@@ -73,12 +74,12 @@ export class DuckThreeCamera {
             "translateOnAxis", "translateX", "translateY", "translateZ", "updateMatrix", "updateMatrixWorld",
             "updateWorldMatrix", "worldToLocal"
         ];
-        for (let i = 0; i < methodNames.length; i++) {
+        for (let i = 0; i < methodNames.length; ++i) {
             const methodName = methodNames[i];
             (this as any)[methodName] = (object3D as any)[methodName].bind(object3D);
         }
 
-        (this as any).lookAt = (target: Vector3|number, y?: number, z?: number): void => {
+        (this as any).lookAt = (target: Vector3 | number, y?: number, z?: number): void => {
             (object3D as any).isCamera = true;
             if (typeof target === "number") {
                 object3D.lookAt(target, y as number, z as number);

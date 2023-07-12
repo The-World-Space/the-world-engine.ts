@@ -1,6 +1,6 @@
 import { jest } from "@jest/globals";
 import { Coroutine } from "@src/engine/coroutine/Coroutine";
-import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import type { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { CoroutineProcessor } from "@src/engine/coroutine/CoroutineProcessor";
 import { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "@src/engine/coroutine/YieldInstruction";
 import { Time } from "@src/engine/time/Time";

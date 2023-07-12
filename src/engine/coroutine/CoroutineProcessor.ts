@@ -1,11 +1,11 @@
-import { Time } from "../time/Time";
-import { Coroutine } from "./Coroutine";
+import type { Time } from "../time/Time";
+import type { Coroutine } from "./Coroutine";
 import { WaitForEndOfFrame, WaitForSeconds, WaitUntil, WaitWhile } from "./YieldInstruction";
 
 /** @internal */
 export class CoroutineProcessor {
     private readonly _time: Time;
-    private readonly _coroutines: (Coroutine|null)[];
+    private readonly _coroutines: (Coroutine | null)[];
     private _coroutineCount: number;
 
     private static readonly _needToCompactCount = 16;

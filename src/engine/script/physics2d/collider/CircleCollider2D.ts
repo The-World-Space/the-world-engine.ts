@@ -14,7 +14,7 @@ import { Collider2D } from "./Collider2D";
 export class CircleCollider2D extends Collider2D {
     private _radius = 1;
     private _debugDraw = true;
-    private _debugObject: GameObject|null = null;
+    private _debugObject: GameObject | null = null;
 
     private updateDebugDraw(): void {
         if (this._debugDraw) {

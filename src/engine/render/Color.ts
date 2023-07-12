@@ -1,7 +1,7 @@
 import { Matrix3 } from "three/src/Three";
 
-import { ReadonlyMatrix3 } from "../math/ReadonlyMatrix3";
-import { ReadonlyColor } from "./ReadonlyColor";
+import type { ReadonlyMatrix3 } from "../math/ReadonlyMatrix3";
+import type { ReadonlyColor } from "./ReadonlyColor";
 
 /**
  * represents a color by its red, green, blue and alpha components in the range [0, 1]

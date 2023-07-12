@@ -1,5 +1,5 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
 import { Color } from "@src/engine/render/Color";
 import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";

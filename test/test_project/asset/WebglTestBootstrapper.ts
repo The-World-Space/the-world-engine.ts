@@ -1,6 +1,6 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
-import { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { CoroutineIterator } from "@src/engine/coroutine/CoroutineIterator";
 import { WaitForSeconds } from "@src/engine/coroutine/YieldInstruction";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Color } from "@src/engine/render/Color";
@@ -11,7 +11,7 @@ import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElement
 import { CssSpriteRenderer } from "@src/engine/script/render/CssSpriteRenderer";
 import { WebGLGlobalPostProcessVolume } from "@src/engine/script/render/WebGLGlobalPostProcessVolume";
 import { Object3DContainer } from "@src/engine/script/three/Object3DContainer";
-import { FullScreenQuad } from "three/examples/jsm/postprocessing/Pass";
+import type { FullScreenQuad } from "three/examples/jsm/postprocessing/Pass";
 import { SSAOPass } from "three/examples/jsm/postprocessing/SSAOPass";
 import { UnrealBloomPass } from "three/examples/jsm/postprocessing/UnrealBloomPass";
 import { AmbientLight, BoxGeometry, DirectionalLight, Mesh, MeshPhongMaterial, PlaneGeometry, Quaternion, Vector3, WebGLRenderer } from "three/src/Three";

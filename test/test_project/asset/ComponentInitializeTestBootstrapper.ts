@@ -1,5 +1,5 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Camera, CameraType } from "@src/engine/script/render/Camera";
 import * as TWE from "@src/index";
 import { Vector3 } from "three/src/Three";

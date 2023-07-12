@@ -1,9 +1,9 @@
 import { Component } from "../../hierarchy_object/Component";
-import { GameObject } from "../../hierarchy_object/GameObject";
+import type { GameObject } from "../../hierarchy_object/GameObject";
 
 /** @internal */
 export class ObjectAttacher2D extends Component {
-    private _target: GameObject|null = null;
+    private _target: GameObject | null = null;
 
     public set target(value: GameObject) {
         this._target = value;

@@ -1,5 +1,5 @@
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
 import { Color } from "@src/engine/render/Color";
 import { EditorCameraController } from "@src/engine/script/controller/EditorCameraController";
@@ -12,7 +12,7 @@ import { PhysicsTestPrefab } from "./prefab/PhysicsTestPrefab";
 import { RenderTestPrefab } from "./prefab/RenderTestPrefab";
 import { TopDownScenePrefab } from "./prefab/TopDownScenePrefab";
 import { FpsCounter } from "./script/FpsCounter";
-import { TestLayer } from "./TestLayer";
+import type { TestLayer } from "./TestLayer";
 
 /** @internal */
 export class TestBootstrapper extends Bootstrapper {

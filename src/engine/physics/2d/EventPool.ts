@@ -11,8 +11,8 @@ export const enum TriggerType {
 
 class TriggerEvent {
     public type: TriggerType = TriggerType.Enter;
-    public colliderA: Collider2D|null = null;
-    public colliderB: Collider2D|null = null;
+    public colliderA: Collider2D | null = null;
+    public colliderB: Collider2D | null = null;
 
     public invoke(): void {
         switch (this.type) {
@@ -69,10 +69,10 @@ export const enum CollisionType {
 
 class CollisionEvent {
     public type: CollisionType = CollisionType.Enter;
-    public colliderA: Collider2D|null = null;
-    public colliderB: Collider2D|null = null;
-    public collision2D: Collision2D|null = null;
-    public collisionPool: Collision2DPool|null = null;
+    public colliderA: Collider2D | null = null;
+    public colliderB: Collider2D | null = null;
+    public collision2D: Collision2D | null = null;
+    public collisionPool: Collision2DPool | null = null;
 
     public invoke(): void {
         switch (this.type) {

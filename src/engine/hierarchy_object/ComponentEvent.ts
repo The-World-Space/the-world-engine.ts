@@ -1,6 +1,6 @@
-import { Instantiater } from "../Instantiater";
-import { Collision2D } from "../physics/2d/Collision2D";
-import { Collider2D } from "../script/physics2d/collider/Collider2D";
+import type { Instantiater } from "../Instantiater";
+import type { Collision2D } from "../physics/2d/Collision2D";
+import type { Collider2D } from "../script/physics2d/collider/Collider2D";
 
 const enum EventPriority { // lower number means higher priority
     start = 2, // called once

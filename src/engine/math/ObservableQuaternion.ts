@@ -1,5 +1,6 @@
 import { clamp } from "three/src/math/MathUtils";
-import { BufferAttribute, Euler, InterleavedBufferAttribute, Matrix4, Quaternion, Vector3 } from "three/src/Three";
+import type { BufferAttribute, Euler, InterleavedBufferAttribute, Matrix4, Vector3 } from "three/src/Three";
+import { Quaternion } from "three/src/Three";
 
 /** @internal */
 export class ObservableQuaternion {
@@ -613,7 +614,7 @@ export class ObservableQuaternion {
         return (quaternion._x === this._internalX) && (quaternion._y === this._internalY) && (quaternion._z === this._internalZ) && (quaternion._w === this._internalW);
     }
 
-    public fromArray(array: number[]|ArrayLike<number>, offset = 0): ObservableQuaternion {
+    public fromArray(array: number[] | ArrayLike<number>, offset = 0): ObservableQuaternion {
         if (this._internalX === array[offset] && this._internalY === array[offset + 1] && this._internalZ === array[offset + 2] && this._internalW === array[offset + 3]) return this;
         this._onBeforeChangeCallback();
 
@@ -635,7 +636,7 @@ export class ObservableQuaternion {
         return array;
     }
 
-    public fromBufferAttribute(attribute: BufferAttribute|InterleavedBufferAttribute, index: number): ObservableQuaternion {
+    public fromBufferAttribute(attribute: BufferAttribute | InterleavedBufferAttribute, index: number): ObservableQuaternion {
         this._internalX = attribute.getX(index);
         this._internalY = attribute.getY(index);
         this._internalZ = attribute.getZ(index);

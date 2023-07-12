@@ -1,4 +1,4 @@
-import { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
+import type { GameObjectBuilder } from "@src/engine/hierarchy_object/GameObjectBuilder";
 import { Prefab } from "@src/engine/hierarchy_object/Prefab";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { CssCollideTilemapChunkRenderer } from "@src/engine/script/grid_physics2d/CssCollideTilemapChunkRenderer";

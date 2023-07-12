@@ -1,9 +1,9 @@
-import { Quaternion } from "three/src/Three";
+import type { Quaternion } from "three/src/Three";
 
-import { ReadonlyEuler } from "./ReadonlyEuler";
-import { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
-import { ReadonlyQuaternion } from "./ReadonlyQuaternion";
-import { ReadonlyVector3 } from "./ReadonlyVector3";
+import type { ReadonlyEuler } from "./ReadonlyEuler";
+import type { ReadonlyMatrix4 } from "./ReadonlyMatrix4";
+import type { ReadonlyQuaternion } from "./ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "./ReadonlyVector3";
 
 export type WritableQuaternion = {
     /**
@@ -121,6 +121,12 @@ export type WritableQuaternion = {
      * @return The provided array-like.
      */
     toArray(array: ArrayLike<number>, offset?: number): ArrayLike<number>;
+    
+    /**
+     * This method defines the serialization result of Quaternion.
+     * @return The numerical elements of this quaternion in an array of format [x, y, z, w].
+     */
+    toJSON(): [number, number, number, number];
 
     // eslint-disable-next-line @typescript-eslint/naming-convention
     _onChange(callback: () => void): WritableQuaternion;

@@ -1,7 +1,7 @@
 import { Component } from "../../hierarchy_object/Component";
-import { CssCollideTilemapChunkRenderer } from "../grid_physics2d/CssCollideTilemapChunkRenderer";
-import { GridPointer } from "./GridPointer";
-import { PointerGridEvent } from "./PointerGridInputListener";
+import type { CssCollideTilemapChunkRenderer } from "../grid_physics2d/CssCollideTilemapChunkRenderer";
+import type { GridPointer } from "./GridPointer";
+import type { PointerGridEvent } from "./PointerGridInputListener";
 
 /**
  * tile brush for test purpose
@@ -9,8 +9,8 @@ import { PointerGridEvent } from "./PointerGridInputListener";
 export class TestTileBrush extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
 
-    private _gridPointer: GridPointer|null = null;
-    private _colideTilemapChunk: CssCollideTilemapChunkRenderer|null = null;
+    private _gridPointer: GridPointer | null = null;
+    private _colideTilemapChunk: CssCollideTilemapChunkRenderer | null = null;
     private _pointerDown = false;
 
     public start(): void {
@@ -54,28 +54,28 @@ export class TestTileBrush extends Component {
     /**
      * grid pointer (default: null)
      */
-    public get gridPointer(): GridPointer|null {
+    public get gridPointer(): GridPointer | null {
         return this._gridPointer;
     }
 
     /**
      * grid pointer (default: null)
      */
-    public set gridPointer(value: GridPointer|null) {
+    public set gridPointer(value: GridPointer | null) {
         this._gridPointer = value;
     }
 
     /**
      * colide tilemap chunk renderer for drawing tiles (default: null)
      */
-    public get colideTilemapChunk(): CssCollideTilemapChunkRenderer|null {
+    public get colideTilemapChunk(): CssCollideTilemapChunkRenderer | null {
         return this._colideTilemapChunk;
     }
 
     /**
      * colide tilemap chunk renderer for drawing tiles (default: null)
      */
-    public set colideTilemapChunk(value: CssCollideTilemapChunkRenderer|null) {
+    public set colideTilemapChunk(value: CssCollideTilemapChunkRenderer | null) {
         this._colideTilemapChunk = value;
     }
 }

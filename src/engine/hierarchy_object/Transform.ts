@@ -1,12 +1,13 @@
-import { Euler, Matrix4, Object3D, Quaternion, Scene, Vector3 } from "three/src/Three";
+import type { Euler, Scene} from "three/src/Three";
+import { Matrix4, Object3D, Quaternion, Vector3 } from "three/src/Three";
 
-import { EngineGlobalObject } from "../EngineGlobalObject";
+import type { EngineGlobalObject } from "../EngineGlobalObject";
 import { ObservableEuler } from "../math/ObservableEuler";
 import { ObservableQuaternion } from "../math/ObservableQuaternion";
 import { ObservableVector3 } from "../math/ObservableVector3";
-import { ReadonlyVector3 } from "../math/ReadonlyVector3";
-import { WritableVector3 } from "../math/WritableVector3";
-import { GameObject } from "./GameObject";
+import type { ReadonlyVector3 } from "../math/ReadonlyVector3";
+import type { WritableVector3 } from "../math/WritableVector3";
+import type { GameObject } from "./GameObject";
 
 /**
  * transform that delegates Object3D
@@ -38,7 +39,7 @@ export class Transform {
     private readonly _object3D: Object3D;
     private readonly _gameObject: GameObject;
     private readonly _engineGlobalObject: EngineGlobalObject;
-    private readonly _onParentChanged: (oldParent: Transform|null, newParent: Transform|null) => void;
+    private readonly _onParentChanged: (oldParent: Transform | null, newParent: Transform | null) => void;
 
     private readonly _worldPosition: ObservableVector3;
     private readonly _worldRotationEuler: ObservableEuler;
@@ -68,7 +69,7 @@ export class Transform {
     public constructor(
         gameObject: GameObject,
         engineGlobalObject: EngineGlobalObject,
-        _onParentChanged: (oldParent: Transform|null, newParent: Transform|null) => void
+        _onParentChanged: (oldParent: Transform | null, newParent: Transform | null) => void
     ) {
         this._engineGlobalObject = engineGlobalObject;
         this._onParentChanged = _onParentChanged;
@@ -552,11 +553,11 @@ export class Transform {
      *
      * you can't set parent that in another engine instance
      */
-    public set parent(value: Transform|null) {
+    public set parent(value: Transform | null) {
         this.setParent(value);
     }
 
-    public setParent(parent: Transform|null, worldPositionStays = true): void {
+    public setParent(parent: Transform | null, worldPositionStays = true): void {
         if (parent) {
             const oldParent = this.parent;
 

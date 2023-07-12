@@ -2,9 +2,9 @@ import { DEG2RAD } from "three/src/math/MathUtils";
 import { Vector2 } from "three/src/Three";
 
 import { Transform } from "../../hierarchy_object/Transform";
-import { ReadonlyVector2 } from "../../math/ReadonlyVector2";
+import type { ReadonlyVector2 } from "../../math/ReadonlyVector2";
 import { Color } from "../../render/Color";
-import { ReadonlyColor } from "../../render/ReadonlyColor";
+import type { ReadonlyColor } from "../../render/ReadonlyColor";
 import { CssRenderer } from "./CssRenderer";
 
 /**
@@ -13,7 +13,7 @@ import { CssRenderer } from "./CssRenderer";
  * this renderer use svg tag to render polygon
  */
 export class CssPolygonRenderer2D extends CssRenderer<HTMLDivElement> {
-    private _svgElement: SVGPolygonElement|null = null;
+    private _svgElement: SVGPolygonElement | null = null;
     private readonly _points: Vector2[] = [
         new Vector2(-2, -2),
         new Vector2(2, -2),

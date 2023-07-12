@@ -1,4 +1,4 @@
-import { Vector2 } from "three/src/Three";
+import type { Vector2 } from "three/src/Three";
 
 /**
  * Interface for objects that has grid coordinate system

@@ -1,5 +1,5 @@
 import { Component } from "../../hierarchy_object/Component";
-import { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
+import type { ComponentConstructor } from "../../hierarchy_object/ComponentConstructor";
 import { AsyncImageLoader } from "../helper/AsyncImageLoader";
 import { CssSpriteRenderer } from "../render/CssSpriteRenderer";
 
@@ -17,15 +17,15 @@ export class SpriteAnimator extends Component {
     public override readonly disallowMultipleComponent: boolean = true;
     public override readonly requiredComponents: ComponentConstructor[] = [CssSpriteRenderer];
 
-    private _spriteRenderer: CssSpriteRenderer|null = null;
+    private _spriteRenderer: CssSpriteRenderer | null = null;
     private readonly _animations: Map<string, HTMLImageElement[]> = new Map();
-    private _playingAnimationName: string|null = null;
-    private _playingAnimation: HTMLImageElement[]|null = null;
+    private _playingAnimationName: string | null = null;
+    private _playingAnimation: HTMLImageElement[] | null = null;
     private _playingAnimationFrame = 0;
     private _playing = false;
     private _frameDuration = 2;
     private _currentFrameDuration = 0;
-    private _pendingPlayAnimation: string|null = null;
+    private _pendingPlayAnimation: string | null = null;
 
     public awake(): void {
         this._spriteRenderer = this.gameObject.getComponent(CssSpriteRenderer);
@@ -42,7 +42,7 @@ export class SpriteAnimator extends Component {
         this._currentFrameDuration += this.engine.time.deltaTime;
         if (this._currentFrameDuration >= this._frameDuration) {
             this._currentFrameDuration = 0;
-            this._playingAnimationFrame++;
+            this._playingAnimationFrame += 1;
             if (this._playingAnimationFrame >= this._playingAnimation!.length) {
                 this._playingAnimationFrame = 0;
             }

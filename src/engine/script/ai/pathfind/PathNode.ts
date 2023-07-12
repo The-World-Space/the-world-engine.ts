@@ -7,7 +7,7 @@ export class PathNode {
     private _fCost: number;
 
     private _isWalkable: boolean;
-    private _previousNode: PathNode|null;
+    private _previousNode: PathNode | null;
 
     public constructor(x: number, y: number) {
         this._x = x;
@@ -69,11 +69,11 @@ export class PathNode {
         this._isWalkable = isWalkable;
     }
 
-    public get previousNode(): PathNode|null {
+    public get previousNode(): PathNode | null {
         return this._previousNode;
     }
 
-    public set previousNode(previousNode: PathNode|null) {
+    public set previousNode(previousNode: PathNode | null) {
         this._previousNode = previousNode;
     }
 }

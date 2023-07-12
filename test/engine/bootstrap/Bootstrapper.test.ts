@@ -2,7 +2,7 @@ import { jest } from "@jest/globals";
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
 import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { GameSetting } from "@src/engine/bootstrap/setting/GameSetting";
-import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
+import type { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
 import { Instantiater } from "@src/engine/Instantiater";
 import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
 import { PhysicsMaterial2D } from "@src/engine/physics/2d/PhysicsMaterial2D";

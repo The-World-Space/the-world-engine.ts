@@ -2,7 +2,7 @@ import { OrderedSet } from "js-sdsl";
 
 /** @internal */
 export class MutIteratableCollection<T extends { isRemoved: boolean }> {
-    private _iterateCollection: OrderedSet<T>|null = null;
+    private _iterateCollection: OrderedSet<T> | null = null;
     private readonly _collection: OrderedSet<T>;
 
     private _insertBuffer: OrderedSet<T>;

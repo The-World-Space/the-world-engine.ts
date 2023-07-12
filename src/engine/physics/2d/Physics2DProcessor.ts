@@ -33,7 +33,7 @@ import type { RayCastOneCallback } from "./RayCastOneCallback";
 /** @internal */
 export class Physics2DProcessor implements IPhysics2D {
     //configuration variables
-    private _defaultMaterial: PhysicsMaterial2D|null = null;
+    private _defaultMaterial: PhysicsMaterial2D | null = null;
     private _velocityIterations = 8;
     private _positionIterations = 3;
 
@@ -43,13 +43,13 @@ export class Physics2DProcessor implements IPhysics2D {
     private _queriesHitTriggers = true;
     // private _queriesStartInColliders: boolean = true;
     // private _reuseCollisionCallbacks = true;
-    private _collisionLayerMaskConverter: CollisionLayerMaskConverter|null = null;
+    private _collisionLayerMaskConverter: CollisionLayerMaskConverter | null = null;
 
     //engine internal variables
-    private _world: B2World|null = null;
+    private _world: B2World | null = null;
     private readonly _gameObjectToBodyMap = new Map<GameObject, PhysicsObject2D>();
-    private _loader: typeof Physics2DLoader|null = null;
-    private _physicsEventDispatcher: PhysicsEventDispatcher|null = null;
+    private _loader: typeof Physics2DLoader | null = null;
+    private _physicsEventDispatcher: PhysicsEventDispatcher | null = null;
 
     /** @internal */
     public applyPhysicsSettings(physicSetting: DeepReadonly<PhysicsSettingObject>): void {
@@ -327,7 +327,7 @@ export class Physics2DProcessor implements IPhysics2D {
         physicsObject.removeCollider(collider, fixtureGroup);
     }
 
-    public get physicsLoader(): Physics2DLoader|null {
+    public get physicsLoader(): Physics2DLoader | null {
         return this._loader;
     }
 
@@ -342,7 +342,7 @@ export class Physics2DProcessor implements IPhysics2D {
         this._world.SetGravity(new this._loader!.Vec2(value.x, value.y));
     }
 
-    public get defaultMaterial(): PhysicsMaterial2D|null {
+    public get defaultMaterial(): PhysicsMaterial2D | null {
         return this._defaultMaterial;
     }
 
@@ -440,8 +440,8 @@ export class Physics2DProcessor implements IPhysics2D {
     }
 
     private static readonly _raycastEndPoint: WritableVector2 = new Vector2();
-    private _raycastOneCallback: RayCastOneCallback|null = null;
-    private _raycastFilterCallback: RayCastFilterCallback|null = null;
+    private _raycastOneCallback: RayCastOneCallback | null = null;
+    private _raycastFilterCallback: RayCastFilterCallback | null = null;
 
     public raycastOne(
         origin: ReadonlyVector2,
@@ -451,7 +451,7 @@ export class Physics2DProcessor implements IPhysics2D {
         layerMask = 0xFFFFFFFF,
         minDepth = Number.NEGATIVE_INFINITY,
         maxDepth = Number.POSITIVE_INFINITY
-    ): RaycastHit2D|null {
+    ): RaycastHit2D | null {
         if (!this._world) throw new Error("Physics2D is not loaded.");
 
         if (!out) out = new this._loader!.RaycastHit2D();

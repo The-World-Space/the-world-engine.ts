@@ -2,10 +2,13 @@ import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Vector2, Vector3 } from "three/src/Three";
 
 import { Component } from "../../hierarchy_object/Component";
-import { IGridCoordinatable } from "../helper/IGridCoordinatable";
-import { CssRendererConst, IUnknownSizeCssRenderOption } from "../render/CssRenderer";
-import { ICssImageRenderOption, ImageRenderingMode } from "../render/CssSpriteRenderer";
-import { CssTilemapRenderer, TileAtlasItem } from "../render/CssTilemapRenderer";
+import type { IGridCoordinatable } from "../helper/IGridCoordinatable";
+import type { IUnknownSizeCssRenderOption } from "../render/CssRenderer";
+import { CssRendererConst } from "../render/CssRenderer";
+import type { ICssImageRenderOption} from "../render/CssSpriteRenderer";
+import { ImageRenderingMode } from "../render/CssSpriteRenderer";
+import type { TileAtlasItem } from "../render/CssTilemapRenderer";
+import { CssTilemapRenderer } from "../render/CssTilemapRenderer";
 import { CssFilter } from "../render/filter/CssFilter";
 
 /**
@@ -27,7 +30,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
     private _tileResolutionX = 16;
     private _tileResolutionY = 16;
     private _tilemapScale = 1.001;
-    private _imageSources: TileAtlasItem[]|null = null;
+    private _imageSources: TileAtlasItem[] | null = null;
     private _pointerEvents = true;
     private _viewScale = CssRendererConst.LengthUnitScalar;
     private _imageRenderingMode = ImageRenderingMode.Pixelated;
@@ -113,7 +116,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
         return cssTilemapRenderer!;
     }
 
-    private getTilemapRenedererOrNull(chunkIndexX: number, chunkIndexY: number): CssTilemapRenderer|null {
+    private getTilemapRenedererOrNull(chunkIndexX: number, chunkIndexY: number): CssTilemapRenderer | null {
         const chunkIndex = this.getKeyFromIndex(chunkIndexX, chunkIndexY);
         const cssTilemapRenderer = this._cssTilemapRendererMap.get(chunkIndex);
         if (cssTilemapRenderer === undefined) {
@@ -167,7 +170,7 @@ export class CssTilemapChunkRenderer extends Component implements IGridCoordinat
      * @param yOffset array y offset, if you want to add tile from array[3][1] to (3, 2) you should set yOffset = 1
      * @returns
      */
-    public drawTileFromTwoDimensionalArray(array: ({i: number, a: number}|null)[][], xOffset: number, yOffset: number): void {
+    public drawTileFromTwoDimensionalArray(array: ({i: number, a: number} | null)[][], xOffset: number, yOffset: number): void {
         if (!this._started) {
             this._initializeFunctions.push(() => {
                 this.drawTileFromTwoDimensionalArray(array, xOffset, yOffset);

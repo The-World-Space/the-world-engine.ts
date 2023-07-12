@@ -1,4 +1,4 @@
-import { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
+import type { EngineGlobalObject } from "@src/engine/EngineGlobalObject";
 import { ComponentEvent } from "@src/engine/hierarchy_object/ComponentEvent";
 import { Instantiater } from "@src/engine/Instantiater";
 

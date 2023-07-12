@@ -1,7 +1,7 @@
-import { EngineGlobalObject } from "../EngineGlobalObject";
-import { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
-import { ReadonlyVector3 } from "../math/ReadonlyVector3";
-import { Prefab } from "./Prefab";
+import type { EngineGlobalObject } from "../EngineGlobalObject";
+import type { ReadonlyQuaternion } from "../math/ReadonlyQuaternion";
+import type { ReadonlyVector3 } from "../math/ReadonlyVector3";
+import type { Prefab } from "./Prefab";
 
 export type PrefabConstructor<T extends Prefab = Prefab> = new (
     engineGlobalObject: EngineGlobalObject,

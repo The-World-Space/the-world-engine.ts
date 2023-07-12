@@ -1,17 +1,17 @@
 import { jest } from "@jest/globals";
 import { Bootstrapper } from "@src/engine/bootstrap/Bootstrapper";
-import { BootstrapperConstructor } from "@src/engine/bootstrap/BootstrapperConstructor";
-import { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
+import type { BootstrapperConstructor } from "@src/engine/bootstrap/BootstrapperConstructor";
+import type { SceneBuilder } from "@src/engine/bootstrap/SceneBuilder";
 import { Game } from "@src/engine/Game";
 import { Component } from "@src/engine/hierarchy_object/Component";
-import { GameObject } from "@src/engine/hierarchy_object/GameObject";
+import type { GameObject } from "@src/engine/hierarchy_object/GameObject";
 import { PrefabRef } from "@src/engine/hierarchy_object/PrefabRef";
 import { Physics2DLoader } from "@src/engine/physics/2d/Physics2DLoader";
 import { BoxCollider2D } from "@src/engine/script/physics2d/collider/BoxCollider2D";
 import { RigidBody2D } from "@src/engine/script/physics2d/RigidBody2D";
 import { Camera } from "@src/engine/script/render/Camera";
 import { CssHtmlElementRenderer } from "@src/engine/script/render/CssHtmlElementRenderer";
-import { Mock } from "jest-mock";
+import type { Mock } from "jest-mock";
 import { Vector3 } from "three/src/Three";
 
 import { NonPhysicsTestBootstrapper } from "./test_project/asset/NonPhysicsTestBootstrapper";

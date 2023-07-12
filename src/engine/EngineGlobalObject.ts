@@ -1,18 +1,18 @@
-import { IPhysics2D } from "..";
-import { GameSettingObject } from "./bootstrap/setting/GameSetting";
-import { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
-import { IReadonlyGameState } from "./GameState";
-import { Scene } from "./hierarchy_object/Scene";
+import type { IPhysics2D } from "..";
+import type { GameSettingObject } from "./bootstrap/setting/GameSetting";
+import type { CoroutineProcessor } from "./coroutine/CoroutineProcessor";
+import type { IReadonlyGameState } from "./GameState";
+import type { Scene } from "./hierarchy_object/Scene";
 import { InputHandler } from "./input/InputHandler";
 import { Instantiater } from "./Instantiater";
-import { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
-import { CameraContainer, IReadonlyCameraContainer } from "./render/CameraContainer";
-import { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
-import { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
-import { WebGLGlobalObject } from "./render/WebGLGlobalObject";
-import { SceneProcessor } from "./SceneProcessor";
-import { Time } from "./time/Time";
-import { DeepReadonly } from "./type/DeepReadonly";
+import type { Physics2DProcessor } from "./physics/2d/Physics2DProcessor";
+import type { CameraContainer, IReadonlyCameraContainer } from "./render/CameraContainer";
+import type { IReadonlyGameScreen } from "./render/IReadonlyGameScreen";
+import type { TransformMatrixProcessor } from "./render/TransformMatrixProcessor";
+import type { WebGLGlobalObject } from "./render/WebGLGlobalObject";
+import type { SceneProcessor } from "./SceneProcessor";
+import type { Time } from "./time/Time";
+import type { DeepReadonly } from "./type/DeepReadonly";
 
 /**
  * do not drive this class
@@ -27,7 +27,7 @@ export class EngineGlobalObject {
     private readonly _screen: IReadonlyGameScreen;
     private readonly _physics2DProcessor: Physics2DProcessor;
     private readonly _domElement: HTMLElement;
-    private _webGLGlobalObject: WebGLGlobalObject|null = null;
+    private _webGLGlobalObject: WebGLGlobalObject | null = null;
 
     //engine internal objects
     private readonly _sceneProcessor: SceneProcessor;
@@ -153,7 +153,7 @@ export class EngineGlobalObject {
      *
      * if you not use WebGL, this value is null.
      */
-    public get webGL(): WebGLGlobalObject|null {
+    public get webGL(): WebGLGlobalObject | null {
         return this._webGLGlobalObject;
     }
 

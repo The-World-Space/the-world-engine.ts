@@ -1,7 +1,7 @@
-import { BufferAttribute, Vector2, Vector2Tuple } from "three/src/Three";
+import type { BufferAttribute, Vector2, Vector2Tuple } from "three/src/Three";
 
-import { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
-import { ReadonlyVector2 } from "./ReadonlyVector2";
+import type { ReadonlyMatrix3 } from "./ReadonlyMatrix3";
+import type { ReadonlyVector2 } from "./ReadonlyVector2";
 
 export type WritableVector2 = {
     /**
